@@ -21,7 +21,6 @@ const LoginPage = () => {
           <label className="mx-auto mt-4">
             ليس لديك حساب ؟{" "}
             <Link to={"/register"} style={{ textDecoration: "none" }}>
-              {" "}
               <span style={{ cursor: "pointer" }} className="text-danger">
                 اضغط هنا
               </span>
@@ -29,6 +28,7 @@ const LoginPage = () => {
           </label>
         </Col>
       </Row>
+      <Link to={"/admin/all-products"}>Admin</Link>
     </Container>
   );
 };
