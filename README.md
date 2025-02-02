@@ -1,8 +1,31 @@
-# React + Vite
+# E-Commerce React Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Steps
 
-Currently, two official plugins are available:
+### ⏳ E-commerce Website (Design Only)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### ⏳ E-commerce Stucture (Redux Axios)
+
+### ⏳ Category Section CRUD
+
+### ⏳ E-commerce (Brand Section CRUD)
+
+### ⏳ E-commerce (SubCategory Section CRUD)
+
+### ⏳ E-commerce (Products Section CRUD)
+
+### ⏳ E-commerce (Products Search Filteration)
+
+### ⏳ E-commerce (SignUp-Login-Forget-Reset-Verify-Logout)
+
+### ⏳ E-commerce (Review CRUD - Wishlist Products)
+
+### ⏳ E-commerce (Coupons - User Profile)
+
+### ⏳ E-commerce (Shopping Cart)
+
+### ⏳ Protected Route (Permission - Inhancment)
+
+### ⏳ E-commerce (Complete Cash Order)
+
+### ⏳ E-commerce (Complete Order Payment - Visa)
