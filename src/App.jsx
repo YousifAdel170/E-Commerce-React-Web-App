@@ -12,6 +12,12 @@ import ProductDetailsPage from "./Pages/Products/ProductDetailsPage";
 import CartPage from "./Pages/Cart/CartPage";
 import CartMethodPage from "./Pages/Checkout/CartMethodPage";
 import AdminAllProductsPage from "./Pages/Admin/AdminAllProductsPage";
+import AdminAllOrdersPage from "./Pages/Admin/AdminAllOrdersPage";
+import AdminOrderDetailsPage from "./Pages/Admin/AdminOrderDetailsPage";
+import AdminAddBrandPage from "./Pages/Admin/AdminAddBrandPage";
+import AdminAddCategoryPage from "./Pages/Admin/AdminAddCategoryPage";
+import AdminAddSubCategoryPage from "./Pages/Admin/AdminAddSubCategoryPage";
+import AdminAddProductPage from "./Pages/Admin/AdminAddProductPage";
 
 function App() {
   return (
@@ -32,6 +38,22 @@ function App() {
             path="/admin/all-products"
             element={<AdminAllProductsPage />}
           />
+          <Route path="/admin/all-orders" element={<AdminAllOrdersPage />} />
+          <Route
+            path="/admin/all-orders/:id"
+            element={<AdminOrderDetailsPage />}
+          />
+
+          <Route path="/admin/add-brand" element={<AdminAddBrandPage />} />
+          <Route
+            path="/admin/add-category"
+            element={<AdminAddCategoryPage />}
+          />
+          <Route
+            path="/admin/add-subcategory"
+            element={<AdminAddSubCategoryPage />}
+          />
+          <Route path="/admin/add-product" element={<AdminAddProductPage />} />
         </Routes>
       </BrowserRouter>
       <Footer />

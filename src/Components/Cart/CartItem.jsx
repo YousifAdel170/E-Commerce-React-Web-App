@@ -21,6 +21,7 @@ const CartItem = () => {
             </div>
           </Col>
         </Row>
+
         {/* Cart Item description and rate */}
         <Row className="justify-content-center mt-2">
           <Col sm="12" className=" d-flex flex-row justify-content-start">
@@ -31,7 +32,7 @@ const CartItem = () => {
           </Col>
         </Row>
 
-        {/* Cart Item brande */}
+        {/* Cart Item brand */}
         <Row>
           <Col sm="12" className="mt-1">
             <div className="cat-text d-inline">الماركة :</div>
