@@ -15,6 +15,7 @@ const ProductCard = () => {
           border: "none",
           backgroundColor: "#fff",
           boxShadow: "0 2px 2px 0 rgba(151,151,151, 0.5)",
+          marginBottom: "10px",
         }}
       >
         <Link to="/products/:id" style={{ textDecoration: "none" }}>

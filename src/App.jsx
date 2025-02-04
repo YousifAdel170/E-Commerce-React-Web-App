@@ -18,6 +18,12 @@ import AdminAddBrandPage from "./Pages/Admin/AdminAddBrandPage";
 import AdminAddCategoryPage from "./Pages/Admin/AdminAddCategoryPage";
 import AdminAddSubCategoryPage from "./Pages/Admin/AdminAddSubCategoryPage";
 import AdminAddProductPage from "./Pages/Admin/AdminAddProductPage";
+import UserAllOrdersPage from "./Pages/User/UserAllOrdersPage";
+import UserFavoriteProducts from "./Pages/User/UserFavoriteProductsPage";
+import UserProfilePage from "./Pages/User/UserProfilePage";
+import UserAllAddressesPage from "./Pages/User/UserAllAddressesPage";
+import UserAddAddressPage from "./Pages/User/UserAddAddressPage";
+import UserEditAddressPage from "./Pages/User/UserEditAddressPage";
 
 function App() {
   return (
@@ -54,6 +60,25 @@ function App() {
             element={<AdminAddSubCategoryPage />}
           />
           <Route path="/admin/add-product" element={<AdminAddProductPage />} />
+
+          <Route path="/user/all-orders" element={<UserAllOrdersPage />} />
+
+          <Route
+            path="/user/favorite-products"
+            element={<UserFavoriteProducts />}
+          />
+
+          <Route path="/user/addresses" element={<UserAllAddressesPage />} />
+          <Route
+            path="/user/addresses/add-address"
+            element={<UserAddAddressPage />}
+          />
+          <Route
+            path="/user/addresses/edit-address"
+            element={<UserEditAddressPage />}
+          />
+
+          <Route path="/user/profile" element={<UserProfilePage />} />
         </Routes>
       </BrowserRouter>
       <Footer />

@@ -26,12 +26,12 @@ const ChoosePayMethod = () => {
           <Col xs="12" className="d-flex">
             <input
               name="group"
-              id="group1"
+              id="group2"
               type="radio"
               value="الدفع عند الاستلام"
               className="mt-2"
             />
-            <label className="mx-2" htmlFor="group1">
+            <label className="mx-2" htmlFor="group2">
               الدفع عند الاستلام
             </label>
           </Col>

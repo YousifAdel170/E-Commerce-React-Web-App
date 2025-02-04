@@ -29,6 +29,9 @@ const LoginPage = () => {
         </Col>
       </Row>
       <Link to={"/admin/all-products"}>Admin</Link>
+      <Link to={"/user/all-orders"} style={{ display: "block" }}>
+        User
+      </Link>
     </Container>
   );
 };

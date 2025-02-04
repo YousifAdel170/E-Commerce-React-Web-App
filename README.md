@@ -2,7 +2,7 @@
 
 ## Steps
 
-### ⏳ E-commerce Website (Design Only)
+### ✔️ E-commerce Website (Design Only)
 
 ### ⏳ E-commerce Stucture (Redux Axios)
 
