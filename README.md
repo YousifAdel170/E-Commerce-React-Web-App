@@ -4,7 +4,7 @@
 
 ### ✔️ E-commerce Website (Design Only)
 
-### ⏳ E-commerce Stucture (Redux Axios)
+### ✔️ E-commerce Stucture (Redux Axios)
 
 ### ⏳ Category Section CRUD
 
