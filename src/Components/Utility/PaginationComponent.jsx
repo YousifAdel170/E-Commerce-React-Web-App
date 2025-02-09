@@ -1,7 +1,13 @@
+/* eslint-disable react/prop-types */
 import ReactPaginate from "react-paginate";
 
-const PaginationComponent = () => {
-  const handlePageClick = () => {};
+// const PaginationComponent = ({ pageCount }) => {
+const PaginationComponent = ({ pageCount, onPress }) => {
+  // Get The Clicked Page
+  const handlePageClick = (data) => {
+    onPress(data.selected + 1);
+  };
+
   return (
     <ReactPaginate
       breakLabel="..."
@@ -13,7 +19,7 @@ const PaginationComponent = () => {
       onPageChange={handlePageClick}
       marginPagesDisplayed={2}
       pageRangeDisplayed={2}
-      pageCount={100}
+      pageCount={pageCount}
       previousLabel="السابق"
       previousClassName="page-item"
       previousLinkClassName="page-link"

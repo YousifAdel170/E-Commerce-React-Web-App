@@ -1,2 +1,5 @@
 export const GET_ALL_CATEGORY = "GET_ALL_CATEGORY";
+
 export const GET_ERROR = "GET_ERROR";
+
+export const CREATE_NEW_CATEGORY = "CREATE_NEW_CATEGORY";
