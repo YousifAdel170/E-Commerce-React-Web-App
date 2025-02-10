@@ -1,7 +1,7 @@
 import { CREATE_NEW_CATEGORY, GET_ALL_CATEGORY, GET_ERROR } from "../type";
 
-import useGetData from "../../hooks/useGetData";
-import { useInsertDataWithImage } from "../../hooks/useInsertData";
+import { useInsertDataWithImage } from "../../hooks/axios/useInsertData";
+import useGetData from "../../hooks/axios/useGetData";
 
 // Get All Items From the Categories with Specified Limit [First Page]
 export const getAllCategory = (limit) => async (dispatch) => {
@@ -46,10 +46,12 @@ export const createNewCategory = (formData) => async (dispatch) => {
       type: CREATE_NEW_CATEGORY,
       payload: result,
     });
+    return Promise.resolve(result);
   } catch (e) {
     dispatch({
       type: GET_ERROR,
       payload: "Error " + e,
     });
+    Promise.reject(e);
   }
 };

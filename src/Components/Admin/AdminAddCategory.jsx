@@ -1,60 +1,18 @@
 import { Col, Row, Spinner } from "react-bootstrap";
 
-import uploadImage from "../../assets/Imgs/avatar.png";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { createNewCategory } from "../../redux/actions/categoryAction";
+import { ToastContainer } from "react-toastify";
+import AdminAddCategoryHook from "../../hooks/category/AdminAddCategoryHook";
 
 const AdminAddCategory = () => {
-  // States [image: new uploaded item  | name: Item name]
-  const [image, setImage] = useState(uploadImage);
-  const [name, setName] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isPress, setIsPress] = useState(false);
-
-  // Display choosed Image from the Local PC
-  const onImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      setImage(URL.createObjectURL(event.target.files[0])); // Image
-      setSelectedFile(event.target.files[0]); // File
-    }
-  };
-
-  // 0. Use Dispatch to tell that u will use actions from redux
-  const dispatch = useDispatch();
-
-  // Save The Data into the DB
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (name != "" && selectedFile != null) {
-      const formData = new FormData();
-
-      formData.append("name", name);
-      formData.append("image", selectedFile);
-
-      if (loading === false) console.log("جاري التحميل");
-
-      setLoading(true);
-      setIsPress(true);
-      await dispatch(createNewCategory(formData));
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (loading === false) {
-      setImage(uploadImage);
-      setName("");
-      setSelectedFile(null);
-      console.log("تم االانتهاء");
-      setLoading(true);
-      setTimeout(() => {
-        setIsPress(false);
-      }, 1000);
-    }
-  }, [loading]);
+  const [
+    image,
+    name,
+    loading,
+    isPress,
+    handleSubmit,
+    onImageChange,
+    onChangeName,
+  ] = AdminAddCategoryHook();
 
   return (
     <div>
@@ -84,7 +42,7 @@ const AdminAddCategory = () => {
 
           <input
             type="text"
-            onChange={(e) => setName(e.target.value)}
+            onChange={onChangeName}
             value={name}
             className="input-form d-block mt-3 px-3"
             placeholder="اسم التصنيف"
@@ -106,6 +64,7 @@ const AdminAddCategory = () => {
           <h4>تم الانتهاء</h4>
         )
       ) : null}
+      <ToastContainer />
     </div>
   );
 };
