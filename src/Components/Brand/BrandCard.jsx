@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Card, Col } from "react-bootstrap";
 
 const BrandCard = ({ img }) => {

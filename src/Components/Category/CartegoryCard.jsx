@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Col } from "react-bootstrap";
 
 const CartegoryCard = ({ background, img, title }) => {
@@ -13,7 +14,6 @@ const CartegoryCard = ({ background, img, title }) => {
         className="all-card mb-3"
         style={{ backgroundColor: `${background}` }}
       >
-        {" "}
         <img src={img} className="categoty-card-img" alt="card-image" />
         <p className="categoty-card-text my-2">{title}</p>
       </div>

@@ -1,5 +1,7 @@
-export const GET_ALL_CATEGORY = "GET_ALL_CATEGORY";
-
 export const GET_ERROR = "GET_ERROR";
 
+export const GET_ALL_CATEGORY = "GET_ALL_CATEGORY";
 export const CREATE_NEW_CATEGORY = "CREATE_NEW_CATEGORY";
+
+export const GET_ALL_BRAND = "GET_ALL_BRAND";
+export const CREATE_NEW_BRAND = "CREATE_NEW_BRAND";

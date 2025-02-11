@@ -6,9 +6,9 @@
 
 ### ✔️ E-commerce Stucture (Redux Axios)
 
-### ⏳ Category Section CRUD
+### ✔️ Category Section CRUD
 
-### ⏳ E-commerce (Brand Section CRUD)
+### ✔️ E-commerce (Brand Section CRUD)
 
 ### ⏳ E-commerce (SubCategory Section CRUD)
 
