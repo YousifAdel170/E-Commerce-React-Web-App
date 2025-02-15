@@ -50,15 +50,15 @@ const AdminAddSubCategoryHook = () => {
     // Check Internet Connection
     internetDetect();
 
-    // Validate the Seletion of the main category
-    if (id === "0") {
-      notify("من فضلك اختر تصنيف رئيسي", "warn");
-      return;
-    }
-
     // Validate the name of the subcategory
     if (name === "") {
       notify("من فضلك ادخل اسم التصنيف", "warn");
+      return;
+    }
+
+    // Validate the Seletion of the main category
+    if (id === "0") {
+      notify("من فضلك اختر تصنيف رئيسي", "warn");
       return;
     }
 
@@ -88,11 +88,12 @@ const AdminAddSubCategoryHook = () => {
         notify("هذا الاسم مكرر من فضلك اختر اسم اخر", "warn");
       else {
         notify("هناك مشكله فى عملية الاضافة", "warn");
+        dispatch(getAllCategory()); // ✅ Re-fetch categories on success
       }
 
       setLoading(true);
     }
-  }, [loading, subCategory]);
+  }, [loading, subCategory, dispatch]);
 
   return [name, category, handleChange, handleSubmit, onChangeName];
 };
