@@ -10,7 +10,7 @@
 
 ### ✔️ E-commerce (Brand Section CRUD)
 
-### ⏳ E-commerce (SubCategory Section CRUD)
+### ✔️ E-commerce (SubCategory Section CRUD)
 
 ### ⏳ E-commerce (Products Section CRUD)
 
