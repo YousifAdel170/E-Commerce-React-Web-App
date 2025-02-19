@@ -1,10 +1,10 @@
+/* eslint-disable react/prop-types */
 import { Card, Col } from "react-bootstrap";
-import product from "../../Assets/Imgs/prod1.png";
 import favoff from "../../Assets/Imgs/fav-off.png";
 import rate from "../../Assets/Imgs/rate.png";
 import { Link } from "react-router-dom";
 
-const ProductCard = () => {
+const ProductCard = ({ item }) => {
   return (
     <Col xs="12" sm="6" md="4" lg="3" className="d-flex">
       <Card
@@ -18,8 +18,11 @@ const ProductCard = () => {
           marginBottom: "10px",
         }}
       >
-        <Link to="/products/:id" style={{ textDecoration: "none" }}>
-          <Card.Img style={{ height: "228px", width: "100%" }} src={product} />
+        <Link to={`/products/${item._id}`} style={{ textDecoration: "none" }}>
+          <Card.Img
+            style={{ height: "228px", width: "100%" }}
+            src={item.imageCover}
+          />
         </Link>
 
         <div className="d-flex justify-content-end mx-2">
@@ -32,9 +35,7 @@ const ProductCard = () => {
         </div>
         <Card.Body>
           <Card.Title>
-            <div className="card-title">
-              سود كربون ساعة يد ذكية بيب اس اسود كربون
-            </div>
+            <div className="card-title">{item.title}</div>
           </Card.Title>
           <div className="card-text">
             <div className="d-flex justify-content-between">
@@ -46,10 +47,10 @@ const ProductCard = () => {
                   height="16px"
                   width="16px"
                 />
-                <div className="card-rate mx-2">4.5</div>
+                <div className="card-rate mx-2">{item.ratingsQuantity}</div>
               </div>
               <div className="d-flex">
-                <div className="card-price">880</div>
+                <div className="card-price">{item.price}</div>
                 <div className="card-currency mx-1">جنيه</div>
               </div>
             </div>

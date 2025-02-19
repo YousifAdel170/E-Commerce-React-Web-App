@@ -1,4 +1,9 @@
-import { CREATE_NEW_BRAND, GET_ALL_BRAND, GET_ERROR } from "../type";
+import {
+  CREATE_NEW_BRAND,
+  GET_ALL_BRAND,
+  GET_SPECIFIC_BRAND,
+  GET_ERROR,
+} from "../type";
 
 import { useInsertDataWithImage } from "../../hooks/axios/useInsertData";
 import useGetData from "../../hooks/axios/useGetData";
@@ -52,5 +57,22 @@ export const createNewBrand = (formData) => async (dispatch) => {
       payload: "Error " + e,
     });
     Promise.reject(e);
+  }
+};
+
+// Get The Brand by its ID
+export const getSpecificBrand = (id) => async (dispatch) => {
+  try {
+    const result = await useGetData(`/api/v1/brands/${id}`);
+    dispatch({
+      type: GET_SPECIFIC_BRAND,
+      payload: result,
+      loading: true,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: "Error " + e,
+    });
   }
 };

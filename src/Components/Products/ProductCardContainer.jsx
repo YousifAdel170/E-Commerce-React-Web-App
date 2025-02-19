@@ -1,16 +1,18 @@
+/* eslint-disable react/prop-types */
 import { Container, Row } from "react-bootstrap";
 import SubTitle from "../Utility/SubTitle";
 import ProductCard from "./ProductCard";
 
-const ProductCardContainer = ({ title, btnTitle, path }) => {
+const ProductCardContainer = ({ title, btnTitle, path, products }) => {
   return (
     <Container>
       <SubTitle title={title} btnTitle={btnTitle} path={path} />
       <Row className="my-2 d-flex justify-content-between">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
+        {products
+          ? products.map((item, index) => (
+              <ProductCard key={index} item={item} />
+            ))
+          : null}
       </Row>
     </Container>
   );

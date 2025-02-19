@@ -1,4 +1,9 @@
-import { CREATE_NEW_CATEGORY, GET_ALL_CATEGORY, GET_ERROR } from "../type";
+import {
+  CREATE_NEW_CATEGORY,
+  GET_ALL_CATEGORY,
+  GET_ERROR,
+  GET_SPECIFIC_CATEGORY,
+} from "../type";
 
 import { useInsertDataWithImage } from "../../hooks/axios/useInsertData";
 import useGetData from "../../hooks/axios/useGetData";
@@ -53,5 +58,22 @@ export const createNewCategory = (formData) => async (dispatch) => {
       payload: "Error " + e,
     });
     Promise.reject(e);
+  }
+};
+
+// Get The Category by its ID
+export const getSpecificCategory = (id) => async (dispatch) => {
+  try {
+    const result = await useGetData(`/api/v1/categories/${id}`);
+    dispatch({
+      type: GET_SPECIFIC_CATEGORY,
+      payload: result,
+      loading: true,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: "Error " + e,
+    });
   }
 };
