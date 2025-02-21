@@ -7,7 +7,7 @@ const ProductCardContainer = ({ title, btnTitle, path, products }) => {
   return (
     <Container>
       <SubTitle title={title} btnTitle={btnTitle} path={path} />
-      <Row className="my-2 d-flex justify-content-between">
+      <Row className="my-2 d-flex">
         {products
           ? products.map((item, index) => (
               <ProductCard key={index} item={item} />

@@ -8,13 +8,13 @@ import PaginationComponent from "../../Components/Utility/PaginationComponent";
 import ViewSearchProductHook from "../../hooks/products/ViewSearchProductHook";
 
 const ShopProductsPage = () => {
-  const [items] = ViewSearchProductHook();
+  const [items, pageCount, onPress] = ViewSearchProductHook();
   return (
     <div>
       <CategoryHeader />
       <Container>
         <SearchCountResult title={`هناك ${items.length} نتيجة بحث`} />
-        <Row className="d-flex flex-row">
+        <Row className="d-flex">
           <Col sm="2" xs="2" md="1" className="d-flex">
             <SideFilter />
           </Col>
@@ -22,7 +22,7 @@ const ShopProductsPage = () => {
             <ProductCardContainer products={items} />
           </Col>
         </Row>
-        <PaginationComponent />
+        <PaginationComponent pageCount={pageCount} onPress={onPress} />
       </Container>
     </div>
   );

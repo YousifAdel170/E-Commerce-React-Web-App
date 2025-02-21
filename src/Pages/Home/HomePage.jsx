@@ -8,7 +8,7 @@ import ViewHomeProductsHook from "../../hooks/products/ViewHomeProductsHook";
 const HomePage = () => {
   const [items] = ViewHomeProductsHook();
 
-  if (items) console.log(items);
+  // if (items) console.log(items);  // For Test
 
   return (
     <div className="font" style={{ minHeight: "670px" }}>

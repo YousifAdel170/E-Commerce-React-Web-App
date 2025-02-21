@@ -1,12 +1,12 @@
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import internetDetect from "../Utility/useInternetConnectionHook";
 import {
   getAllProducts,
   getAllProductsInSelectedPage,
 } from "../../redux/actions/productsAction";
-import internetDetect from "../Utility/useInternetConnectionHook";
-import { useEffect, useMemo } from "react";
 
-const ViewSearchProductHook = () => {
+const AdminAllProductsPageHook = () => {
   // Use Dispatch to tell that u will use actions from redux
   const dispatch = useDispatch();
 
@@ -38,4 +38,4 @@ const ViewSearchProductHook = () => {
   return [items, pageCount, onPress];
 };
 
-export default ViewSearchProductHook;
+export default AdminAllProductsPageHook;

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import sort from "../../Assets/Imgs/sort.png";
 import UnopDropdown from "unop-react-dropdown";
 
@@ -11,16 +12,16 @@ const SearchCountResult = ({ title }) => {
           onAppear={handler}
           onDisappearStart={handler}
           trigger={
-            <p className="mx-1">
+            <>
               <img
                 width={"20px"}
                 height={"20px"}
-                className="ms-1"
+                className="ms-2"
                 src={sort}
                 alt="Sort Img"
               />
               ترتيب حسب
-            </p>
+            </>
           }
           delay={0}
           align="CENTER"
