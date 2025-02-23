@@ -7,10 +7,13 @@ import { CompactPicker } from "react-color";
 import add from "../../assets/Imgs/add.png";
 
 import { ToastContainer } from "react-toastify";
-import AdminAddProductHook from "../../hooks/products/AdminAddProductHook";
+
+import AdminEditProductHook from "../../hooks/products/AdminEditProductHook";
+import { useParams } from "react-router-dom";
 import MultipleImageInput from "react-multiple-image-input";
 
-const AdminAddProduct = () => {
+const AdminEditProduct = () => {
+  const { id } = useParams();
   const [
     categoryID,
     brandID,
@@ -40,12 +43,15 @@ const AdminAddProduct = () => {
     qty,
     productDescription,
     productName,
-  ] = AdminAddProductHook();
+  ] = AdminEditProductHook(id);
+
   return (
     <div>
       <Row className="justify-content-start ">
         {/* Title to add new product */}
-        <div className="admin-content-text pb-4"> اضافه منتج جديد</div>
+        <div className="admin-content-text pb-4">
+          تعديل المنتج - {productName}
+        </div>
 
         <Col sm="8">
           {/* Title of product */}
@@ -201,4 +207,4 @@ const AdminAddProduct = () => {
   );
 };
 
-export default AdminAddProduct;
+export default AdminEditProduct;

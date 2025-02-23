@@ -6,7 +6,6 @@ import AdminAllProductsPageHook from "../../hooks/admin/AdminAllProductsPageHook
 
 const AdminAllProductsPage = () => {
   const [items, pageCount, onPress] = AdminAllProductsPageHook();
-  // if (items) console.log(items); // For Test
 
   return (
     <Container>

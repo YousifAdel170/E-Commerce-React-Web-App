@@ -24,6 +24,7 @@ import UserProfilePage from "./Pages/User/UserProfilePage";
 import UserAllAddressesPage from "./Pages/User/UserAllAddressesPage";
 import UserAddAddressPage from "./Pages/User/UserAddAddressPage";
 import UserEditAddressPage from "./Pages/User/UserEditAddressPage";
+import AdminEditProductPage from "./Pages/Admin/AdminEditProductPage";
 
 function App() {
   return (
@@ -60,6 +61,10 @@ function App() {
             element={<AdminAddSubCategoryPage />}
           />
           <Route path="/admin/add-product" element={<AdminAddProductPage />} />
+          <Route
+            path="/admin/edit-product/:id"
+            element={<AdminEditProductPage />}
+          />
 
           <Route path="/user/all-orders" element={<UserAllOrdersPage />} />
 

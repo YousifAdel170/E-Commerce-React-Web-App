@@ -2,7 +2,6 @@
 import { Col, Row } from "react-bootstrap";
 
 const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
-  console.log(itemProduct);
   return (
     <div style={{ marginRight: "10%" }}>
       <Row className="mt-2">

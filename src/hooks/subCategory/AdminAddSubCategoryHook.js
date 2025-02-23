@@ -23,19 +23,13 @@ const AdminAddSubCategoryHook = () => {
   // get the sub category response to check if the status ok or not
   const subCategory = useSelector((state) => state.allSubCategory.subCategory);
 
-  // console.log(subCategory);    // for test
-
   // 0. States
   const [id, setID] = useState("0");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(true);
 
   // Save selected category ID
-  const handleChange = (e) => {
-    // console.log(e.target.value);
-    setID(e.target.value);
-  };
-
+  const handleChange = (e) => setID(e.target.value);
   // Save subcategory name
   const onChangeName = (e) => {
     e.persist();
@@ -81,9 +75,8 @@ const AdminAddSubCategoryHook = () => {
       setName("");
       setID("0");
 
-      if (subCategory) console.log(subCategory);
-
-      if (subCategory.status === 201) notify("تمت الاضافة بنجاح", "success");
+      if (subCategory && subCategory.status === 201)
+        notify("تمت الاضافة بنجاح", "success");
       else if (subCategory === ERROR)
         notify("هذا الاسم مكرر من فضلك اختر اسم اخر", "warn");
       else {

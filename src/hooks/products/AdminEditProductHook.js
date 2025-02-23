@@ -4,19 +4,29 @@ import internetDetect from "../Utility/useInternetConnectionHook";
 import { getAllCategory } from "../../redux/actions/categoryAction";
 import { getAllBrand } from "../../redux/actions/brandAction";
 import { getAllSubCategory } from "../../redux/actions/subCategoryAction";
-import { createNewProduct } from "../../redux/actions/productsAction";
+import {
+  getSpecificProduct,
+  updateProduct,
+} from "../../redux/actions/productsAction";
 import notify from "../Utility/useNotifyHook";
 
-const AdminAddProductHook = () => {
+const AdminEditProductHook = (id) => {
   // Use Dispatch to tell that u will use actions from redux
   const dispatch = useDispatch();
 
   // Fetch categories only once when the component mounts
   useEffect(() => {
     internetDetect();
-    dispatch(getAllCategory());
-    dispatch(getAllBrand());
-  }, [dispatch]);
+    const dispatchData = async () => {
+      await dispatch(getSpecificProduct(id));
+      await dispatch(getAllCategory());
+      await dispatch(getAllBrand());
+    };
+    dispatchData();
+  }, [dispatch, id]);
+
+  // get the specific Product to be updated by its ID
+  const product = useSelector((state) => state.allProduct.viewSpecificProduct);
 
   // get the categories from the reducer to display it into the selection to be selected
   const category = useSelector((state) => state.allCategory.category);
@@ -27,6 +37,16 @@ const AdminAddProductHook = () => {
   // get the sub category response to check if the status ok or not
   const subCategory = useSelector((state) => state.allSubCategory.subCategory);
 
+  // Store the selected Sub categories list after being added
+  const onSelect = (selectedList) => {
+    setSelectedSubID(selectedList);
+  };
+
+  // Store the selected Sub categories list after beging removed
+  const onRemove = (selectedList) => {
+    setSelectedSubID(selectedList);
+  };
+
   // State To Show/Hide Color Picker
   const [showColor, setShowColor] = useState(false);
 
@@ -36,29 +56,31 @@ const AdminAddProductHook = () => {
   // State [Array] to store the Options of the Sub categories
   const [options, setOptions] = useState([]);
 
-  const handleChangeComplete = (color) => {
-    setShowColor(!showColor);
-
-    setColors([...colors, color.hex]);
-  };
-
-  const removeColor = (color) => {
-    const newColors = colors.filter((e) => e !== color);
-    setColors(newColors);
-  };
-
   const [loading, setLoading] = useState(true);
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [priceBefore, setPriceBefore] = useState("");
   const [priceAfter, setPriceAfter] = useState("");
   const [qty, setQTY] = useState("");
-  const [categoryID, setCategoryID] = useState(0);
-  const [brandID, setBrandID] = useState(0);
+  const [categoryID, setCategoryID] = useState("0");
+  const [brandID, setBrandID] = useState("0");
   const [selectedSubID, setSelectedSubID] = useState([]);
 
   // State To Save Array Of Selected Images
   const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    if (product && product.data) {
+      setImages(product.data.images);
+      setProductName(product.data.title);
+      setProductDescription(product.data.description);
+      setPriceBefore(product.data.price);
+      setQTY(product.data.quantity);
+      setCategoryID(product.data.category);
+      setBrandID(product.data.brand);
+      setColors(product.data.availableColors);
+    }
+  }, [product]);
 
   //to change name state
   const onChangeProdName = (e) => {
@@ -89,39 +111,40 @@ const AdminAddProductHook = () => {
     setShowColor(!showColor);
   };
 
+  const handleChangeComplete = (color) => {
+    setShowColor(!showColor);
+
+    setColors([...colors, color.hex]);
+  };
+
+  const removeColor = (color) => {
+    const newColors = colors.filter((e) => e !== color);
+    setColors(newColors);
+  };
+
   // Store The selected CategoryID
   const onSelectCategory = async (e) => {
-    if (e.target.value != 0) {
-      // Dispatch the subcategories of the category id that has been selected
-      await dispatch(getAllSubCategory(e.target.value));
-    }
-
     setCategoryID(e.target.value);
   };
 
   useEffect(() => {
-    if (categoryID !== 0) {
-      if (subCategory.data) {
-        setOptions(subCategory.data);
-      }
-    } else {
-      setOptions([]);
+    if (categoryID != 0) {
+      const dispatchSubCategories = async () => {
+        // Dispatch the subcategories of the category id that has been selected
+        await dispatch(getAllSubCategory(categoryID));
+      };
+
+      dispatchSubCategories();
     }
-  }, [categoryID, subCategory]);
+  }, [categoryID, dispatch]);
+
+  useEffect(() => {
+    if (subCategory && subCategory.data) setOptions(subCategory.data);
+  }, [subCategory]);
 
   // Store The selected brandID
   const onSelectBrand = (e) => {
     setBrandID(e.target.value);
-  };
-
-  // Store the selected Sub categories list after being added
-  const onSelect = (selectedList) => {
-    setSelectedSubID(selectedList);
-  };
-
-  // Store the selected Sub categories list after beging removed
-  const onRemove = (selectedList) => {
-    setSelectedSubID(selectedList);
   };
 
   // Function to Convert 64 base Image into File
@@ -143,6 +166,16 @@ const AdminAddProductHook = () => {
     return new File([u8arr], filename, { type: mime });
   }
 
+  // Function to Convert File From the DB to 64 base to be displayed when it is the data fetched from API
+  const convertURLtoFile = async (url) => {
+    const response = await fetch(url, { mode: "cors" });
+    const data = await response.blob();
+    const ext = url.split(".").pop();
+    // const filename = url.split("/").pop();
+    const metadata = { type: `image/${ext}` };
+    return new File([data], Math.random(), metadata);
+  };
+
   // Save Any Item to store the new product
   const handleSubmit = async (e) => {
     // Prevent The Default Action of submit
@@ -160,42 +193,52 @@ const AdminAddProductHook = () => {
     }
 
     // convert base 64 image to file
-    const imgCover = dataURLtoFile(images[0].data_url, Math.random() + ".png"); // Ensure that the image data_url is passed to the function
+    let imgCover;
 
-    if (!imgCover) {
-      console.error("Failed to convert image to file");
-      return;
+    if (images[0].length <= 1000) {
+      convertURLtoFile(images[0]).then((val) => (imgCover = val));
+    } else {
+      imgCover = dataURLtoFile(images[0], Math.random() + ".png");
     }
 
+    let itemImages = [];
+
     // Create an array to store the new images after being converted [same size as the 64 base imaage array]
-    const itemImages = Array.from(Array(Object.keys(images).length).keys()).map(
-      (_, index) => {
-        return dataURLtoFile(images[index].data_url, Math.random() + ".png");
-      }
-    );
+    Array.from(Array(Object.keys(images).length).keys()).map((_, index) => {
+      if (images[index].length <= 1000)
+        convertURLtoFile(images[index]).then((val) => itemImages.push(val));
+      else
+        itemImages.push(dataURLtoFile(images[index], Math.random() + ".png"));
+    });
 
     const formData = new FormData();
     formData.append("title", productName);
     formData.append("description", productDescription);
     formData.append("quantity", qty);
     formData.append("price", priceBefore);
-    formData.append("imageCover", imgCover);
     formData.append("category", categoryID);
     formData.append("brand", brandID);
 
+    setTimeout(() => {
+      formData.append("imageCover", imgCover);
+      itemImages.map((item) => formData.append("images", item));
+    }, 1000);
+
     colors.map((color) => formData.append("availableColors", color));
     selectedSubID.map((item) => formData.append("subcategory", item._id));
-    itemImages.map((item) => formData.append("images", item));
 
-    // Start The Adding Operation
-    setLoading(true);
-    await dispatch(createNewProduct(formData));
-    setLoading(false);
-    // End The Adding Operation
+    setTimeout(async () => {
+      // Start The Updating Operation
+      setLoading(true);
+      await dispatch(updateProduct(id, formData));
+      setLoading(false);
+      // End The Updating Operation
+    }, 1000);
   };
 
-  // Get the Product Data [Product Response of creation]
-  const product = useSelector((state) => state.allProduct.products);
+  const updatedProduct = useSelector(
+    (state) => state.allProduct.updatedProduct
+  );
 
   // Reset The Values of the Product
   useEffect(() => {
@@ -212,16 +255,17 @@ const AdminAddProductHook = () => {
       setSelectedSubID([]);
       setCategoryID(0);
 
-      setTimeout(() => setLoading(true), 1000);
+      setTimeout(() => setLoading(true), 1500);
 
-      if (product) {
+      if (updatedProduct) {
         //   Check if the response status is OK
-        if (product.status === 201)
-          notify("تمت عملية الاضافة بنجاح", "success");
-        else notify("هناك مشكلة في عملية الاضافة", "error");
+
+        if (updatedProduct.status === 201 || updatedProduct.status === 200)
+          notify("تمت عملية التعديل بنجاح", "success");
+        else notify("هناك مشكلة في عملية التعديل", "error");
       }
     }
-  }, [loading, product]);
+  }, [loading, updatedProduct]);
 
   return [
     categoryID,
@@ -255,4 +299,4 @@ const AdminAddProductHook = () => {
   ];
 };
 
-export default AdminAddProductHook;
+export default AdminEditProductHook;

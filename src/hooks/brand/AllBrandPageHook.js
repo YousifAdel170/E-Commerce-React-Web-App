@@ -26,7 +26,6 @@ const AllBrandPageHook = () => {
 
   // 5. Fetch the Data from the Api That in the Selected Page
   const getSelectedPageNumber = (selectedPage) => {
-    // console.log(selectedPage);
     dispatch(getAllBrandInSelectedPage(2, selectedPage));
   };
 

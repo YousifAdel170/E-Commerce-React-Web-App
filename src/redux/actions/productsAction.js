@@ -4,12 +4,14 @@ import {
   GET_SPECIFIC_PRODUCT,
   GET_PODUCTS_LIKE,
   DELETE_PRODUCT,
+  UPDATE_PRODUCT,
   GET_ERROR,
 } from "../type";
 
 import { useInsertDataWithImage } from "../../hooks/axios/useInsertData";
 import useGetData from "../../hooks/axios/useGetData";
 import useDeleteData from "../../hooks/axios/useDeleteData";
+import { useUpdateDataWithImage } from "../../hooks/axios/useUpdateData";
 
 // Add new Item To The API [Create New Product]
 export const createNewProduct = (formatData) => async (dispatch) => {
@@ -31,11 +33,29 @@ export const createNewProduct = (formatData) => async (dispatch) => {
   }
 };
 
+// Update The Item To The API based on its ID
+export const updateProduct = (id, formatData) => async (dispatch) => {
+  try {
+    const response = await useUpdateDataWithImage(
+      `/api/v1/products/${id}`,
+      formatData
+    );
+    dispatch({
+      type: UPDATE_PRODUCT,
+      payload: response,
+      loading: true,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: "Error  " + e,
+    });
+  }
+};
+
 // Get All Items From the Products with Specified Limit [First Page]
-// export const getAllProducts = () => async (dispatch) => {
 export const getAllProducts = (limit) => async (dispatch) => {
   try {
-    // const result = await useGetData(`/api/v1/categories?limit=${limit}`);
     const result = await useGetData(`/api/v1/products?limit=${limit}`);
     dispatch({
       type: GET_ALL_PRODUCTS,

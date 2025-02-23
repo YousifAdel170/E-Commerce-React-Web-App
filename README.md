@@ -12,7 +12,7 @@
 
 ### ✔️ E-commerce (SubCategory Section CRUD)
 
-### ⏳ E-commerce (Products Section CRUD)
+### ✔️ E-commerce (Products Section CRUD)
 
 ### ⏳ E-commerce (Products Search Filteration)
 

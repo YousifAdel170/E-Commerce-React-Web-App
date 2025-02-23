@@ -4,8 +4,6 @@ import { Row } from "react-bootstrap";
 import AdminProductCard from "./AdminProductCard";
 
 const AdminAllProducts = ({ items }) => {
-  // console.log(items);   // For Test
-
   return (
     <div>
       <div className="admin-content-text">ادارة جميع المنتجات</div>

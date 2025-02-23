@@ -5,6 +5,7 @@ import {
   GET_PODUCTS_LIKE,
   GET_ERROR,
   DELETE_PRODUCT,
+  UPDATE_PRODUCT,
 } from "../type";
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
   viewProducts: [],
   viewSpecificProduct: [],
   viewProductsLike: [],
+  updatedProduct: [],
   deletedProduct: [],
   loading: true,
 };
@@ -29,6 +31,9 @@ const productsReducer = (state = initialState, action) => {
 
     case CREATE_NEW_PRODUCT:
       return { ...state, products: action.payload, loading: false };
+
+    case UPDATE_PRODUCT:
+      return { ...state, updatedProduct: action.payload, loading: false };
 
     case DELETE_PRODUCT:
       return { ...state, deletedProduct: action.payload, loading: false };

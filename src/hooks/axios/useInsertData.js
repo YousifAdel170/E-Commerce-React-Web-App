@@ -9,8 +9,6 @@ const useInsertDataWithImage = async (url, params) => {
 
   const result = await baseUrl.post(url, params, config);
 
-  console.log(result);
-  console.log(result.status);
   return result;
 };
 

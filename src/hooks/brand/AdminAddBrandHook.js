@@ -63,10 +63,7 @@ const AdminAddBrandHook = () => {
       }
 
       //   The User Entered Empty Data
-    } else {
-      console.log("من فضلك اكمل البيانات");
-      notify("من فضلك اكمل البيانات", "warn");
-    }
+    } else notify("من فضلك اكمل البيانات", "warn");
   };
 
   useEffect(() => {
@@ -74,8 +71,6 @@ const AdminAddBrandHook = () => {
       setImage(uploadImage);
       setName("");
       setSelectedFile(null);
-
-      //   console.log("تم االانتهاء");
 
       setLoading(true);
 

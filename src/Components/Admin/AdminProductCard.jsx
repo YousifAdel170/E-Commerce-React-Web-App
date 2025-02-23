@@ -27,7 +27,6 @@ const AdminProductCard = ({ item }) => {
   return (
     <Col xs="12" sm="6" md="5" lg="4" className="d-flex">
       <Modal show={show} onHide={handleClose}>
-        {/* <Modal.Header closeButton> */}
         <Modal.Header>
           <Modal.Title className="font">تأكيد الحذف</Modal.Title>
         </Modal.Header>
@@ -57,7 +56,12 @@ const AdminProductCard = ({ item }) => {
             <div className="d-inline item-delete-edit" onClick={handleShow}>
               ازاله
             </div>
-            <div className="d-inline item-delete-edit">تعديل</div>
+            <Link
+              to={`/admin/edit-product/${item._id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <div className="d-inline item-delete-edit">تعديل</div>
+            </Link>
           </Col>
         </Row>
         <Link to={`/products/${item._id}`} style={{ textDecoration: "none" }}>
