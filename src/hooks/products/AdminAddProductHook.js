@@ -53,8 +53,8 @@ const AdminAddProductHook = () => {
   const [priceBefore, setPriceBefore] = useState("");
   const [priceAfter, setPriceAfter] = useState("");
   const [qty, setQTY] = useState("");
-  const [categoryID, setCategoryID] = useState(0);
-  const [brandID, setBrandID] = useState(0);
+  const [categoryID, setCategoryID] = useState("0");
+  const [brandID, setBrandID] = useState("0");
   const [selectedSubID, setSelectedSubID] = useState([]);
 
   // State To Save Array Of Selected Images
@@ -91,21 +91,18 @@ const AdminAddProductHook = () => {
 
   // Store The selected CategoryID
   const onSelectCategory = async (e) => {
-    if (e.target.value != 0) {
-      // Dispatch the subcategories of the category id that has been selected
-      await dispatch(getAllSubCategory(e.target.value));
+    const selectedCategory = e.target.value;
+    if (selectedCategory !== "0") {
+      await dispatch(getAllSubCategory(selectedCategory));
     }
-
-    setCategoryID(e.target.value);
+    setCategoryID(selectedCategory);
   };
-
   useEffect(() => {
-    if (categoryID !== 0) {
+    // console.log(categoryID);
+    if (categoryID != 0) {
       if (subCategory.data) {
         setOptions(subCategory.data);
       }
-    } else {
-      setOptions([]);
     }
   }, [categoryID, subCategory]);
 
@@ -168,10 +165,13 @@ const AdminAddProductHook = () => {
     }
 
     // Create an array to store the new images after being converted [same size as the 64 base imaage array]
-    const itemImages = Array.from(Array(Object.keys(images).length).keys()).map(
-      (_, index) => {
-        return dataURLtoFile(images[index].data_url, Math.random() + ".png");
-      }
+    // const itemImages = Array.from(Array(Object.keys(images).length).keys()).map(
+    //   (_, index) => {
+    //     return dataURLtoFile(images[index].data_url, Math.random() + ".png");
+    //   }
+    // );
+    const itemImages = images.map((img) =>
+      dataURLtoFile(img.data_url, Math.random() + ".png")
     );
 
     const formData = new FormData();
@@ -212,11 +212,11 @@ const AdminAddProductHook = () => {
       setSelectedSubID([]);
       setCategoryID(0);
 
-      setTimeout(() => setLoading(true), 1000);
+      setTimeout(() => setLoading(true), 300);
 
       if (product) {
         //   Check if the response status is OK
-        if (product.status === 201)
+        if (product.status === 201 || product.status === 200)
           notify("تمت عملية الاضافة بنجاح", "success");
         else notify("هناك مشكلة في عملية الاضافة", "error");
       }
@@ -226,7 +226,6 @@ const AdminAddProductHook = () => {
   return [
     categoryID,
     brandID,
-
     onChangeDesName,
     onChangeQty,
     onChangeColor,

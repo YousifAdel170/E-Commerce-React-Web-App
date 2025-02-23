@@ -14,7 +14,6 @@ const AdminAddProduct = () => {
   const [
     categoryID,
     brandID,
-
     onChangeDesName,
     onChangeQty,
     onChangeColor,
@@ -192,7 +191,7 @@ const AdminAddProduct = () => {
       <Row>
         <Col sm="8" className="d-flex justify-content-end ">
           <button className="btn-save d-inline mt-2" onClick={handleSubmit}>
-            حفظ التعديلات
+            اضافة المنتج
           </button>
         </Col>
       </Row>
