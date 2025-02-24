@@ -28,7 +28,8 @@
     "redux": "^5.0.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^3.1.0",
-    "unop-react-dropdown": "^0.2.3"
+    "unop-react-dropdown": "^0.2.3",
+    "use-debounce": "^10.0.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

@@ -14,7 +14,7 @@
 
 ### ✔️ E-commerce (Products Section CRUD)
 
-### ⏳ E-commerce (Products Search Filteration)
+### ✔️ E-commerce (Products Search Filteration)
 
 ### ⏳ E-commerce (SignUp-Login-Forget-Reset-Verify-Logout)
 

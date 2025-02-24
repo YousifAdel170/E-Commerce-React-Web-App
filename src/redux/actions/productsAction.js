@@ -90,6 +90,23 @@ export const getAllProductsInSelectedPage =
     }
   };
 
+// Get All Products With Query String
+export const getAllProductsSearch = (queryString) => async (dispatch) => {
+  try {
+    const result = await useGetData(`/api/v1/products?${queryString}`);
+    dispatch({
+      type: GET_ALL_PRODUCTS,
+      payload: result,
+      loading: true,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: "Error " + e,
+    });
+  }
+};
+
 // Get Data For the Spcific Product By its ID
 export const getSpecificProduct = (id) => async (dispatch) => {
   try {

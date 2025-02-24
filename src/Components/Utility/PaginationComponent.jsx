@@ -4,10 +4,7 @@ import ReactPaginate from "react-paginate";
 // const PaginationComponent = ({ pageCount }) => {
 const PaginationComponent = ({ pageCount, onPress }) => {
   // Get The Clicked Page
-  const handlePageClick = (data) => {
-    onPress(data.selected + 1);
-  };
-
+  const handlePageClick = (data) => onPress(data.selected + 1);
   return (
     <ReactPaginate
       breakLabel="..."

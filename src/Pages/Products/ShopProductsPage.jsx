@@ -8,12 +8,17 @@ import PaginationComponent from "../../Components/Utility/PaginationComponent";
 import ViewSearchProductHook from "../../hooks/products/ViewSearchProductHook";
 
 const ShopProductsPage = () => {
-  const [items, pageCount, onPress] = ViewSearchProductHook();
+  const [items, pageCount, onPress, getProduct, results] =
+    ViewSearchProductHook();
+
   return (
     <div>
       <CategoryHeader />
       <Container>
-        <SearchCountResult title={`هناك ${items.length} نتيجة بحث`} />
+        <SearchCountResult
+          onClickGetProduct={getProduct}
+          title={`هناك ${results} نتيجة بحث`}
+        />
         <Row className="d-flex">
           <Col sm="2" xs="2" md="1" className="d-flex">
             <SideFilter />
@@ -22,7 +27,9 @@ const ShopProductsPage = () => {
             <ProductCardContainer products={items} />
           </Col>
         </Row>
-        <PaginationComponent pageCount={pageCount} onPress={onPress} />
+        {pageCount && pageCount > 1 ? (
+          <PaginationComponent pageCount={pageCount} onPress={onPress} />
+        ) : null}
       </Container>
     </div>
   );
