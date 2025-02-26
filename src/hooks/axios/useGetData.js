@@ -5,4 +5,12 @@ const useGetData = async (url, params) => {
   return result.data;
 };
 
-export default useGetData;
+const useGetDataToken = async (url) => {
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
+  const result = await baseUrl.get(url, config);
+  return result.data;
+};
+
+export { useGetData, useGetDataToken };

@@ -6,7 +6,7 @@ import {
 } from "../type";
 
 import { useInsertDataWithImage } from "../../hooks/axios/useInsertData";
-import useGetData from "../../hooks/axios/useGetData";
+import { useGetData } from "../../hooks/axios/useGetData";
 
 // Get All Items From the Brands with Specified Limit [First Page]
 export const getAllBrand = (limit) => async (dispatch) => {

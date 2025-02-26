@@ -5,7 +5,7 @@ import {
 } from "../type";
 
 import { useInsertData } from "../../hooks/axios/useInsertData";
-import useGetData from "../../hooks/axios/useGetData";
+import { useGetData } from "../../hooks/axios/useGetData";
 
 // Add new sub category To The API
 export const createNewSubCategory = (data) => async (dispatch) => {

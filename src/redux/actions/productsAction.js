@@ -9,7 +9,7 @@ import {
 } from "../type";
 
 import { useInsertDataWithImage } from "../../hooks/axios/useInsertData";
-import useGetData from "../../hooks/axios/useGetData";
+import { useGetData } from "../../hooks/axios/useGetData";
 import useDeleteData from "../../hooks/axios/useDeleteData";
 import { useUpdateDataWithImage } from "../../hooks/axios/useUpdateData";
 

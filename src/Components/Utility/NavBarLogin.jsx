@@ -1,11 +1,18 @@
-import { Navbar, Container, Nav, FormControl } from "react-bootstrap";
+import {
+  Navbar,
+  Container,
+  Nav,
+  FormControl,
+  NavDropdown,
+} from "react-bootstrap";
 import logo from "../../Assets/Imgs/logo.png";
 import login from "../../Assets/Imgs/login.png";
 import cart from "../../Assets/Imgs/cart.png";
 import NavbarSearchHook from "../../hooks/search/NavbarSearchHook";
+import { NavBarLoginHook } from "../../hooks/Utility/NavBarLoginHook";
 const NavBarLogin = () => {
   const [searchWord, onChangeSearch] = NavbarSearchHook();
-
+  const [user, logOut] = NavBarLoginHook();
   return (
     <Navbar className="sticky-top" bg="dark" variant="dark" expand="sm">
       <Container>
@@ -25,13 +32,31 @@ const NavBarLogin = () => {
             aria-label="Search"
           />
           <Nav className="me-auto">
-            <Nav.Link
-              className="nav-text d-flex mt-3 justify-content-center"
-              href="/login"
-            >
-              <img src={login} className="login-img" alt="Login_Image" />
-              <p style={{ color: "white" }}>دخول</p>
-            </Nav.Link>
+            {user != "" ? (
+              <NavDropdown title={user.name} id="basic-nav-dropdown">
+                {user.role === "admin" ? (
+                  <NavDropdown.Item href="/admin/allproducts">
+                    لوحة التحكم
+                  </NavDropdown.Item>
+                ) : (
+                  <NavDropdown.Item href="/user/profile">
+                    الصفحه الشخصية
+                  </NavDropdown.Item>
+                )}
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={logOut} href="/">
+                  تسجيل خروج
+                </NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <Nav.Link
+                href="/login"
+                className="nav-text d-flex mt-3 justify-content-center"
+              >
+                <img src={login} className="login-img" alt="sfvs" />
+                <p style={{ color: "white" }}>دخول</p>
+              </Nav.Link>
+            )}
             <Nav.Link
               className="nav-text d-flex mt-3 justify-content-center"
               href="/cart"
