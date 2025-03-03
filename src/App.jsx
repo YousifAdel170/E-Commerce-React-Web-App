@@ -25,6 +25,9 @@ import UserAllAddressesPage from "./Pages/User/UserAllAddressesPage";
 import UserAddAddressPage from "./Pages/User/UserAddAddressPage";
 import UserEditAddressPage from "./Pages/User/UserEditAddressPage";
 import AdminEditProductPage from "./Pages/Admin/AdminEditProductPage";
+import VerifyPasswordPage from "./Pages/Auth/VerifyPasswordPage";
+import ForgotPasswordPage from "./Pages/Auth/ForgotPasswordPage";
+import ResetPasswordPage from "./Pages/Auth/ResetPasswordPage";
 
 function App() {
   return (
@@ -84,6 +87,14 @@ function App() {
           />
 
           <Route path="/user/profile" element={<UserProfilePage />} />
+
+          <Route
+            path="/user/forgot-password"
+            element={<ForgotPasswordPage />}
+          />
+
+          <Route path="/user/verify-code" element={<VerifyPasswordPage />} />
+          <Route path="/user/reset-password" element={<ResetPasswordPage />} />
         </Routes>
       </BrowserRouter>
       <Footer />

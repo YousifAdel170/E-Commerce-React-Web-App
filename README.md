@@ -16,7 +16,7 @@
 
 ### ✔️ E-commerce (Products Search Filteration)
 
-### ⏳ E-commerce (SignUp-Login-Forget-Reset-Verify-Logout)
+### ✔️ E-commerce (SignUp-Login-Forget-Reset-Verify-Logout)
 
 ### ⏳ E-commerce (Review CRUD - Wishlist Products)
 

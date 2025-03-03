@@ -43,6 +43,16 @@ const LoginPage = () => {
               </span>
             </Link>
           </label>
+
+          {/* Forgot Password */}
+          <label className="mx-auto my-4">
+            <Link
+              to="/user/forgot-password"
+              style={{ textDecoration: "none", color: "red" }}
+            >
+              هل نسيت كلمه السر
+            </Link>
+          </label>
         </Col>
       </Row>
       <Link to={"/admin/all-products"}>Admin</Link>

@@ -35,7 +35,7 @@ const NavBarLogin = () => {
             {user != "" ? (
               <NavDropdown title={user.name} id="basic-nav-dropdown">
                 {user.role === "admin" ? (
-                  <NavDropdown.Item href="/admin/allproducts">
+                  <NavDropdown.Item href="/admin/all-products">
                     لوحة التحكم
                   </NavDropdown.Item>
                 ) : (

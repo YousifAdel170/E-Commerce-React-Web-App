@@ -37,9 +37,8 @@ const AdminAddProductHook = () => {
   const [options, setOptions] = useState([]);
 
   const handleChangeComplete = (color) => {
-    setShowColor(!showColor);
-
     setColors([...colors, color.hex]);
+    setShowColor(!showColor);
   };
 
   const removeColor = (color) => {
@@ -157,21 +156,13 @@ const AdminAddProductHook = () => {
     }
 
     // convert base 64 image to file
-    const imgCover = dataURLtoFile(images[0].data_url, Math.random() + ".png"); // Ensure that the image data_url is passed to the function
-
-    if (!imgCover) {
-      console.error("Failed to convert image to file");
-      return;
-    }
+    const imgCover = dataURLtoFile(images[0], Math.random() + ".png");
 
     // Create an array to store the new images after being converted [same size as the 64 base imaage array]
-    // const itemImages = Array.from(Array(Object.keys(images).length).keys()).map(
-    //   (_, index) => {
-    //     return dataURLtoFile(images[index].data_url, Math.random() + ".png");
-    //   }
-    // );
-    const itemImages = images.map((img) =>
-      dataURLtoFile(img.data_url, Math.random() + ".png")
+    const itemImages = Array.from(Array(Object.keys(images).length).keys()).map(
+      (item, index) => {
+        return dataURLtoFile(images[index], Math.random() + ".png");
+      }
     );
 
     const formData = new FormData();
@@ -215,6 +206,7 @@ const AdminAddProductHook = () => {
       setTimeout(() => setLoading(true), 300);
 
       if (product) {
+        console.log(product);
         //   Check if the response status is OK
         if (product.status === 201 || product.status === 200)
           notify("تمت عملية الاضافة بنجاح", "success");

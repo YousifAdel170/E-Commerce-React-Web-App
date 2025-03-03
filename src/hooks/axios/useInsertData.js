@@ -4,16 +4,22 @@ const useInsertDataWithImage = async (url, params) => {
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   };
-
   const result = await baseUrl.post(url, params, config);
 
   return result;
 };
 
 const useInsertData = async (url, params) => {
-  const result = await baseUrl.post(url, params);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  };
+
+  const result = await baseUrl.post(url, params, config);
   return result;
 };
 

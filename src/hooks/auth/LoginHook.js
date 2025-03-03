@@ -49,11 +49,6 @@ const LoginHook = () => {
     if (password === "") {
       notify("من فضلك ادخل  كلمة مرور", ERROR);
       return;
-    } else {
-      if (password.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-        notify("من فضلك ادخل  كلمة مرور قوية", ERROR);
-        return;
-      }
     }
   };
 

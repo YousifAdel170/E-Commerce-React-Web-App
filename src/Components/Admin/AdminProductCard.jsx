@@ -15,13 +15,14 @@ const AdminProductCard = ({ item }) => {
 
   const handleDelete = async () => {
     // Delete The Item From
+    // console.log(item);
     await dispatch(deleteProduct(item._id));
 
     // Close The Modal
     setShow(false);
 
     // Reload the Page
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (
