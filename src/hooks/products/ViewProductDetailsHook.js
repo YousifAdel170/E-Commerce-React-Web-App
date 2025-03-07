@@ -31,7 +31,7 @@ const ViewProductDetailsHook = (productID) => {
   //   To save the details [Text] into array
   const itemProduct = useMemo(() => {
     if (products && products.data) return products.data;
-    return [];
+    else return [];
   }, [products]);
 
   //   Dispatch the category after getting the product [get the category of the product]

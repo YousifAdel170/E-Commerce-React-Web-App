@@ -9,14 +9,17 @@ import { useParams } from "react-router-dom";
 const ProductDetailsPage = () => {
   const { id } = useParams();
 
-  const [, , , , prodouctsLikeSample] = ViewProductDetailsHook(id);
+  const [itemProduct, , , , prodouctsLikeSample] = ViewProductDetailsHook(id);
 
   return (
     <div style={{ minHeight: "670px" }}>
       <CategoryHeader />
       <Container>
         <ProductDetails />
-        <RateContainer />
+        <RateContainer
+          itemRatingAverage={itemProduct.ratingsAverage}
+          itemRatingQty={itemProduct.ratingsQuantity}
+        />
         <ProductCardContainer
           products={prodouctsLikeSample}
           title="منتجات قد تعجبك"

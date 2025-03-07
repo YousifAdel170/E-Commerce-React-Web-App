@@ -5,6 +5,7 @@ import brandReducer from "./brandReducer";
 import subCategoryReducer from "./subCategoryReducer";
 import productsReducer from "./productsReducer";
 import authReducer from "./authReducer";
+import reviewReducer from "./reviewReducer";
 
 export default combineReducers({
   allCategory: categoryReducer,
@@ -12,4 +13,5 @@ export default combineReducers({
   allSubCategory: subCategoryReducer,
   allProduct: productsReducer,
   authReducer: authReducer,
+  reviewReducer: reviewReducer,
 });
