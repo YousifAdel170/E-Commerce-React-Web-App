@@ -18,7 +18,7 @@
 
 ### ✔️ E-commerce (SignUp-Login-Forget-Reset-Verify-Logout)
 
-### ⏳ E-commerce (Review CRUD - Wishlist Products)
+### ✔️ E-commerce (Review CRUD - Wishlist Products)
 
 ### ⏳ E-commerce (Coupons - User Profile)
 

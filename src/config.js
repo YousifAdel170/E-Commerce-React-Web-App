@@ -18,3 +18,6 @@ export const EMAIL_ALREADY_USED = "E-mail already in use";
 export const EGYPT_NUMBERS_ONLY = "accept only egypt phone numbers";
 export const PASSWORD_VALIDATION = "must be at least 6 chars";
 export const LOGIN_WRONG = "Incorrect email or password";
+
+// Base URL of favorite products
+export const FAVORITE_PRODUCTS_BASE_URL = "http://127.0.0.1:8000/products/";

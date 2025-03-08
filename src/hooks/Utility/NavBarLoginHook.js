@@ -8,8 +8,12 @@ export const NavBarLoginHook = () => {
       setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
-  // Function Responsible to Log out [Remove User from Local Storage]
-  const logOut = () => localStorage.removeItem("user");
+  // Function Responsible to Log out [Remove User, token from Local Storage] After Logged in
+  const logOut = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser("");
+  };
 
   return [user, logOut];
 };

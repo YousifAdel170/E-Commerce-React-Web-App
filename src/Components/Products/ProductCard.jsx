@@ -1,10 +1,14 @@
 /* eslint-disable react/prop-types */
 import { Card, Col } from "react-bootstrap";
-import favoff from "../../Assets/Imgs/fav-off.png";
 import rate from "../../Assets/Imgs/rate.png";
 import { Link } from "react-router-dom";
 
-const ProductCard = ({ item }) => {
+import { ToastContainer } from "react-toastify";
+import ProductCardHook from "../../hooks/products/wishList/ProductCardHook";
+
+const ProductCard = ({ item, favoriteProducts }) => {
+  const [handleFav, favImage] = ProductCardHook(item, favoriteProducts);
+
   return (
     <Col xs="12" sm="6" md="4" lg="3" className="d-flex">
       <Card
@@ -25,17 +29,16 @@ const ProductCard = ({ item }) => {
           />
         </Link>
 
-        <div className="d-flex justify-content-end mx-2">
-          <img
-            src={favoff}
-            alt="Favorite Off"
-            className="text-center"
-            style={{ height: "24px", width: "26px" }}
-          />
-        </div>
         <Card.Body>
-          <Card.Title>
+          <Card.Title className="d-flex justify-content-between">
             <div className="card-title">{item.title}</div>
+            <img
+              src={favImage}
+              onClick={handleFav}
+              alt="Favorite Button"
+              className="text-center"
+              style={{ height: "24px", width: "26px", cursor: "pointer" }}
+            />
           </Card.Title>
           <div className="card-text">
             <div className="d-flex justify-content-between">
@@ -57,6 +60,7 @@ const ProductCard = ({ item }) => {
           </div>
         </Card.Body>
       </Card>
+      <ToastContainer />
     </Col>
   );
 };
