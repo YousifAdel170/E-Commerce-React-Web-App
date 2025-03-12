@@ -28,6 +28,8 @@ import AdminEditProductPage from "./Pages/Admin/AdminEditProductPage";
 import VerifyPasswordPage from "./Pages/Auth/VerifyPasswordPage";
 import ForgotPasswordPage from "./Pages/Auth/ForgotPasswordPage";
 import ResetPasswordPage from "./Pages/Auth/ResetPasswordPage";
+import AdminAddCouponPage from "./Pages/Admin/AdminAddCouponPage";
+import AdminEditCouponPage from "./Pages/Admin/AdminEditCouponPage";
 
 function App() {
   return (
@@ -74,6 +76,12 @@ function App() {
           <Route
             path="/user/favorite-products"
             element={<UserFavoriteProducts />}
+          />
+
+          <Route path="/admin/add-coupon" element={<AdminAddCouponPage />} />
+          <Route
+            path="/admin/edit-coupon/:id"
+            element={<AdminEditCouponPage />}
           />
 
           <Route path="/user/addresses" element={<UserAllAddressesPage />} />
