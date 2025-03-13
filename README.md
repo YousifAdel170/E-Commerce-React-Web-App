@@ -20,7 +20,7 @@
 
 ### ✔️ E-commerce (Review CRUD - Wishlist Products)
 
-### ⏳ E-commerce (Coupons - User Profile)
+### ✔️ E-commerce (Coupons - User Profile)
 
 ### ⏳ E-commerce (Shopping Cart)
 

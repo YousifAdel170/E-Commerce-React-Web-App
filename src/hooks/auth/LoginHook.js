@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   EMAIL_TYPE,
   ERROR,
-  LOGIN_WRONG,
+  // LOGIN_WRONG,
   PASSWORD_TYPE,
   SUCCESS,
 } from "../../config";
@@ -88,7 +88,7 @@ const LoginHook = () => {
           localStorage.setItem("user", JSON.stringify(result.data.data));
 
           // Notification For Success
-          notify("تم تسجيل الحساب بنجاح", SUCCESS);
+          notify("تم تسجيل الدخول بنجاح", SUCCESS);
 
           // Navigate to Login Page
           setTimeout(() => (window.location.href = "/"), 1500);
@@ -96,14 +96,15 @@ const LoginHook = () => {
           // Remove the User From the Local Storage [require login again]
           localStorage.removeItem("token");
           localStorage.removeItem("user");
+          notify("كلمة السر او الايميل خطا", ERROR);
         }
 
         // Check If the user Entered Wrong Data
-        if (result.data && result.data.message === LOGIN_WRONG) {
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
-          notify("كلمة السر او الايميل خطا", ERROR);
-        }
+        // if (result.data && result.data.message === LOGIN_WRONG) {
+        // localStorage.removeItem("token");
+        // localStorage.removeItem("user");
+        // notify("كلمة السر او الايميل خطا", ERROR);
+        // }
 
         // Reset The Loading
         setLoading(true);

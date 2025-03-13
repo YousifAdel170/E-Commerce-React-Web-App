@@ -1,10 +1,71 @@
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, Modal, Row } from "react-bootstrap";
 
 import deleteIcon from "../../assets/Imgs/delete.png";
+import UserProfileHook from "../../hooks/user/UserProfileHook";
+import { ToastContainer } from "react-toastify";
 
 const UserProfile = () => {
+  const [
+    user,
+    show,
+    handleClose,
+    handleShow,
+    handleSubmit,
+    name,
+    email,
+    phone,
+    onChangeName,
+    onChangeEmail,
+    onChangePhone,
+    changePasswordSubmit,
+    currentPassword,
+    password,
+    passwordConfirm,
+    onChangeCurrentPassword,
+    onChangePassword,
+    onChangePasswordConfirm,
+  ] = UserProfileHook();
   return (
     <div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title>
+            <div className="font">تعديل البيانات الشخصية</div>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <input
+            value={name}
+            onChange={onChangeName}
+            type="text"
+            className="input-form font d-block mt-3 px-3"
+            placeholder="اسم المستخدم"
+          />
+          <input
+            value={email}
+            onChange={onChangeEmail}
+            type="email"
+            className="input-form font d-block mt-3 px-3"
+            placeholder="الايميل"
+          />
+          <input
+            value={phone}
+            onChange={onChangePhone}
+            type="phone"
+            className="input-form font d-block mt-3 px-3"
+            placeholder="الهاتف"
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button className="font" variant="success" onClick={handleClose}>
+            تراجع
+          </Button>
+          <Button className="font" variant="dark" onClick={handleSubmit}>
+            حفظ التعديل
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       {/* Title of the User Profile */}
       <div className="admin-content-text">الصفحه الشخصية</div>
 
@@ -14,12 +75,12 @@ const UserProfile = () => {
           {/* Name  */}
           <Col xs="6" className="d-flex">
             <div className="p-2">الاسم:</div>
-            <div className="p-1 item-delete-edit">احمد عبداللة</div>
+            <div className="p-1 item-delete-edit">{user.name}</div>
           </Col>
 
           {/* Edit & Delete */}
           <Col xs="6" className="d-flex justify-content-end">
-            <div className="d-flex mx-2">
+            <div onClick={handleShow} className="d-flex mx-2">
               <img
                 alt=""
                 className="ms-1 mt-2"
@@ -36,7 +97,7 @@ const UserProfile = () => {
         <Row className="">
           <Col xs="12" className="d-flex">
             <div className="p-2">رقم الهاتف:</div>
-            <div className="p-1 item-delete-edit">0122314324</div>
+            <div className="p-1 item-delete-edit">{user.phone}</div>
           </Col>
         </Row>
 
@@ -44,7 +105,7 @@ const UserProfile = () => {
         <Row className="">
           <Col xs="12" className="d-flex">
             <div className="p-2">الايميل:</div>
-            <div className="p-1 item-delete-edit">ahmed@gmail.com</div>
+            <div className="p-1 item-delete-edit">{user.email}</div>
           </Col>
         </Row>
 
@@ -56,13 +117,24 @@ const UserProfile = () => {
 
             <input
               type="password"
+              value={currentPassword}
+              onChange={onChangeCurrentPassword}
               className="input-form d-block mt-1 px-3"
               placeholder="ادخل كلمة المرور القديمة"
             />
             <input
               type="password"
+              value={password}
+              onChange={onChangePassword}
               className="input-form d-block mt-3 px-3"
               placeholder="ادخل كلمة المرور الجديده"
+            />
+            <input
+              type="password"
+              value={passwordConfirm}
+              onChange={onChangePasswordConfirm}
+              className="input-form d-block mt-3 px-3"
+              placeholder="تاكيد كلمة المرور الجديدة"
             />
           </Col>
         </Row>
@@ -70,10 +142,16 @@ const UserProfile = () => {
         {/* Submit Button to Save the Password */}
         <Row>
           <Col xs="10" sm="8" md="6" className="d-flex justify-content-end ">
-            <button className="btn-save d-inline mt-2 ">حفظ كلمة السر</button>
+            <button
+              onClick={changePasswordSubmit}
+              className="btn-save d-inline mt-2 "
+            >
+              حفظ كلمة السر
+            </button>
           </Col>
         </Row>
       </div>
+      <ToastContainer />
     </div>
   );
 };

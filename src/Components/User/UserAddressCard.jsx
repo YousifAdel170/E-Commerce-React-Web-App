@@ -1,32 +1,61 @@
-import { Col, Row } from "react-bootstrap";
+/* eslint-disable react/prop-types */
+import { Button, Col, Modal, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import deleteIcon from "../../assets/Imgs/delete.png";
+import UserDeleteAddressHook from "../../hooks/user/UserDeleteAddressHook";
 
-const UserAddressCard = () => {
+const UserAddressCard = ({ address }) => {
+  const [show, handleClose, handleShow, handleDelete] = UserDeleteAddressHook(
+    address._id
+  );
   return (
     <div className="user-address-card my-3 px-2">
+      {/* Modal To confirm the delete Operation */}
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title>
+            {" "}
+            <div className="font">تاكيد الحذف</div>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="font">هل انتا متاكد من عملية الحذف العنوان</div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button className="font" variant="success" onClick={handleClose}>
+            تراجع
+          </Button>
+          <Button className="font" variant="dark" onClick={handleDelete}>
+            حذف
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <Row className="d-flex justify-content-between">
         {/* Home */}
-        <Col xs="1">
-          <div className="p-2">المنزل</div>
+        <Col xs="6">
+          <div className="p-2">{address.alias}</div>
         </Col>
 
-        <Col xs="4" className="d-flex d-flex justify-content-end">
+        <Col xs="6" className="d-flex d-flex justify-content-end">
           <div className="d-flex p-2">
             <div className="d-flex mx-2">
               {/* Delete Address */}
               <img
                 alt=""
-                className="ms-1 mt-2"
+                className="ms-3 mt-2"
                 src={deleteIcon}
+                onClick={handleShow}
+                style={{ cursor: "pointer" }}
+                title="حذف"
                 height="17px"
                 width="15px"
               />
 
               {/* Edit Address */}
               <Link
-                to="/user/addresses/edit-address"
+                to={`/user/addresses/edit-address/${address._id}`}
                 style={{ textDecoration: "none" }}
               >
                 <p className="item-delete-edit"> تعديل</p>
@@ -46,7 +75,7 @@ const UserAddressCard = () => {
               fontSize: "14px",
             }}
           >
-            القاهرة مدينه نصر شارع التسعين عماره ١٤
+            {address.details}
           </div>
         </Col>
       </Row>
@@ -74,7 +103,7 @@ const UserAddressCard = () => {
             }}
             className="mx-2"
           >
-            0021313432423
+            {address.phone}
           </div>
         </Col>
       </Row>

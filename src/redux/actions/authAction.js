@@ -9,6 +9,8 @@ import {
   FORGOT_PASSWORD,
   VERIFY_PASSWORD,
   RESET_PASSWORD,
+  UPDATE_USER_PROFILE,
+  UPDATE_USER_PASSWORD,
 } from "../type";
 
 // Registeration Action [ Create A New User ]
@@ -102,6 +104,43 @@ export const resetPassword = (data) => async (dispatch) => {
     const response = await useUpdateData(`/api/v1/auth/resetPassword`, data);
     dispatch({
       type: RESET_PASSWORD,
+      payload: response,
+      loading: true,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: e.response,
+    });
+  }
+};
+
+// Update The User Data
+export const updateUserProfile = (body) => async (dispatch) => {
+  try {
+    const response = await useUpdateData(`/api/v1/users/updateMe`, body);
+    dispatch({
+      type: UPDATE_USER_PROFILE,
+      payload: response,
+      loading: true,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: e.response,
+    });
+  }
+};
+
+// Update The User Password
+export const updateUserPassword = (body) => async (dispatch) => {
+  try {
+    const response = await useUpdateData(
+      `/api/v1/users/changeMyPassword`,
+      body
+    );
+    dispatch({
+      type: UPDATE_USER_PASSWORD,
       payload: response,
       loading: true,
     });

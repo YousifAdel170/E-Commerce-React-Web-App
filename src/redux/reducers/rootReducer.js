@@ -8,14 +8,17 @@ import authReducer from "./authReducer";
 import reviewReducer from "./reviewReducer";
 import wishListReducer from "./wishListReducer";
 import couponReducer from "./couponReducer";
+import userAddressReducer from "./userAddressReducer";
 
+// Combine all reducers into a single root reducer
 export default combineReducers({
-  allCategory: categoryReducer,
-  allBrand: brandReducer,
-  allSubCategory: subCategoryReducer,
-  allProduct: productsReducer,
-  authReducer: authReducer,
-  reviewReducer: reviewReducer,
-  wishListReducer: wishListReducer,
-  couponReducer: couponReducer,
+  allCategory: categoryReducer, // Reducer for categories
+  allBrand: brandReducer, // Reducer for brands
+  allSubCategory: subCategoryReducer, // Reducer for subcategories
+  allProduct: productsReducer, // Reducer for products
+  authReducer: authReducer, // Reducer for authentication
+  reviewReducer: reviewReducer, // Reducer for reviews
+  wishListReducer: wishListReducer, // Reducer for wishlist
+  couponReducer: couponReducer, // Reducer for coupons
+  userAddressReducer: userAddressReducer, // Reducer for user addresses
 });

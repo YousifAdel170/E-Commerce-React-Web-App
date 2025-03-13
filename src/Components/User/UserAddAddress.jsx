@@ -1,6 +1,17 @@
 import { Col, Row } from "react-bootstrap";
+import UserAddAddressHook from "../../hooks/user/UserAddAddressHook";
+import { ToastContainer } from "react-toastify";
 
 const UserAddAddress = () => {
+  const [
+    alias,
+    details,
+    phone,
+    onChangeAlias,
+    onChangeDetails,
+    onChangePhone,
+    handleSubmit,
+  ] = UserAddAddressHook();
   return (
     <div>
       {/* Address Data */}
@@ -10,6 +21,8 @@ const UserAddAddress = () => {
         <Col sm="8">
           {/* Address Title */}
           <input
+            value={alias}
+            onChange={onChangeAlias}
             type="text"
             className="input-form d-block mt-3 px-3"
             placeholder="تسمية العنوان مثلا(المنزل - العمل)"
@@ -17,6 +30,8 @@ const UserAddAddress = () => {
 
           {/* Address Description */}
           <textarea
+            value={details}
+            onChange={onChangeDetails}
             className="input-form-area p-2 mt-3"
             rows="4"
             cols="50"
@@ -25,6 +40,8 @@ const UserAddAddress = () => {
 
           {/* Phone Number */}
           <input
+            value={phone}
+            onChange={onChangePhone}
             type="text"
             className="input-form d-block mt-3 px-3"
             placeholder="رقم الهاتف"
@@ -35,9 +52,12 @@ const UserAddAddress = () => {
       {/* Button To add address */}
       <Row>
         <Col sm="8" className="d-flex justify-content-end ">
-          <button className="btn-save d-inline mt-2 ">اضافة عنوان</button>
+          <button onClick={handleSubmit} className="btn-save d-inline mt-2 ">
+            اضافة عنوان
+          </button>
         </Col>
       </Row>
+      <ToastContainer />
     </div>
   );
 };
