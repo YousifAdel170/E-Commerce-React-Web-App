@@ -1,7 +1,15 @@
 /* eslint-disable react/prop-types */
 import { Col, Row } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import AddToCartHook from "../../hooks/cart/AddToCartHook";
 
 const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
+  const { id } = useParams();
+
+  const [colorClicked, indexColorClicked, handleAddToCart] = AddToCartHook(
+    id,
+    itemProduct
+  );
   return (
     <div style={{ marginRight: "10%" }}>
       <Row className="mt-2">
@@ -32,8 +40,13 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
             ? itemProduct.availableColors.map((color, index) => (
                 <div
                   key={index}
-                  className="color ms-2 border"
-                  style={{ backgroundColor: color }}
+                  onClick={() => colorClicked(color, index)}
+                  className="color ms-2"
+                  style={{
+                    backgroundColor: color,
+                    border:
+                      indexColorClicked === index ? "3px solid black" : "none",
+                  }}
                 ></div>
               ))
             : null}
@@ -57,7 +70,10 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
           <div className="product-price d-inline px-3 py-3 border">
             {itemProduct.price} جنية
           </div>
-          <div className="product-cart-add px-3 py-3 d-inline mx-3">
+          <div
+            onClick={handleAddToCart}
+            className="product-cart-add px-3 py-3 d-inline mx-3"
+          >
             اضف للعربة
           </div>
         </Col>

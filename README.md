@@ -22,7 +22,7 @@
 
 ### ✔️ E-commerce (Coupons - User Profile)
 
-### ⏳ E-commerce (Shopping Cart)
+### ✔️ E-commerce (Shopping Cart)
 
 ### ⏳ Protected Route (Permission - Inhancment)
 

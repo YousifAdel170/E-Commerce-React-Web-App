@@ -1,0 +1,44 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
+import { updateCartSpecificItem } from "../../redux/actions/cartAction";
+import { useDispatch } from "react-redux";
+import notify from "../Utility/useNotifyHook";
+import { SUCCESS } from "../../config";
+
+const UpdateCartHook = (item) => {
+  const dispatch = useDispatch();
+  const [itemCount, setItemCount] = useState(0);
+
+  const onChangeCount = (e) => setItemCount(e.target.value);
+
+  useEffect(() => {
+    if (item) setItemCount(item.count);
+  }, []);
+
+  const [showSpecificUpdate, setShowSpecificUpdate] = useState(false);
+  const handleCloseSpecificUpdate = () => setShowSpecificUpdate(false);
+  const handleShowSpecificUpdate = () => setShowSpecificUpdate(true);
+
+  const handleUpdateSpecificItem = async () => {
+    await dispatch(
+      updateCartSpecificItem(item._id, {
+        count: itemCount,
+      })
+    );
+
+    setShowSpecificUpdate(false);
+    notify("تم تعديل المنتج بنجاح", SUCCESS);
+    setTimeout(() => window.location.reload(false), 1000);
+  };
+
+  return [
+    itemCount,
+    onChangeCount,
+    showSpecificUpdate,
+    handleCloseSpecificUpdate,
+    handleShowSpecificUpdate,
+    handleUpdateSpecificItem,
+  ];
+};
+
+export default UpdateCartHook;
