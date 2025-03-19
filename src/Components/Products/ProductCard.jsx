@@ -53,7 +53,16 @@ const ProductCard = ({ item, favoriteProducts }) => {
                 <div className="card-rate mx-2">{item.ratingsQuantity}</div>
               </div>
               <div className="d-flex">
-                <div className="card-price">{item.price}</div>
+                <div className="card-price">
+                  {item.priceAfterDiscount >= 1 ? (
+                    <>
+                      {item.priceAfterDiscount}
+                      <del className="mx-2 fs-6">{item.price}</del>
+                    </>
+                  ) : (
+                    item.price
+                  )}
+                </div>
                 <div className="card-currency mx-1">جنيه</div>
               </div>
             </div>

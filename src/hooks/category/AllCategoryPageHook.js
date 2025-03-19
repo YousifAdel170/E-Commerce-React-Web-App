@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllCategory,
@@ -14,15 +14,29 @@ const AllCategoryPageHook = () => {
 
   // 2. Fetch The Data From the First Page When the Page Loaded
   useEffect(() => {
-    dispatch(getAllCategory(2));
+    const getData = async () => {
+      await dispatch(getAllCategory(7));
+    };
+
+    getData();
   }, [dispatch]);
 
-  // 3. Intialize The page counter to zero
-  let pageCount = 0;
+  const pageCount = useMemo(() => {
+    if (result && result.category && result.category.paginationResult)
+      return result.category.paginationResult.numberOfPages;
+    else return 0;
+  }, [result]);
 
-  // 4. Update Page Counter: Check if there pages then update the page counter
-  if (result.category.paginationResult)
-    pageCount = result.category.paginationResult.numberOfPages;
+  const categories = useMemo(() => {
+    if (result && result.category && result.category.data)
+      return result.category.data;
+    else return [];
+  }, [result]);
+
+  const loading = useMemo(() => {
+    if (result && result.loading) return result.loading;
+    else return false;
+  }, [result]);
 
   // 5. Fetch the Data from the Api That in the Selected Page
   const getSelectedPageNumber = (selectedPage) => {
@@ -30,7 +44,7 @@ const AllCategoryPageHook = () => {
   };
 
   // 6. Return the Data To The JSX code
-  return [result, pageCount, getSelectedPageNumber];
+  return [categories, loading, pageCount, getSelectedPageNumber];
 };
 
 export default AllCategoryPageHook;

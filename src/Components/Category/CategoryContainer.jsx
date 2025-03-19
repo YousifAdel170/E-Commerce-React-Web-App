@@ -2,7 +2,7 @@
 import { Row, Spinner } from "react-bootstrap";
 import CartegoryCard from "./CartegoryCard";
 
-const CategoryContainer = ({ result }) => {
+const CategoryContainer = ({ categories, loading }) => {
   const colors = [
     "#ffd3e8",
     "#f4dba5",
@@ -14,9 +14,9 @@ const CategoryContainer = ({ result }) => {
 
   return (
     <Row className="my-2 d-flex">
-      {!result.loading ? (
-        result.category.data.length > 0 ? (
-          result.category.data.map((item) => (
+      {!loading ? (
+        categories.length > 0 ? (
+          categories.map((item) => (
             <CartegoryCard
               key={item._id}
               title={item.name}

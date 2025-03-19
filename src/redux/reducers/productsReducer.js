@@ -1,6 +1,8 @@
 import {
   CREATE_NEW_PRODUCT,
   GET_ALL_PRODUCTS,
+  GET_ALL_PRODUCTS_BY_CATEGORY,
+  GET_ALL_PRODUCTS_BY_BRAND,
   GET_SPECIFIC_PRODUCT,
   GET_PODUCTS_LIKE,
   GET_ERROR,
@@ -11,6 +13,8 @@ import {
 const initialState = {
   products: [],
   viewProducts: [],
+  viewProductsByCategory: [],
+  viewProductsByBrand: [],
   viewSpecificProduct: [],
   viewProductsLike: [],
   updatedProduct: [],
@@ -22,6 +26,12 @@ const productsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_PRODUCTS:
       return { ...state, viewProducts: action.payload, loading: false };
+
+    case GET_ALL_PRODUCTS_BY_CATEGORY:
+      return { viewProductsByCategory: action.payload, loading: false };
+
+    case GET_ALL_PRODUCTS_BY_BRAND:
+      return { viewProductsByBrand: action.payload, loading: false };
 
     case GET_SPECIFIC_PRODUCT:
       return { viewSpecificProduct: action.payload, loading: false };

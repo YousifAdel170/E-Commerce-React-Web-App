@@ -6,7 +6,8 @@ import PaginationComponent from "../../Components/Utility/PaginationComponent";
 import AllCategoryPageHook from "../../hooks/category/AllCategoryPageHook";
 
 const AllCategoryPage = () => {
-  const [result, pageCount, getSelectedPageNumber] = AllCategoryPageHook();
+  const [categories, loading, pageCount, getSelectedPageNumber] =
+    AllCategoryPageHook();
 
   return (
     <Container>
@@ -14,7 +15,7 @@ const AllCategoryPage = () => {
       <SubTitle title={"التصنيفات"} />
 
       {/* Container of Items */}
-      <CategoryContainer result={result} />
+      <CategoryContainer categories={categories} loading={loading} />
 
       {/* Pagination Component */}
       {pageCount > 1 ? (

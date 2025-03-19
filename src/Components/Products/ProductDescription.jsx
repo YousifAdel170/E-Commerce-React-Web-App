@@ -50,6 +50,10 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
                 ></div>
               ))
             : null}
+
+          <div className="cat-text d-flex align-items-center">
+            الكمية المتاحة : {itemProduct.quantity}{" "}
+          </div>
         </Col>
       </Row>
 
@@ -68,7 +72,15 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
       <Row className="mt-4">
         <Col md="12">
           <div className="product-price d-inline px-3 py-3 border">
-            {itemProduct.price} جنية
+            {itemProduct.priceAfterDiscount ? (
+              <>
+                {itemProduct.priceAfterDiscount}
+                <del className="mx-2">{itemProduct.price}</del>
+              </>
+            ) : (
+              itemProduct.price
+            )}{" "}
+            جنية
           </div>
           <div
             onClick={handleAddToCart}

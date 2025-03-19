@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllBrand,
@@ -17,20 +17,29 @@ const AllBrandPageHook = () => {
     dispatch(getAllBrand(2));
   }, [dispatch]);
 
-  // 3. Intialize The page counter to zero
-  let pageCount = 0;
-
-  // 4. Update Page Counter: Check if there pages then update the page counter
-  if (result.brand.paginationResult)
-    pageCount = result.brand.paginationResult.numberOfPages;
+  const pageCount = useMemo(() => {
+    if (result && result.brand && result.brand.paginationResult)
+      return result.brand.paginationResult.numberOfPages;
+    else return 0;
+  }, [result]);
 
   // 5. Fetch the Data from the Api That in the Selected Page
   const getSelectedPageNumber = (selectedPage) => {
     dispatch(getAllBrandInSelectedPage(2, selectedPage));
   };
 
+  const brands = useMemo(() => {
+    if (result && result.brand && result.brand.data) return result.brand.data;
+    else return [];
+  }, [result]);
+
+  const loading = useMemo(() => {
+    if (result && result.loading) return result.loading;
+    else return false;
+  }, [result]);
+
   // 6. Return the Data To The JSX code
-  return [result, pageCount, getSelectedPageNumber];
+  return [brands, loading, pageCount, getSelectedPageNumber];
 };
 
 export default AllBrandPageHook;

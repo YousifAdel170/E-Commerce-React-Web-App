@@ -6,7 +6,8 @@ import BrandContainer from "../../Components/Brand/BrandContainer";
 import AllBrandPageHook from "../../hooks/brand/AllBrandPageHook";
 
 const AllBrandPage = () => {
-  const [result, pageCount, getSelectedPageNumber] = AllBrandPageHook();
+  const [brands, loading, pageCount, getSelectedPageNumber] =
+    AllBrandPageHook();
 
   return (
     <Container>
@@ -14,7 +15,7 @@ const AllBrandPage = () => {
       <SubTitle title="اشهر الماركات" />
 
       {/* Container of Items */}
-      <BrandContainer result={result} />
+      <BrandContainer brands={brands} loading={loading} />
 
       {/* Pagination Component */}
       {pageCount > 1 ? (

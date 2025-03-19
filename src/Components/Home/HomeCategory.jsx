@@ -22,6 +22,7 @@ const HomeCategory = () => {
               .slice(0, 5)
               .map((item, index) => (
                 <CartegoryCard
+                  id={item._id}
                   key={index}
                   title={item.name}
                   img={item.image}

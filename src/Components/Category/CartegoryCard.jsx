@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-const CartegoryCard = ({ background, img, title }) => {
+const CartegoryCard = ({ background, img, title, id }) => {
   return (
     <Col
       xs="6"
@@ -14,8 +15,13 @@ const CartegoryCard = ({ background, img, title }) => {
         className="all-card mb-3"
         style={{ backgroundColor: `${background}` }}
       >
-        <img src={img} className="categoty-card-img" alt="card-image" />
-        <p className="categoty-card-text my-2">{title}</p>
+        <Link
+          to={`/products/category/${id}`}
+          style={{ textDecoration: "none" }}
+        >
+          <img src={img} className="categoty-card-img" alt="card-image" />
+          <p className="categoty-card-text my-2">{title}</p>
+        </Link>
       </div>
     </Col>
   );

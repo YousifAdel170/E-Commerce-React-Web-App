@@ -2,13 +2,13 @@
 import { Row, Spinner } from "react-bootstrap";
 import BrandCard from "./BrandCard";
 
-const BrandContainer = ({ result }) => {
+const BrandContainer = ({ brands, loading }) => {
   return (
     <Row className="my-2 d-flex justify-content-between">
-      {!result.loading ? (
-        result.brand.data.length > 0 ? (
-          result.brand.data.map((item) => (
-            <BrandCard key={item._id} img={item.image} />
+      {!loading ? (
+        brands.length > 0 ? (
+          brands.map((item) => (
+            <BrandCard key={item._id} id={item._id} img={item.image} />
           ))
         ) : (
           <h4>لا يوجد ماركات</h4>

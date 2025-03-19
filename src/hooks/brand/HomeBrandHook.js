@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBrand } from "../../redux/actions/brandAction";
 
@@ -24,8 +24,18 @@ const HomeBrandHook = () => {
     "#ffd3e8",
   ];
 
+  const brands = useMemo(() => {
+    if (result && result.brand && result.brand.data) return result.brand.data;
+    else return [];
+  }, [result]);
+
+  const loading = useMemo(() => {
+    if (result && result.loading) return result.loading;
+    else return false;
+  }, [result]);
+
   // 4. Return the Data To The JSX code
-  return [result, colors];
+  return [brands, loading, colors];
 };
 
 export default HomeBrandHook;

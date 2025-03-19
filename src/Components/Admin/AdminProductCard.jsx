@@ -80,8 +80,17 @@ const AdminProductCard = ({ item }) => {
               <div className="d-flex justify-content-between">
                 <div className="card-rate">{item.ratingsQuantity}</div>
                 <div className="d-flex">
+                  <div className="card-price">
+                    {item.priceAfterDiscount ? (
+                      <>
+                        {item.priceAfterDiscount}
+                        <del className="mx-2 fs-6">{item.price}</del>
+                      </>
+                    ) : (
+                      item.price
+                    )}{" "}
+                  </div>
                   <div className="card-currency mx-1">جنيه</div>
-                  <div className="card-price">{item.price}</div>
                 </div>
               </div>
             </Card.Text>

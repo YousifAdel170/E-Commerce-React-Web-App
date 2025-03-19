@@ -170,6 +170,7 @@ const AdminAddProductHook = () => {
     formData.append("description", productDescription);
     formData.append("quantity", qty);
     formData.append("price", priceBefore);
+    formData.append("priceAfterDiscount", priceAfter);
     formData.append("imageCover", imgCover);
     formData.append("category", categoryID);
     formData.append("brand", brandID);

@@ -24,7 +24,7 @@
 
 ### ✔️ E-commerce (Shopping Cart)
 
-### ⏳ Protected Route (Permission - Inhancment)
+### ✔️ Protected Route (Permission - Inhancment)
 
 ### ⏳ E-commerce (Complete Cash Order)
 

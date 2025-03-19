@@ -5,6 +5,8 @@ import {
   GET_PODUCTS_LIKE,
   DELETE_PRODUCT,
   UPDATE_PRODUCT,
+  GET_ALL_PRODUCTS_BY_CATEGORY,
+  GET_ALL_PRODUCTS_BY_BRAND,
   GET_ERROR,
 } from "../type";
 
@@ -69,6 +71,46 @@ export const getAllProducts = (limit) => async (dispatch) => {
     });
   }
 };
+
+// Get All Items From the Products with Specified Category
+export const getAllProductsByCategory =
+  (limit, page, categoryID) => async (dispatch) => {
+    try {
+      const result = await useGetData(
+        `/api/v1/products?limit=${limit}&category=${categoryID}&page=${page}`
+      );
+      dispatch({
+        type: GET_ALL_PRODUCTS_BY_CATEGORY,
+        payload: result,
+        loading: true,
+      });
+    } catch (e) {
+      dispatch({
+        type: GET_ERROR,
+        payload: "Error " + e,
+      });
+    }
+  };
+
+// Get All Items From the Products with Specified Brand
+export const getAllProductsByBrand =
+  (limit, page, brandID) => async (dispatch) => {
+    try {
+      const result = await useGetData(
+        `/api/v1/products?limit=${limit}&brand=${brandID}&page=${page}`
+      );
+      dispatch({
+        type: GET_ALL_PRODUCTS_BY_BRAND,
+        payload: result,
+        loading: true,
+      });
+    } catch (e) {
+      dispatch({
+        type: GET_ERROR,
+        payload: "Error " + e,
+      });
+    }
+  };
 
 // Get All Items From the Products with Specified Limit [Specified Page]
 export const getAllProductsInSelectedPage =

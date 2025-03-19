@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Card, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-const BrandCard = ({ img }) => {
+const BrandCard = ({ img, id }) => {
   return (
     <Col
       xs="6"
@@ -20,7 +21,9 @@ const BrandCard = ({ img }) => {
         }}
         className="my-1"
       >
-        <Card.Img style={{ height: "151px", width: "100%" }} src={img} />
+        <Link to={`/products/brands/${id}`} style={{ textDecoration: "none" }}>
+          <Card.Img style={{ height: "151px", width: "100%" }} src={img} />
+        </Link>
       </Card>
     </Col>
   );
