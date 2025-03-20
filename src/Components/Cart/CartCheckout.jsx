@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { Button, Col, Modal, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import DeleteCartHook from "../../hooks/cart/DeleteCartHook";
 import { ToastContainer } from "react-toastify";
 import ApplyCouponHook from "../../hooks/cart/ApplyCouponHook";
@@ -9,17 +8,20 @@ import { useEffect } from "react";
 
 const CartCheckout = ({
   totalCartPrice,
+  cartItems,
   couponNameRes,
   totalCartPriceAfterDisc,
 }) => {
   const [showAll, handleCloseAll, handleShowAll, handleDeleteCart] =
     DeleteCartHook();
 
-  const [couponName, onChangeCoupon, handleSubmitCoupon] = ApplyCouponHook();
+  const [couponName, onChangeCoupon, handleSubmitCoupon, handleCheckout] =
+    ApplyCouponHook(cartItems);
 
   useEffect(() => {
     if (couponNameRes) onChangeCoupon(couponNameRes);
   }, [couponNameRes]);
+
   return (
     <Row className="my-1 d-flex justify-content-center cart-checkout py-3">
       {/* Modal For Clear All Items From Cart */}
@@ -72,11 +74,12 @@ const CartCheckout = ({
         </div>
 
         <div>
-          <Link to={"/order/pay-method"} style={{ textDecoration: "none" }}>
-            <button className="product-cart-add w-100 px-2">
-              اتمام الشراء
-            </button>
-          </Link>
+          <button
+            className="product-cart-add w-100 px-2"
+            onClick={handleCheckout}
+          >
+            اتمام الشراء
+          </button>
 
           <button
             className="product-cart-add w-100 px-2 my-1"

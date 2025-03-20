@@ -55,10 +55,6 @@ const LoginPage = () => {
           </label>
         </Col>
       </Row>
-      <Link to={"/admin/all-products"}>Admin</Link>
-      <Link to={"/user/all-orders"} style={{ display: "block" }}>
-        User
-      </Link>
 
       {isPress && loading ? (
         <Spinner animation="border" role="status"></Spinner>

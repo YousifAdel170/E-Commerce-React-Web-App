@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { updateCartSpecificItem } from "../../redux/actions/cartAction";
 import { useDispatch } from "react-redux";
 import notify from "../Utility/useNotifyHook";
-import { SUCCESS } from "../../config";
+import { SUCCESS, WARNING } from "../../config";
+import ViewProductDetailsHook from "../products/ViewProductDetailsHook";
 
 const UpdateCartHook = (item) => {
   const dispatch = useDispatch();
   const [itemCount, setItemCount] = useState(0);
+
+  const [itemProduct] = ViewProductDetailsHook(item.product.id);
 
   const onChangeCount = (e) => setItemCount(e.target.value);
 
@@ -20,6 +23,11 @@ const UpdateCartHook = (item) => {
   const handleShowSpecificUpdate = () => setShowSpecificUpdate(true);
 
   const handleUpdateSpecificItem = async () => {
+    if (itemProduct.quantity < itemCount) {
+      notify(`متوفر ${itemProduct.quantity} منتجات فقط`, WARNING);
+      return;
+    }
+
     await dispatch(
       updateCartSpecificItem(item._id, {
         count: itemCount,

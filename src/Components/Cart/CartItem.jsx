@@ -127,7 +127,7 @@ const CartItem = ({ item }) => {
           <Col sm="12" className="mt-1">
             <div className="cat-text d-inline">الماركة :</div>
             <div className="barnd-text d-inline mx-1">
-              {item.product.brand.name || ""}
+              {item.product.brand ? item.product.brand.name : ""}
             </div>
           </Col>
         </Row>

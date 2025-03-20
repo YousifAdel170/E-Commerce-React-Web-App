@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 const AddToCartHook = (id, itemProduct) => {
   const dispatch = useDispatch();
 
+  console.log(itemProduct._id);
+
   const [indexColorClicked, setIndexColorClicked] = useState("");
   const [colorClickedHex, setColorClickedHex] = useState("");
   const [loading, setLoading] = useState(true);
@@ -27,6 +29,11 @@ const AddToCartHook = (id, itemProduct) => {
 
   //   Function Responsible to add new item into the cart
   const handleAddToCart = async () => {
+    if (itemProduct.quantity === 0) {
+      notify("لا يوجد من هذا المنتج حاليا", WARNING);
+      return;
+    }
+
     // Check if there colors so need to be checked before making the request
     if (itemAvailableColors.length) {
       if (colorClickedHex === "") {

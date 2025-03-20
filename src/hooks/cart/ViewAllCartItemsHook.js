@@ -10,6 +10,7 @@ const ViewAllCartItemsHook = () => {
   const [numberOfItems, setNumberOfItems] = useState(0);
   const [cartItems, setCartItems] = useState([]);
   const [totalCartPrice, setTotalCartPrice] = useState(0);
+  const [cartID, setCartID] = useState("0");
 
   const [couponName, setCouponName] = useState("");
   const [totalCartPriceAfterDisc, setTotalCartPriceAfterDisc] = useState(0);
@@ -32,6 +33,7 @@ const ViewAllCartItemsHook = () => {
         setNumberOfItems(result.numOfCartItems);
         setCartItems(result.data.products);
         setTotalCartPrice(result.data.totalCartPrice);
+        setCartID(result.data._id);
 
         if (result.data.coupon) setCouponName(result.data.coupon);
         else setCouponName("");
@@ -45,6 +47,7 @@ const ViewAllCartItemsHook = () => {
         setNumberOfItems(0);
         setCartItems([]);
         setTotalCartPrice(0);
+        setCartID("0");
       }
     }
   }, [loading]);
@@ -55,6 +58,7 @@ const ViewAllCartItemsHook = () => {
     totalCartPrice,
     couponName,
     totalCartPriceAfterDisc,
+    cartID,
   ];
 };
 

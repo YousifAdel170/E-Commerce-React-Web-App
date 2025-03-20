@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import notify from "../Utility/useNotifyHook";
 import { SUCCESS, WARNING } from "../../config";
 import { applyCoupon } from "../../redux/actions/cartAction";
+import { useNavigate } from "react-router-dom";
 
-const ApplyCouponHook = () => {
+const ApplyCouponHook = (cartItems) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [couponName, setCouponName] = useState("");
   const [loading, setLoading] = useState(true);
@@ -38,7 +40,12 @@ const ApplyCouponHook = () => {
     }
   }, [loading]);
 
-  return [couponName, onChangeCoupon, handleSubmitCoupon];
+  const handleCheckout = () => {
+    if (cartItems && cartItems.length) navigate("/order/pay-method");
+    else notify("من فضلك اضف منتجات للعربة اولا", WARNING);
+  };
+
+  return [couponName, onChangeCoupon, handleSubmitCoupon, handleCheckout];
 };
 
 export default ApplyCouponHook;

@@ -42,6 +42,7 @@ function App() {
       <NavBarLogin />
       <BrowserRouter>
         <Routes>
+          {/* General Routes */}
           <Route index element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
@@ -66,15 +67,7 @@ function App() {
           <Route path="/user/verify-code" element={<VerifyPasswordPage />} />
           <Route path="/user/reset-password" element={<ResetPasswordPage />} />
 
-          <Route
-            path="/order/pay-method"
-            element={
-              <ProtectedRoute auth={isUser}>
-                <CartMethodPage />
-              </ProtectedRoute>
-            }
-          />
-
+          {/* Admin Routes */}
           <Route element={<ProtectedRoute auth={isAdmin} />}>
             <Route
               path="/admin/all-products"
@@ -111,6 +104,7 @@ function App() {
             />
           </Route>
 
+          {/* User Routes */}
           <Route element={<ProtectedRoute auth={isUser} />}>
             <Route path="/user/all-orders" element={<UserAllOrdersPage />} />
             <Route
@@ -127,7 +121,18 @@ function App() {
               element={<UserEditAddressPage />}
             />
             <Route path="/user/profile" element={<UserProfilePage />} />
+            <Route path="/order/pay-method" element={<CartMethodPage />} />
           </Route>
+
+          {/* Test For Isolated Protected Rout */}
+          {/* <Route
+            path="/order/pay-method"
+            element={
+              <ProtectedRoute auth={isUser}>
+                <CartMethodPage />
+              </ProtectedRoute>
+            }
+          /> */}
         </Routes>
       </BrowserRouter>
       <Footer />
