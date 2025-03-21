@@ -2,32 +2,38 @@ import { Col, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import AdminOrderDetailsHook from "../../hooks/admin/AdminOrderDetailsHook";
 import UserOrderItem from "../User/UserOrderItem";
+import { ToastContainer } from "react-toastify";
+import ChangeOrderStatusHook from "../../hooks/admin/ChangeOrderStatusHook";
 
 const AdminOrderDetalis = () => {
   const { id } = useParams();
-  // console.log(id);
   const [orderDetails] = AdminOrderDetailsHook(id);
 
-  console.log(orderDetails);
+  const [
+    onChangePay,
+    onChangeDeliver,
+    changePayOrderStatus,
+    changeDeliverOrderStatus,
+  ] = ChangeOrderStatusHook(id);
 
   return (
     <div className="">
       {orderDetails ? <UserOrderItem order={orderDetails} /> : null}
 
       {/* Title of the order [Order Number] */}
-      <div className="admin-content-text">
-        تفاصيل الطلب رقم#{orderDetails ? orderDetails.id : ""}
+      <div className="admin-content-text mt-3 mb-2 mx-1">
+        تفاصيل الطلب رقم #{orderDetails ? orderDetails.id : ""}
       </div>
 
       {/* Customer Details */}
-      <Row className="justify-content-center mt-4 user-data">
+      <Row className="justify-content-center user-data mx-1 py-3">
         {/* Title */}
         <Col xs="12" className=" d-flex">
-          <div className="admin-content-text py-2">تفاصيل العميل</div>
+          <div className="admin-content-text">تفاصيل العميل</div>
         </Col>
 
         {/* Name Of The Customer */}
-        <Col xs="12" className="d-flex">
+        <Col xs="12" className="d-flex mt-3">
           <div
             style={{
               color: "#555550",
@@ -51,7 +57,7 @@ const AdminOrderDetalis = () => {
         </Col>
 
         {/* Phone Number of the customer */}
-        <Col xs="12" className="d-flex">
+        <Col xs="12" className="d-flex mt-1">
           <div
             style={{
               color: "#555550",
@@ -75,7 +81,7 @@ const AdminOrderDetalis = () => {
         </Col>
 
         {/* Email of the Customer */}
-        <Col xs="12" className="d-flex">
+        <Col xs="12" className="d-flex mt-1">
           <div
             style={{
               color: "#555550",
@@ -98,24 +104,54 @@ const AdminOrderDetalis = () => {
           </div>
         </Col>
 
-        {/* Order Status & Save Button to save */}
+        {/* Order Pay Status & Save Button to save */}
         <div className="d-flex mt-2 justify-content-center">
           {/* Order Status */}
           <select
-            name="languages"
-            id="lang"
-            className="select input-form-area mt-1  text-center px-2 w-50"
+            name="pay"
+            id="paid"
+            onChange={onChangePay}
+            className="select input-form-area mt-1  text-center w-50"
           >
-            <option value="val">حالة الطلب</option>
-            <option value="val2">قيد التنفيذ</option>
-            <option value="val2">تم الانتهاء</option>
-            <option value="val2">الغاء</option>
+            <option value="0">الدفع</option>
+            <option value="true">تم</option>
+            <option value="false">لم يتم</option>
           </select>
 
-          {/* Save Button */}
-          <button className="btn-a px-3 d-inline mx-2 ">حفظ </button>
+          {/* Save Pay Button */}
+          <button
+            onClick={changePayOrderStatus}
+            className="btn-a px-3 d-inline mx-2 "
+          >
+            حفظ
+          </button>
+        </div>
+
+        {/* Order Deliver Status & Save Button to save */}
+        <div className="d-flex my-2 justify-content-center">
+          {/* Order Status */}
+          <select
+            name="deliver"
+            id="deliver"
+            className="select input-form-area mt-1  text-center w-50"
+            onChange={onChangeDeliver}
+          >
+            <option value="0">التوصيل</option>
+            <option value="true">تم</option>
+            <option value="false">لم يتم</option>
+          </select>
+
+          {/* Save Pay Button */}
+          <button
+            onClick={changeDeliverOrderStatus}
+            className="btn-a px-3 d-inline mx-2"
+          >
+            {" "}
+            حفظ
+          </button>
         </div>
       </Row>
+      <ToastContainer />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import UserOrderCard from "./UserOrderCard";
 import formatDate from "../../hooks/Utility/formatDate";
 
 const UserOrderItem = ({ order }) => {
-  // console.log(order);
+  console.log(order);
   return (
     <div className="user-order my-2 p-3">
       {/* Order No. */}

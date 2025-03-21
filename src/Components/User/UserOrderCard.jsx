@@ -34,8 +34,7 @@ const UserOrderCard = ({ item }) => {
             : 0}
 
           <div className="rate-count me-2">
-            {" "}
-            ({" "}
+            (
             {item && item.product && item.product.ratingsQuantity
               ? item.product.ratingsQuantity
               : 0}{" "}
@@ -48,6 +47,10 @@ const UserOrderCard = ({ item }) => {
           <div className="cat-text d-flex align-items-center">الكمية: </div>
           <div className="mx-2 ">{item && item.product ? item.count : 0}</div>
         </div>
+        <div
+          className="color border"
+          style={{ backgroundColor: item ? item.color : "", cursor: "auto" }}
+        ></div>
       </Col>
     </Row>
   );

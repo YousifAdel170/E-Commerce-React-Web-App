@@ -26,6 +26,6 @@
 
 ### ✔️ Protected Route (Permission - Inhancment)
 
-### ⏳ E-commerce (Complete Cash Order)
+### ✔️ E-commerce (Complete Cash Order)
 
 ### ⏳ E-commerce (Complete Order Payment - Visa)

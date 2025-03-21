@@ -2,10 +2,9 @@
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import deletion from "../../assets/Imgs/delete.png";
+// import deletion from "../../assets/Imgs/delete.png";
 
 const AdminOrderItem = ({ order }) => {
-  console.log(order);
   return (
     <Col sm="12">
       <Link
@@ -22,10 +21,10 @@ const AdminOrderItem = ({ order }) => {
               className=" d-flex flex-row justify-content-between pt-2"
             >
               <div className="cat-text">طلب رقم #{order.id || ""}</div>
-              <div className="d-flex " style={{ cursor: "pointer" }}>
+              {/* <div className="d-flex " style={{ cursor: "pointer" }}>
                 <img src={deletion} alt="" width="20px" height="24px" />
                 <div className="cat-text me-1">ازاله</div>
-              </div>
+              </div> */}
             </Col>
           </Row>
 
