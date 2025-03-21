@@ -1,16 +1,23 @@
 import { Col, Row } from "react-bootstrap";
-import CartItem from "../Cart/CartItem";
+import { useParams } from "react-router-dom";
+import AdminOrderDetailsHook from "../../hooks/admin/AdminOrderDetailsHook";
+import UserOrderItem from "../User/UserOrderItem";
 
 const AdminOrderDetalis = () => {
-  return (
-    <div>
-      {/* Title of the order [Order Number] */}
-      <div className="admin-content-text">تفاصيل الطلب رقم#55</div>
+  const { id } = useParams();
+  // console.log(id);
+  const [orderDetails] = AdminOrderDetailsHook(id);
 
-      {/* Order Items That The User Orderd */}
-      <CartItem />
-      <CartItem />
-      <CartItem />
+  console.log(orderDetails);
+
+  return (
+    <div className="">
+      {orderDetails ? <UserOrderItem order={orderDetails} /> : null}
+
+      {/* Title of the order [Order Number] */}
+      <div className="admin-content-text">
+        تفاصيل الطلب رقم#{orderDetails ? orderDetails.id : ""}
+      </div>
 
       {/* Customer Details */}
       <Row className="justify-content-center mt-4 user-data">
@@ -39,7 +46,7 @@ const AdminOrderDetalis = () => {
             }}
             className="mx-2"
           >
-            احمد عبداللة
+            {orderDetails && orderDetails.user ? orderDetails.user.name : ""}
           </div>
         </Col>
 
@@ -63,7 +70,7 @@ const AdminOrderDetalis = () => {
             }}
             className="mx-2"
           >
-            0021313432423
+            {orderDetails && orderDetails.user ? orderDetails.user.phone : ""}
           </div>
         </Col>
 
@@ -87,14 +94,9 @@ const AdminOrderDetalis = () => {
             }}
             className="mx-2"
           >
-            ahmed@gmail.com
+            {orderDetails && orderDetails.user ? orderDetails.user.email : ""}
           </div>
         </Col>
-
-        {/* Order Price */}
-        <div className=" d-inline px-4 border text-center pt-2">
-          المجموع ٤٠٠٠ جنيه
-        </div>
 
         {/* Order Status & Save Button to save */}
         <div className="d-flex mt-2 justify-content-center">

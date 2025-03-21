@@ -258,7 +258,6 @@ input:focus::placeholder {
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 0;
-  line-height: 23px;
   text-align: right;
 }
 
@@ -275,8 +274,6 @@ input:focus::placeholder {
   font-family: "Almarai";
   font-size: 14px;
   font-weight: bold;
-  letter-spacing: 0;
-  line-height: 19px;
   text-align: right;
 }
 
@@ -435,10 +432,13 @@ input:focus::placeholder {
   text-align: right;
 }
 .cart-item-body {
-  height: 229px;
   width: 100%;
   border-radius: 20px;
   background-color: #ffffff;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
 }
 .copon-input {
   box-sizing: border-box;
@@ -585,8 +585,6 @@ input:focus::placeholder {
   color: #979797;
   font-family: "Almarai";
   font-size: 12px;
-  letter-spacing: 0;
-  line-height: 23px;
 }
 .rate-name {
   color: #555550;
@@ -621,13 +619,10 @@ input:focus::placeholder {
   font-weight: bold;
 }
 
-.stat {
+.status {
   color: #979797;
-  font-family: Cairo;
+  font-family: "Cairo";
   font-size: 16px;
-  letter-spacing: 0;
-  line-height: 30px;
-  text-align: right;
 }
 /* end user order */
 

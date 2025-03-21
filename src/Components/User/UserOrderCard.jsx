@@ -1,35 +1,52 @@
+/* eslint-disable react/prop-types */
 import { Col, Row } from "react-bootstrap";
 
-import mobile from "../../assets/Imgs/mobile.png";
+import { PRODUCTS_BASE_URL } from "../../config";
 
-const UserOrderCard = () => {
+const UserOrderCard = ({ item }) => {
   return (
-    <Row className="d-flex mb-2">
+    <Row className="d-flex mb-4 mt-2">
       {/* Product Image */}
-      <Col xs="3" md="2" className="d-flex justify-content-start">
-        <img width="93px" height="120px" src={mobile} alt="" />
+      <Col xs="3" md="2" className="d-flex justify-content-start border me-2">
+        <img
+          width="93px"
+          height="120px"
+          src={
+            item && item.product
+              ? PRODUCTS_BASE_URL + item.product.imageCover
+              : ""
+          }
+          alt=""
+        />
       </Col>
 
-      {/* Product Description, Rate, Quatity */}
-      <Col xs="8" md="6">
-        {/* Description */}
-        <div className="d-inline pt-2 cat-title">
-          آيفون XR بذاكرة سعة 128 جيجابايت ويدعم تقنية 4G LTE مع تطبيق فيس تايم
-          (برودكت) أحمر
+      {/* Product Name, Rate, Quatity */}
+      <Col xs="8" md="6" className="d-flex flex-column justify-content-evenly">
+        {/* Name */}
+        <div className="cat-title">
+          {item && item.product ? item.product.title : ""}
         </div>
 
         {/* Rate */}
-        <div className="d-inline pt-2 cat-rate me-2">4.5</div>
-        <div className="rate-count d-inline p-1 pt-2">(160 تقييم)</div>
+        <div className=" cat-rate d-flex align-items-center">
+          {item && item.product && item.product.ratingsQuantity
+            ? item.product.ratingsQuantity
+            : 0}
+
+          <div className="rate-count me-2">
+            {" "}
+            ({" "}
+            {item && item.product && item.product.ratingsQuantity
+              ? item.product.ratingsQuantity
+              : 0}{" "}
+            تقييم)
+          </div>
+        </div>
 
         {/* Quantity */}
-        <div className="mt-3">
-          <div className="cat-text  d-inline">الكميه</div>
-          <input
-            className="mx-2 "
-            type="number"
-            style={{ width: "40px", height: "25px" }}
-          />
+        <div className="d-flex">
+          <div className="cat-text d-flex align-items-center">الكمية: </div>
+          <div className="mx-2 ">{item && item.product ? item.count : 0}</div>
         </div>
       </Col>
     </Row>

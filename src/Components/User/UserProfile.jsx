@@ -141,7 +141,12 @@ const UserProfile = () => {
 
         {/* Submit Button to Save the Password */}
         <Row>
-          <Col xs="10" sm="8" md="6" className="d-flex justify-content-end ">
+          <Col
+            xs="10"
+            sm="8"
+            md="6"
+            className="d-flex justify-content-end mb-3"
+          >
             <button
               onClick={changePasswordSubmit}
               className="btn-save d-inline mt-2 "

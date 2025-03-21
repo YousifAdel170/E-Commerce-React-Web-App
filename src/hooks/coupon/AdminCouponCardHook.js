@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteCoupon } from "../../redux/actions/couponAction";
+import formatDate from "../Utility/formatDate";
 
 // Hook for handling coupon card actions in the admin panel
 const AdminCouponCardHook = (coupon) => {
@@ -8,10 +9,6 @@ const AdminCouponCardHook = (coupon) => {
 
   // Extract and format the expiration date of the coupon
   const dateString = coupon.expire;
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "numeric", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
 
   // State for modal visibility
   const [show, setShow] = useState(false);

@@ -1,31 +1,52 @@
+/* eslint-disable react/prop-types */
 import { Col, Row } from "react-bootstrap";
 import UserOrderCard from "./UserOrderCard";
+import formatDate from "../../hooks/Utility/formatDate";
 
-const UserOrderItem = () => {
+const UserOrderItem = ({ order }) => {
+  // console.log(order);
   return (
-    <div className="user-order mt-2">
+    <div className="user-order my-2 p-3">
       {/* Order No. */}
       <Row>
-        <div className="py-2 order-title">طلب رقم #234556</div>
+        <div className="order-title">طلب رقم # {order.id}</div>
+        <div className="">تاريخ الطلب: {formatDate(order.createdAt)}</div>
       </Row>
 
       {/* Cards in the item */}
-      <UserOrderCard />
-      <UserOrderCard />
+      {order && order.cartItems
+        ? order.cartItems.map((item) => (
+            <UserOrderCard key={item._id} item={item} />
+          ))
+        : null}
 
-      <Row className="d-flex justify-content-between">
-        {/* Status */}
-        <Col xs="6">
-          <div>
-            <div className="d-inline">الحالة</div>
-            <div className="d-inline mx-2 stat">قيد التنفيذ</div>
+      <Row className="d-flex justify-content-between ">
+        <Col xs="6" className="d-flex justify-content-between">
+          <div className="d-flex">
+            <div> التوصيل: </div>
+            <div className="mx-2 status">
+              {order.isDelivered === true ? "تم" : "لم يتم "}
+            </div>
+          </div>
+          <div className="d-flex">
+            <div> الدفع:</div>
+            <div className=" mx-2 status">
+              {order.isPaid === true ? "تم الدفع" : "لم يتم "}
+            </div>
+          </div>
+
+          <div className="d-flex">
+            <div>طريقة الدفع: </div>
+            <div className="mx-2 status">
+              {order.paymentMethodType === "cash" ? "كاش" : "بطاقة ائتمانية"}
+            </div>
           </div>
         </Col>
 
         {/* Salary */}
         <Col xs="6" className="d-flex justify-content-end">
           <div>
-            <div className="barnd-text">4000 جنيه</div>
+            <div className="barnd-text">{order.totalOrderPrice || 0} جنية</div>
           </div>
         </Col>
       </Row>

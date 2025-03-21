@@ -8,6 +8,7 @@ import {
 } from "../../redux/actions/couponAction";
 import notify from "../Utility/useNotifyHook";
 import { ERROR, SUCCESS, WARNING } from "../../config";
+import formatDate from "../Utility/formatDate";
 
 // Hook for editing a coupon in the admin panel
 const AdminEditCouponHook = (id) => {
@@ -30,12 +31,6 @@ const AdminEditCouponHook = (id) => {
 
     getCouponData();
   }, [id, dispatch]);
-
-  // Format date to a readable format
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "numeric", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
 
   // Selector to get the specific coupon from the Redux store
   const specificCoupon = useSelector(

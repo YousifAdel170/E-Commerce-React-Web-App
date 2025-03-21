@@ -89,7 +89,11 @@ const CartItem = ({ item }) => {
       <img
         width="160px"
         height="197px"
-        src={PRODUCTS_BASE_URL + item.product.imageCover || ""}
+        src={
+          item && item.product
+            ? PRODUCTS_BASE_URL + item.product.imageCover
+            : ""
+        }
         alt=""
       />
 
@@ -114,10 +118,10 @@ const CartItem = ({ item }) => {
         <Row className="justify-content-center mt-2">
           <Col sm="12" className=" d-flex flex-row justify-content-start">
             <div className="d-inline pt-2 cat-title">
-              {item.product.title || ""}
+              {item && item.product ? item.product.title : ""}
             </div>
             <div className="d-inline pt-2 cat-rate me-2">
-              {item.product.ratingsAverage || ""}
+              {item && item.product ? item.product.ratingsAverage : ""}
             </div>
           </Col>
         </Row>
@@ -127,7 +131,9 @@ const CartItem = ({ item }) => {
           <Col sm="12" className="mt-1">
             <div className="cat-text d-inline">الماركة :</div>
             <div className="barnd-text d-inline mx-1">
-              {item.product.brand ? item.product.brand.name : ""}
+              {item && item.product && item.product.brand
+                ? item.product.brand.name
+                : ""}
             </div>
           </Col>
         </Row>
@@ -137,7 +143,7 @@ const CartItem = ({ item }) => {
           <Col sm="12" className="mt-1 d-flex">
             <div
               className="color ms-2 border"
-              style={{ backgroundColor: `${item.color}` || "" }}
+              style={{ backgroundColor: item ? item.color : "" }}
             ></div>
           </Col>
         </Row>
@@ -162,7 +168,7 @@ const CartItem = ({ item }) => {
               </Button>
             </div>
             <div className="d-inline pt-2 barnd-text">
-              {item.price || 0} جنية
+              {item ? item.price : 0} جنية
             </div>
           </Col>
         </Row>

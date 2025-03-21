@@ -11,6 +11,7 @@ import couponReducer from "./couponReducer";
 import userAddressReducer from "./userAddressReducer";
 import cartReducer from "./cartReducer";
 import checkoutReducer from "./checkoutReducer";
+import ordersReducer from "./ordersReducer";
 
 // Combine all reducers into a single root reducer
 export default combineReducers({
@@ -25,4 +26,5 @@ export default combineReducers({
   userAddressReducer: userAddressReducer, // Reducer for user addresses
   cartReducer: cartReducer, // Reducer for Cart
   checkoutReducer: checkoutReducer, // Reducer for Checkout
+  ordersReducer: ordersReducer, // Reducer for Orders
 });

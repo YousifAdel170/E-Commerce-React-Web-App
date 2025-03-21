@@ -10,7 +10,9 @@ const UpdateCartHook = (item) => {
   const dispatch = useDispatch();
   const [itemCount, setItemCount] = useState(0);
 
-  const [itemProduct] = ViewProductDetailsHook(item.product.id);
+  const [itemProduct] = ViewProductDetailsHook(
+    item && item.product ? item.product.id : ""
+  );
 
   const onChangeCount = (e) => setItemCount(e.target.value);
 
