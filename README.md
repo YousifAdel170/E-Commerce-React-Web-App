@@ -28,4 +28,6 @@
 
 ### ✔️ E-commerce (Complete Cash Order)
 
-### ⏳ E-commerce (Complete Order Payment - Visa)
+### ✔️ E-commerce (Complete Order Payment - Visa)
+
+### ⏳ E-commerce (Enhancement)

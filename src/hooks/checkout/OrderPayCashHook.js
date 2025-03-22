@@ -79,7 +79,7 @@ const OrderPayCashHook = () => {
     }
   }, [loadingCreate, resultOrderCash, navigate]);
 
-  return [handleChooseAddress, handleCreateOrderCash];
+  return [handleChooseAddress, handleCreateOrderCash, addressDetails];
 };
 
 export default OrderPayCashHook;

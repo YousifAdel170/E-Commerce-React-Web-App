@@ -38,7 +38,11 @@ const UserOrderItem = ({ order }) => {
           <div className="d-flex">
             <div>طريقة الدفع: </div>
             <div className="mx-2 status">
-              {order.paymentMethodType === "cash" ? "كاش" : "بطاقة ائتمانية"}
+              {order
+                ? order.paymentMethodType === "cash"
+                  ? "كاش"
+                  : "بطاقة ائتمانية"
+                : null}
             </div>
           </div>
         </Col>

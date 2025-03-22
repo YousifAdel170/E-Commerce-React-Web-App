@@ -2,11 +2,32 @@ import { Col, Row } from "react-bootstrap";
 import UserAllAddressesHook from "../../hooks/user/UserAllAddressesHook";
 import OrderPayCashHook from "../../hooks/checkout/OrderPayCashHook";
 import { ToastContainer } from "react-toastify";
+import OrderPayCardHook from "../../hooks/checkout/OrderPayCardHook";
+import { useState } from "react";
+import notify from "../../hooks/Utility/useNotifyHook";
+import { WARNING } from "../../config";
+import ViewAllCartItemsHook from "../../hooks/cart/ViewAllCartItemsHook";
 
 const ChoosePayMethod = () => {
   const [addresses] = UserAllAddressesHook();
 
-  const [handleChooseAddress, handleCreateOrderCash] = OrderPayCashHook();
+  const [, , totalCartPrice, , totalCartPriceAfterDisc, ,] =
+    ViewAllCartItemsHook();
+
+  const [handleChooseAddress, handleCreateOrderCash, addressDetails] =
+    OrderPayCashHook();
+
+  const [handleCreateOrderCart] = OrderPayCardHook(addressDetails);
+
+  const [type, setType] = useState("");
+
+  const changePayMethod = (e) => setType(e.target.value);
+
+  const handlePay = () => {
+    if (type === "card") handleCreateOrderCart();
+    else if (type === "cash") handleCreateOrderCash();
+    else notify("من فضلك اختر طريقة دفع", WARNING);
+  };
 
   return (
     <div>
@@ -16,11 +37,12 @@ const ChoosePayMethod = () => {
           {/* Payment with Visa */}
           <Col xs="12" className="mt-4">
             <input
-              style={{ cursor: "pointer" }}
               name="group"
+              onChange={changePayMethod}
+              style={{ cursor: "pointer" }}
               id="group1"
               type="radio"
-              value="الدفع عن طريق الفيزا"
+              value="card"
               className="mt-2"
             />
             <label
@@ -38,11 +60,11 @@ const ChoosePayMethod = () => {
           <Col xs="12" className="d-flex mt-4">
             <input
               name="group"
+              onChange={changePayMethod}
               style={{ cursor: "pointer" }}
               id="group2"
-              checked
               type="radio"
-              value="الدفع عند الاستلام"
+              value="cash"
               className="mt-2"
             />
             <label
@@ -83,10 +105,21 @@ const ChoosePayMethod = () => {
       <Row>
         <Col xs="12" className="d-flex justify-content-end">
           <div className="product-price d-flex justify-content-center align-items-center  border">
-            34000 جنية
+            {totalCartPriceAfterDisc ? (
+              <>
+                <div>
+                  قبل الخصم : <del className="ms-3">{totalCartPrice}</del>
+                </div>
+                <div>
+                  بعد الخصم: <>{totalCartPriceAfterDisc}</>
+                </div>
+              </>
+            ) : (
+              `${totalCartPrice} جنية`
+            )}
           </div>
           <div
-            onClick={handleCreateOrderCash}
+            onClick={handlePay}
             className="product-cart-add px-3 d-flex justify-content-center align-items-center me-2"
           >
             اتمام الشراء
