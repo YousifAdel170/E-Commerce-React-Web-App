@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import notify from "../Utility/useNotifyHook";
 import { ERROR, SUCCESS, WARNING } from "../../config";
-import { addCoupon, getAllCoupons } from "../../redux/actions/couponAction";
+import { addCoupon } from "../../redux/actions/couponAction";
 
 // Hook for adding a coupon in the admin panel
 const AdminAddCouponHook = () => {
@@ -60,31 +60,12 @@ const AdminAddCouponHook = () => {
       if (result && result.status === 201) {
         notify("تمت اضافة الكوبون بنجاح", SUCCESS);
         window.location.reload(false); // Reload the page to reflect changes
-      } else if (result && result.status === 400) {
+      } else if (result && result.status === 400)
         notify("هذا الكوبون موجود من قبل ", ERROR);
-      } else if (result && result.status === 403) {
+      else if (result && result.status === 403)
         notify("انتا غير مسموح لك بالاضافة", ERROR);
-      }
     }
   }, [loading, result]);
-
-  // Fetch all coupons when component mounts
-  useEffect(() => {
-    const getCoupons = async () => {
-      await dispatch(getAllCoupons());
-    };
-
-    getCoupons();
-  }, [dispatch]);
-
-  // Selector to get all coupons from the Redux store
-  const allCoupons = useSelector((state) => state.couponReducer.viewAllCoupons);
-
-  // Memoize the coupons data
-  const coupons = useMemo(() => {
-    if (allCoupons && allCoupons.data) return allCoupons.data;
-    else return [];
-  }, [allCoupons]);
 
   // Return state variables and handlers
   return [
@@ -95,7 +76,6 @@ const AdminAddCouponHook = () => {
     onChangeDate,
     onChangeValue,
     handleSubmit,
-    coupons,
   ];
 };
 

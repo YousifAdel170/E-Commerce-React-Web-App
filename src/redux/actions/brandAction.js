@@ -2,11 +2,15 @@ import {
   CREATE_NEW_BRAND,
   GET_ALL_BRAND,
   GET_SPECIFIC_BRAND,
+  DELETE_BRAND,
+  UPDATE_BRAND,
   GET_ERROR,
 } from "../type";
 
 import { useInsertDataWithImage } from "../../hooks/axios/useInsertData";
 import { useGetData } from "../../hooks/axios/useGetData";
+import useDeleteData from "../../hooks/axios/useDeleteData";
+import { useUpdateDataWithImage } from "../../hooks/axios/useUpdateData";
 
 // Get All Items From the Brands with Specified Limit [First Page]
 export const getAllBrand = (limit) => async (dispatch) => {
@@ -73,6 +77,41 @@ export const getSpecificBrand = (id) => async (dispatch) => {
     dispatch({
       type: GET_ERROR,
       payload: "Error " + e,
+    });
+  }
+};
+
+// Action To Delete Specific Brand USing Its ID
+export const deleteBrand = (id) => async (dispatch) => {
+  try {
+    const response = await useDeleteData(`api/v1/brands/${id}`);
+    dispatch({
+      type: DELETE_BRAND,
+      payload: response,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: e.response,
+    });
+  }
+};
+
+// Action To Update Specific Brand USing Its ID
+export const editBrand = (id, formatData) => async (dispatch) => {
+  try {
+    const response = await useUpdateDataWithImage(
+      `/api/v1/brands/${id}`,
+      formatData
+    );
+    dispatch({
+      type: UPDATE_BRAND,
+      payload: response,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: e.response,
     });
   }
 };

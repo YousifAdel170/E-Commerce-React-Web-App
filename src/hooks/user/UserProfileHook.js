@@ -138,7 +138,6 @@ const UserProfileHook = () => {
   // Notify user of the result of the password change action
   useEffect(() => {
     if (!loadingPassword) {
-      console.log(resultUserPassword);
       if (resultUserPassword && resultUserPassword.status === 200) {
         notify("تم تغير كلمة المرور بنجاح", SUCCESS);
         setTimeout(() => {

@@ -45,7 +45,6 @@ const OrderPayCardHook = (addressDetalis) => {
   useEffect(() => {
     if (!loadingCreate) {
       if (resultOrderCard && resultOrderCard.status === "success") {
-        console.log(resultOrderCard);
         notify("تم انشاء طلبك بنجاح", SUCCESS);
         setTimeout(() => {
           if (resultOrderCard.session && resultOrderCard.session.url)

@@ -38,8 +38,6 @@ const VerifyPasswordHook = () => {
   useEffect(() => {
     if (!loading) {
       if (result) {
-        console.log(result);
-
         if (result.data && result.data.status === "Success") {
           notify("كود التفعيل صحيح", SUCCESS);
           setTimeout(() => navigate("/user/reset-password"), 1500);

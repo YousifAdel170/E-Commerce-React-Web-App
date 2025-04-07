@@ -1,11 +1,16 @@
 import {
   CREATE_NEW_SUB_CATEGORY,
   GET_ALL_SUB_CATEGORY,
+  DELETED_SUB_CATEGORY,
+  UPDATED_SUB_CATEGORY,
+  GET_SPECIFIC_SUB_CATEGORY,
   GET_ERROR,
 } from "../type";
 
 import { useInsertData } from "../../hooks/axios/useInsertData";
 import { useGetData } from "../../hooks/axios/useGetData";
+import useDeleteData from "../../hooks/axios/useDeleteData";
+import { useUpdateData } from "../../hooks/axios/useUpdateData";
 
 // Add new sub category To The API
 export const createNewSubCategory = (data) => async (dispatch) => {
@@ -25,22 +30,74 @@ export const createNewSubCategory = (data) => async (dispatch) => {
 };
 
 // Add Get All sub categories based on The Category ID To The API
-export const getAllSubCategory = (categoryID) => async (dispatch) => {
-  try {
-    const response = await useGetData(
-      `/api/v1/categories/${categoryID}/subcategories`
-    );
+export const getAllSubCategory =
+  (categoryID, limit, page) => async (dispatch) => {
+    try {
+      const response = await useGetData(
+        `/api/v1/categories/${categoryID}/subcategories?limit=${limit}&page=${page}`
+      );
 
-    console.log(response);
+      dispatch({
+        type: GET_ALL_SUB_CATEGORY,
+        payload: response,
+        loading: true,
+      });
+    } catch (e) {
+      dispatch({
+        type: GET_ERROR,
+        payload: "Error " + e,
+      });
+    }
+  };
+
+// Get The Sub category by its ID
+export const getSpecificSubCategory = (id) => async (dispatch) => {
+  try {
+    const result = await useGetData(`/api/v1/subcategories/${id}`);
     dispatch({
-      type: GET_ALL_SUB_CATEGORY,
-      payload: response,
+      type: GET_SPECIFIC_SUB_CATEGORY,
+      payload: result,
       loading: true,
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
       payload: "Error " + e,
+    });
+  }
+};
+
+// Action To Delete Specific Subcategory USing Its ID
+export const deleteSubcategory = (id) => async (dispatch) => {
+  try {
+    const response = await useDeleteData(`api/v1/subcategories/${id}`);
+    dispatch({
+      type: DELETED_SUB_CATEGORY,
+      payload: response,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: e.response,
+    });
+  }
+};
+
+// Action To Update Specific Category USing Its ID
+export const editSubcategory = (id, formatData) => async (dispatch) => {
+  try {
+    const response = await useUpdateData(
+      `/api/v1/subcategories/${id}`,
+      formatData
+    );
+    dispatch({
+      type: UPDATED_SUB_CATEGORY,
+      payload: response,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: e.response,
     });
   }
 };

@@ -29,9 +29,9 @@ export const addCoupon = (body) => async (dispatch) => {
 };
 
 // Action To Display All The Coupons
-export const getAllCoupons = () => async (dispatch) => {
+export const getAllCoupons = (limit) => async (dispatch) => {
   try {
-    const response = await useGetDataToken(`/api/v1/coupons`);
+    const response = await useGetDataToken(`/api/v1/coupons?limit=${limit}`);
     dispatch({
       type: GET_ALL_COUPONS,
       payload: response,
@@ -43,6 +43,25 @@ export const getAllCoupons = () => async (dispatch) => {
     });
   }
 };
+
+// Action To Display All The Coupons in specified page
+export const getAllCouponsInSelectedPage =
+  (limit, page) => async (dispatch) => {
+    try {
+      const result = await useGetDataToken(
+        `/api/v1/coupons?limit=${limit}&page=${page}`
+      );
+      dispatch({
+        type: GET_ALL_COUPONS,
+        payload: result,
+      });
+    } catch (e) {
+      dispatch({
+        type: GET_ERROR,
+        payload: "Error " + e,
+      });
+    }
+  };
 
 // Action To Delete Specific Coupon USing Its ID
 export const deleteCoupon = (id) => async (dispatch) => {

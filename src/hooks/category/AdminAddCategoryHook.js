@@ -4,6 +4,7 @@ import notify from "../Utility/useNotifyHook";
 import { createNewCategory } from "../../redux/actions/categoryAction";
 
 import uploadImage from "../../assets/Imgs/avatar.png";
+import { ERROR } from "../../config";
 
 const AdminAddCategoryHook = () => {
   // 0. States [image: new uploaded item  | name: Item name]
@@ -12,7 +13,6 @@ const AdminAddCategoryHook = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isPress, setIsPress] = useState(false);
-
   // 1. Display choosed Image from the Local PC
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -56,7 +56,7 @@ const AdminAddCategoryHook = () => {
         console.log("Response: " + response);
       } catch (error) {
         console.error("Error creating category:", error);
-        notify("حدثت مشكلة أثناء الإضافة", "error");
+        notify("حدثت مشكلة أثناء الإضافة", ERROR);
       } finally {
         // Since the result received (Turn the Loading OFF)
         setLoading(false);

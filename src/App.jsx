@@ -34,6 +34,13 @@ import ProtectedRouteHook from "./hooks/auth/ProtectedRouteHook";
 import ProtectedRoute from "./Components/Utility/ProtectedRoute";
 import ViewProductsByCategoryPage from "./Pages/Products/ViewProductsByCategoryPage";
 import ViewProductsByBrandPage from "./Pages/Products/ViewProductsByBrandPage";
+import AdminAllCouponsPage from "./Pages/Admin/AdminAllCouponsPage";
+import AdminAllCategoriesPage from "./Pages/Admin/AdminAllCategoriesPage";
+import AdminEditCategoryPage from "./Pages/Admin/AdminEditCategoryPage";
+import AdminAllBrandsPage from "./Pages/Admin/AdminAllBrandsPage";
+import AdminEditBrandPage from "./Pages/Admin/AdminEditBrandPage";
+import AdminAllSubcategoriesPage from "./Pages/Admin/AdminAllSubcategoriesPage";
+import AdminEditSubcategoryPage from "./Pages/Admin/AdminEditSubcategoryPage";
 
 function App() {
   const [isUser, isAdmin] = ProtectedRouteHook();
@@ -81,8 +88,32 @@ function App() {
 
             <Route path="/admin/add-brand" element={<AdminAddBrandPage />} />
             <Route
+              path="/admin/all-categories"
+              element={<AdminAllCategoriesPage />}
+            />
+            <Route path="/admin/all-brands" element={<AdminAllBrandsPage />} />
+
+            <Route
+              path="/admin/all-categories/:id/all-subcategories"
+              element={<AdminAllSubcategoriesPage />}
+            />
+
+            <Route
+              path="/admin/all-categories/:id/all-subcategories/edit-subcategory/:id"
+              element={<AdminEditSubcategoryPage />}
+            />
+
+            <Route
               path="/admin/add-category"
               element={<AdminAddCategoryPage />}
+            />
+            <Route
+              path="/admin/edit-category/:id"
+              element={<AdminEditCategoryPage />}
+            />
+            <Route
+              path="/admin/edit-brand/:id"
+              element={<AdminEditBrandPage />}
             />
             <Route
               path="/admin/add-subcategory"
@@ -97,6 +128,10 @@ function App() {
               element={<AdminEditProductPage />}
             />
 
+            <Route
+              path="/admin/all-coupons"
+              element={<AdminAllCouponsPage />}
+            />
             <Route path="/admin/add-coupon" element={<AdminAddCouponPage />} />
             <Route
               path="/admin/edit-coupon/:id"

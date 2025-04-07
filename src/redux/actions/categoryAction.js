@@ -1,12 +1,16 @@
 import {
   CREATE_NEW_CATEGORY,
   GET_ALL_CATEGORY,
-  GET_ERROR,
   GET_SPECIFIC_CATEGORY,
+  DELETE_CATEGORY,
+  UPDATE_CATEGORY,
+  GET_ERROR,
 } from "../type";
 
-import { useInsertDataWithImage } from "../../hooks/axios/useInsertData";
 import { useGetData } from "../../hooks/axios/useGetData";
+import useDeleteData from "../../hooks/axios/useDeleteData";
+import { useUpdateDataWithImage } from "../../hooks/axios/useUpdateData";
+import { useInsertDataWithImage } from "../../hooks/axios/useInsertData";
 
 // Get All Items From the Categories with Specified Limit [First Page]
 export const getAllCategory = (limit) => async (dispatch) => {
@@ -74,6 +78,41 @@ export const getSpecificCategory = (id) => async (dispatch) => {
     dispatch({
       type: GET_ERROR,
       payload: "Error " + e,
+    });
+  }
+};
+
+// Action To Delete Specific Category USing Its ID
+export const deleteCategory = (id) => async (dispatch) => {
+  try {
+    const response = await useDeleteData(`api/v1/categories/${id}`);
+    dispatch({
+      type: DELETE_CATEGORY,
+      payload: response,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: e.response,
+    });
+  }
+};
+
+// Action To Update Specific Category USing Its ID
+export const editCategory = (id, formatData) => async (dispatch) => {
+  try {
+    const response = await useUpdateDataWithImage(
+      `/api/v1/categories/${id}`,
+      formatData
+    );
+    dispatch({
+      type: UPDATE_CATEGORY,
+      payload: response,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: e.response,
     });
   }
 };

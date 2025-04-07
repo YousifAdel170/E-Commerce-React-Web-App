@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { Col, Row } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
-import AdminCouponCard from "./AdminCouponCard";
 import AdminAddCouponHook from "../../hooks/coupon/AdminAddCouponHook";
 
 const AdminAddCoupon = () => {
@@ -14,10 +13,7 @@ const AdminAddCoupon = () => {
     onChangeDate,
     onChangeValue,
     handleSubmit,
-    coupons,
   ] = AdminAddCouponHook();
-
-  console.log(coupons);
 
   return (
     <div>
@@ -61,18 +57,6 @@ const AdminAddCoupon = () => {
           <button onClick={handleSubmit} className="btn-save d-inline mt-2 ">
             حفظ الكوبون
           </button>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col sm="8" className="">
-          {coupons ? (
-            coupons.map((item, index) => {
-              return <AdminCouponCard key={index} coupon={item} />;
-            })
-          ) : (
-            <h6>لا يوجد كوبونات حتى الان</h6>
-          )}
         </Col>
       </Row>
 

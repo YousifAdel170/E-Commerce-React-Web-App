@@ -45,7 +45,6 @@ const ResetPasswordHook = () => {
   useEffect(() => {
     if (loading === false) {
       if (result) {
-        console.log(result);
         if (result.status === 200 || result.status === 201) {
           notify("تم تغير كلمة السر بنجاح", SUCCESS);
           setTimeout(() => navigate("/login"), 1500);

@@ -41,8 +41,6 @@ const ForgotPasswordHook = () => {
     // Check if the Forget Password Operation End
     if (!loading) {
       if (response) {
-        console.log(response);
-
         // // Check if The Response is Successfull
         if (response.data && response.data.status === "Success") {
           notify("تم ارسال الكود للايميل بنجاح", SUCCESS);

@@ -1,13 +1,17 @@
 import {
   CREATE_NEW_CATEGORY,
   GET_ALL_CATEGORY,
-  GET_ERROR,
   GET_SPECIFIC_CATEGORY,
+  DELETE_CATEGORY,
+  UPDATE_CATEGORY,
+  GET_ERROR,
 } from "../type";
 
 const initialState = {
   category: [],
   viewSpecificCategory: [],
+  deletedCategory: [],
+  updatedCategory: [],
   loading: true,
 };
 
@@ -21,6 +25,12 @@ const categoryReducer = (state = initialState, action) => {
 
     case CREATE_NEW_CATEGORY:
       return { category: action.payload, loading: false };
+
+    case DELETE_CATEGORY:
+      return { deletedCategory: action.payload, loading: false };
+
+    case UPDATE_CATEGORY:
+      return { updatedCategory: action.payload, loading: false };
 
     case GET_ERROR:
       return { category: action.payload, loading: true };

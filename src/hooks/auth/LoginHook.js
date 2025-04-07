@@ -77,8 +77,6 @@ const LoginHook = () => {
     // Check if the Registeration End
     if (!loading) {
       if (result) {
-        console.log(result);
-
         // Set The Token In the Local Storage [To Get The User Data]
         if (result.data && result.data.token) {
           // Set The Token when the user has been registered

@@ -97,7 +97,6 @@ const AdminAddProductHook = () => {
     setCategoryID(selectedCategory);
   };
   useEffect(() => {
-    // console.log(categoryID);
     if (categoryID != 0) {
       if (subCategory.data) {
         setOptions(subCategory.data);
@@ -207,7 +206,6 @@ const AdminAddProductHook = () => {
       setTimeout(() => setLoading(true), 300);
 
       if (product) {
-        console.log(product);
         //   Check if the response status is OK
         if (product.status === 201 || product.status === 200)
           notify("تمت عملية الاضافة بنجاح", "success");

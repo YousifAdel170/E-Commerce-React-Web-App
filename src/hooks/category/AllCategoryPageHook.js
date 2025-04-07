@@ -39,8 +39,8 @@ const AllCategoryPageHook = () => {
   }, [result]);
 
   // 5. Fetch the Data from the Api That in the Selected Page
-  const getSelectedPageNumber = (selectedPage) => {
-    dispatch(getAllCategoryInSelectedPage(2, selectedPage));
+  const getSelectedPageNumber = async (selectedPage) => {
+    await dispatch(getAllCategoryInSelectedPage(7, selectedPage));
   };
 
   // 6. Return the Data To The JSX code

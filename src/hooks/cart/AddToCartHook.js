@@ -6,9 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 const AddToCartHook = (id, itemProduct) => {
   const dispatch = useDispatch();
-
-  console.log(itemProduct._id);
-
   const [indexColorClicked, setIndexColorClicked] = useState("");
   const [colorClickedHex, setColorClickedHex] = useState("");
   const [loading, setLoading] = useState(true);
@@ -19,12 +16,9 @@ const AddToCartHook = (id, itemProduct) => {
     else return [];
   }, [itemProduct]);
 
-  //   console.log(itemAvailableColors);
-
   const colorClicked = (color, index) => {
     setIndexColorClicked(index);
     setColorClickedHex(color);
-    console.log(itemProduct);
   };
 
   //   Function Responsible to add new item into the cart
@@ -63,7 +57,7 @@ const AddToCartHook = (id, itemProduct) => {
         }, 1000);
       } else notify("قم بتسجيل الدخول اولا", WARNING);
     }
-  }, [loading]);
+  }, [loading, result]);
 
   return [colorClicked, indexColorClicked, handleAddToCart];
 };
