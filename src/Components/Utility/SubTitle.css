@@ -1,0 +1,28 @@
+/* Start Styling of SubTitle Component */
+
+.sub-title,
+.shopping-now {
+  color: var(--main-sub-title-color);
+}
+
+.sub-title {
+  font-size: 21px;
+  font-weight: bold;
+}
+.shopping-now {
+  padding: 5px 25px;
+  text-align: center;
+  border: 1px solid var(--main-sub-title-color);
+  border-radius: 14px;
+  -webkit-border-radius: 14px;
+  -moz-border-radius: 14px;
+  -ms-border-radius: 14px;
+  -o-border-radius: 14px;
+}
+
+.shopping-now:hover {
+  background-color: var(--main-sub-title-color);
+  color: #f9f9f9;
+}
+
+/* End Styling of SubTitle Component */

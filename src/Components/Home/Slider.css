@@ -1,0 +1,67 @@
+/* Start Of Styling Slider Component */
+.slider-background {
+  height: "296px";
+  width: "294.26px";
+}
+
+.slider-one {
+  background: linear-gradient(173.68deg, #ffedf5 0%, #ffd5e7 100%);
+}
+.slider-two {
+  background: linear-gradient(174.76deg, #d3deff 0%, #a8baff 100%);
+}
+
+.slider-three {
+  background: linear-gradient(176.69deg, #f8f0d5 0%, #efdcab 100%);
+}
+
+.slider-four {
+  background: linear-gradient(175.24deg, #b2e8f0 0%, #7bccdc 100%);
+}
+
+.slider-background img {
+  margin-top: 10px;
+  margin-left: 15px;
+  height: 296px;
+  max-width: 294.26px;
+}
+
+.slider-title,
+.slider-text {
+  color: #915970;
+  font-family: "Almarai";
+  text-align: center;
+}
+
+.slider-title {
+  font-size: 24px;
+}
+.slider-text {
+  font-size: 30px;
+  font-weight: 800;
+}
+
+@media (max-width: 767px) {
+  .flex-column-mobile {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slider-background img {
+    width: 250px;
+    max-height: 296px;
+    margin-left: 0;
+  }
+  .slider-title {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+
+  .slider-text {
+    margin-bottom: 30px;
+    font-size: 20px;
+  }
+}
+
+/* End Of Styling Slider Component */

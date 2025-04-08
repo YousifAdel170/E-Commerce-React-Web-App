@@ -1,0 +1,54 @@
+/* Start Of Styling NavBarLogin Component */
+.logo {
+  height: 46px;
+  width: 50px;
+}
+
+.login-img {
+  height: 20px;
+  width: 20px;
+}
+
+.nav-text {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.nav-item.dropdown div {
+  border: none;
+}
+
+.dropdown-item:hover {
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+
+.dropdown-item:hover .nav-text {
+  color: black;
+}
+
+@media (max-width: 767px) {
+  input.form-control {
+    width: 80% !important;
+    margin: 0 auto !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .nav-item.dropdown {
+    flex-direction: column;
+    margin-bottom: 10px !important;
+  }
+
+  a span.badge {
+    position: absolute;
+    left: 40% !important;
+  }
+}
+
+/* End Of Styling NavBarLogin Component */

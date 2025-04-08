@@ -1,75 +1,40 @@
+// Importing necessary libraries and hooks from React and React Bootstrap
 import { useState } from "react";
 import { Carousel } from "react-bootstrap";
-import SliderOneImage from "../../Assets/Imgs/slider4.png";
-import SliderTwoImage from "../../Assets/Imgs/slider1.png";
-import SliderThreeImage from "../../Assets/Imgs/prod3.png";
-import SliderFourImage from "../../Assets/Imgs/prod4.png";
+// Import necessary CSS styles for the component
+import "./Slider.css";
 
+// Import configuration data for the slider
+import { slidersItems } from "../../config";
+
+// Component Responsible for rendering the slider
 const Slider = () => {
+  // State to manage the active index of the carousel
   const [index, setIndex] = useState(0);
-  const handleSelect = (selectedIndex) => {
-    setIndex(selectedIndex);
-  };
+  const handleSelect = (selectedIndex) => setIndex(selectedIndex);
+
+  // Returning the carousel component with multiple items
   return (
+    // Carousel component from react-bootstrap
     <Carousel activeIndex={index} onSelect={handleSelect}>
-      <Carousel.Item className="slider-background" interval={2000}>
-        <div className="d-flex flex-row justify-content-center align-items-center">
-          <img
-            style={{ height: "296px", width: "313.53px" }}
-            className=""
-            src={SliderOneImage}
-            alt="First slide Img"
-          />
-          <div className="">
-            <h3 className="slider-title">هناك خصم كبير</h3>
-            <p className="slider-text">خصم يصل ٥٠٪ عند شرائك</p>
-          </div>
-        </div>
-      </Carousel.Item>
-      <Carousel.Item className="slider-background2" interval={2000}>
-        <div className="d-flex flex-row justify-content-center align-items-center">
-          <img
-            style={{ height: "296px", width: "313.53px" }}
-            className=""
-            src={SliderTwoImage}
-            alt="Second slide Img"
-          />
-          <div className="">
-            <h3 className="slider-title">هناك خصم كبير</h3>
-            <p className="slider-text">خصم يصل ٥٠٪ عند شرائك</p>
-          </div>
-        </div>
-      </Carousel.Item>
-
-      <Carousel.Item className="slider-background3" interval={2000}>
-        <div className="d-flex flex-row justify-content-center align-items-center">
-          <img
-            style={{ height: "296px", width: "373.53px" }}
-            className=""
-            src={SliderThreeImage}
-            alt="Third slide Img"
-          />
-          <div className="">
-            <h3 className="slider-title">هناك خصم كبير</h3>
-            <p className="slider-text">خصم يصل ٥٠٪ عند شرائك</p>
-          </div>
-        </div>
-      </Carousel.Item>
-
-      <Carousel.Item className="slider-background4" interval={2000}>
-        <div className="d-flex flex-row justify-content-center align-items-center">
-          <img
-            style={{ height: "296px", width: "373.53px" }}
-            className=""
-            src={SliderFourImage}
-            alt="Fourth slide Img"
-          />
-          <div className="">
-            <h3 className="slider-title">هناك خصم كبير</h3>
-            <p className="slider-text">خصم يصل ٥٠٪ عند شرائك</p>
-          </div>
-        </div>
-      </Carousel.Item>
+      {/* Each Carousel.Item represents a slide in the carousel */}
+      {slidersItems
+        ? slidersItems.map((item, index) => (
+            <Carousel.Item
+              key={index}
+              className={`slider-background slider-${item.styleClass}`}
+              interval={item.delay}
+            >
+              <div className="d-flex justify-content-center align-items-center flex-column-mobile">
+                <img src={item.image} alt={`${item.title} Image`} />
+                <div>
+                  <h3 className="slider-title">{item.title}</h3>
+                  <p className="slider-text">{item.paragraph}</p>
+                </div>
+              </div>
+            </Carousel.Item>
+          ))
+        : null}
     </Carousel>
   );
 };

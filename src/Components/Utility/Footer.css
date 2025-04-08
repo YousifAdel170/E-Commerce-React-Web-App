@@ -1,0 +1,32 @@
+/* Start of Styling The Footer */
+
+.footer img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.footer-text,
+.footer-phone {
+  color: #979797;
+  font-family: "Almarai";
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.footer-phone {
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .footer .col-sm-6 {
+    display: flex !important;
+    justify-content: center !important;
+    margin-bottom: 10px !important;
+  }
+}
+/* End of Styling The Footer */

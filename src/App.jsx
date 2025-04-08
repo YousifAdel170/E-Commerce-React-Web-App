@@ -46,8 +46,8 @@ function App() {
   const [isUser, isAdmin] = ProtectedRouteHook();
   return (
     <div className="font">
-      <NavBarLogin />
       <BrowserRouter>
+        <NavBarLogin />
         <Routes>
           {/* General Routes */}
           <Route index element={<HomePage />} />

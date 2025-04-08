@@ -1,7 +1,13 @@
 /* eslint-disable react/prop-types */
+
+// Import Compontents from React Bootstrap and React Router Dom
 import { Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+// Import Custom CSS File
+import "./CartegoryCard.css";
+
+// Component Responsible for displaying the Specific Category Card
 const CartegoryCard = ({ background, img, title, id }) => {
   return (
     <Col
@@ -9,17 +15,19 @@ const CartegoryCard = ({ background, img, title, id }) => {
       sm="6"
       md="4"
       lg="2"
-      className="my-4 d-flex justify-content-around"
+      className="my-4 d-flex justify-content-around mx-auto"
     >
       <div
-        className="all-card mb-3"
+        className="category-card"
         style={{ backgroundColor: `${background}` }}
       >
-        <Link
-          to={`/products/category/${id}`}
-          style={{ textDecoration: "none" }}
-        >
-          <img src={img} className="categoty-card-img" alt="card-image" />
+        <Link to={`/products/category/${id}`}>
+          <img
+            src={img}
+            className="categoty-card-img"
+            alt={`Image of ${title} `}
+            title={`Image of ${title} `}
+          />
           <p className="categoty-card-text my-2">{title}</p>
         </Link>
       </div>

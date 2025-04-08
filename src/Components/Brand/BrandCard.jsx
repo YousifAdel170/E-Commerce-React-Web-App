@@ -1,9 +1,13 @@
 /* eslint-disable react/prop-types */
+
+// Import Components from React Bootstrap, React Router DOM
 import { Card, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+// Component responsible for displaying a single brand card
 const BrandCard = ({ img, id }) => {
   return (
+    // Card component to display the brand image
     <Col
       xs="6"
       sm="6"
@@ -21,7 +25,7 @@ const BrandCard = ({ img, id }) => {
         }}
         className="my-1"
       >
-        <Link to={`/products/brands/${id}`} style={{ textDecoration: "none" }}>
+        <Link to={`/products/brands/${id}`}>
           <Card.Img style={{ height: "151px", width: "100%" }} src={img} />
         </Link>
       </Card>
@@ -29,4 +33,5 @@ const BrandCard = ({ img, id }) => {
   );
 };
 
+// Export the BrandCard component for use in other components
 export default BrandCard;

@@ -1,41 +1,42 @@
+// Import Hooks from React, React Redux
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+// Import Actions from Redux
 import { getAllBrand } from "../../redux/actions/brandAction";
 
+// Hook Responsible for fetching and managing brand data
 const HomeBrandHook = () => {
-  // 0. Use Dispatch to tell that u will use actions from redux
+  // 1. Import useDispatch from react-redux to dispatch actions
   const dispatch = useDispatch();
 
-  // 1. select all the result of the page (All Brand) using useSelector
+  // 2. Import useSelector from react-redux to access the Redux store state
   const result = useSelector((state) => state.allBrand);
 
-  // 2. Fetch The Data From the First Page When the Page Loaded
+  // 3. useEffect to dispatch the action to fetch all brands when the component mounts
   useEffect(() => {
-    dispatch(getAllBrand(5));
+    // Dispatch the action to fetch all brands
+    const getData = async () => await dispatch(getAllBrand());
+
+    // Call the function to fetch data
+    getData();
   }, [dispatch]);
 
-  // 3. colors to be choosed randomly as background into the item
-  const colors = [
-    "#ffd3e8",
-    "#f4dba5",
-    "#55cfdf",
-    "#ff6262",
-    "#0034ff",
-    "#ffd3e8",
-  ];
-
+  // 4. Use useMemo to memoize the brands data and loading state
   const brands = useMemo(() => {
     if (result && result.brand && result.brand.data) return result.brand.data;
     else return [];
   }, [result]);
 
+  // 5. Use useMemo to memoize the loading state
   const loading = useMemo(() => {
     if (result && result.loading) return result.loading;
     else return false;
   }, [result]);
 
-  // 4. Return the Data To The JSX code
-  return [brands, loading, colors];
+  // 6. Return the brands data and loading state
+  return [brands, loading];
 };
 
+// 7. Export the HomeBrandHook for use in other components
 export default HomeBrandHook;
