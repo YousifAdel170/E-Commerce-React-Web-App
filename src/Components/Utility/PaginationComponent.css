@@ -1,0 +1,28 @@
+/* Start of styling Pagination Component */
+
+.page-link {
+  background-color: #f9f9f9 !important;
+  color: #272727 !important;
+  border: solid 1px #272727 !important;
+  margin: 0 5px;
+  border-radius: 4px !important;
+  -webkit-border-radius: 4px !important;
+  -moz-border-radius: 4px !important;
+  -ms-border-radius: 4px !important;
+  -o-border-radius: 4px !important;
+}
+.page-link:hover {
+  background-color: #272727 !important;
+  color: white !important;
+  border: solid 1px #272727 !important;
+}
+.page-item.active > .page-link,
+.page-link.active,
+.page-link:focus {
+  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25) !important;
+  background-color: #272727 !important;
+  color: white !important;
+  border: solid 1px #272727 !important;
+}
+
+/* End of styling Pagination Component */

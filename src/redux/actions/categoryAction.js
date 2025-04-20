@@ -12,7 +12,7 @@ import useDeleteData from "../../hooks/axios/useDeleteData";
 import { useUpdateDataWithImage } from "../../hooks/axios/useUpdateData";
 import { useInsertDataWithImage } from "../../hooks/axios/useInsertData";
 
-// Get All Items From the Categories with Specified Limit [First Page]
+// Get All Categories (First Page)
 export const getAllCategory = (limit) => async (dispatch) => {
   try {
     const result = await useGetData(`/api/v1/categories?limit=${limit}`);
@@ -23,12 +23,13 @@ export const getAllCategory = (limit) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "fetchAll",
     });
   }
 };
 
-// Get All Items From the Categories with Specified Limit [Specified Page]
+// Get All Categories (Specific Page)
 export const getAllCategoryInSelectedPage =
   (limit, page) => async (dispatch) => {
     try {
@@ -42,12 +43,13 @@ export const getAllCategoryInSelectedPage =
     } catch (e) {
       dispatch({
         type: GET_ERROR,
-        payload: "Error " + e,
+        payload: e.response?.data?.message || e.message || "Unknown error",
+        meta: "fetchAll",
       });
     }
   };
 
-// Add new Item To The API
+// Create a New Category
 export const createNewCategory = (formData) => async (dispatch) => {
   try {
     const result = await useInsertDataWithImage(`/api/v1/categories`, formData);
@@ -59,33 +61,34 @@ export const createNewCategory = (formData) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "create",
     });
-    Promise.reject(e);
+    return Promise.reject(e);
   }
 };
 
-// Get The Category by its ID
+// Get Specific Category by ID
 export const getSpecificCategory = (id) => async (dispatch) => {
   try {
     const result = await useGetData(`/api/v1/categories/${id}`);
     dispatch({
       type: GET_SPECIFIC_CATEGORY,
       payload: result,
-      loading: true,
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "fetchSpecific",
     });
   }
 };
 
-// Action To Delete Specific Category USing Its ID
+// Delete Category by ID
 export const deleteCategory = (id) => async (dispatch) => {
   try {
-    const response = await useDeleteData(`api/v1/categories/${id}`);
+    const response = await useDeleteData(`/api/v1/categories/${id}`);
     dispatch({
       type: DELETE_CATEGORY,
       payload: response,
@@ -93,12 +96,13 @@ export const deleteCategory = (id) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: e.response,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "delete",
     });
   }
 };
 
-// Action To Update Specific Category USing Its ID
+// Update Category by ID
 export const editCategory = (id, formatData) => async (dispatch) => {
   try {
     const response = await useUpdateDataWithImage(
@@ -112,7 +116,8 @@ export const editCategory = (id, formatData) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: e.response,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "update",
     });
   }
 };

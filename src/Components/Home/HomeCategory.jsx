@@ -9,17 +9,19 @@ import CartegoryCard from "../Category/CartegoryCard";
 import HomeCategoryHook from "../../hooks/category/HomeCategoryHook";
 
 // Import Config File for Constants
-import { CATEGORIES_TITLE, MORE_BUTTON_TITLE } from "../../config";
+import { CATEGORIES_TITLE, colors, MORE_BUTTON_TITLE } from "../../config";
 
 // Component Responsible for displaying the Home Page Categories
 const HomeCategory = () => {
   // Custom Hook to fetch the categories data
-  const [categories, loading, colors] = HomeCategoryHook();
+  const [categories, isLoading] = HomeCategoryHook();
+
+  // console.log("Category from Component: ", categories);
 
   // Get The Mode of the Application (Light or Dark) from the Redux Store
   const darkMode = 1;
 
-  // Apply the mode to the display the background color of the categories
+  // Apply the mode to display the background color of the categories
   const mode = darkMode ? "dark" : "light";
   return (
     // Main Container of the Home Category
@@ -31,34 +33,29 @@ const HomeCategory = () => {
         path={"all-categories"}
       />
 
-      {/* First 5 Items */}
+      {/* Check if the data is loading or not */}
       <Row className="my-2 d-flex justify-content-between flex-wrap">
-        {/* Check if the data is loading or not */}
-        {!loading ? (
-          // If the data is not loading, check if the categories exist
+        {!isLoading ? (
+          // Check if the categories data exists
           categories ? (
-            // If categories exist, map through the first 5 items and display them
-            categories
-              .slice(0, 5)
-              .map((item, index) => (
-                <CartegoryCard
-                  id={item._id}
-                  key={index}
-                  title={item.name}
-                  img={item.image}
-                  background={
-                    colors[mode][
-                      Math.floor(Math.random() * colors[mode].length)
-                    ]
-                  }
-                />
-              ))
+            // Map over the categories to display each category card
+            categories.map((item, index) => (
+              <CartegoryCard
+                id={item._id}
+                key={index}
+                title={item.name}
+                img={item.image}
+                background={
+                  colors[mode][Math.floor(Math.random() * colors[mode].length)]
+                }
+              />
+            ))
           ) : (
-            // If categories do not exist, display a message
+            // If the categories data is empty, show a message
             <h4>لا يوجد تصنيفات</h4>
           )
         ) : (
-          // If the data is loading, display a spinner
+          // If the data is loading, show a spinner
           <Spinner className="mx-auto" animation="border" variant="dark" />
         )}
       </Row>

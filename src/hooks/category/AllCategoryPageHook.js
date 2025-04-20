@@ -1,50 +1,64 @@
-import { useEffect, useMemo } from "react";
+// Import Hooks, Dispatch and Selector from React and Redux
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+// Import Actions from Redux to Fetch Data, Get All Categories and Get All Categories in Selected Page
 import {
   getAllCategory,
   getAllCategoryInSelectedPage,
 } from "../../redux/actions/categoryAction";
+import { PAGE_CATEGORIES_LIMIT } from "../../config";
 
+// Hook Responsible for fetching all categories and managing pagination
 const AllCategoryPageHook = () => {
-  // 0. Use Dispatch to tell that u will use actions from redux
+  // 1. Dispatch to dispatch the action to the redux store
   const dispatch = useDispatch();
 
-  // 1. select all the result of the page (All Categories) using useSelector
-  const result = useSelector((state) => state.allCategory);
+  // 2. Selector to get the data from the redux store, loading state and page count
+  const { category, loading } = useSelector((state) => state.allCategory);
 
-  // 2. Fetch The Data From the First Page When the Page Loaded
+  // 3. Local state to manage the loading state of the component
+  const [isLoading, setLoading] = useState(true);
+
+  // 4. Fetch categories data when the component mounts
   useEffect(() => {
-    const getData = async () => {
-      await dispatch(getAllCategory(7));
-    };
+    // Fetch the Data from the Api Only If Not Already Loaded
+    const getData = async () =>
+      await dispatch(getAllCategory(PAGE_CATEGORIES_LIMIT));
 
+    // Call the function to fetch categories data
     getData();
   }, [dispatch]);
 
+  // 5. Memoize the categories data to avoid unnecessary re-renders
+  const categoriesData = useMemo(() => {
+    if (category) return category.data;
+    else [];
+  }, [category]);
+
+  // 6. Memoize the page count to avoid unnecessary re-renders
   const pageCount = useMemo(() => {
-    if (result && result.category && result.category.paginationResult)
-      return result.category.paginationResult.numberOfPages;
-    else return 0;
-  }, [result]);
+    if (category && category.paginationResult)
+      return category.paginationResult.numberOfPages;
+    else 0;
+  }, [category]);
 
-  const categories = useMemo(() => {
-    if (result && result.category && result.category.data)
-      return result.category.data;
-    else return [];
-  }, [result]);
+  // 7. Effect to set the loading state based on the loading state from redux
+  useEffect(() => {
+    if (!loading?.fetchAll) setLoading(false);
+    else setLoading(true);
+  }, [loading]);
 
-  const loading = useMemo(() => {
-    if (result && result.loading) return result.loading;
-    else return false;
-  }, [result]);
-
-  // 5. Fetch the Data from the Api That in the Selected Page
+  // 8. Function to fetch categories data in the selected page
   const getSelectedPageNumber = async (selectedPage) => {
-    await dispatch(getAllCategoryInSelectedPage(7, selectedPage));
+    await dispatch(
+      getAllCategoryInSelectedPage(PAGE_CATEGORIES_LIMIT, selectedPage)
+    );
   };
 
-  // 6. Return the Data To The JSX code
-  return [categories, loading, pageCount, getSelectedPageNumber];
+  // 9. Fetch categories data only once when the component mounts
+  return [categoriesData, isLoading, pageCount, getSelectedPageNumber];
 };
 
+// Exporting the AllCategoryPageHook
 export default AllCategoryPageHook;

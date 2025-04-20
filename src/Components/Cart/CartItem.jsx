@@ -7,6 +7,8 @@ import DeleteCartHook from "../../hooks/cart/DeleteCartHook";
 import { ToastContainer } from "react-toastify";
 import UpdateCartHook from "../../hooks/cart/UpdateCartHook";
 
+import "./CartItem.css";
+
 const CartItem = ({ item }) => {
   const [
     ,
@@ -130,7 +132,7 @@ const CartItem = ({ item }) => {
         <Row>
           <Col sm="12" className="mt-1">
             <div className="cat-text d-inline">الماركة :</div>
-            <div className="barnd-text d-inline mx-1">
+            <div className="brand-text d-inline mx-1">
               {item && item.product && item.product.brand
                 ? item.product.brand.name
                 : ""}
@@ -167,7 +169,7 @@ const CartItem = ({ item }) => {
                 تطبيق
               </Button>
             </div>
-            <div className="d-inline pt-2 barnd-text">
+            <div className="d-inline pt-2 brand-text">
               {item ? item.price : 0} جنية
             </div>
           </Col>

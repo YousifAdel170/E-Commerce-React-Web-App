@@ -1,12 +1,24 @@
+// Import Components from React bootstrap
 import { Row, Container, Col } from "react-bootstrap";
+
+// Import Custom Components
 import CartItem from "../../Components/Cart/CartItem";
 import CartCheckout from "../../Components/Cart/CartCheckout";
+
+// Import Custom Hook
 import ViewAllCartItemsHook from "../../hooks/cart/ViewAllCartItemsHook";
+
+// Import Custom Style
+import "./CartPage.css";
+
+// Page responsible To handle The Cart
 const CartPage = () => {
-  const [, cartItems, totalCartPrice, couponName, totalCartPriceAfterDisc] =
+  const [, , cartItems, totalCartPrice, couponName, totalCartPriceAfterDisc] =
     ViewAllCartItemsHook();
+
+  console.log(cartItems);
   return (
-    <Container style={{ minHeight: "670px" }}>
+    <Container>
       <Row>
         <div className="cart-title mt-4">عربة التسوق</div>
       </Row>

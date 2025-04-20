@@ -1,7 +1,15 @@
+// Import Components from react-bootstrap
 import { Row } from "react-bootstrap";
+
+// Import Custom Hooks
 import SidebarSearchHook from "../../hooks/search/SidebarSearchHook";
 
+// Import CSS Styles
+import "./SideFilter.css";
+
+// Component Responsible for rendering the sidebar filter options for categories, brands, and price range
 const SideFilter = () => {
+  // Get The Category and Brand Data From Hooks
   const [
     categoriesData,
     brandsData,
@@ -11,12 +19,12 @@ const SideFilter = () => {
     priceToUpdate,
   ] = SidebarSearchHook();
 
+  // Get Price from local storage and set it to the local variables
   let localFrom = localStorage.getItem("priceFrom");
   let localTo = localStorage.getItem("priceTo");
   return (
     <div className="mt-3">
       <Row>
-        {/* Categories */}
         <div className="d-flex flex-column mt-2">
           <div className="filter-title">الفئة</div>
           <div className="d-flex mt-3">
@@ -24,6 +32,7 @@ const SideFilter = () => {
             <div className="filter-sub me-2">الكل</div>
           </div>
 
+          {/* Check if categoriesData is available and map through it */}
           {categoriesData ? (
             categoriesData.map((item, index) => (
               <div key={index} className="d-flex mt-2">
@@ -40,13 +49,14 @@ const SideFilter = () => {
           )}
         </div>
 
-        {/* Brands */}
         <div className="d-flex flex-column mt-2">
           <div className="filter-title">الماركة</div>
           <div className="d-flex mt-3">
             <input onChange={clickBrand} type="checkbox" value="0" />
             <div className="filter-sub me-2">الكل</div>
           </div>
+
+          {/* Check if brandsData is available and map through it */}
           {brandsData ? (
             brandsData.map((item, index) => (
               <div key={index} className="d-flex mt-3">
@@ -89,4 +99,5 @@ const SideFilter = () => {
   );
 };
 
+// Export the SideFilter component as default
 export default SideFilter;

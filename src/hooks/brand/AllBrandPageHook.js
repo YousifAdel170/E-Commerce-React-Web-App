@@ -1,45 +1,57 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllBrand,
   getAllBrandInSelectedPage,
 } from "../../redux/actions/brandAction";
+import { PAGE_BRANDS_LIMIT } from "../../config";
 
 const AllBrandPageHook = () => {
   // 0. Use Dispatch to tell that u will use actions from redux
   const dispatch = useDispatch();
 
   // 1. select all the result of the page (All Brands) using useSelector
-  const result = useSelector((state) => state.allBrand);
+  const { brand, loading } = useSelector((state) => state.allBrand);
 
-  // 2. Fetch The Data From the First Page When the Page Loaded
+  // 2. Local state to manage the loading state of the component
+  const [isLoading, setLoading] = useState(true);
+
+  // 3. Fetch The Data From the First Page When the Page Loaded
   useEffect(() => {
-    dispatch(getAllBrand(2));
+    // Function to fetch the data from the API only if not already loaded
+    const getData = async () => await dispatch(getAllBrand(PAGE_BRANDS_LIMIT));
+
+    // Call the function to fetch brands data
+    getData();
   }, [dispatch]);
 
+  // 4. Memoize the brands data to avoid unnecessary re-renders
   const pageCount = useMemo(() => {
-    if (result && result.brand && result.brand.paginationResult)
-      return result.brand.paginationResult.numberOfPages;
+    if (brand && brand.paginationResult)
+      return brand.paginationResult.numberOfPages;
     else return 0;
-  }, [result]);
+  }, [brand]);
 
-  // 5. Fetch the Data from the Api That in the Selected Page
+  // 5. update the loading state based on the loading state from redux
+  useEffect(() => {
+    if (!loading?.fetchAll) setLoading(false);
+    else setLoading(true);
+  }, [loading]);
+
+  // 6. Function to fetch brands data in the selected page
   const getSelectedPageNumber = (selectedPage) => {
     dispatch(getAllBrandInSelectedPage(2, selectedPage));
   };
 
-  const brands = useMemo(() => {
-    if (result && result.brand && result.brand.data) return result.brand.data;
+  // 7. Memoize the brands data to avoid unnecessary re-renders
+  const brandsData = useMemo(() => {
+    if (brand) return brand.data;
     else return [];
-  }, [result]);
+  }, [brand]);
 
-  const loading = useMemo(() => {
-    if (result && result.loading) return result.loading;
-    else return false;
-  }, [result]);
-
-  // 6. Return the Data To The JSX code
-  return [brands, loading, pageCount, getSelectedPageNumber];
+  // 8. Fetch brands data only once when the component mounts
+  return [brandsData, isLoading, pageCount, getSelectedPageNumber];
 };
 
+// 9. Export the hook to use it in the component
 export default AllBrandPageHook;

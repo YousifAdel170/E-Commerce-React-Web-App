@@ -7,6 +7,7 @@ import { getAllProducts } from "../../redux/actions/productsAction";
 
 // Import Custom Hooks To Detect Internet Connection
 import internetDetect from "../Utility/useInternetConnectionHook";
+import { PAGE_PRODUCTS_HOME_LIMIT } from "../../config";
 
 // Hook Responsible for fetching the products data and returning it to the component
 const ViewHomeProductsHook = () => {
@@ -19,9 +20,8 @@ const ViewHomeProductsHook = () => {
     internetDetect();
 
     // Function to fetch the products data
-    const getData = async () => {
-      await dispatch(getAllProducts());
-    };
+    const getData = async () =>
+      await dispatch(getAllProducts(PAGE_PRODUCTS_HOME_LIMIT));
 
     // Call the function to fetch the products data
     getData();

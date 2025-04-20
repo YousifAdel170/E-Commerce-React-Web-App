@@ -1,18 +1,33 @@
 /* eslint-disable react/prop-types */
-import sort from "../../Assets/Imgs/sort.png";
+
+// Import Used Components
 import UnopDropdown from "unop-react-dropdown";
 
+// Import Assets
+import sort from "../../Assets/Imgs/sort.png";
+
+// Import Configuartions
+import { seachCountResultFilter } from "../../config";
+
+import "./SearchCountResult.css";
+
+// Component Responsible for displaying the search count result and sorting options
 const SearchCountResult = ({ title, onClickGetProduct }) => {
+  // Function to handle the appearance and disappearance of the dropdown
   const handler = () => {};
 
+  // Function to handle the click event on sorting options
   const clickMe = (key) => {
     localStorage.setItem("sortType", key);
     onClickGetProduct();
   };
   return (
     <div className="d-flex justify-content-between pt-3 px-2">
+      {/* Display the title of the search result */}
       <div className="sub-title">{title}</div>
+
       <div className="search-count-text d-flex">
+        {/* Dropdown for sorting options */}
         <UnopDropdown
           onAppear={handler}
           onDisappearStart={handler}
@@ -23,7 +38,7 @@ const SearchCountResult = ({ title, onClickGetProduct }) => {
                 height={"20px"}
                 className="ms-2"
                 src={sort}
-                alt="Sort Img"
+                alt="Sort Image"
               />
               ترتيب حسب
             </>
@@ -33,40 +48,17 @@ const SearchCountResult = ({ title, onClickGetProduct }) => {
           hover
         >
           <div className="card-filter">
-            <div
-              onClick={() => clickMe("")}
-              className="border-bottom card-filter-item"
-            >
-              بدون ترتيب
-            </div>
-
-            <div
-              onClick={() => clickMe("الاكثر مبيعا")}
-              className="border-bottom card-filter-item"
-            >
-              الاكثر مبيعا
-            </div>
-
-            <div
-              onClick={() => clickMe("الاعلي تقييما")}
-              className="border-bottom card-filter-item"
-            >
-              الاعلي تقييما
-            </div>
-
-            <div
-              onClick={() => clickMe("السعر من الاقل للاعلي")}
-              className="border-bottom card-filter-item"
-            >
-              السعر من الاقل للاعلي
-            </div>
-
-            <div
-              onClick={() => clickMe("السعر من الاعلي للاقل")}
-              className="card-filter-item"
-            >
-              السعر من الاعلي للاقل
-            </div>
+            {seachCountResultFilter
+              ? seachCountResultFilter.map((search, index) => (
+                  <div
+                    key={index}
+                    className={search.style}
+                    onClick={() => clickMe(search.click)}
+                  >
+                    {search.title}
+                  </div>
+                ))
+              : null}
           </div>
         </UnopDropdown>
       </div>
@@ -74,4 +66,5 @@ const SearchCountResult = ({ title, onClickGetProduct }) => {
   );
 };
 
+// Exporting the SearchCountResult component to be used in other parts of the application
 export default SearchCountResult;

@@ -1,8 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
+// Import Hooks from React
 import { useEffect, useState } from "react";
+
+// Import Used Custom Hooks
 import ViewSearchProductHook from "../products/ViewSearchProductHook";
 
+// Hook Responsible To Handle The Search Bar in the NavBar
 const NavbarSearchHook = () => {
+  // States for the search word and the products
   const [, , , getProduct] = ViewSearchProductHook();
 
   const [searchWord, setSearchWord] = useState(

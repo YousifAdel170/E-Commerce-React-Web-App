@@ -6,11 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { viewAllWishList } from "../../../redux/actions/wishListAction";
 
 // Custom Hook for Product Card Container to get all favorite products
-const ProductCardContainerHook = () => {
+const ViewAllWishListHook = () => {
   // 1. Import the useDispatch hook from react-redux
   const dispatch = useDispatch();
-
-  // States
 
   // 2. Select the favorite products from the Redux store
   const result = useSelector((state) => state.wishListReducer.viewAllWishList);
@@ -21,12 +19,12 @@ const ProductCardContainerHook = () => {
     const getFavoriteProducts = async () => await dispatch(viewAllWishList());
 
     // Get all favorite products
-    getFavoriteProducts();
+    setTimeout(() => getFavoriteProducts(), 300);
   }, [dispatch]);
 
   // 4. UseMemo to map the result to get the favorite products IDs
   const favoriteProducts = useMemo(() => {
-    if (result && result.data && result.data.length >= 1)
+    if (result && result.data && result.data.length)
       return result.data.map((item) => item._id);
     else return [];
   }, [result]);
@@ -36,4 +34,4 @@ const ProductCardContainerHook = () => {
 };
 
 // Export the custom hook
-export default ProductCardContainerHook;
+export default ViewAllWishListHook;

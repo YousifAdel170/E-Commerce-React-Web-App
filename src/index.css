@@ -39,42 +39,6 @@ input:focus::placeholder {
   height: 80vh;
 }
 
-.categoty-card {
-  height: 140px;
-  width: 100%;
-  border-radius: 50%;
-  opacity: 0.3;
-}
-
-/* card filter style */
-.search-count-text {
-  color: #979797;
-  font-family: "Almarai";
-  font-size: 16px;
-  font-weight: bold;
-  letter-spacing: 0;
-  line-height: 20px;
-  text-align: right;
-}
-.card-filter {
-  background-color: #ffffff;
-  border-radius: 10px;
-  padding: 15px;
-  width: 170px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-}
-
-.card-filter-item {
-  font-size: 12px;
-  font-weight: 400;
-  padding: 10px;
-}
-.card-filter-item:hover {
-  background-color: #272727;
-  color: #ffffff;
-}
-/* end card filter */
-
 /* products details page */
 .product-gallary-card {
   height: 470px !important;
@@ -83,46 +47,6 @@ input:focus::placeholder {
   background-color: #ffffff;
 }
 
-.cat-text {
-  color: #979797;
-  font-family: "Almarai";
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 0;
-  text-align: right;
-}
-
-.cat-title {
-  color: #555550;
-  font-family: Almarai;
-  font-size: 14px;
-  font-weight: normal;
-  text-align: right;
-}
-
-.cat-rate {
-  color: #ffc107;
-  font-family: "Almarai";
-  font-size: 14px;
-  font-weight: bold;
-  text-align: right;
-}
-
-.barnd-text {
-  color: #555550;
-  font-family: "Almarai";
-  font-size: 18px;
-  font-weight: bold;
-  letter-spacing: 0;
-  line-height: 24px;
-}
-
-.color {
-  cursor: pointer;
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
 .product-description {
   color: #555550;
   font-family: Cairo;
@@ -168,57 +92,6 @@ input:focus::placeholder {
   border-radius: 29px;
 }
 /* end gallary */
-/* end products page */
-
-/* pagination */
-.page-link {
-  background-color: #f9f9f9 !important;
-  color: #272727 !important;
-  border: solid 1px #272727 !important;
-  margin: 0 5px;
-  border-radius: 4px !important;
-  -webkit-border-radius: 4px !important;
-  -moz-border-radius: 4px !important;
-  -ms-border-radius: 4px !important;
-  -o-border-radius: 4px !important;
-}
-.page-link:hover {
-  background-color: #272727 !important;
-  color: white !important;
-  border: solid 1px #272727 !important;
-}
-.page-item.active > .page-link,
-.page-link.active,
-.page-link:focus {
-  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25) !important;
-  background-color: #272727 !important;
-  color: white !important;
-  border: solid 1px #272727 !important;
-}
-/* end pagination */
-
-/* category header */
-.cat-header {
-  height: 100%;
-  background-color: white;
-}
-
-.cat-text-header {
-  color: #979797;
-  font-family: "Almarai";
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 0;
-  line-height: 23px;
-  padding-top: 10px;
-  margin-left: 17px;
-  cursor: pointer;
-}
-.cat-text-header:hover {
-  color: #555550;
-}
-
-/* end categoery header */
 
 /* login and register style */
 
@@ -253,24 +126,7 @@ input:focus::placeholder {
 /* end login and register */
 
 /* cart page */
-.cart-title {
-  color: #555550;
-  font-family: Almarai;
-  font-size: 21px;
-  font-weight: 800;
-  letter-spacing: 0;
-  line-height: 28px;
-  text-align: right;
-}
-.cart-item-body {
-  width: 100%;
-  border-radius: 20px;
-  background-color: #ffffff;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  -ms-border-radius: 20px;
-  -o-border-radius: 20px;
-}
+
 .copon-input {
   box-sizing: border-box;
   height: 46px;
@@ -485,26 +341,6 @@ input:focus::placeholder {
   box-shadow: 0 1px 2px 0 rgba(151, 151, 151, 0.5);
 }
 /* end user data */
-
-/* filter side style */
-.filter-title {
-  color: #555550;
-  font-family: "Almarai";
-  font-size: 16px;
-  font-weight: bold;
-  letter-spacing: 0;
-  line-height: 20px;
-  text-align: right;
-}
-.filter-sub {
-  color: #555550;
-  font-family: "Almarai";
-  font-size: 12px;
-  letter-spacing: 0;
-  line-height: 17px;
-  text-align: center;
-}
-/* end filter */
 
 /* Start Of Upload Image Style  */
 #upload-photo {

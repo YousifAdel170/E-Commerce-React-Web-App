@@ -1,58 +1,21 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllCartItems } from "../../redux/actions/cartAction";
+// Import Hooks from react redux
+import { useSelector } from "react-redux";
 
+// Hook Responsible to select cart from redux
 const ViewAllCartItemsHook = () => {
-  const dispatch = useDispatch();
-
-  const [loading, setLoading] = useState(true);
-  const [numberOfItems, setNumberOfItems] = useState(0);
-  const [cartItems, setCartItems] = useState([]);
-  const [totalCartPrice, setTotalCartPrice] = useState(0);
-  const [cartID, setCartID] = useState("0");
-
-  const [couponName, setCouponName] = useState("");
-  const [totalCartPriceAfterDisc, setTotalCartPriceAfterDisc] = useState(0);
-
-  useEffect(() => {
-    const getData = async () => {
-      setLoading(true);
-      await dispatch(getAllCartItems());
-      setLoading(false);
-    };
-
-    getData();
-  }, [dispatch]);
-
   const result = useSelector((state) => state.cartReducer.allCartItems);
 
-  useEffect(() => {
-    if (!loading) {
-      if (result && result.status === "success") {
-        setNumberOfItems(result.numOfCartItems);
-        setCartItems(result.data.products);
-        setTotalCartPrice(result.data.totalCartPrice);
-        setCartID(result.data._id);
+  const loading = !result || result.status !== "success";
 
-        if (result.data.coupon) setCouponName(result.data.coupon);
-        else setCouponName("");
-
-        if (result.data.totalAfterDiscount)
-          setTotalCartPriceAfterDisc(result.data.totalAfterDiscount);
-        else setTotalCartPriceAfterDisc("");
-      } else {
-        setCouponName("");
-        setTotalCartPriceAfterDisc("");
-        setNumberOfItems(0);
-        setCartItems([]);
-        setTotalCartPrice(0);
-        setCartID("0");
-      }
-    }
-  }, [loading]);
+  const numberOfItems = result?.numOfCartItems || 0;
+  const cartItems = result?.data?.products || [];
+  const totalCartPrice = result?.data?.totalCartPrice || 0;
+  const cartID = result?.data?._id || "0";
+  const couponName = result?.data?.coupon || "";
+  const totalCartPriceAfterDisc = result?.data?.totalAfterDiscount || "";
 
   return [
+    loading,
     numberOfItems,
     cartItems,
     totalCartPrice,

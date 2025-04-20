@@ -22,13 +22,17 @@ import cart from "../../Assets/Imgs/cart.png";
 
 // Import The Used CSS
 import "./NavBarLogin.css";
+import FetchCartDataHook from "../../hooks/cart/FetchCartDataHook";
 
 // Component Responsible To Display The NavBar For The Login User
 const NavBarLogin = () => {
   // Custom Hooks
   const [searchWord, onChangeSearch] = NavbarSearchHook();
   const [user, logOut] = NavBarLoginHook();
-  const [numberOfItems] = ViewAllCartItemsHook();
+
+  FetchCartDataHook();
+
+  const [, numberOfItems] = ViewAllCartItemsHook();
   return (
     <Navbar className="sticky-top" bg="dark" variant="dark" expand="sm">
       <Container clsassName="d-flex justify-content-between align-items-center">

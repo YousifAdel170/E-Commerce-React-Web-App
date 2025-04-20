@@ -1,10 +1,17 @@
 /* eslint-disable react/prop-types */
+
+// Import Pagintaion from React-Paginate
 import ReactPaginate from "react-paginate";
 
-// const PaginationComponent = ({ pageCount }) => {
+// Import Custom CSS for the Pagination Component
+import "./PaginationComponent.css";
+
+// Component Responsible for displaying the Pagination Component
 const PaginationComponent = ({ pageCount, onPress }) => {
-  // Get The Clicked Page
+  // Function to handle the page click event
   const handlePageClick = (data) => onPress(data.selected + 1);
+
+  // Return the Pagination Component
   return (
     <ReactPaginate
       breakLabel="..."
@@ -30,4 +37,5 @@ const PaginationComponent = ({ pageCount, onPress }) => {
   );
 };
 
+// Exporting the PaginationComponent Component
 export default PaginationComponent;

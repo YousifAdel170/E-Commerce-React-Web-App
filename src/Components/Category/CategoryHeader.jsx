@@ -1,8 +1,18 @@
+// Import Components from React Bootstrap
 import { Col, Container, Row } from "react-bootstrap";
-import AllCategoryPageHook from "../../hooks/category/AllCategoryPageHook";
+
+// Import Link from React Router DOM
 import { Link } from "react-router-dom";
 
+// Import custom hook to fetch categories
+import AllCategoryPageHook from "../../hooks/category/AllCategoryPageHook";
+
+// Import CSS styles
+import "./CategoryHeader.css";
+
+// Component Responsible for displaying the header of categories
 const CategoryHeader = () => {
+  // Fetch categories using custom hook
   const [categories] = AllCategoryPageHook();
 
   return (

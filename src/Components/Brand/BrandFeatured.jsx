@@ -25,12 +25,10 @@ const BrandFeatured = ({ title, btnTitle }) => {
       <Row className="my-2 d-flex justify-content-between">
         {/* Check if loading is false and brands array has items */}
         {!loading ? (
-          brands.length > 0 ? (
-            brands
-              .slice(0, 5)
-              .map((item) => (
-                <BrandCard key={item._id} id={item._id} img={item.image} />
-              ))
+          brands ? (
+            brands.map((item) => (
+              <BrandCard key={item._id} id={item._id} img={item.image} />
+            ))
           ) : (
             <h4>لا يوجد ماركات</h4>
           )

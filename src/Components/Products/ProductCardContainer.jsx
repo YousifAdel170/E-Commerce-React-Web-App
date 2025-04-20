@@ -8,17 +8,19 @@ import SubTitle from "../Utility/SubTitle";
 import ProductCard from "./ProductCard";
 
 // Import Custom Hook to get the favorite products
-import ProductCardContainerHook from "../../hooks/products/wishList/ProductCardContainerHook";
+import ViewAllWishListHook from "../../hooks/products/wishList/ViewAllWishListHook";
 
 // Component responsible for displaying the product cards in a container
 const ProductCardContainer = ({ title, btnTitle, path, products }) => {
   // Custom Hook to get the favorite products
-  const [favoriteProducts] = ProductCardContainerHook();
+  const [favoriteProducts] = ViewAllWishListHook();
   return (
     //  Main Container of the Product Card
     <Container>
       {/* SubTitle Component */}
       <SubTitle title={title} btnTitle={btnTitle} path={path} />
+
+      {/* Check if the products exist */}
       <Row className="my-2 d-flex">
         {/* Map through the products and display each product card */}
         {products

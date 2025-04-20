@@ -1,14 +1,20 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+// Import Hooks From React,  React Redux
 import { useDispatch, useSelector } from "react-redux";
+
+import { useMemo } from "react";
+
+// Import The Used Actions From Redux
 import {
-  getAllProducts,
+  // getAllProducts,
   getAllProductsSearch,
 } from "../../redux/actions/productsAction";
-import internetDetect from "../Utility/useInternetConnectionHook";
-import { useEffect, useMemo } from "react";
+
+// Import The Used Config
 import { PAGE_PRODUCTS_LIMIT } from "../../config";
 
+// Hook Responsible for fetching and managing the products data after searching
 const ViewSearchProductHook = () => {
+  // Define the variables to store the data from the local storage
   let priceFromString = "",
     priceToString = "",
     word = "",
@@ -19,7 +25,7 @@ const ViewSearchProductHook = () => {
     sortType = "",
     sort;
 
-  // Functions To Get All The Data From the Local Storage
+  // Function to get the searched word and other filters from local storage
   const getStorge = () => {
     // Get The searched word if there from the localstorage
     if (localStorage.getItem("searchedWord") != null)
@@ -50,13 +56,14 @@ const ViewSearchProductHook = () => {
     else priceToString = `&price[lte]=${priceTo}`;
   };
 
-  // Function of Getting the way of the sorting
+  // Function to get the sort type from local storage and set the sort variable
   const sortData = () => {
-    // Get All Sort Type From the Local Storage
+    // Get The sort type if there from the localstorage
     if (localStorage.getItem("sortType") !== null)
       sortType = localStorage.getItem("sortType");
     else sortType = "";
 
+    // Check the sort type and set the sort variable to the value of the sort type
     if (sortType === "السعر من الاقل للاعلي") sort = "+price";
     else if (sortType === "السعر من الاعلي للاقل") sort = "-price";
     else if (sortType === "") sort = "";
@@ -82,21 +89,12 @@ const ViewSearchProductHook = () => {
     );
   };
 
-  // Fetch Products only once when the component mounts
-  useEffect(() => {
-    // Check the internet Connection
-    internetDetect();
-
-    // Dispatch All the Products with specific limit
-    dispatch(getAllProducts(PAGE_PRODUCTS_LIMIT));
-  }, []);
-
   // Select Products from Redux
   const products = useSelector((state) => state.allProduct.viewProducts);
 
   //   To Get The Data
   const items = useMemo(() => {
-    if (products && products.data) return products.data;
+    if (products) return products.data;
     else return [];
   }, [products]);
 
@@ -109,7 +107,7 @@ const ViewSearchProductHook = () => {
 
   //   To Get The number of results [products] after the search
   const results = useMemo(() => {
-    if (products && products.results) return products.results;
+    if (products) return products.results;
     else return 0;
   }, [products]);
 
@@ -129,7 +127,9 @@ const ViewSearchProductHook = () => {
     );
   };
 
+  // Return The Data To be used in the component
   return [items, pageCount, onPress, getProduct, results];
 };
 
+// Exporting The ViewSearchProductHook to be used in other components
 export default ViewSearchProductHook;

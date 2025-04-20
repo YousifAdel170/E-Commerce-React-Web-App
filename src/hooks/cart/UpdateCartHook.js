@@ -1,10 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
+// Import Hooks From react, react-redux
 import { useEffect, useState } from "react";
-import { updateCartSpecificItem } from "../../redux/actions/cartAction";
 import { useDispatch } from "react-redux";
+
+// Import Custom Hooks
 import notify from "../Utility/useNotifyHook";
-import { SUCCESS, WARNING } from "../../config";
 import ViewProductDetailsHook from "../products/ViewProductDetailsHook";
+
+// Import Custom Actions
+import { updateCartSpecificItem } from "../../redux/actions/cartAction";
+
+// Import Used Configuration for toastify notification
+import { SUCCESS, WARNING } from "../../config";
 
 const UpdateCartHook = (item) => {
   const dispatch = useDispatch();

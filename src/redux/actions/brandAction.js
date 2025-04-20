@@ -23,7 +23,8 @@ export const getAllBrand = (limit) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "fetchAll",
     });
   }
 };
@@ -41,7 +42,8 @@ export const getAllBrandInSelectedPage = (limit, page) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "fetchAll",
     });
   }
 };
@@ -58,7 +60,8 @@ export const createNewBrand = (formData) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "create",
     });
     Promise.reject(e);
   }
@@ -76,7 +79,8 @@ export const getSpecificBrand = (id) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "fetchSpecific",
     });
   }
 };
@@ -92,7 +96,8 @@ export const deleteBrand = (id) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: e.response,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "delete",
     });
   }
 };
@@ -111,7 +116,8 @@ export const editBrand = (id, formatData) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: e.response,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "update",
     });
   }
 };

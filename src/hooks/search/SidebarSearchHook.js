@@ -1,108 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useDispatch, useSelector } from "react-redux";
-import ViewSearchProductHook from "../products/ViewSearchProductHook";
+
+// Import Hooks From React,  React Redux
 import { useEffect, useMemo, useRef, useState } from "react";
-import { getAllCategory } from "../../redux/actions/categoryAction";
+import { useDispatch, useSelector } from "react-redux";
+
+// Import Custom Hooks
+import ViewSearchProductHook from "../products/ViewSearchProductHook";
+
+// Import Custom Actions
 import { getAllBrand } from "../../redux/actions/brandAction";
 
+// Import Configuration
+import { PAGE_BRANDS_LIMIT } from "../../config";
+
+// Hook Responsible for managing the sidebar search functionality
 const SidebarSearchHook = () => {
+  // Get The Searched Word and other filters from local storage
   const [, , , getProduct] = ViewSearchProductHook();
-  // UseRef to persist query values without causing re-renders
+
+  // Define the variables to store the data from the local storage
   const queryCategoryRef = useRef("");
   const queryBrandRef = useRef("");
 
-  // State to Get The Checked Categories
-  const [categoryChecked, setCategoryChecked] = useState([]);
-
-  // State to Get The Checked Brands
-  const [brandChecked, setBrandChecked] = useState([]);
-
-  // Use Dispatch to tell that u will use actions from redux
+  // Dispatch function to dispatch actions to the Redux store
   const dispatch = useDispatch();
 
-  // Fetch All The Categories and the brands at the beginning
-  useEffect(() => {
-    const dispatchData = async () => {
-      // Dispatch All Categories [to be displayed for the user to select it for the search]
-      await dispatch(getAllCategory());
-
-      // Dispatch All Brands [to be displayed for the user to select it for the search]
-      await dispatch(getAllBrand());
-    };
-
-    dispatchData();
-  }, []);
-
-  // Select The Categories & Brands From Redux
-  const category = useSelector((state) => state.allCategory.category);
-  const brand = useSelector((state) => state.allBrand.brand);
-
-  // To Get The Categories Data
-  const categoriesData = useMemo(() => {
-    if (category && category.data) return category.data;
-    else return [];
-  }, [category]);
-
-  // To Get The Brands Data
-  const brandsData = useMemo(() => {
-    if (brand && brand.data) return brand.data;
-    else return [];
-  }, [brand]);
-
-  //   When User Press Any Category
-  const clickCategory = (e) => {
-    let value = e.target.value;
-    if (value === "0") setCategoryChecked([]);
-    else {
-      if (e.target.checked) setCategoryChecked([...categoryChecked, value]);
-      else {
-        const newArray = categoryChecked.filter((e) => e !== value);
-
-        setCategoryChecked(newArray);
-      }
-    }
-  };
-
-  //   When User Press Any Brand
-  const clickBrand = (e) => {
-    let value = e.target.value;
-    if (value === "0") setBrandChecked([]);
-    else {
-      if (e.target.checked) setBrandChecked([...brandChecked, value]);
-      else {
-        const newArray = brandChecked.filter((e) => e !== value);
-        setBrandChecked(newArray);
-      }
-    }
-  };
-
-  // Set The Query of categories checked
-  useEffect(() => {
-    queryCategoryRef.current = categoryChecked
-      .map((val) => `category[in][]=${val}`)
-      .join("&");
-
-    localStorage.setItem("categoryChecked", queryCategoryRef.current);
-
-    setTimeout(() => {
-      getProduct();
-    }, 1000);
-  }, [categoryChecked]);
-
-  // Set The Query of brands checked
-  useEffect(() => {
-    queryBrandRef.current = brandChecked
-      .map((val) => `brand[in][]=${val}`)
-      .join("&");
-
-    localStorage.setItem("brandChecked", queryBrandRef.current);
-
-    setTimeout(() => {
-      getProduct();
-    }, 1000);
-  }, [brandChecked]);
-
-  // States to update the price from -> to
+  // States to manage the checked categories, brands and  price range
+  const [categoryChecked, setCategoryChecked] = useState([]);
+  const [brandChecked, setBrandChecked] = useState([]);
   const [priceFromData, setPriceFromData] = useState(0);
   const [priceToData, setPriceToData] = useState(0);
 
@@ -118,13 +43,93 @@ const SidebarSearchHook = () => {
     setPriceToData(e.target.value);
   };
 
-  // Get The Product after all the search being handled
+  // Useeffect to fetch all brands when the component mounts
   useEffect(() => {
-    setTimeout(() => {
-      getProduct();
-    }, 1000);
-  }, [priceFromData, priceToData]);
+    // Function to dispatch the action to get all brands
+    const dispatchData = async () => {
+      await dispatch(getAllBrand(PAGE_BRANDS_LIMIT));
+    };
 
+    // Call the dispatch function
+    dispatchData();
+  }, []);
+
+  // Get The Category and Brand Data From Redux Store
+  const category = useSelector((state) => state.allCategory.category);
+  const brand = useSelector((state) => state.allBrand.brand);
+
+  // To Get The Categories Data
+  const categoriesData = useMemo(() => {
+    if (category) return category.data;
+    else return [];
+  }, [category]);
+
+  // To Get The Brands Data
+  const brandsData = useMemo(() => {
+    if (brand) return brand.data;
+    else return [];
+  }, [brand]);
+
+  // When User Press Any Category
+  const clickCategory = (e) => {
+    // Get the value of the clicked category
+    let value = e.target.value;
+
+    // If the value is "0", clear all checked categories
+    if (value === "0") setCategoryChecked([]);
+    // If the value is not "0", check if the checkbox is checked or unchecked
+    else {
+      // If the checkbox is checked, add the value to the categoryChecked array
+      if (e.target.checked) setCategoryChecked([...categoryChecked, value]);
+      // If the checkbox is unchecked, remove the value from the categoryChecked array
+      else {
+        const newArray = categoryChecked.filter((e) => e !== value);
+        setCategoryChecked(newArray);
+      }
+    }
+  };
+
+  // When User Press Any Brand
+  const clickBrand = (e) => {
+    // Get the value of the clicked brand
+    let value = e.target.value;
+
+    // If the value is "0", clear all checked brands
+    if (value === "0") setBrandChecked([]);
+    // If the value is not "0", check if the checkbox is checked or unchecked
+    else {
+      // If the checkbox is checked, add the value to the brandChecked array
+      if (e.target.checked) setBrandChecked([...brandChecked, value]);
+      // If the checkbox is unchecked, remove the value from the brandChecked array
+      else {
+        const newArray = brandChecked.filter((e) => e !== value);
+        setBrandChecked(newArray);
+      }
+    }
+  };
+
+  // useeffect to update the category and brand queries in local storage and trigger the getProduct function
+  useEffect(() => {
+    // Update Category query
+    queryCategoryRef.current = categoryChecked
+      .map((val) => `category[in][]=${val}`)
+      .join("&");
+    localStorage.setItem("categoryChecked", queryCategoryRef.current);
+
+    // Update Brand query
+    queryBrandRef.current = brandChecked
+      .map((val) => `brand[in][]=${val}`)
+      .join("&");
+    localStorage.setItem("brandChecked", queryBrandRef.current);
+
+    // Set timeout to trigger getProduct after 1 second delay
+    const timeoutId = setTimeout(() => getProduct(), 1000);
+
+    // Cleanup function to clear the timeout
+    return () => clearTimeout(timeoutId);
+  }, [categoryChecked, brandChecked, priceFromData, priceToData]);
+
+  // Return the data to be used in the component
   return [
     categoriesData,
     brandsData,
@@ -135,4 +140,5 @@ const SidebarSearchHook = () => {
   ];
 };
 
+// Export the SidebarSearchHook function to be used in other components
 export default SidebarSearchHook;

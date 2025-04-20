@@ -12,28 +12,72 @@ const initialState = {
   viewSpecificBrand: [],
   deletedBrand: [],
   updatedBrand: [],
-  loading: true,
+  loading: {
+    fetchAll: true,
+    fetchSpecific: true,
+    create: true,
+    delete: true,
+    update: true,
+  },
+  error: {
+    fetchAll: null,
+    fetchSpecific: null,
+    create: null,
+    delete: null,
+    update: null,
+  },
 };
 
 const brandReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_BRAND:
-      return { ...state, brand: action.payload, loading: false };
+      return {
+        ...state,
+        brand: action.payload,
+        loading: { ...state.loading, fetchAll: false },
+        error: { ...state.error, fetchAll: null },
+      };
 
     case GET_SPECIFIC_BRAND:
-      return { viewSpecificBrand: action.payload, loading: false };
+      return {
+        viewSpecificBrand: action.payload,
+        loading: { ...state.loading, fetchSpecific: false },
+        error: { ...state.error, fetchSpecific: null },
+      };
 
     case CREATE_NEW_BRAND:
-      return { brand: action.payload, loading: false };
+      return {
+        brand: action.payload,
+        loading: { ...state.loading, create: false },
+        error: { ...state.error, create: null },
+      };
 
     case DELETE_BRAND:
-      return { deletedBrand: action.payload, loading: false };
+      return {
+        deletedBrand: action.payload,
+        loading: { ...state.loading, delete: false },
+        error: { ...state.error, delete: null },
+      };
 
     case UPDATE_BRAND:
-      return { updatedBrand: action.payload, loading: false };
+      return {
+        updatedBrand: action.payload,
+        loading: { ...state.loading, update: false },
+        error: { ...state.error, update: null },
+      };
 
     case GET_ERROR:
-      return { brand: action.payload, loading: true };
+      return {
+        ...state,
+        loading: {
+          ...state.loading,
+          [action.meta]: false,
+        },
+        error: {
+          ...state.error,
+          [action.meta]: action.payload,
+        },
+      };
 
     default:
       return state;

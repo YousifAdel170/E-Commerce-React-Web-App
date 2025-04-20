@@ -5,6 +5,7 @@ import {
   ADD_TO_WISHLIST,
   DELETE_FROM_WISHLIST,
   VIEW_ALL_WISHLIST,
+  GET_ERROR,
 } from "../type";
 
 // Action Responsible To Add Product To WishList
@@ -61,7 +62,7 @@ export const viewAllWishList = () => async (dispatch) => {
     });
   } catch (e) {
     dispatch({
-      type: VIEW_ALL_WISHLIST,
+      type: GET_ERROR,
       payload: e.response,
     });
   }
