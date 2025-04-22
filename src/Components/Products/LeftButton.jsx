@@ -1,16 +1,23 @@
+// Import the left navigation arrow image
 import next from "../../Assets/Imgs/next.png";
 
+// Custom left navigation button for the image gallery
 const LeftButton = (onClick) => {
   return (
     <img
       src={next}
-      alt=""
+      alt="Left Arrow"
       width="35px"
-      onClick={onClick}
       height="35px"
-      style={{ float: "left", marginTop: "220px", cursor: "pointer" }}
+      onClick={onClick}
+      style={{
+        float: "left",
+        marginTop: "220px",
+        cursor: "pointer",
+      }}
     />
   );
 };
 
+// Export the custom button component
 export default LeftButton;

@@ -1,53 +1,74 @@
 /* eslint-disable react/prop-types */
+
+// Import Components from react-bootstrap
 import { Col, Container, Row } from "react-bootstrap";
 
+// Import Used Assets
 import rate from "../../Assets/Imgs/rate.png";
-import { RateItem } from "./RateItem";
+
+// Import Custom Components
 import RatePost from "./RatePost";
+import { RateItem } from "./RateItem";
 import PaginationComponent from "../Utility/PaginationComponent";
-import ViewAllRatesHook from "../../hooks/review/ViewAllRatesHook";
-import { useParams } from "react-router-dom";
 
+// Import Custom Styles
+import "./RateModule.css";
+import RateContainerHook from "../../hooks/review/RateContainerHook";
+
+/**
+ * RateContainer component displays ratings and reviews for a product.
+ * It fetches the data using a custom hook and allows for adding, updating,
+ * and removing reviews locally in the state.
+ */
 const RateContainer = ({ itemRatingAverage, itemRatingQty }) => {
-  const { id } = useParams();
-  const [allRates, onPress] = ViewAllRatesHook(id);
-
+  const [reviews, addReview, updateReviews, removeReview, allRates, onPress] =
+    RateContainerHook();
   return (
     <Container className="rate-container">
+      {/* Ratings summary */}
       <Row>
         <Col className="d-flex">
-          <div className="sub-tile d-inline p-1 ">التقيمات</div>
-          <img className="mt-2" src={rate} alt="" height="16px" width="16px" />
-          <div className="cat-rate  d-inline  p-1 pt-2">
+          <div className="p-1">التقيمات</div>
+          <img
+            className="mt-2"
+            src={rate}
+            alt="rating icon"
+            height="16"
+            width="16"
+          />
+          <div className="cat-rate  px-1 d-flex align-items-center">
             {itemRatingAverage}
           </div>
-          <div className="rate-count d-inline p-1 pt-2">
-            {`(${itemRatingQty} تقييم)`}
+          <div className="rate-count px-1 d-flex align-items-center">
+            ({itemRatingQty} تقييم)
           </div>
         </Col>
       </Row>
-      <RatePost />
 
-      {allRates && allRates.data ? (
-        allRates.data.map((rate, index) => (
-          <RateItem key={index} review={rate} />
+      {/* Form to post a new rating */}
+      <RatePost addReview={addReview} />
+
+      {/* List of ratings */}
+      {reviews && reviews?.length ? (
+        reviews.map((rate) => (
+          <RateItem
+            key={rate._id} // Using unique _id as the key to avoid issues when removing an item
+            review={rate}
+            updateReviews={updateReviews}
+            removeReview={removeReview}
+          />
         ))
       ) : (
-        <h6>لا يوجد تقييمات الان</h6>
+        <h6 className="p-2">لا يوجد تقييمات الان</h6>
       )}
 
-      {allRates &&
-      allRates.paginationResult &&
-      allRates.paginationResult.numberOfPages > 1 ? (
+      {/* Pagination */}
+      {allRates?.paginationResult?.numberOfPages > 1 && (
         <PaginationComponent
-          pageCount={
-            allRates.paginationResult
-              ? allRates.paginationResult.numberOfPages
-              : 0
-          }
+          pageCount={allRates.paginationResult.numberOfPages}
           onPress={onPress}
         />
-      ) : null}
+      )}
     </Container>
   );
 };

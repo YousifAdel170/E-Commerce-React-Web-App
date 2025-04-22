@@ -1,26 +1,34 @@
 /* eslint-disable react/prop-types */
-import { Button, Col, Modal, Row } from "react-bootstrap";
 
+// Import necessary components from React Bootstrap and other assets
+import { Button, Col, Modal, Row } from "react-bootstrap";
 import ReactStars from "react-rating-stars-component";
 
-import rate from "../../Assets/Imgs/rate.png";
+// Import Custom Hooks
 import DeleteRateHook from "../../hooks/review/DeleteRateHook";
+import UpdateRateHook from "../../hooks/review/UpdateRateHook";
+import formatDate from "../../hooks/Utility/formatDate";
 
+// Import Used Assets
+import rate from "../../Assets/Imgs/rate.png";
 import deleteIcon from "../../assets/Imgs/delete.png";
 import editIcon from "../../assets/Imgs/edit.png";
-import { ToastContainer } from "react-toastify";
-import UpdateRateHook from "../../hooks/review/UpdateRateHook";
 
-export const RateItem = ({ review }) => {
-  // DeleteRateHook is a custom hook that handles the deletion of a review
+// Import Custom Styling
+import "./RateModule.css";
+
+// RateItem component for displaying individual review details
+export const RateItem = ({ review, updateReviews, removeReview }) => {
+  // Custom hook to manage the deletion of a review
   const [
     isUser,
     handleShowDelete,
     handleDeleteClose,
     showDelete,
     handleDelete,
-  ] = DeleteRateHook(review);
+  ] = DeleteRateHook(review, removeReview);
 
+  // Custom hook to manage the update of a review
   const [
     newRateText,
     newRateValue,
@@ -30,9 +38,9 @@ export const RateItem = ({ review }) => {
     handleCloseEdit,
     showEdit,
     handleUpdate,
-  ] = UpdateRateHook(review);
+  ] = UpdateRateHook(review, updateReviews);
 
-  // Settings For Updated Rate
+  // Settings for the star rating component used for editing
   const setting = {
     size: 20,
     count: 5,
@@ -51,11 +59,10 @@ export const RateItem = ({ review }) => {
 
   return (
     <div>
-      {/* Delete Modal */}
+      {/* Delete Modal for confirming review deletion */}
       <Modal show={showDelete} onHide={handleDeleteClose}>
         <Modal.Header>
           <Modal.Title>
-            {" "}
             <div className="font">تاكيد الحذف</div>
           </Modal.Title>
         </Modal.Header>
@@ -76,16 +83,17 @@ export const RateItem = ({ review }) => {
         </Modal.Footer>
       </Modal>
 
-      {/* Edit Modal */}
+      {/* Edit Modal for updating the review */}
       <Modal show={showEdit} onHide={handleCloseEdit}>
         <Modal.Header>
           <Modal.Title>
-            {" "}
             <div className="font">تعديل التقييم</div>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {/* Star rating component to update the review rating */}
           <ReactStars {...setting} />
+          {/* Input field to update the review text */}
           <input
             onChange={onChangeNewRateText}
             value={newRateText}
@@ -104,24 +112,31 @@ export const RateItem = ({ review }) => {
         </Modal.Footer>
       </Modal>
 
+      {/* Display the reviewer's name and rating */}
       <Row className="mt-3">
         <Col className="d-flex me-5">
-          <div className="rate-name  d-inline ms-2">
-            {review ? review.user.name : null}
+          <div className="d-flex">
+            <div className="rate-name  d-inline ms-2">
+              {review?.user?.name || null}
+            </div>
+
+            <div className="d-flex">
+              <img className="" src={rate} alt="" height="16px" width="16px" />
+              <div className="cat-rate me-1">{review?.rating || null}</div>
+            </div>
           </div>
-          <img className="" src={rate} alt="" height="16px" width="16px" />
-          <div className="cat-rate  d-inline me-2">
-            {review ? review.rating : null}
-          </div>
+          <div className="rate-date">{formatDate(review?.createdAt)}</div>
         </Col>
       </Row>
 
+      {/* Display the review description and action buttons (edit/delete) if the user is the author */}
       <Row className="border-bottom mx-2">
         <Col className="d-flex me-4 pb-2 justify-content-between">
           <div className="rate-description  d-inline ms-2">
-            {review ? review.review : null}
+            {review?.review || null}
           </div>
 
+          {/* Only show edit and delete options if the logged-in user is the author */}
           {isUser ? (
             <div className="d-inline d-flex ">
               <img
@@ -138,13 +153,12 @@ export const RateItem = ({ review }) => {
                 width="20"
                 height="20"
                 style={{ cursor: "pointer" }}
-                alt="delete Icon"
+                alt="edit Icon"
               />
             </div>
           ) : null}
         </Col>
       </Row>
-      <ToastContainer />
     </div>
   );
 };

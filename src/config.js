@@ -22,6 +22,12 @@ export const PAGE_PRODUCTS_HOME_LIMIT = 5;
 // Number of Items To be displayed of Favorite Products in the HomePage
 export const PAGE_FAVORITE_PRODUCTS_HOME_LIMIT = 5;
 
+// Number of Rates To be displayed of Details Product in the ProductDetailsPage
+export const PRODUCT_DETAILS_RATES_LIMIT = 3;
+
+// Number of Rates To be displayed of Details Product in the ProductDetailsPage
+export const PAGE_NUMBER_PRODUCT_DETAILS_RATES = 1;
+
 // Types of Inputs
 export const NAME_TYPE = "name";
 export const EMAIL_TYPE = "email";

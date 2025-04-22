@@ -26,8 +26,6 @@ const ProductCard = ({ item, favoriteProducts }) => {
       {/* Card Component from React Bootstrap that contains The Image of the Product */}
       <Card
         style={{
-          width: "100%",
-          minHeight: "345px",
           borderRadius: "8px",
           border: "none",
           backgroundColor: "#fff",

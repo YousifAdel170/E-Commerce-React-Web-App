@@ -1,10 +1,21 @@
+/* eslint-disable react/prop-types */
+// Import Componenents From React Bootstrap
 import { Col, Row } from "react-bootstrap";
-import ReactStars from "react-rating-stars-component";
-import AddRateHook from "../../hooks/review/AddRateHook";
-import { useParams } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 
-const RatePost = () => {
+// Import Used Components from react-rating-stars-component
+import ReactStars from "react-rating-stars-component";
+
+// Import Used Hooks
+import { useParams } from "react-router-dom";
+
+// Import Custom Hook
+import AddRateHook from "../../hooks/review/AddRateHook";
+
+// Import Custom Syling
+import "./RateModule.css";
+
+// Container for displaying product ratings and reviews
+const RatePost = ({ addReview }) => {
   // Get The ID from the URL
   const { id } = useParams();
 
@@ -15,7 +26,7 @@ const RatePost = () => {
     onChangeRateValue,
     userName,
     handleSubmit,
-  ] = AddRateHook(id);
+  ] = AddRateHook(id, addReview);
 
   // Setting for the Rate
   const setting = {
@@ -36,9 +47,9 @@ const RatePost = () => {
 
   return (
     <div>
-      <Row className="mt-3">
-        <Col sm="12" className="me-5  d-flex">
-          <div className="rate-name  d-inline ms-3 mt-1 ">{userName}</div>
+      <Row className="mt-2">
+        <Col sm="12" className="d-flex">
+          <div className="rate-name  mx-3">{userName}</div>
           <ReactStars {...setting} />
         </Col>
       </Row>
@@ -56,14 +67,13 @@ const RatePost = () => {
           <div className=" d-flex justify-content-end al">
             <div
               onClick={handleSubmit}
-              className="product-cart-add px-3  py-2 text-center d-inline"
+              className="product-cart-add px-3 d-flex align-items-center"
             >
               اضف تعليق
             </div>
           </div>
         </Col>
       </Row>
-      <ToastContainer />
     </div>
   );
 };

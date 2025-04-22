@@ -1,21 +1,24 @@
+/* eslint-disable react/prop-types */
+
+// Import Components from React Bootstrap
 import { Col, Row } from "react-bootstrap";
+
+// Import Custom Components
 import ProductGallery from "./ProductGallery";
 import ProductDescription from "./ProductDescription";
-import { useParams } from "react-router-dom";
-import ViewProductDetailsHook from "../../hooks/products/ViewProductDetailsHook";
 
-const ProductDetails = () => {
-  const { id } = useParams();
-
-  const [itemProduct, images, itemCategory, itemBrand] =
-    ViewProductDetailsHook(id);
-
+// Component responsible for displaying full product details layout
+const ProductDetails = ({ itemProduct, itemCategory, itemBrand, images }) => {
   return (
-    <div>
-      <Row className="py-3">
-        <Col lg="4">
+    <div className="pb-4">
+      {/* Main layout row for product details */}
+      <Row className="py-3 gap-mobile">
+        {/* Left column: product images gallery */}
+        <Col lg="4" className="gallery-container">
           <ProductGallery images={images} />
         </Col>
+
+        {/* Right column: product description, category, and brand */}
         <Col lg="8">
           <ProductDescription
             itemProduct={itemProduct}
@@ -28,4 +31,5 @@ const ProductDetails = () => {
   );
 };
 
+// Export the component as default
 export default ProductDetails;

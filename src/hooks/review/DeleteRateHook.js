@@ -1,66 +1,82 @@
+// Import Hooks from react, react-redux
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteRate } from "../../redux/actions/reviewAction";
-import notify from "../Utility/useNotifyHook";
-import { ERROR, SUCCESS } from "../../config";
 
-const DeleteRateHook = (review) => {
-  // use it for dispatching actions
+// Import Custom Hooks
+import notify from "../Utility/useNotifyHook"; // Custom notification hook
+
+// Import Custom Actions
+import { deleteRate } from "../../redux/actions/reviewAction"; // Import the action to delete the review
+
+// Import Used Configurations
+import { ERROR, SUCCESS } from "../../config"; // Constants for notification types
+
+// Custom hook to delete a review
+const DeleteRateHook = (review, removeReview) => {
+  // Dispatch hook to access Redux actions
   const dispatch = useDispatch();
 
-  // States
-  const [isUser, setIsUser] = useState(false);
-  const [loading, setLoading] = useState(true);
+  // State variables
+  const [isUser, setIsUser] = useState(false); // Determines if the logged-in user is the one who wrote the review
+  const [loading, setLoading] = useState(true); // Tracks loading state during the delete process
 
-  // Used For Delete Rate Modal
+  // State to control the visibility of the delete modal
   const [showDelete, setShowDelete] = useState(false);
-  const handleDeleteClose = () => setShowDelete(false);
-  const handleShowDelete = () => setShowDelete(true);
 
-  // Get The LoggedIn User [Wrote The Review]
+  // Functions to handle the modal (show and close)
+  const handleDeleteClose = () => setShowDelete(false); // Close the delete modal
+  const handleShowDelete = () => setShowDelete(true); // Show the delete modal
+
+  // Get the logged-in user information from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
 
-  //   Handle Delete Rate Of the LoggedIn User
+  // Function to handle the delete action for the review
   const handleDelete = async () => {
-    // Start Loading
+    // Start the loading process
     setLoading(true);
 
-    // Dispatch Delete Rate Action
+    // Dispatch the deleteRate action to delete the review
     await dispatch(deleteRate(review._id));
 
-    // End Loading
+    // End the loading process
     setLoading(false);
 
-    // Close The Modal
+    // Close the modal after the delete action
     handleDeleteClose();
   };
 
-  //   check if the user is the same user who wrote the review
+  // Check if the logged-in user is the same as the user who wrote the review
   useEffect(() => {
     if (user._id === review.user._id) setIsUser(true);
   }, [user, review]);
 
-  //   Return Response of the Delete Rate
+  // Select the result of the delete action from the Redux store
   const result = useSelector((state) => state.reviewReducer.deleteReview);
 
-  //   Notify The User With The Result
+  // UseEffect hook to handle the response of the delete action
   useEffect(() => {
     if (!loading) {
+      // If the result is empty (successful deletion), notify the user
       if (result === "") {
-        notify("تم حذف التقييم بنجاح", SUCCESS);
-        setTimeout(() => {
-          window.location.reload(false);
-        }, 1000);
-      } else notify("هناك مشكله فى عملية المسح", ERROR);
+        notify("تم حذف التقييم بنجاح", SUCCESS); // Success notification
+        // Remove the review from the local state
+        removeReview(review._id);
+      } else {
+        // If there was an error, notify the user
+        notify("هناك مشكله فى عملية المسح", ERROR); // Error notification
+      }
+      // Reset the loading state to true (ready for the next action)
+      setLoading(true);
     }
-  }, [loading, result]);
+  }, [loading, result, removeReview, review]);
 
+  // Return the necessary state and functions for the component
   return [
-    isUser,
-    handleShowDelete,
-    handleDeleteClose,
-    showDelete,
-    handleDelete,
+    isUser, // Whether the logged-in user is the one who wrote the review
+    handleShowDelete, // Function to show the delete modal
+    handleDeleteClose, // Function to close the delete modal
+    showDelete, // The state controlling whether the modal is shown or not
+    handleDelete, // Function to handle the delete action
   ];
 };
 

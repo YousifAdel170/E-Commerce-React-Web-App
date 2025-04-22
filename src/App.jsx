@@ -42,6 +42,8 @@ import AdminEditBrandPage from "./Pages/Admin/AdminEditBrandPage";
 import AdminAllSubcategoriesPage from "./Pages/Admin/AdminAllSubcategoriesPage";
 import AdminEditSubcategoryPage from "./Pages/Admin/AdminEditSubcategoryPage";
 
+import { ToastContainer } from "react-toastify";
+
 function App() {
   const [isUser, isAdmin] = ProtectedRouteHook();
   return (
@@ -171,6 +173,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       <Footer />
+      <ToastContainer />
     </div>
   );
 }
