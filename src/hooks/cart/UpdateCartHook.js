@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 // Import Custom Hooks
 import notify from "../Utility/useNotifyHook";
-import ViewProductDetailsHook from "../products/ViewProductDetailsHook";
+import ViewSpecificProductHook from "../products/ViewSpecificProductHook";
 
 // Import Custom Actions
 import { updateCartSpecificItem } from "../../redux/actions/cartAction";
@@ -18,28 +18,24 @@ const UpdateCartHook = (item) => {
   const dispatch = useDispatch();
   const [itemCount, setItemCount] = useState(0);
 
-  const [itemProduct] = ViewProductDetailsHook(
-    item && item.product ? item.product.id : ""
-  );
+  const [specificProduct] = ViewSpecificProductHook(item?.product?.id || "");
 
   const onChangeCount = (e) => setItemCount(e.target.value);
 
-  useEffect(() => {
-    if (item) setItemCount(item.count);
-  }, []);
+  useEffect(() => setItemCount(item?.count), []);
 
   const [showSpecificUpdate, setShowSpecificUpdate] = useState(false);
   const handleCloseSpecificUpdate = () => setShowSpecificUpdate(false);
   const handleShowSpecificUpdate = () => setShowSpecificUpdate(true);
 
   const handleUpdateSpecificItem = async () => {
-    if (itemProduct.quantity < itemCount) {
-      notify(`متوفر ${itemProduct.quantity} منتجات فقط`, WARNING);
+    if (specificProduct?.quantity < itemCount) {
+      notify(`متوفر ${specificProduct?.quantity} منتجات فقط`, WARNING);
       return;
     }
 
     await dispatch(
-      updateCartSpecificItem(item._id, {
+      updateCartSpecificItem(item?._id, {
         count: itemCount,
       })
     );

@@ -9,6 +9,7 @@ import ProductDescription from "./ProductDescription";
 
 // Component responsible for displaying full product details layout
 const ProductDetails = ({ itemProduct, itemCategory, itemBrand, images }) => {
+  // console.log(itemProduct);
   return (
     <div className="pb-4">
       {/* Main layout row for product details */}

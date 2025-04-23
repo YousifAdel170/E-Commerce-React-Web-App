@@ -31,6 +31,7 @@ const ProductCard = ({ item, favoriteProducts }) => {
           backgroundColor: "#fff",
           boxShadow: "0 2px 2px 0 rgba(151,151,151, 0.5)",
           marginBottom: "10px",
+          width: "100%",
         }}
       >
         <Link to={`/products/${item?._id}`}>

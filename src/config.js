@@ -17,7 +17,7 @@ export const PAGE_CATEGORIES_HOME_LIMIT = 5;
 export const PAGE_BRANDS_HOME_LIMIT = 5;
 
 // Number of Items To be displayed of Products in the HomePage
-export const PAGE_PRODUCTS_HOME_LIMIT = 5;
+export const PAGE_PRODUCTS_HOME_LIMIT = 4;
 
 // Number of Items To be displayed of Favorite Products in the HomePage
 export const PAGE_FAVORITE_PRODUCTS_HOME_LIMIT = 5;

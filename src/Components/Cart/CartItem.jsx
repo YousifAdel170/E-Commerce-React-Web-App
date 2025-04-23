@@ -30,7 +30,7 @@ const CartItem = ({ item }) => {
     handleUpdateSpecificItem,
   ] = UpdateCartHook(item);
   return (
-    <Col xs="12" className="cart-item-body my-2 d-flex px-2">
+    <Col xs="12" className="cart-item-body my-2 d-flex flex-column-mobile px-2">
       {/* Modal For Update Specific Item In The  Cart */}
       <Modal show={showSpecificUpdate} onHide={handleCloseSpecificUpdate}>
         <Modal.Header>
@@ -89,90 +89,102 @@ const CartItem = ({ item }) => {
 
       {/* Cart Item Image */}
       <img
-        width="160px"
-        height="197px"
-        src={
-          item && item.product
-            ? PRODUCTS_BASE_URL + item.product.imageCover
-            : ""
-        }
+        width="250px"
+        height="250px"
+        src={item?.product ? PRODUCTS_BASE_URL + item.product.imageCover : ""}
         alt=""
+        className="mx-auto"
       />
 
       {/* Cart Item Container */}
       <div className="w-100">
-        {/* Cart Item Name and deletion to remove it  */}
-        <Row className="justify-content-between">
-          <Col sm="12" className=" d-flex flex-row justify-content-between">
-            <div className="d-inline pt-2 cat-text">الالكترونيات</div>
+        <Row className="d-flex justify-content-between mt-2 ">
+          <Col className="py-1 d-flex">
+            <div className="d-flex align-items-center">
+              <div className="cat-title ms-2">اسم المنتج: </div>
+              <div className="cat-text d-flex align-items-center">
+                {item?.product?.title || ""}
+              </div>
+            </div>
+            <div className="d-flex align-items-center cat-rate me-2">
+              ({item?.product?.ratingsAverage || 0})
+            </div>
+          </Col>
+
+          <Col>
             <div
-              className="d-flex pt-2 "
+              className="d-flex py-1 align-items-center justify-content-center"
               style={{ cursor: "pointer" }}
               onClick={handleShowSpecific}
             >
               <img src={deletion} alt="" width="20px" height="24px" />
-              <div className="cat-text d-inline me-2">ازاله</div>
+              <div className="cat-text d-flex align-items-center me-2">مسح</div>
             </div>
           </Col>
         </Row>
 
-        {/* Cart Item description and rate */}
-        <Row className="justify-content-center mt-2">
-          <Col sm="12" className=" d-flex flex-row justify-content-start">
-            <div className="d-inline pt-2 cat-title">
-              {item && item.product ? item.product.title : ""}
-            </div>
-            <div className="d-inline pt-2 cat-rate me-2">
-              {item && item.product ? item.product.ratingsAverage : ""}
+        <Row className="justify-content-between">
+          <Col sm="12" className="py-1 d-flex justify-content-between">
+            <div className="d-flex align-items-center">
+              <div className="cat-title">التصنيف:</div>
+
+              <div className="d-flex align-items-center me-2 cat-text ">
+                {item?.product?.category?.name}
+              </div>
             </div>
           </Col>
         </Row>
 
         {/* Cart Item brand */}
         <Row>
-          <Col sm="12" className="mt-1">
-            <div className="cat-text d-inline">الماركة :</div>
-            <div className="brand-text d-inline mx-1">
-              {item && item.product && item.product.brand
-                ? item.product.brand.name
-                : ""}
+          <Col sm="12" className="py-1 d-flex align-items-center">
+            <div className="cat-title">الماركة:</div>
+            <div className="cat-text mx-1">
+              {item?.product?.brand?.name || ""}
+            </div>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col sm="12 py-1 d-flex">
+            <div className="cat-title ms-1 align-items-center d-flex">
+              السعر:{" "}
+            </div>
+            <div className="cat-text d-flex align-items-center">
+              {item?.price || 0} جنية
             </div>
           </Col>
         </Row>
 
         {/* Cart Item Color */}
         <Row>
-          <Col sm="12" className="mt-1 d-flex">
+          <Col sm="12" className="py-1 d-flex">
+            <div className="cat-title ms-2 d-flex align-items-center">
+              اللون:
+            </div>
+
             <div
               className="color ms-2 border"
-              style={{ backgroundColor: item ? item.color : "" }}
+              style={{ backgroundColor: item?.color || "" }}
             ></div>
           </Col>
         </Row>
 
         {/* Cart Item Quantity and Price */}
-        <Row className="justify-content-between">
-          <Col sm="12" className=" d-flex flex-row justify-content-between">
-            <div className="d-inline pt-2 d-flex">
-              <div className="cat-text d-flex align-items-center">الكميه</div>
-              <input
-                value={itemCount}
-                onChange={onChangeCount}
-                className="mx-2 text-center"
-                type="number"
-                style={{ width: "60px", height: "40px" }}
-              />
-              <Button
-                onClick={handleShowSpecificUpdate}
-                className="btn btn-dark"
-              >
-                تطبيق
-              </Button>
-            </div>
-            <div className="d-inline pt-2 brand-text">
-              {item ? item.price : 0} جنية
-            </div>
-          </Col>
+        <Row className="pt-2 d-flex justify-content-between alig-items-center">
+          <div className="d-flex">
+            <div className="cat-title d-flex align-items-center">الكمية: </div>
+            <input
+              value={itemCount}
+              onChange={onChangeCount}
+              className="mx-1 cat-text text-center d-flex justify-content-center"
+              type="number"
+              style={{ width: "40px", height: "40px", lineHeight: "40px" }}
+            />
+            <Button onClick={handleShowSpecificUpdate} className="btn btn-dark">
+              تطبيق
+            </Button>
+          </div>
         </Row>
       </div>
       <ToastContainer />

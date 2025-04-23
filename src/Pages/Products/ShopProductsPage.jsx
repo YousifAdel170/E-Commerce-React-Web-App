@@ -10,9 +10,11 @@ import PaginationComponent from "../../Components/Utility/PaginationComponent";
 
 // Import Custom Hooks
 import ViewSearchProductHook from "../../hooks/products/ViewSearchProductHook";
+import FetchWishList from "../../hooks/products/wishList/FetchWishList";
 
 // Page Responsible for displaying the products in the shop
 const ShopProductsPage = () => {
+  FetchWishList();
   // Get The Products Data From The Custom Hook
   const [items, pageCount, onPress, getProduct, results] =
     ViewSearchProductHook();

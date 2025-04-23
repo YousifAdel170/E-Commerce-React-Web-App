@@ -40,7 +40,6 @@ const categoryReducer = (state = initialState, action) => {
 
     case GET_SPECIFIC_CATEGORY:
       return {
-        ...state,
         viewSpecificCategory: action.payload,
         loading: { ...state.loading, fetchSpecific: false },
         error: { ...state.error, fetchSpecific: null },

@@ -74,7 +74,6 @@ export const getSpecificBrand = (id) => async (dispatch) => {
     dispatch({
       type: GET_SPECIFIC_BRAND,
       payload: result,
-      loading: true,
     });
   } catch (e) {
     dispatch({

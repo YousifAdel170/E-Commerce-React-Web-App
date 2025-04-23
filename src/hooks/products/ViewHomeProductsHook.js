@@ -1,43 +1,29 @@
 // Import Hooks From React Redux and React
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useMemo } from "react";
-
-// Import Actions from Redux
-import { getAllProducts } from "../../redux/actions/productsAction";
-
-// Import Custom Hooks To Detect Internet Connection
-import internetDetect from "../Utility/useInternetConnectionHook";
-import { PAGE_PRODUCTS_HOME_LIMIT } from "../../config";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 // Hook Responsible for fetching the products data and returning it to the component
 const ViewHomeProductsHook = () => {
   // 1. Use Dispatch to dispatch actions to the Redux store
-  const dispatch = useDispatch();
 
-  // 2. Use useEffect to fetch the products data when the component mounts
-  useEffect(() => {
-    // Check if the internet connection is available and then fetch the products data
-    internetDetect();
-
-    // Function to fetch the products data
-    const getData = async () =>
-      await dispatch(getAllProducts(PAGE_PRODUCTS_HOME_LIMIT));
-
-    // Call the function to fetch the products data
-    getData();
-  }, [dispatch]);
+  // State to store products to display it in the home, loading
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 3. Use useSelector to get the products data from the Redux store
-  const products = useSelector((state) => state.allProduct.viewProducts);
+  const { viewProducts, loading } = useSelector((state) => state.allProduct);
 
-  // 4. Use useSelector to get the items data from the Redux store
-  const items = useMemo(() => {
-    if (products && products.data) return products.data.slice(0, 4);
-    else return [];
-  }, [products]);
+  useEffect(() => {
+    if (!loading?.fetchAll) {
+      if (viewProducts) setItems(viewProducts.data.slice(0, 4));
+      else setItems([]);
+
+      setIsLoading(false);
+    } else setIsLoading(true);
+  }, [loading, viewProducts]);
 
   // 5. Return the items data to the component
-  return [items];
+  return [items, isLoading];
 };
 
 // Export the ViewHomeProductsHook as default

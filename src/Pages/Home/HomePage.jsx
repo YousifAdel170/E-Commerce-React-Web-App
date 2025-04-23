@@ -13,12 +13,13 @@ import {
   LATEST_FASHION_PRODUCTS_TITLE,
   MOST_COMMMON_BRANDS_TITLE,
 } from "../../config";
+import FetchWishList from "../../hooks/products/wishList/FetchWishList";
 
 // Page Responsible for displaying the Home Page of the Application
 const HomePage = () => {
-  // Custom Hook to fetch the products data
-  const [items] = ViewHomeProductsHook();
-
+  // Custom Hook to fetch the products data and the favorite products
+  const [items, isLoading] = ViewHomeProductsHook();
+  FetchWishList();
   return (
     // Main Container of the Home Page
     <div className="font">
@@ -31,6 +32,7 @@ const HomePage = () => {
       {/* Most Sold Products */}
       <ProductCardContainer
         products={items}
+        isLoading={isLoading}
         title={MOST_SOLD_PRODUCTS_TITLE}
         btnTitle={MORE_BUTTON_TITLE}
         path={"products"}
@@ -42,6 +44,7 @@ const HomePage = () => {
       {/* The Newest Products */}
       <ProductCardContainer
         products={items}
+        isLoading={isLoading}
         title={LATEST_FASHION_PRODUCTS_TITLE}
         btnTitle={MORE_BUTTON_TITLE}
         path={"products"}

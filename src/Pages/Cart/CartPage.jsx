@@ -16,7 +16,6 @@ const CartPage = () => {
   const [, , cartItems, totalCartPrice, couponName, totalCartPriceAfterDisc] =
     ViewAllCartItemsHook();
 
-  console.log(cartItems);
   return (
     <Container>
       <Row>

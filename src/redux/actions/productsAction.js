@@ -25,12 +25,12 @@ export const createNewProduct = (formatData) => async (dispatch) => {
     dispatch({
       type: CREATE_NEW_PRODUCT,
       payload: response,
-      loading: true,
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error  " + e,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "create",
     });
   }
 };
@@ -45,12 +45,12 @@ export const updateProduct = (id, formatData) => async (dispatch) => {
     dispatch({
       type: UPDATE_PRODUCT,
       payload: response,
-      loading: true,
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error  " + e,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "update",
     });
   }
 };
@@ -62,12 +62,12 @@ export const getAllProducts = (limit) => async (dispatch) => {
     dispatch({
       type: GET_ALL_PRODUCTS,
       payload: result,
-      loading: true,
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "fetchAll",
     });
   }
 };
@@ -82,12 +82,12 @@ export const getAllProductsByCategory =
       dispatch({
         type: GET_ALL_PRODUCTS_BY_CATEGORY,
         payload: result,
-        loading: true,
       });
     } catch (e) {
       dispatch({
         type: GET_ERROR,
-        payload: "Error " + e,
+        payload: e.response?.data?.message || e.message || "Unknown error",
+        meta: "fetchAll",
       });
     }
   };
@@ -102,12 +102,12 @@ export const getAllProductsByBrand =
       dispatch({
         type: GET_ALL_PRODUCTS_BY_BRAND,
         payload: result,
-        loading: true,
       });
     } catch (e) {
       dispatch({
         type: GET_ERROR,
-        payload: "Error " + e,
+        payload: e.response?.data?.message || e.message || "Unknown error",
+        meta: "fetchAll",
       });
     }
   };
@@ -122,12 +122,12 @@ export const getAllProductsInSelectedPage =
       dispatch({
         type: GET_ALL_PRODUCTS,
         payload: result,
-        loading: true,
       });
     } catch (e) {
       dispatch({
         type: GET_ERROR,
-        payload: "Error " + e,
+        payload: e.response?.data?.message || e.message || "Unknown error",
+        meta: "fetchAll",
       });
     }
   };
@@ -139,12 +139,12 @@ export const getAllProductsSearch = (queryString) => async (dispatch) => {
     dispatch({
       type: GET_ALL_PRODUCTS,
       payload: result,
-      loading: true,
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "fetchAll",
     });
   }
 };
@@ -156,7 +156,6 @@ export const getSpecificProduct = (id) => async (dispatch) => {
     dispatch({
       type: GET_SPECIFIC_PRODUCT,
       payload: result,
-      loading: true,
     });
   } catch (e) {
     dispatch({
@@ -173,12 +172,12 @@ export const getProductsLikeThis = (id) => async (dispatch) => {
     dispatch({
       type: GET_PODUCTS_LIKE,
       payload: result,
-      loading: true,
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "fetchAll",
     });
   }
 };
@@ -190,12 +189,12 @@ export const deleteProduct = (id) => async (dispatch) => {
     dispatch({
       type: DELETE_PRODUCT,
       payload: result,
-      loading: true,
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "delete",
     });
   }
 };

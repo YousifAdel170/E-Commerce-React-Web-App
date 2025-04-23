@@ -1,39 +1,27 @@
 // Import necessary hooks and functions from React and Redux
 import { useDispatch, useSelector } from "react-redux";
-
-// Import action creators to dispatch specific product, category, and brand data
-import {
-  getProductsLikeThis,
-  getSpecificProduct,
-} from "../../redux/actions/productsAction";
-import internetDetect from "../Utility/useInternetConnectionHook";
 import { useEffect, useMemo } from "react";
+
+// Import Custom Hooks
+import ViewSpecificProductHook from "./ViewSpecificProductHook";
 
 // Import assets for default image
 import mobile from "../../Assets/Imgs/mobile.png";
 
 // Import actions to fetch specific category and brand data
-import { getSpecificCategory } from "../../redux/actions/categoryAction";
 import { getSpecificBrand } from "../../redux/actions/brandAction";
+import { getSpecificCategory } from "../../redux/actions/categoryAction";
+import { getProductsLikeThis } from "../../redux/actions/productsAction";
 
 // Custom hook responsible for fetching and managing product details data
 const ViewProductDetailsHook = (productID) => {
   // Initialize dispatch to interact with Redux actions
   const dispatch = useDispatch();
 
-  // Fetch product data only once when the component mounts
-  useEffect(() => {
-    // Check for internet connection before proceeding
-    internetDetect();
-
-    // Dispatch the action to fetch the specific product based on productID
-    const getData = async () => await dispatch(getSpecificProduct(productID));
-
-    getData();
-  }, [dispatch, productID]);
+  const [specificProduct] = ViewSpecificProductHook(productID);
 
   // Select the product, category, brand, and related products data from the Redux store
-  const products = useSelector((state) => state.allProduct.viewSpecificProduct);
+
   const category = useSelector(
     (state) => state.allCategory.viewSpecificCategory
   );
@@ -42,53 +30,47 @@ const ViewProductDetailsHook = (productID) => {
     (state) => state.allProduct.viewProductsLike
   );
 
-  // Memoize the product details to avoid unnecessary re-renders
-  const itemProduct = useMemo(() => {
-    if (products && products.data) return products.data;
-    else return [];
-  }, [products]);
-
   // Dispatch actions to fetch products similar to the current product's category
   useEffect(() => {
     const getData = async () => {
       // If product has a category, fetch products that belong to the same category
-      if (itemProduct && itemProduct.category)
-        await dispatch(getProductsLikeThis(itemProduct.category));
+      if (specificProduct && specificProduct.category)
+        await dispatch(getProductsLikeThis(specificProduct.category));
     };
 
     getData();
-  }, [dispatch, itemProduct]);
+  }, [dispatch, specificProduct]);
 
   // Dispatch action to fetch the specific category of the product
   useEffect(() => {
     const getData = async () => {
       // If product has a category, fetch the category details
-      if (itemProduct && itemProduct.category)
-        await dispatch(getSpecificCategory(itemProduct.category));
+      if (specificProduct && specificProduct.category)
+        await dispatch(getSpecificCategory(specificProduct.category));
     };
 
     getData();
-  }, [dispatch, itemProduct]);
+  }, [dispatch, specificProduct]);
 
   // Dispatch action to fetch the specific brand of the product
   useEffect(() => {
     const getData = async () => {
       // If product has a brand, fetch the brand details
-      if (itemProduct && itemProduct.brand)
-        await dispatch(getSpecificBrand(itemProduct.brand));
+      if (specificProduct && specificProduct.brand)
+        await dispatch(getSpecificBrand(specificProduct.brand));
     };
 
     getData();
-  }, [dispatch, itemProduct]);
+  }, [dispatch, specificProduct]);
 
   // Memoize the product images and set a default image if no images are available
   const images = useMemo(() => {
-    if (itemProduct && itemProduct.images) {
-      return itemProduct.images.map((image) => {
+    if (specificProduct && specificProduct.images) {
+      return specificProduct.images.map((image) => {
         return { original: image };
       });
     } else return [{ original: `${mobile}` }];
-  }, [itemProduct]);
+  }, [specificProduct]);
 
   // Memoize the category details of the product
   const itemCategory = useMemo(() => {
@@ -112,7 +94,13 @@ const ViewProductDetailsHook = (productID) => {
   }, [productsLike]);
 
   // Return the necessary data for the component to use
-  return [itemProduct, images, itemCategory, itemBrand, prodouctsLikeSample];
+  return [
+    specificProduct,
+    images,
+    itemCategory,
+    itemBrand,
+    prodouctsLikeSample,
+  ];
 };
 
 // Export the custom hook for use in other components
