@@ -1,26 +1,22 @@
-// Import Hooks From react, react-redux
+// Import Hooks from React and React-Redux
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-// Import Custom Actions
+// Import custom actions to fetch cart data
 import { getAllCartItems } from "../../redux/actions/cartAction";
 
-// Hook Responsible to fetch Data once in the navbar of the cart
+// Custom hook responsible for fetching cart data in the navbar
 const FetchCartDataHook = () => {
   const dispatch = useDispatch();
 
-  // Get the current cart state from Redux
-  const result = useSelector((state) => state.cartReducer.allCartItems);
-
   useEffect(() => {
     const getData = async () => {
-      // Only dispatch if the cart has not been fetched yet
-      if (!result || result.status !== "success")
-        await dispatch(getAllCartItems());
+      await dispatch(getAllCartItems());
     };
 
+    // Fetch cart data on component mount
     getData();
-  }, [dispatch, result]);
+  }, [dispatch]); // Re-run the effect if `dispatch`
 };
 
 export default FetchCartDataHook;

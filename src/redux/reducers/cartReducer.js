@@ -26,7 +26,22 @@ const cartReducer = (state = initialState, action) => {
       return { ...state, allCartItems: action.payload, loading: false };
 
     case CLEAR_ALL_CART_ITEMS:
-      return { ...state, clearCart: action.payload, loading: false };
+      return {
+        ...state,
+        clearCart: action.payload,
+        allCartItems: {
+          status: "success",
+          numOfCartItems: 0,
+          data: {
+            _id: null,
+            products: [],
+            totalCartPrice: 0,
+            totalAfterDiscount: 0,
+            coupon: "",
+          },
+        },
+        loading: false,
+      };
 
     case DELETE_SPECIFIC_CART_ITEM:
       return { ...state, deletedCartItem: action.payload, loading: false };

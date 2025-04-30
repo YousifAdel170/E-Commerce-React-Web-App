@@ -9,6 +9,7 @@ import {
 } from "../../config";
 import notify from "../Utility/useNotifyHook";
 import { loginUser } from "../../redux/actions/authAction";
+import FetchCartDataHook from "../cart/FetchCartDataHook";
 
 const LoginHook = () => {
   // Use Dispatch to tell that u will use actions from redux
@@ -69,6 +70,8 @@ const LoginHook = () => {
     setLoading(false);
     setIsPress(false);
     // End The Login [Loading OFF]
+
+    FetchCartDataHook();
   };
 
   const result = useSelector((state) => state.authReducer.loginUser);

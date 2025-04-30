@@ -1,5 +1,5 @@
 // Import Hooks, Dispatch and Selector from React and Redux
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Import Actions from Redux to Fetch Data, Get All Categories and Get All Categories in Selected Page
@@ -18,7 +18,9 @@ const AllCategoryPageHook = () => {
   const { category, loading } = useSelector((state) => state.allCategory);
 
   // 3. Local state to manage the loading state of the component
-  const [isLoading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [pageCount, setPageCount] = useState(0);
 
   // 4. Fetch categories data when the component mounts
   useEffect(() => {
@@ -30,34 +32,23 @@ const AllCategoryPageHook = () => {
     getData();
   }, [dispatch]);
 
-  // 5. Memoize the categories data to avoid unnecessary re-renders
-  const categoriesData = useMemo(() => {
-    if (category) return category.data;
-    else [];
-  }, [category]);
-
-  // 6. Memoize the page count to avoid unnecessary re-renders
-  const pageCount = useMemo(() => {
-    if (category && category.paginationResult)
-      return category.paginationResult.numberOfPages;
-    else 0;
-  }, [category]);
-
-  // 7. Effect to set the loading state based on the loading state from redux
+  // 5. Effect to set the loading state based on the loading state from redux
   useEffect(() => {
-    if (!loading?.fetchAll) setLoading(false);
-    else setLoading(true);
-  }, [loading]);
+    if (!loading?.fetchAll && category) {
+      setCategories(category?.data || []);
+      setPageCount(category?.paginationResult?.numberOfPages || 0);
+      setIsLoading(false);
+    }
+  }, [loading, category]);
 
-  // 8. Function to fetch categories data in the selected page
+  // 6. Function to fetch categories data in the selected page
   const getSelectedPageNumber = async (selectedPage) => {
     await dispatch(
       getAllCategoryInSelectedPage(PAGE_CATEGORIES_LIMIT, selectedPage)
     );
   };
 
-  // 9. Fetch categories data only once when the component mounts
-  return [categoriesData, isLoading, pageCount, getSelectedPageNumber];
+  return [categories, isLoading, pageCount, getSelectedPageNumber];
 };
 
 // Exporting the AllCategoryPageHook

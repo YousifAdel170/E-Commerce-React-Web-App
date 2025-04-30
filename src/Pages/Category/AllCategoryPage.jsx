@@ -8,6 +8,8 @@ import PaginationComponent from "../../Components/Utility/PaginationComponent";
 
 // Import Custom Hooks to display all categories
 import AllCategoryPageHook from "../../hooks/category/AllCategoryPageHook";
+
+// Import Used Configurations
 import { CATEGORIES_TITLE } from "../../config";
 
 // Page Responsible for displaying all categories

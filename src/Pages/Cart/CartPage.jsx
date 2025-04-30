@@ -10,6 +10,7 @@ import ViewAllCartItemsHook from "../../hooks/cart/ViewAllCartItemsHook";
 
 // Import Custom Style
 import "./CartPage.css";
+import { Link } from "react-router-dom";
 
 // Page responsible To handle The Cart
 const CartPage = () => {
@@ -24,10 +25,13 @@ const CartPage = () => {
 
       <Row className="d-flex justify-content-center">
         <Col xs="12" md="9">
-          {cartItems.length ? (
-            cartItems.map((item, index) => <CartItem key={index} item={item} />)
+          {cartItems.length > 0 ? (
+            cartItems.map((item) => <CartItem key={item?._id} item={item} />)
           ) : (
-            <h6>لا يوجد منتجات فى العربة</h6>
+            <>
+              <h6>لا يوجد منتجات فى العربة</h6>
+              <Link to="/products">Browse Products</Link>{" "}
+            </>
           )}
         </Col>
         <Col xs="6" md="3">

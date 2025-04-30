@@ -18,10 +18,10 @@ const ViewProductDetailsHook = (productID) => {
   // Initialize dispatch to interact with Redux actions
   const dispatch = useDispatch();
 
+  // Get The Specific Product to display its details
   const [specificProduct] = ViewSpecificProductHook(productID);
 
   // Select the product, category, brand, and related products data from the Redux store
-
   const category = useSelector(
     (state) => state.allCategory.viewSpecificCategory
   );

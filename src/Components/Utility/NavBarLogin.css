@@ -47,7 +47,13 @@
 
   a span.badge {
     position: absolute;
-    left: 40% !important;
+    left: 0% !important;
+  }
+}
+
+@media (max-width: 575px) {
+  a span.badge {
+    left: 41.5% !important;
   }
 }
 

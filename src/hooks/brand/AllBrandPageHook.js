@@ -1,11 +1,17 @@
+// Import necessary React and Redux hooks
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+// Import Used Actions
 import {
   getAllBrand,
   getAllBrandInSelectedPage,
 } from "../../redux/actions/brandAction";
+
+// Import Used Configuration
 import { PAGE_BRANDS_LIMIT } from "../../config";
 
+// Hook responsible to display all the brands
 const AllBrandPageHook = () => {
   // 0. Use Dispatch to tell that u will use actions from redux
   const dispatch = useDispatch();

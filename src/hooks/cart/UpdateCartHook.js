@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-// Import Hooks From react, react-redux
+// Import Hooks from React and React-Redux
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -8,50 +8,62 @@ import { useDispatch } from "react-redux";
 import notify from "../Utility/useNotifyHook";
 import ViewSpecificProductHook from "../products/ViewSpecificProductHook";
 
-// Import Custom Actions
+// Import Custom Actions for updating the cart item
 import { updateCartSpecificItem } from "../../redux/actions/cartAction";
 
-// Import Used Configuration for toastify notification
+// Import Configuration for toastify notifications
 import { SUCCESS, WARNING } from "../../config";
 
 const UpdateCartHook = (item) => {
   const dispatch = useDispatch();
+
+  // State to track the item count in the cart
   const [itemCount, setItemCount] = useState(0);
 
+  // Use custom hook to get details of the specific product
   const [specificProduct] = ViewSpecificProductHook(item?.product?.id || "");
 
+  // Handle change in the item count input field
   const onChangeCount = (e) => setItemCount(e.target.value);
 
-  useEffect(() => setItemCount(item?.count), []);
+  // Set the initial item count when the hook is first run
+  useEffect(() => setItemCount(item?.count), []); // Runs once when the component is mounted
 
+  // State for handling visibility of the update modal
   const [showSpecificUpdate, setShowSpecificUpdate] = useState(false);
+
+  // Functions to control showing and closing the update modal
   const handleCloseSpecificUpdate = () => setShowSpecificUpdate(false);
   const handleShowSpecificUpdate = () => setShowSpecificUpdate(true);
 
+  // Handle updating the specific item in the cart
   const handleUpdateSpecificItem = async () => {
+    // Check if the requested quantity is available
     if (specificProduct?.quantity < itemCount) {
-      notify(`متوفر ${specificProduct?.quantity} منتجات فقط`, WARNING);
+      notify(`متوفر ${specificProduct?.quantity} منتجات فقط`, WARNING); // Show warning if not enough stock
       return;
     }
 
+    // Dispatch the update action to update the specific item in the cart
     await dispatch(
       updateCartSpecificItem(item?._id, {
         count: itemCount,
       })
     );
 
+    // Close the modal and show success notification
     setShowSpecificUpdate(false);
     notify("تم تعديل المنتج بنجاح", SUCCESS);
-    setTimeout(() => window.location.reload(false), 1000);
+    setTimeout(() => window.location.reload(false), 1000); // Reload the page after a brief delay
   };
 
   return [
-    itemCount,
-    onChangeCount,
-    showSpecificUpdate,
-    handleCloseSpecificUpdate,
-    handleShowSpecificUpdate,
-    handleUpdateSpecificItem,
+    itemCount, // Current item count
+    onChangeCount, // Function to update the item count
+    showSpecificUpdate, // State for showing the update modal
+    handleCloseSpecificUpdate, // Function to close the modal
+    handleShowSpecificUpdate, // Function to open the modal
+    handleUpdateSpecificItem, // Function to update the item in the cart
   ];
 };
 

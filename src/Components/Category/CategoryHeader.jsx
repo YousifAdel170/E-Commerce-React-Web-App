@@ -20,16 +20,14 @@ const CategoryHeader = () => {
       <Container>
         <Row>
           <Col className="d-flex justify-content-start py-2 flex-wrap">
-            {categories
+            {categories && categories.length
               ? categories.slice(0, 5).map((category) => (
                   <Link
                     key={category._id}
                     to={`/products/category/${category._id}`}
                     style={{ textDecoration: "none" }}
                   >
-                    <div key={category._id} className="cat-text-header">
-                      {category.name}
-                    </div>
+                    <div className="cat-text-header">{category.name}</div>
                   </Link>
                 ))
               : null}

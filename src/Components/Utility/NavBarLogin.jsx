@@ -22,20 +22,16 @@ import cart from "../../Assets/Imgs/cart.png";
 
 // Import The Used CSS
 import "./NavBarLogin.css";
-import FetchCartDataHook from "../../hooks/cart/FetchCartDataHook";
 
 // Component Responsible To Display The NavBar For The Login User
 const NavBarLogin = () => {
   // Custom Hooks
   const [searchWord, onChangeSearch] = NavbarSearchHook();
   const [user, logOut] = NavBarLoginHook();
-
-  FetchCartDataHook();
-
   const [, numberOfItems] = ViewAllCartItemsHook();
   return (
     <Navbar className="sticky-top" bg="dark" variant="dark" expand="sm">
-      <Container clsassName="d-flex justify-content-between align-items-center">
+      <Container className="d-flex justify-content-between align-items-center">
         {/* Logo */}
         <Navbar.Brand>
           <Link to={"/"}>
@@ -60,25 +56,32 @@ const NavBarLogin = () => {
               <NavDropdown title={user.name} id="basic-nav-dropdown">
                 {user.role === "admin" ? (
                   // Display the control page for the admin
-                  <NavDropdown.Item>
-                    <Link className="nav-text" to={"/admin/all-products"}>
-                      لوحة التحكم
-                    </Link>
+                  <NavDropdown.Item
+                    as={Link}
+                    to="/admin/all-products"
+                    className="nav-text"
+                  >
+                    لوحة التحكم
                   </NavDropdown.Item>
                 ) : (
                   // Display the profile page for the user
-                  <NavDropdown.Item>
-                    <Link to={"/user/profile"} className="nav-text">
-                      الصفحه الشخصية
-                    </Link>
+                  <NavDropdown.Item
+                    as={Link}
+                    to="/user/profile"
+                    className="nav-text"
+                  >
+                    الصفحه الشخصية
                   </NavDropdown.Item>
                 )}
 
                 {/* Logout if the user Logged in */}
-                <NavDropdown.Item onClick={logOut}>
-                  <Link to={"/"} className="nav-text">
-                    تسجيل خروج
-                  </Link>
+                <NavDropdown.Item
+                  as={Link}
+                  to="/"
+                  className="nav-text"
+                  onClick={logOut}
+                >
+                  تسجيل خروج
                 </NavDropdown.Item>
               </NavDropdown>
             ) : (
@@ -105,7 +108,7 @@ const NavBarLogin = () => {
                   العربة
                 </p>
                 {/* Display the number of items in the cart */}
-                <span className="position-absolute top-10 start-0 translate-middle badge rounded-pill bg-danger">
+                <span className="position-absolute top-25 start-0 translate-middle badge rounded-pill bg-danger">
                   {numberOfItems || 0}
                 </span>
               </Link>

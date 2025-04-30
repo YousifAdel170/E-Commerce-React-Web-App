@@ -1,18 +1,19 @@
-// Import Used Hooks from react, react-router-dom
+// Import necessary hooks from react and react-router-dom
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom"; // For extracting parameters from the URL
 
-// Custom hook
+// Import custom hook to fetch all product ratings
 import ViewAllRatesHook from "../../hooks/review/ViewAllRatesHook";
 
+// Hook Responsible to handle the Rate Container Component
 const RateContainerHook = () => {
-  // Extracting product ID from the URL
+  // Extract product ID from the URL using the useParams hook
   const { id } = useParams();
 
   // Fetch all rates using the custom hook
   const [allRates, onPress] = ViewAllRatesHook(id);
 
-  // State to hold reviews fetched from the hook
+  // Local state to hold reviews fetched from the hook
   const [reviews, setReviews] = useState(allRates?.data || []);
 
   /**
@@ -24,10 +25,10 @@ const RateContainerHook = () => {
       prevReviews.filter((review) => review._id !== id)
     );
 
-  // Sync reviews when new data is fetched from the hook
+  // Sync the reviews state whenever new data is fetched from the hook
   useEffect(() => {
     setReviews(allRates?.data || []);
-  }, [allRates]);
+  }, [allRates]); // Re-run this effect whenever `allRates` changes
 
   /**
    * Update a review in the state by matching the review ID
@@ -49,6 +50,7 @@ const RateContainerHook = () => {
   const addReview = (newReview) =>
     setReviews((prevReviews) => [newReview, ...prevReviews]);
 
+  // Return the reviews, and functions to add, update, and remove reviews along with allRates and pagination handler
   return [reviews, addReview, updateReviews, removeReview, allRates, onPress];
 };
 

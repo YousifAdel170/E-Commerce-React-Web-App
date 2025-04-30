@@ -39,9 +39,9 @@ const SideFilter = () => {
                 <input
                   onChange={clickCategory}
                   type="checkbox"
-                  value={item._id}
+                  value={item?._id}
                 />
-                <div className="filter-sub me-2">{item.name}</div>
+                <div className="filter-sub me-2">{item?.name}</div>
               </div>
             ))
           ) : (
@@ -60,8 +60,12 @@ const SideFilter = () => {
           {brandsData ? (
             brandsData.map((item, index) => (
               <div key={index} className="d-flex mt-3">
-                <input onChange={clickBrand} type="checkbox" value={item._id} />
-                <div className="filter-sub me-2 ">{item.name}</div>
+                <input
+                  onChange={clickBrand}
+                  type="checkbox"
+                  value={item?._id}
+                />
+                <div className="filter-sub me-2 ">{item?.name}</div>
               </div>
             ))
           ) : (
@@ -75,7 +79,7 @@ const SideFilter = () => {
           {/* Price From */}
           <p className="filter-sub my-2">من:</p>
           <input
-            value={localFrom}
+            value={localFrom || ""}
             onChange={priceFromUpdate}
             className="m-2 text-center"
             type="number"
@@ -87,7 +91,7 @@ const SideFilter = () => {
         <div className="d-flex">
           <p className="filter-sub my-2">الي:</p>
           <input
-            value={localTo}
+            value={localTo || ""}
             onChange={priceToUpdate}
             className="m-2 text-center"
             type="number"

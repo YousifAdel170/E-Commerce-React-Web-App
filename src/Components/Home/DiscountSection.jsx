@@ -11,7 +11,7 @@ import "./DiscountSection.css";
 const DiscountSection = () => {
   return (
     // Main Container of the Discount Section
-    <Container clsassName="">
+    <Container>
       {/* Title of the Discount Section */}
       <Row className="discount-background mt-4 mx-2 d-flex text-center align-items-center mb-30px-mobile ">
         <Col sm="6">

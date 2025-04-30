@@ -1,6 +1,6 @@
 // Import Hooks From React Redux and React
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 // Hook Responsible for fetching the products data and returning it to the component
 const ViewHomeProductsHook = () => {

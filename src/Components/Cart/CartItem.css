@@ -11,18 +11,15 @@
 
 .cat-title {
   color: #555550;
-  font-family: Almarai;
   font-size: 14px;
   font-weight: normal;
-  text-align: right;
 }
+
 .cat-text {
   color: #979797;
-  font-family: "Almarai";
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 0;
-  text-align: right;
 }
 
 .cat-rate {
@@ -30,7 +27,6 @@
   font-family: "Almarai";
   font-size: 14px;
   font-weight: bold;
-  text-align: right;
 }
 
 .brand-text {

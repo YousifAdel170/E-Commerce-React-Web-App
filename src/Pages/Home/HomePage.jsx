@@ -7,13 +7,15 @@ import BrandFeatured from "../../Components/Brand/BrandFeatured";
 
 // Import Custom Hooks
 import ViewHomeProductsHook from "../../hooks/products/ViewHomeProductsHook";
+import FetchWishList from "../../hooks/products/wishList/FetchWishList";
+
+// Import Used Configurations
 import {
   MOST_SOLD_PRODUCTS_TITLE,
   MORE_BUTTON_TITLE,
   LATEST_FASHION_PRODUCTS_TITLE,
   MOST_COMMMON_BRANDS_TITLE,
 } from "../../config";
-import FetchWishList from "../../hooks/products/wishList/FetchWishList";
 
 // Page Responsible for displaying the Home Page of the Application
 const HomePage = () => {

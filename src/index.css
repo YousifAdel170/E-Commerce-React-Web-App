@@ -8,9 +8,11 @@ body {
   margin: 0;
   font-family: "Almarai", sans-serif !important;
 }
+
 .m-0 {
   margin: 0;
 }
+
 .p-0 {
   padding: 0;
 }
@@ -32,6 +34,29 @@ textarea:focus::placeholder {
 
 .font {
   background-color: #f9f9f9;
+}
+
+@media (max-width: 767px) {
+  .col-mobile {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .flex-center-mobile {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.flex-grow-2 {
+  flex-grow: 2 !important;
+}
+
+@media (max-width: 767px) {
+  .flex-grow-1-mobile {
+    flex-grow: 1 !important;
+  }
 }
 
 /* End Of Global Styling  */
