@@ -1,27 +1,30 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const ProtectedRouteHook = () => {
-  const [userData] = useState(JSON.parse(localStorage.getItem("user")));
-  const [isUser, setIsUser] = useState();
-  const [isAdmin, setIsAdmin] = useState();
+  const [isUser, setIsUser] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const user = useSelector((state) => state.authReducer.user);
 
   useEffect(() => {
-    if (userData != null) {
-      if (userData.role === "user") {
+    if (user) {
+      if (user.role === "user") {
         setIsUser(true);
         setIsAdmin(false);
-      } else {
-        setIsUser(false);
+      } else if (user.role === "admin") {
         setIsAdmin(true);
+        setIsUser(false);
       }
     } else {
       setIsAdmin(false);
       setIsUser(false);
     }
-  }, [userData]);
 
-  return [isUser, isAdmin];
+    setIsLoading(false);
+  }, [user]);
+
+  return [isUser, isAdmin, isLoading];
 };
 
 export default ProtectedRouteHook;

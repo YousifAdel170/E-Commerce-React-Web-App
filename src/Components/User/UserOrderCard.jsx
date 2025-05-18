@@ -1,8 +1,12 @@
 /* eslint-disable react/prop-types */
+
+// Import layout components from React Bootstrap
 import { Col, Row } from "react-bootstrap";
 
+// Import base URL for product images
 import { PRODUCTS_BASE_URL } from "../../config";
 
+// Component to display a single item in a user's order
 const UserOrderCard = ({ item }) => {
   return (
     <Row className="d-flex mb-4 mt-2">
@@ -20,15 +24,15 @@ const UserOrderCard = ({ item }) => {
         />
       </Col>
 
-      {/* Product Name, Rate, Quatity */}
+      {/* Product Details: Name, Rating, Quantity, Color */}
       <Col xs="8" md="6" className="d-flex flex-column justify-content-evenly">
-        {/* Name */}
+        {/* Product Title */}
         <div className="cat-title">
           {item && item.product ? item.product.title : ""}
         </div>
 
-        {/* Rate */}
-        <div className=" cat-rate d-flex align-items-center">
+        {/* Product Rating */}
+        <div className="cat-rate d-flex align-items-center">
           {item && item.product && item.product.ratingsQuantity
             ? item.product.ratingsQuantity
             : 0}
@@ -42,18 +46,24 @@ const UserOrderCard = ({ item }) => {
           </div>
         </div>
 
-        {/* Quantity */}
+        {/* Quantity Ordered */}
         <div className="d-flex">
           <div className="cat-text d-flex align-items-center">الكمية: </div>
-          <div className="mx-2 ">{item && item.product ? item.count : 0}</div>
+          <div className="mx-2">{item && item.product ? item.count : 0}</div>
         </div>
+
+        {/* Product Color */}
         <div
           className="color border"
-          style={{ backgroundColor: item ? item.color : "", cursor: "auto" }}
+          style={{
+            backgroundColor: item ? item.color : "",
+            cursor: "auto",
+          }}
         ></div>
       </Col>
     </Row>
   );
 };
 
+// Export the component
 export default UserOrderCard;

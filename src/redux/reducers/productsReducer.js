@@ -89,6 +89,7 @@ const productsReducer = (state = initialState, action) => {
       return {
         ...state,
         updatedProduct: action.payload,
+
         loading: { ...state.loading, update: false },
         error: { ...state.error, update: null },
       };

@@ -3,9 +3,11 @@ import AdminSideBar from "../../Components/Admin/AdminSideBar";
 import AdminAllProducts from "../../Components/Admin/AdminAllProducts";
 import PaginationComponent from "../../Components/Utility/PaginationComponent";
 import AdminAllProductsPageHook from "../../hooks/admin/AdminAllProductsPageHook";
+import { ToastContainer } from "react-toastify";
 
 const AdminAllProductsPage = () => {
-  const [items, pageCount, onPress] = AdminAllProductsPageHook();
+  const [items, pageCount, onPress, onDelete, onEdit] =
+    AdminAllProductsPageHook();
 
   return (
     <Container>
@@ -15,12 +17,13 @@ const AdminAllProductsPage = () => {
         </Col>
 
         <Col sm="9" xs="10" md="10">
-          <AdminAllProducts items={items} />
+          <AdminAllProducts items={items} onDelete={onDelete} onEdit={onEdit} />
           {pageCount > 1 ? (
             <PaginationComponent pageCount={pageCount} onPress={onPress} />
           ) : null}
         </Col>
       </Row>
+      <ToastContainer />
     </Container>
   );
 };

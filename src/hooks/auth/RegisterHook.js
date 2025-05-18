@@ -1,5 +1,8 @@
+/* Importing necessary hooks from react, react-redux */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+/* Importing constants and actions */
 import {
   CONFIRMATION_PASSWORD_TYPE,
   EGYPT_NUMBERS_ONLY,
@@ -11,99 +14,105 @@ import {
   PASSWORD_VALIDATION,
   PHONE_TYPE,
   SUCCESS,
-} from "../../config";
+  WARNING,
+} from "../../config"; // Constants for validation and message types
+import notify from "../../hooks/Utility/useNotifyHook"; // Notification hook for alerts
+import { createNewUser } from "../../redux/actions/authAction"; // Action to register a new user
+import { useNavigate } from "react-router-dom"; // Hook for navigation
 
-import notify from "../../hooks/Utility/useNotifyHook";
-import { createNewUser } from "../../redux/actions/authAction";
-import { useNavigate } from "react-router-dom";
-
+// Custom Hook for handling user registration
 const RegisterHook = () => {
-  // Use Dispatch to tell that u will use actions from redux
+  // Use Dispatch to handle actions from redux
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
-  // States
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmationPassword, setConfirmationPassword] = useState("");
-  const [loading, setLoading] = useState(true);
+  /* States to store form data */
+  const [name, setName] = useState(""); // Name input state
+  const [email, setEmail] = useState(""); // Email input state
+  const [phone, setPhone] = useState(""); // Phone input state
+  const [password, setPassword] = useState(""); // Password input state
+  const [confirmationPassword, setConfirmationPassword] = useState(""); // Confirmation password input state
+  const [loading, setLoading] = useState(true); // Loading state to handle async operations
 
-  //   Function To handle the change of the input
+  // Function to handle the change of input fields
   const onChangeInput = (e, type) => {
     switch (type) {
       case NAME_TYPE:
-        setName(e.target.value);
+        setName(e.target.value); // Update name state
         break;
       case EMAIL_TYPE:
-        setEmail(e.target.value);
+        setEmail(e.target.value); // Update email state
         break;
       case PHONE_TYPE:
-        setPhone(e.target.value);
+        setPhone(e.target.value); // Update phone state
         break;
       case PASSWORD_TYPE:
-        setPassword(e.target.value);
+        setPassword(e.target.value); // Update password state
         break;
       case CONFIRMATION_PASSWORD_TYPE:
-        setConfirmationPassword(e.target.value);
+        setConfirmationPassword(e.target.value); // Update confirmation password state
         break;
       default:
     }
   };
 
-  //   Function To Validate Inputs Before Submit
+  // Function to validate inputs before submitting the form
   const validateInputs = () => {
     // Validate Username
     if (name === "") {
-      notify("من فضلك ادخل اسم المستخدم", ERROR);
-      return;
+      notify("من فضلك ادخل اسم المستخدم", WARNING); // Notify if name is empty
+      return false; // Stop the form submission
     }
 
     // Validate Email Address
     if (email === "") {
-      notify("من فضلك ادخل  البريد الالكتروني", ERROR);
-      return;
+      notify("من فضلك ادخل  البريد الالكتروني", WARNING); // Notify if email is empty
+      return false; // Stop the form submission
     } else {
+      // Check if the email is in a valid format
       if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
-        notify("من فضلك ادخل  البريد الالكتروني صحيح", "error");
-        return;
+        notify("من فضلك ادخل  البريد الالكتروني صحيح", WARNING); // Notify if email format is invalid
+        return false; // Stop the form submission
       }
     }
 
     // Validate Phone Number
     if (phone.length <= 10) {
-      notify("من فضلك ادخل رقم هاتف صحيح", ERROR);
-      return;
+      notify("من فضلك ادخل رقم هاتف صحيح", WARNING); // Notify if phone number is invalid
+      return false; // Stop the form submission
     }
 
     // Validate Password
     if (password === "") {
-      notify("من فضلك ادخل  كلمة مرور", ERROR);
-      return;
+      notify("من فضلك ادخل  كلمة مرور", WARNING); // Notify if password is empty
+      return false; // Stop the form submission
     } else {
+      // Check if password is strong enough
       if (password.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-        notify("من فضلك ادخل  كلمة مرور قوية", ERROR);
-        return;
+        notify("من فضلك ادخل  كلمة مرور قوية", WARNING); // Notify if password is weak
+        return false; // Stop the form submission
       }
     }
 
     // Validate Password Confirmation
     if (confirmationPassword !== password) {
-      notify("من فضلك تأكد من  كلمة المرور", ERROR);
-      return;
+      notify("من فضلك تأكد من  كلمة المرور", WARNING); // Notify if passwords don't match
+      return false; // Stop the form submission
     }
+
+    return true; // All validations passed, proceed with submission
   };
 
+  // Selector to get registration result, errors if there from redux store
   const result = useSelector((state) => state.authReducer.createUser);
+  const errors = useSelector((state) => state.authReducer.errors);
 
-  //   Function To Submit the Data [Register New User]
+  // Function to submit the form and register a new user
   const handleSubmit = async () => {
     // Validate Inputs Before Submit
-    validateInputs();
+    if (!validateInputs()) return; // Stop if validation fails
 
-    // Start The Registartion [Loading ON] &  Dispatch the action To Create New User
+    // Start the registration process (Loading ON) and dispatch the action to create a new user
     setLoading(true);
     await dispatch(
       createNewUser({
@@ -115,38 +124,48 @@ const RegisterHook = () => {
       })
     );
     setLoading(false);
-    // End The Registartion [Loading OFF]
+    // End the registration process (Loading OFF)
   };
 
-  // Render every time the loading state changes
+  // Run when the loading state changes
   useEffect(() => {
-    // Check if the Registeration End
     if (!loading) {
-      if (result) {
-        // Set The Token In the Local Storage [To Get The User Data]
-        if (result.data && result.data.token) {
-          // Set The Token when the user has been registered
-          localStorage.setItem("token", result.data.token);
+      if (errors) {
+        if (errors.errors && Array.isArray(errors.errors)) {
+          if (errors.errors.length === 1) {
+            switch (errors.errors[0].msg) {
+              case EMAIL_ALREADY_USED:
+                notify("هذا الايميل مسجل من قبل", ERROR);
+                break;
+              case EGYPT_NUMBERS_ONLY:
+                notify("يجب ان يكون الرقم مصري مكون من 11 رقم", ERROR);
+                break;
+              case PASSWORD_VALIDATION:
+                notify("يجب ان لا تقل كلمه السر عن 6 احرف او ارقام", ERROR);
+                break;
+              default:
+                notify(errors.errors[0].msg, ERROR);
+            }
+          } else {
+            notify(
+              "من فضلك تأكد من البيانات المدخلة لان يوجد اكثر من خطأ",
+              ERROR
+            );
+          }
+        } else notify("حدث خطأ ما أثناء عملية التسجيل", ERROR);
 
-          // Notification For Success
-          notify("تم تسجيل الحساب بنجاح", SUCCESS);
+        return;
+      }
 
-          // Navigate to Login Page
-          setTimeout(() => navigate("/login"), 2000);
-        }
-
-        if (result.data && result.data.errors) {
-          if (result.data.errors[0].msg === EMAIL_ALREADY_USED)
-            notify("هذا الايميل مسجل من قبل", ERROR);
-          else if (result.data.errors[0].msg === EGYPT_NUMBERS_ONLY)
-            notify("يجب ان يكون الرقم مصري مكون من 11 رقم", ERROR);
-          else if (result.data.errors[0].msg === PASSWORD_VALIDATION)
-            notify("يجب ان لاقل كلمه السر عن 6 احرف او ارقام", ERROR);
-        }
+      if (result && result.data && result.data.token) {
+        localStorage.setItem("token", result.data.token);
+        notify("تم تسجيل الحساب بنجاح", SUCCESS);
+        setTimeout(() => navigate("/login"), 2000);
       }
     }
-  }, [loading, navigate, result]);
+  }, [loading, navigate, result, errors]);
 
+  // Return all necessary values and functions for the component
   return [
     name,
     email,
@@ -158,4 +177,4 @@ const RegisterHook = () => {
   ];
 };
 
-export default RegisterHook;
+export default RegisterHook; // Export the hook for use in the component

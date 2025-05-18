@@ -9,8 +9,10 @@ import AllCategoryPage from "./Pages/Category/AllCategoryPage";
 import AllBrandPage from "./Pages/Brand/AllBrandPage";
 import ShopProductsPage from "./Pages/Products/ShopProductsPage";
 import ProductDetailsPage from "./Pages/Products/ProductDetailsPage";
+
 import CartPage from "./Pages/Cart/CartPage";
 import CartMethodPage from "./Pages/Checkout/CartMethodPage";
+
 import AdminAllProductsPage from "./Pages/Admin/AdminAllProductsPage";
 import AdminAllOrdersPage from "./Pages/Admin/AdminAllOrdersPage";
 import AdminOrderDetailsPage from "./Pages/Admin/AdminOrderDetailsPage";
@@ -18,12 +20,6 @@ import AdminAddBrandPage from "./Pages/Admin/AdminAddBrandPage";
 import AdminAddCategoryPage from "./Pages/Admin/AdminAddCategoryPage";
 import AdminAddSubCategoryPage from "./Pages/Admin/AdminAddSubCategoryPage";
 import AdminAddProductPage from "./Pages/Admin/AdminAddProductPage";
-import UserAllOrdersPage from "./Pages/User/UserAllOrdersPage";
-import UserFavoriteProducts from "./Pages/User/UserFavoriteProductsPage";
-import UserProfilePage from "./Pages/User/UserProfilePage";
-import UserAllAddressesPage from "./Pages/User/UserAllAddressesPage";
-import UserAddAddressPage from "./Pages/User/UserAddAddressPage";
-import UserEditAddressPage from "./Pages/User/UserEditAddressPage";
 import AdminEditProductPage from "./Pages/Admin/AdminEditProductPage";
 import VerifyPasswordPage from "./Pages/Auth/VerifyPasswordPage";
 import ForgotPasswordPage from "./Pages/Auth/ForgotPasswordPage";
@@ -34,6 +30,7 @@ import ProtectedRouteHook from "./hooks/auth/ProtectedRouteHook";
 import ProtectedRoute from "./Components/Utility/ProtectedRoute";
 import ViewProductsByCategoryPage from "./Pages/Products/ViewProductsByCategoryPage";
 import ViewProductsByBrandPage from "./Pages/Products/ViewProductsByBrandPage";
+
 import AdminAllCouponsPage from "./Pages/Admin/AdminAllCouponsPage";
 import AdminAllCategoriesPage from "./Pages/Admin/AdminAllCategoriesPage";
 import AdminEditCategoryPage from "./Pages/Admin/AdminEditCategoryPage";
@@ -42,12 +39,20 @@ import AdminEditBrandPage from "./Pages/Admin/AdminEditBrandPage";
 import AdminAllSubcategoriesPage from "./Pages/Admin/AdminAllSubcategoriesPage";
 import AdminEditSubcategoryPage from "./Pages/Admin/AdminEditSubcategoryPage";
 
-import { ToastContainer } from "react-toastify";
+// User Pages
+import UserPage from "./Pages/User/UserPage";
+import UserProfile from "./Components/User/UserProfile";
+import UserFavoriteProducts from "./Components/User/UserFavoriteProducts";
+import UserAllOrders from "./Components/User/UserAllOrders";
+import UserAddAddress from "./Components/User/UserAddAddress";
+import UserAllAddresses from "./Components/User/UserAllAddresses";
+import UserEditAddress from "./Components/User/UserEditAddress";
 
 function App() {
-  const [isUser, isAdmin] = ProtectedRouteHook();
+  const [isUser, isAdmin, isLoading] = ProtectedRouteHook();
+  if (isLoading) return null; // Show a loading spinner or placeholder while checking auth status
   return (
-    <div className="font">
+    <div className="font app">
       <BrowserRouter>
         <NavBarLogin />
         <Routes>
@@ -143,21 +148,23 @@ function App() {
 
           {/* User Routes */}
           <Route element={<ProtectedRoute auth={isUser} />}>
-            <Route path="/user/all-orders" element={<UserAllOrdersPage />} />
-            <Route
-              path="/user/favorite-products"
-              element={<UserFavoriteProducts />}
-            />
-            <Route path="/user/addresses" element={<UserAllAddressesPage />} />
-            <Route
-              path="/user/addresses/add-address"
-              element={<UserAddAddressPage />}
-            />
-            <Route
-              path="/user/addresses/edit-address/:id"
-              element={<UserEditAddressPage />}
-            />
-            <Route path="/user/profile" element={<UserProfilePage />} />
+            <Route element={<UserPage />}>
+              <Route path="/user/all-orders" element={<UserAllOrders />} />
+              <Route
+                path="/user/favorite-products"
+                element={<UserFavoriteProducts />}
+              />
+              <Route path="/user/addresses" element={<UserAllAddresses />} />
+              <Route
+                path="/user/addresses/add-address"
+                element={<UserAddAddress />}
+              />
+              <Route
+                path="/user/addresses/edit-address/:id"
+                element={<UserEditAddress />}
+              />
+              <Route path="/user/profile" element={<UserProfile />} />
+            </Route>
             <Route path="/order/pay-method" element={<CartMethodPage />} />
           </Route>
 
@@ -173,7 +180,6 @@ function App() {
         </Routes>
       </BrowserRouter>
       <Footer />
-      <ToastContainer />
     </div>
   );
 }

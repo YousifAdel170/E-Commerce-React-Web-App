@@ -5,14 +5,18 @@ import { getAllCategory } from "../../redux/actions/categoryAction";
 import { getAllBrand } from "../../redux/actions/brandAction";
 import { getAllSubCategory } from "../../redux/actions/subCategoryAction";
 import {
+  getAllProducts,
   getSpecificProduct,
   updateProduct,
 } from "../../redux/actions/productsAction";
 import notify from "../Utility/useNotifyHook";
+import { useNavigate } from "react-router-dom";
+import { ERROR, SUCCESS } from "../../config";
 
-const AdminEditProductHook = (id) => {
+const AdminEditProductHook = (id, onEdit) => {
   // Use Dispatch to tell that u will use actions from redux
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Fetch categories only once when the component mounts
   useEffect(() => {
@@ -38,14 +42,10 @@ const AdminEditProductHook = (id) => {
   const subCategory = useSelector((state) => state.allSubCategory.subCategory);
 
   // Store the selected Sub categories list after being added
-  const onSelect = (selectedList) => {
-    setSelectedSubID(selectedList);
-  };
+  const onSelect = (selectedList) => setSelectedSubID(selectedList);
 
   // Store the selected Sub categories list after beging removed
-  const onRemove = (selectedList) => {
-    setSelectedSubID(selectedList);
-  };
+  const onRemove = (selectedList) => setSelectedSubID(selectedList);
 
   // State To Show/Hide Color Picker
   const [showColor, setShowColor] = useState(false);
@@ -75,6 +75,7 @@ const AdminEditProductHook = (id) => {
       setProductName(product.data.title);
       setProductDescription(product.data.description);
       setPriceBefore(product.data.price);
+      setPriceAfter(product.data.priceAfterDiscount);
       setQTY(product.data.quantity);
       setCategoryID(product.data.category);
       setBrandID(product.data.brand);
@@ -87,52 +88,57 @@ const AdminEditProductHook = (id) => {
     e.persist();
     setProductName(e.target.value);
   };
+
   //to change name state
   const onChangeDesName = (event) => {
     event.persist();
     setProductDescription(event.target.value);
   };
+
   //to change name state
   const onChangePriceBefor = (event) => {
     event.persist();
     setPriceBefore(event.target.value);
   };
+
   //to change name state
   const onChangePriceAfter = (event) => {
     event.persist();
     setPriceAfter(event.target.value);
-  }; //to change name state
+  };
+
+  //to change name state
   const onChangeQty = (event) => {
     event.persist();
     setQTY(event.target.value);
   };
+
+  // to change name state
   const onChangeColor = (event) => {
     event.persist();
     setShowColor(!showColor);
   };
 
+  // Function to handle the color picker
   const handleChangeComplete = (color) => {
     setShowColor(!showColor);
-
     setColors([...colors, color.hex]);
   };
 
+  // Function to remove the selected color
   const removeColor = (color) => {
     const newColors = colors.filter((e) => e !== color);
     setColors(newColors);
   };
 
   // Store The selected CategoryID
-  const onSelectCategory = async (e) => {
-    setCategoryID(e.target.value);
-  };
+  const onSelectCategory = async (e) => setCategoryID(e.target.value);
 
   useEffect(() => {
     if (categoryID != 0) {
-      const dispatchSubCategories = async () => {
-        // Dispatch the subcategories of the category id that has been selected
+      // Dispatch the subcategories of the category id that has been selected
+      const dispatchSubCategories = async () =>
         await dispatch(getAllSubCategory(categoryID));
-      };
 
       dispatchSubCategories();
     }
@@ -143,9 +149,7 @@ const AdminEditProductHook = (id) => {
   }, [subCategory]);
 
   // Store The selected brandID
-  const onSelectBrand = (e) => {
-    setBrandID(e.target.value);
-  };
+  const onSelectBrand = (e) => setBrandID(e.target.value);
 
   // Function to Convert 64 base Image into File
   function dataURLtoFile(dataurl, filename) {
@@ -195,11 +199,9 @@ const AdminEditProductHook = (id) => {
     // convert base 64 image to file
     let imgCover;
 
-    if (images[0].length <= 1000) {
+    if (images[0].length <= 1000)
       convertURLtoFile(images[0]).then((val) => (imgCover = val));
-    } else {
-      imgCover = dataURLtoFile(images[0], Math.random() + ".png");
-    }
+    else imgCover = dataURLtoFile(images[0], Math.random() + ".png");
 
     let itemImages = [];
 
@@ -242,6 +244,7 @@ const AdminEditProductHook = (id) => {
 
   // Reset The Values of the Product
   useEffect(() => {
+    const getProducts = async () => await dispatch(getAllProducts());
     if (loading === false) {
       setColors([]);
       setImages([]);
@@ -252,20 +255,46 @@ const AdminEditProductHook = (id) => {
       setPriceAfter("");
       setQTY("");
       setBrandID(0);
-      setSelectedSubID([]);
       setCategoryID(0);
-
-      setTimeout(() => setLoading(true), 1500);
+      setSelectedSubID([]);
 
       if (updatedProduct) {
         //   Check if the response status is OK
 
-        if (updatedProduct.status === 201 || updatedProduct.status === 200)
-          notify("تمت عملية التعديل بنجاح", "success");
-        else notify("هناك مشكلة في عملية التعديل", "error");
+        if (updatedProduct.status === 201 || updatedProduct.status === 200) {
+          notify("تمت عملية التعديل بنجاح", SUCCESS);
+          getProducts();
+        } else notify("هناك مشكلة في عملية التعديل", ERROR);
+
+        setTimeout(() => navigate("/admin/all-products"), 500);
       }
     }
-  }, [loading, updatedProduct]);
+  }, [loading, updatedProduct, navigate, dispatch]);
+
+  useEffect(() => {
+    if (onEdit) {
+      onEdit({
+        title: productName,
+        description: productDescription,
+        quantity: qty,
+        price: priceBefore,
+        category: categoryID,
+        brand: brandID,
+        availableColors: colors,
+        images: images,
+      });
+    }
+  }, [
+    brandID,
+    categoryID,
+    colors,
+    images,
+    onEdit,
+    priceBefore,
+    productDescription,
+    productName,
+    qty,
+  ]);
 
   return [
     categoryID,
@@ -296,6 +325,7 @@ const AdminEditProductHook = (id) => {
     qty,
     productDescription,
     productName,
+    onEdit,
   ];
 };
 

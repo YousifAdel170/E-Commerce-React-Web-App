@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import notify from "../Utility/useNotifyHook";
-import { ERROR, SUCCESS } from "../../config";
+import { ERROR, SUCCESS, WARNING } from "../../config";
 import { forgotPassword } from "../../redux/actions/authAction";
 
 const ForgotPasswordHook = () => {
@@ -16,7 +16,7 @@ const ForgotPasswordHook = () => {
   const handleSubmit = async () => {
     // Check If Email is Empty
     if (email === "") {
-      notify("من فضلك ادخل الايميل", ERROR);
+      notify("من فضلك ادخل الايميل", WARNING);
       return;
     }
 
@@ -38,6 +38,8 @@ const ForgotPasswordHook = () => {
   const response = useSelector((state) => state.authReducer.forgotPassword);
 
   useEffect(() => {
+    console.log("response", response);
+    console.log("loading", loading);
     // Check if the Forget Password Operation End
     if (!loading) {
       if (response) {

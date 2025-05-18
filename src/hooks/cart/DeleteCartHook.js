@@ -11,11 +11,14 @@ import {
 
 // Notification function and success constant
 import notify from "../Utility/useNotifyHook";
-import { SUCCESS } from "../../config";
+import { SUCCESS, WARNING } from "../../config";
+import ViewAllCartItemsHook from "./ViewAllCartItemsHook";
 
 // Custom hook to handle deletion logic for cart items (all or specific)
 const DeleteCartHook = (item) => {
   const dispatch = useDispatch();
+
+  const [, numberOfItems] = ViewAllCartItemsHook();
 
   // === Delete All Cart Logic ===
 
@@ -30,6 +33,13 @@ const DeleteCartHook = (item) => {
 
   // Handle confirming deletion of all cart items
   const handleDeleteCart = async () => {
+    // Check if the cart is empty then return
+    if (numberOfItems === 0) {
+      notify("لا يوجد منتجات حاليا", WARNING);
+      return;
+    }
+
+    // If the cart not empty then clear
     await dispatch(clearAllCart());
     notify("تم حذف الكل بنجاح", SUCCESS);
     setShowAll(false);

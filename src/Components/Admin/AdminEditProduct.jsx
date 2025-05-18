@@ -114,8 +114,8 @@ const AdminEditProduct = () => {
 
           {/* Select Main Category */}
           <select
-            name="languages"
-            id="lang"
+            name="category"
+            id="category"
             className="select input-form-area mt-3 px-2 "
             onChange={onSelectCategory}
             value={categoryID}
@@ -167,7 +167,7 @@ const AdminEditProduct = () => {
           <div className="text-form mt-3 "> الالوان المتاحه للمنتج</div>
 
           <div className="mt-1 d-flex">
-            {colors.length > 1
+            {colors.length
               ? colors.map((color, index) => (
                   <div
                     onClick={() => removeColor(color)}

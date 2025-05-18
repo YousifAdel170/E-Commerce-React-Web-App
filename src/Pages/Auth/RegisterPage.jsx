@@ -1,16 +1,19 @@
+// Import components from react-bootstrap, react-toastify
 import { Col, Container, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import RegisterHook from "../../hooks/auth/RegisterHook";
-import {
-  CONFIRMATION_PASSWORD_TYPE,
-  EMAIL_TYPE,
-  NAME_TYPE,
-  PASSWORD_TYPE,
-  PHONE_TYPE,
-} from "../../config";
 import { ToastContainer } from "react-toastify";
 
+// Import Custom Components
+import InputField from "../../Components/Utility/InputField";
+
+// Import Hooks From react-router-dom
+import { Link } from "react-router-dom";
+
+// Import Custom Hook
+import RegisterHook from "../../hooks/auth/RegisterHook";
+import { registerData } from "../../constants/register";
+
 const RegisterPage = () => {
+  // Destructure state and handlers from custom hook
   const [
     name,
     email,
@@ -19,70 +22,63 @@ const RegisterPage = () => {
     confirmationPassword,
     onChangeInput,
     handleSubmit,
+    error,
   ] = RegisterHook();
+
+  // Current language to use for placeholders
+  const language = "ar";
+
+  // Handle The Register Form
+  const formData = registerData(
+    name,
+    email,
+    phone,
+    password,
+    confirmationPassword,
+    error
+  );
+
   return (
-    <Container style={{ minHeight: "680px" }}>
+    // Container ensures horizontal padding and center alignment, responsive across breakpoints
+    <Container style={{ flex: "1" }}>
+      {/* Bootstrap row for vertical spacing and centering content */}
       <Row className="py-5 d-flex justify-content-center">
+        {/* Column spanning 100% width on small screens (sm="12") 
+            and using flex layout for vertical stacking of children */}
         <Col sm="12" className="d-flex flex-column">
+          {/* Page title centered horizontally */}
           <label className="mx-auto title-login">تسجيل حساب جديد</label>
-          {/* Username */}
-          <input
-            value={name}
-            onChange={(e) => onChangeInput(e, NAME_TYPE)}
-            placeholder="اسم المستخدم ..."
-            type="text"
-            className="user-input mt-3 text-center mx-auto"
-          />
 
-          {/* Email */}
-          <input
-            value={email}
-            onChange={(e) => onChangeInput(e, EMAIL_TYPE)}
-            placeholder="الايميل ..."
-            type="text"
-            className="user-input mt-3 text-center mx-auto"
-          />
+          {/* Dynamically render input fields using registerScripts config */}
+          {formData.map((input, index) => (
+            <InputField
+              key={index}
+              value={input?.value}
+              onChangeInput={onChangeInput}
+              onChangeInputType={input.onChangeInputType}
+              placeholder={input?.placeholder[language]}
+              type={input?.type}
+              className={input?.className}
+              error={input.error}
+            />
+          ))}
 
-          {/* Phone */}
-          <input
-            value={phone}
-            onChange={(e) => onChangeInput(e, PHONE_TYPE)}
-            placeholder="رقم الهاتف  ..."
-            type="tel"
-            className="user-input text-center mt-3 mx-auto"
-          />
-
-          {/* Password */}
-          <input
-            value={password}
-            onChange={(e) => onChangeInput(e, PASSWORD_TYPE)}
-            placeholder="كلمة السر ..."
-            type="password"
-            className="user-input text-center my-3 mx-auto"
-          />
-
-          {/* Confirmation Password */}
-          <input
-            value={confirmationPassword}
-            onChange={(e) => onChangeInput(e, CONFIRMATION_PASSWORD_TYPE)}
-            placeholder=" تأكيد كلمة السر ..."
-            type="password"
-            className="user-input text-center mx-auto"
-          />
-
-          <button onClick={handleSubmit} className="btn-login mx-auto mt-4">
+          {/* Submit Button - centered and with top margin */}
+          <button onClick={handleSubmit} className="btn-login mx-auto mt-3">
             تسجيل الحساب
           </button>
-          <label className="mx-auto mt-4">
+
+          {/* Redirect link for users who already have an account */}
+          <label className="mx-auto mt-3">
             لديك حساب بالفعل ؟{" "}
-            <Link to={"/login"} style={{ textDecoration: "none" }}>
-              <span style={{ cursor: "pointer" }} className="text-danger">
-                اضغط هنا
-              </span>
+            <Link to={"/login"}>
+              <span className="text-danger">اضغط هنا</span>
             </Link>
           </label>
         </Col>
       </Row>
+
+      {/* Toast notifications container to show success/error messages */}
       <ToastContainer />
     </Container>
   );

@@ -1,12 +1,19 @@
+/* Importing necessary hooks from react, react-redux, react-router-dom */
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+// Import Custom Actions (Actions to update user password and profile)
 import {
   updateUserPassword,
   updateUserProfile,
 } from "../../redux/actions/authAction";
+
+// Import Custom Hooks
 import notify from "../Utility/useNotifyHook";
-import { SUCCESS, WARNING } from "../../config";
+
+// Import Custom Conigurations
+import { ERROR, SUCCESS, WARNING } from "../../config";
 
 const UserProfileHook = () => {
   const dispatch = useDispatch();
@@ -17,11 +24,10 @@ const UserProfileHook = () => {
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Get user data from local storage
-  const user = useMemo(() => {
-    if (localStorage.getItem("user") !== null)
-      return JSON.parse(localStorage.getItem("user"));
-    else return [];
-  }, []);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : {};
+  });
 
   // State variables for user profile details
   const [name, setName] = useState(user.name || "");
@@ -58,6 +64,11 @@ const UserProfileHook = () => {
 
   // Handle form submission for updating user profile
   const handleSubmit = async () => {
+    if (user.email === email && user.phone === phone && user.name === name) {
+      notify("من فضلك حدث البيانات", WARNING);
+      return;
+    }
+
     setLoading(true);
     await dispatch(updateUserProfile(body));
     setLoading(false);
@@ -69,22 +80,38 @@ const UserProfileHook = () => {
     (state) => state.authReducer.updatedUserProfile
   );
 
+  const errors = useSelector((state) => state.authReducer.errors);
+
   // Notify user of the result of the update action
   useEffect(() => {
     if (!loading) {
-      if (resultUserProfile && resultUserProfile.status === 200) {
-        notify("تم الحديث بنجاح", SUCCESS);
+      if (errors != null) {
+        if (errors && errors.errors) {
+          console.log(errors);
+          // Handle email conflict error
+          if (errors.errors[0].msg === "E-mail already in use") {
+            notify("هذا البريد الالكتروني مسجل بالفعل", ERROR);
+          } else {
+            // Handle other errors
+            notify("فشل عملية التحديث", WARNING);
+          }
+          return;
+        }
+      } else {
+        if (resultUserProfile && resultUserProfile.status === 200) {
+          notify("تم التحديث بنجاح", SUCCESS);
 
-        localStorage.setItem(
-          "user",
-          JSON.stringify(resultUserProfile.data.data.user)
-        );
-        setTimeout(() => {
-          window.location.reload(false);
-        }, 1000);
+          const updatedUser = resultUserProfile.data.data.user;
+          localStorage.setItem("user", JSON.stringify(updatedUser));
+          setUser(updatedUser); // Update the state with new user data
+
+          setName(updatedUser.name);
+          setEmail(updatedUser.email);
+          setPhone(updatedUser.phone);
+        }
       }
     }
-  }, [loading, resultUserProfile]);
+  }, [loading, resultUserProfile, errors]);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////                                     Update Password                                           ///////

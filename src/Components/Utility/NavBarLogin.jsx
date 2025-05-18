@@ -52,9 +52,9 @@ const NavBarLogin = () => {
           />
           <Nav className="me-auto">
             {/* Handle if the person is user or admin and display the page for the specified role */}
-            {user != "" ? (
-              <NavDropdown title={user.name} id="basic-nav-dropdown">
-                {user.role === "admin" ? (
+            {user != null ? (
+              <NavDropdown title={user?.name} id="basic-nav-dropdown">
+                {user?.role === "admin" ? (
                   // Display the control page for the admin
                   <NavDropdown.Item
                     as={Link}
@@ -98,7 +98,7 @@ const NavBarLogin = () => {
             )}
 
             {/* check if the user is logged in and display the cart icon */}
-            {user.role === "user" ? (
+            {user?.role === "user" ? (
               <Link
                 className="d-flex justify-content-center position-relative align-items-center me-2"
                 to={"/cart"}

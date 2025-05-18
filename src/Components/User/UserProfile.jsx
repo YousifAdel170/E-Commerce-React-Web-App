@@ -1,10 +1,17 @@
+/* Importing necessary components from react-bootstrap */
 import { Button, Col, Modal, Row } from "react-bootstrap";
 
-import deleteIcon from "../../assets/Imgs/delete.png";
-import UserProfileHook from "../../hooks/user/UserProfileHook";
+/* Importing ToastContainer for displaying toast notifications */
 import { ToastContainer } from "react-toastify";
 
+/* Importing custom hook for managing user profile data */
+import UserProfileHook from "../../hooks/user/UserProfileHook";
+
+/* Importing delete icon for UI */
+import deleteIcon from "../../assets/Imgs/delete.png";
+
 const UserProfile = () => {
+  /* Destructuring values and handlers from custom hook */
   const [
     user,
     show,
@@ -25,15 +32,19 @@ const UserProfile = () => {
     onChangePassword,
     onChangePasswordConfirm,
   ] = UserProfileHook();
+
   return (
     <div>
+      {/* Modal for editing user data */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header>
           <Modal.Title>
             <div className="font">تعديل البيانات الشخصية</div>
           </Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
+          {/* Username input field */}
           <input
             value={name}
             onChange={onChangeName}
@@ -41,6 +52,7 @@ const UserProfile = () => {
             className="input-form font d-block mt-3 px-3"
             placeholder="اسم المستخدم"
           />
+          {/* Email input field */}
           <input
             value={email}
             onChange={onChangeEmail}
@@ -48,6 +60,7 @@ const UserProfile = () => {
             className="input-form font d-block mt-3 px-3"
             placeholder="الايميل"
           />
+          {/* Phone input field */}
           <input
             value={phone}
             onChange={onChangePhone}
@@ -56,10 +69,13 @@ const UserProfile = () => {
             placeholder="الهاتف"
           />
         </Modal.Body>
+
         <Modal.Footer>
+          {/* Cancel button */}
           <Button className="font" variant="success" onClick={handleClose}>
             تراجع
           </Button>
+          {/* Save changes button */}
           <Button className="font" variant="dark" onClick={handleSubmit}>
             حفظ التعديل
           </Button>
@@ -69,59 +85,66 @@ const UserProfile = () => {
       {/* Title of the User Profile */}
       <div className="admin-content-text">الصفحه الشخصية</div>
 
-      <div className="user-address-card my-3 px-2">
-        {/* Name & edit and delete */}
+      {/* User Info Card */}
+      <div className="user-address-card px-2">
+        {/* User Name with Edit Icon */}
         <Row className="d-flex justify-content-between pt-2">
-          {/* Name  */}
-          <Col xs="6" className="d-flex">
-            <div className="p-2">الاسم:</div>
-            <div className="p-1 item-delete-edit">{user.name}</div>
+          <Col xs="6" className="d-flex align-items-center">
+            <div className="ms-2 px-2">الاسم:</div>
+            <div className="item-delete-edit">{user?.name}</div>
           </Col>
 
-          {/* Edit & Delete */}
           <Col xs="6" className="d-flex justify-content-end">
-            <div onClick={handleShow} className="d-flex mx-2">
+            {/* Edit user profile */}
+            <div
+              onClick={handleShow}
+              className="d-flex align-items-center mx-2"
+            >
               <img
-                alt=""
-                className="ms-1 mt-2"
+                alt="edit"
+                className="ms-1"
                 src={deleteIcon}
                 height="17px"
                 width="15px"
               />
-              <p className="item-delete-edit"> تعديل</p>
+              <p className="item-delete-edit align-items-center d-flex">
+                {" "}
+                تعديل
+              </p>
             </div>
           </Col>
         </Row>
 
-        {/* Phone number */}
-        <Row className="">
-          <Col xs="12" className="d-flex">
-            <div className="p-2">رقم الهاتف:</div>
-            <div className="p-1 item-delete-edit">{user.phone}</div>
+        {/* User Phone */}
+        <Row className="px-2">
+          <Col xs="12" className="d-flex align-items-center">
+            <div className="ms-2">رقم الهاتف:</div>
+            <div className="item-delete-edit">{user?.phone}</div>
           </Col>
         </Row>
 
-        {/* Email */}
-        <Row className="">
-          <Col xs="12" className="d-flex">
-            <div className="p-2">الايميل:</div>
-            <div className="p-1 item-delete-edit">{user.email}</div>
+        {/* User Email */}
+        <Row className="px-2">
+          <Col xs="12" className="d-flex align-items-center">
+            <div className="ms-2">الايميل:</div>
+            <div className="item-delete-edit">{user?.email}</div>
           </Col>
         </Row>
 
-        {/* Change the Password */}
-        <Row className="mt-5">
-          <Col xs="10" sm="8" md="6" className="">
-            {/* Title of change  */}
+        {/* Change Password Section */}
+        <Row className="mt-4">
+          <Col xs="10" sm="8" md="6">
             <div className="admin-content-text">تغير كملة المرور</div>
 
+            {/* Current Password input field */}
             <input
               type="password"
               value={currentPassword}
               onChange={onChangeCurrentPassword}
-              className="input-form d-block mt-1 px-3"
+              className="input-form d-block mt-2 px-3"
               placeholder="ادخل كلمة المرور القديمة"
             />
+            {/* New Password input field */}
             <input
               type="password"
               value={password}
@@ -129,6 +152,7 @@ const UserProfile = () => {
               className="input-form d-block mt-3 px-3"
               placeholder="ادخل كلمة المرور الجديده"
             />
+            {/* Confirm New Password input field */}
             <input
               type="password"
               value={passwordConfirm}
@@ -139,7 +163,7 @@ const UserProfile = () => {
           </Col>
         </Row>
 
-        {/* Submit Button to Save the Password */}
+        {/* Save Password Button */}
         <Row>
           <Col
             xs="10"
@@ -149,13 +173,15 @@ const UserProfile = () => {
           >
             <button
               onClick={changePasswordSubmit}
-              className="btn-save d-inline mt-2 "
+              className="btn-save d-inline mt-2"
             >
               حفظ كلمة السر
             </button>
           </Col>
         </Row>
       </div>
+
+      {/* Toast Notifications */}
       <ToastContainer />
     </div>
   );

@@ -1,21 +1,31 @@
 /* eslint-disable react/prop-types */
+
+// Import UI components from React Bootstrap
 import { Button, Col, Modal, Row } from "react-bootstrap";
+
+// Import Link for navigation
 import { Link } from "react-router-dom";
 
-import deleteIcon from "../../assets/Imgs/delete.png";
+// Import custom hook for delete address logic
 import UserDeleteAddressHook from "../../hooks/user/UserDeleteAddressHook";
 
-const UserAddressCard = ({ address }) => {
+// Import delete icon image
+import deleteIcon from "../../assets/Imgs/delete.png";
+
+// Component to display a single address card
+const UserAddressCard = ({ address, onDelete }) => {
+  // Use custom hook to manage delete modal and logic
   const [show, handleClose, handleShow, handleDelete] = UserDeleteAddressHook(
-    address._id
+    address._id,
+    onDelete
   );
+
   return (
     <div className="user-address-card my-3 px-2">
-      {/* Modal To confirm the delete Operation */}
+      {/* Modal to confirm delete operation */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header>
           <Modal.Title>
-            {" "}
             <div className="font">تاكيد الحذف</div>
           </Modal.Title>
         </Modal.Header>
@@ -32,16 +42,18 @@ const UserAddressCard = ({ address }) => {
         </Modal.Footer>
       </Modal>
 
+      {/* Top Row: Alias and Actions */}
       <Row className="d-flex justify-content-between">
-        {/* Home */}
+        {/* Address Alias */}
         <Col xs="6">
           <div className="p-2">{address.alias}</div>
         </Col>
 
-        <Col xs="6" className="d-flex d-flex justify-content-end">
+        {/* Delete and Edit Buttons */}
+        <Col xs="6" className="d-flex justify-content-end">
           <div className="d-flex p-2">
             <div className="d-flex mx-2">
-              {/* Delete Address */}
+              {/* Delete Icon */}
               <img
                 alt=""
                 className="ms-3 mt-2"
@@ -53,7 +65,7 @@ const UserAddressCard = ({ address }) => {
                 width="15px"
               />
 
-              {/* Edit Address */}
+              {/* Edit Link */}
               <Link
                 to={`/user/addresses/edit-address/${address._id}`}
                 style={{ textDecoration: "none" }}
@@ -65,7 +77,7 @@ const UserAddressCard = ({ address }) => {
         </Col>
       </Row>
 
-      {/* Address Value */}
+      {/* Address Details */}
       <Row>
         <Col xs="12">
           <div
@@ -80,10 +92,10 @@ const UserAddressCard = ({ address }) => {
         </Col>
       </Row>
 
-      {/* Phone */}
+      {/* Phone Section */}
       <Row className="mt-3">
         <Col xs="12" className="d-flex">
-          {/* Phone Title */}
+          {/* Phone Label */}
           <div
             style={{
               color: "#555550",
@@ -94,7 +106,7 @@ const UserAddressCard = ({ address }) => {
             رقم الهاتف:
           </div>
 
-          {/* Phone Value */}
+          {/* Phone Number */}
           <div
             style={{
               color: "#979797",
@@ -111,4 +123,5 @@ const UserAddressCard = ({ address }) => {
   );
 };
 
+// Export the UserAddressCard component
 export default UserAddressCard;

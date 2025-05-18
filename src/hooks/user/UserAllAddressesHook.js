@@ -1,10 +1,14 @@
-import { useEffect, useMemo } from "react";
+/* Importing necessary hooks from react, react-redux */
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUserAddress } from "../../redux/actions/userAddressAction";
+
+// Import Custom Actions (Action to fetch all user addresses)
+import { getAllUserAddress } from "../../redux/actions/userAddressAction"; // Action to fetch all user addresses
 
 // Hook for fetching all user addresses
 const UserAllAddressesHook = () => {
-  const dispatch = useDispatch(); // Hook to dispatch actions
+  const dispatch = useDispatch();
+  const [addresses, setAddresses] = useState([]);
 
   // Fetch all user addresses when component mounts
   useEffect(() => {
@@ -17,14 +21,16 @@ const UserAllAddressesHook = () => {
     (state) => state.userAddressReducer.viewUserAddresses
   );
 
-  // Memoize the addresses data
-  const addresses = useMemo(() => {
-    if (result && result.data) return result.data;
-    else return [];
+  useEffect(() => {
+    if (result) setAddresses(result.data);
+    else setAddresses([]);
   }, [result]);
 
+  const handleDelete = (deletedID) =>
+    setAddresses((prev) => prev.filter((address) => address._id !== deletedID));
+
   // Return the addresses data
-  return [addresses];
+  return [addresses, handleDelete]; // Return the memoized addresses
 };
 
-export default UserAllAddressesHook;
+export default UserAllAddressesHook; // Export the hook

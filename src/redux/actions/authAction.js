@@ -11,7 +11,24 @@ import {
   RESET_PASSWORD,
   UPDATE_USER_PROFILE,
   UPDATE_USER_PASSWORD,
+  SET_USER,
+  LOGOUT_USER,
+  UPDATE_USER_PROFILE_LOADING,
 } from "../type";
+
+// Action to set the user from the local storage if ther e
+export const setUser = (user) => async (dispatch) => {
+  localStorage.setItem("user", JSON.stringify(user));
+  await dispatch({ type: SET_USER, payload: user });
+};
+
+// Action responsible to logout by removing the user, token from the local storage
+export const logoutUser = () => async (dispatch) => {
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
+  localStorage.removeItem("user-email");
+  await dispatch({ type: LOGOUT_USER });
+};
 
 // Registeration Action [ Create A New User ]
 export const createNewUser = (data) => async (dispatch) => {
@@ -25,7 +42,7 @@ export const createNewUser = (data) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data || { message: e.message },
     });
   }
 };
@@ -42,7 +59,7 @@ export const loginUser = (data) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data || { message: e.message },
     });
   }
 };
@@ -59,7 +76,7 @@ export const getLoggedInUser = () => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data || { message: e.message },
     });
   }
 };
@@ -68,6 +85,7 @@ export const getLoggedInUser = () => async (dispatch) => {
 export const forgotPassword = (data) => async (dispatch) => {
   try {
     const response = await useInsertData(`/api/v1/auth/forgotPasswords`, data);
+    console.log("response from action", response);
     dispatch({
       type: FORGOT_PASSWORD,
       payload: response,
@@ -76,7 +94,7 @@ export const forgotPassword = (data) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e.response?.data || { message: e.message },
     });
   }
 };
@@ -118,16 +136,16 @@ export const resetPassword = (data) => async (dispatch) => {
 // Update The User Data
 export const updateUserProfile = (body) => async (dispatch) => {
   try {
+    dispatch({ type: UPDATE_USER_PROFILE_LOADING }); // Dispatch loading state
     const response = await useUpdateData(`/api/v1/users/updateMe`, body);
     dispatch({
       type: UPDATE_USER_PROFILE,
       payload: response,
-      loading: true,
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: e.response,
+      payload: e.response.data,
     });
   }
 };

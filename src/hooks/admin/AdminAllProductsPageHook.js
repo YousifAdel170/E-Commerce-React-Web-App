@@ -1,28 +1,18 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import internetDetect from "../Utility/useInternetConnectionHook";
-import {
-  getAllProducts,
-  getAllProductsInSelectedPage,
-} from "../../redux/actions/productsAction";
+import { getAllProductsInSelectedPage } from "../../redux/actions/productsAction";
 import { PAGE_PRODUCTS_LIMIT } from "../../config";
 
 const AdminAllProductsPageHook = () => {
   // Use Dispatch to tell that u will use actions from redux
   const dispatch = useDispatch();
-
-  // Fetch Products only once when the component mounts
-  useEffect(() => {
-    internetDetect();
-    dispatch(getAllProducts(PAGE_PRODUCTS_LIMIT));
-  }, [dispatch]);
-
+  const [items, setItems] = useState([]);
   const products = useSelector((state) => state.allProduct.viewProducts);
 
-  //   To Get The Data
-  const items = useMemo(() => {
-    if (products && products.data) return products.data;
-    else return [];
+  // Useeffect to set the products into the items state
+  useEffect(() => {
+    if (products) setItems(products.data);
+    else setItems([]);
   }, [products]);
 
   //   To Get The Page number for pagination
@@ -32,11 +22,17 @@ const AdminAllProductsPageHook = () => {
     else return 0;
   }, [products]);
 
-  const onPress = async (page) => {
+  const onPress = async (page) =>
     await dispatch(getAllProductsInSelectedPage(PAGE_PRODUCTS_LIMIT, page));
-  };
 
-  return [items, pageCount, onPress];
+  const onDelete = (id) =>
+    setItems((prev) => prev.filter((item) => item._id !== id));
+
+  const onEdit = (updatedItem) =>
+    setItems((prev) =>
+      prev.map((item) => (item._id === updatedItem._id ? updatedItem : item))
+    );
+  return [items, pageCount, onPress, onDelete, onEdit];
 };
 
 export default AdminAllProductsPageHook;

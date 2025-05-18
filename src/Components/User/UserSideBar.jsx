@@ -1,28 +1,33 @@
+/* Importing Link component from react-router-dom for navigation */
 import { Link } from "react-router-dom";
 
 const UserSideBar = () => {
   return (
     <div className="sidebar">
       <div className="d-flex flex-column">
-        <Link to="/user/all-orders" style={{ textDecoration: "none" }}>
+        {/* Link to all orders page */}
+        <Link to="/user/all-orders">
           <div className="admin-side-text mt-3 border-bottom p-2 mx-auto text-center">
             اداره الطلبات
           </div>
         </Link>
 
-        <Link to="/user/favorite-products" style={{ textDecoration: "none" }}>
+        {/* Link to favorite products page */}
+        <Link to="/user/favorite-products">
           <div className="admin-side-text mt-3 border-bottom p-2 mx-auto text-center">
             المنتجات المفضلة
           </div>
         </Link>
 
-        <Link to="/user/addresses" style={{ textDecoration: "none" }}>
+        {/* Link to addresses page */}
+        <Link to="/user/addresses">
           <div className="admin-side-text mt-3 border-bottom p-2 mx-auto text-center">
             العنوانين الشخصية
           </div>
         </Link>
 
-        <Link to="/user/profile" style={{ textDecoration: "none" }}>
+        {/* Link to user profile page */}
+        <Link to="/user/profile">
           <div className="admin-side-text mt-3 border-bottom p-2 mx-auto text-center">
             الملف الشخصي
           </div>

@@ -20,17 +20,17 @@ const CartPage = () => {
   return (
     <Container>
       <Row>
-        <div className="cart-title mt-4">عربة التسوق</div>
+        <div className="cart-title mt-4 mb-2">عربة التسوق</div>
       </Row>
 
       <Row className="d-flex justify-content-center">
         <Col xs="12" md="9">
-          {cartItems.length > 0 ? (
+          {cartItems.length ? (
             cartItems.map((item) => <CartItem key={item?._id} item={item} />)
           ) : (
             <>
               <h6>لا يوجد منتجات فى العربة</h6>
-              <Link to="/products">Browse Products</Link>{" "}
+              <Link to="/products">اضغط هنا لعرض المنتجات</Link>
             </>
           )}
         </Col>
