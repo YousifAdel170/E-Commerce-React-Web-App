@@ -18,7 +18,7 @@ const UserAllAddresses = () => {
   return (
     <div>
       {/* Section Title */}
-      <div className="admin-content-text pb-4">دفتر العنوانين</div>
+      <div className="title-text pb-4">دفتر العنوانين</div>
 
       {/* Show addresses if available, otherwise show empty message */}
       {addresses ? (

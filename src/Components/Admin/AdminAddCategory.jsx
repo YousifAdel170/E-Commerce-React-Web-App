@@ -17,7 +17,7 @@ const AdminAddCategory = () => {
   return (
     <div>
       <Row className="justify-content-start ">
-        <div className="admin-content-text pb-4">اضافه تصنيف جديد</div>
+        <div className="title-text pb-4">اضافه تصنيف جديد</div>
         <Col sm="8">
           <div className="text-form pb-2">صوره التصنيف</div>
 

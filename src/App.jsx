@@ -13,40 +13,45 @@ import ProductDetailsPage from "./Pages/Products/ProductDetailsPage";
 import CartPage from "./Pages/Cart/CartPage";
 import CartMethodPage from "./Pages/Checkout/CartMethodPage";
 
-import AdminAllProductsPage from "./Pages/Admin/AdminAllProductsPage";
-import AdminAllOrdersPage from "./Pages/Admin/AdminAllOrdersPage";
-import AdminOrderDetailsPage from "./Pages/Admin/AdminOrderDetailsPage";
-import AdminAddBrandPage from "./Pages/Admin/AdminAddBrandPage";
-import AdminAddCategoryPage from "./Pages/Admin/AdminAddCategoryPage";
-import AdminAddSubCategoryPage from "./Pages/Admin/AdminAddSubCategoryPage";
-import AdminAddProductPage from "./Pages/Admin/AdminAddProductPage";
-import AdminEditProductPage from "./Pages/Admin/AdminEditProductPage";
 import VerifyPasswordPage from "./Pages/Auth/VerifyPasswordPage";
 import ForgotPasswordPage from "./Pages/Auth/ForgotPasswordPage";
 import ResetPasswordPage from "./Pages/Auth/ResetPasswordPage";
-import AdminAddCouponPage from "./Pages/Admin/AdminAddCouponPage";
-import AdminEditCouponPage from "./Pages/Admin/AdminEditCouponPage";
+
 import ProtectedRouteHook from "./hooks/auth/ProtectedRouteHook";
 import ProtectedRoute from "./Components/Utility/ProtectedRoute";
 import ViewProductsByCategoryPage from "./Pages/Products/ViewProductsByCategoryPage";
 import ViewProductsByBrandPage from "./Pages/Products/ViewProductsByBrandPage";
 
-import AdminAllCouponsPage from "./Pages/Admin/AdminAllCouponsPage";
-import AdminAllCategoriesPage from "./Pages/Admin/AdminAllCategoriesPage";
-import AdminEditCategoryPage from "./Pages/Admin/AdminEditCategoryPage";
-import AdminAllBrandsPage from "./Pages/Admin/AdminAllBrandsPage";
-import AdminEditBrandPage from "./Pages/Admin/AdminEditBrandPage";
-import AdminAllSubcategoriesPage from "./Pages/Admin/AdminAllSubcategoriesPage";
-import AdminEditSubcategoryPage from "./Pages/Admin/AdminEditSubcategoryPage";
-
 // User Pages
 import UserPage from "./Pages/User/UserPage";
+// User Components
 import UserProfile from "./Components/User/UserProfile";
 import UserFavoriteProducts from "./Components/User/UserFavoriteProducts";
 import UserAllOrders from "./Components/User/UserAllOrders";
 import UserAddAddress from "./Components/User/UserAddAddress";
 import UserAllAddresses from "./Components/User/UserAllAddresses";
 import UserEditAddress from "./Components/User/UserEditAddress";
+
+// Admin Pages
+import AdminPage from "./Pages/Admin/AdminPage";
+// Admin Components
+import AdminAllProducts from "./Components/Admin/AdminAllProducts";
+import AdminAllOrders from "./Components/Admin/AdminAllOrders";
+import AdminAllCategories from "./Components/Admin/AdminAllCategories";
+import AdminAllBrands from "./Components/Admin/AdminAllBrands";
+import AdminAllSubcategories from "./Components/Admin/AdminAllSubcategories";
+import AdminEditSubCategory from "./Components/Admin/AdminEditSubCategory";
+import AdminAddCategory from "./Components/Admin/AdminAddCategory";
+import AdminEditCategory from "./Components/Admin/AdminEditCategory";
+import AdminEditBrand from "./Components/Admin/AdminEditBrand";
+import AdminAddSubCategory from "./Components/Admin/AdminAddSubCategory";
+import AdminAddProduct from "./Components/Admin/AdminAddProduct";
+import AdminEditProduct from "./Components/Admin/AdminEditProduct";
+import AdminAllCoupons from "./Components/Admin/AdminAllCoupons";
+import AdminAddCoupon from "./Components/Admin/AdminAddCoupon";
+import AdminEditCoupon from "./Components/Admin/AdminEditCoupon";
+import AdminOrderDetails from "./Components/Admin/AdminOrderDetails";
+import AdminAddBrand from "./Components/Admin/AdminAddBrand";
 
 function App() {
   const [isUser, isAdmin, isLoading] = ProtectedRouteHook();
@@ -83,67 +88,63 @@ function App() {
 
           {/* Admin Routes */}
           <Route element={<ProtectedRoute auth={isAdmin} />}>
-            <Route
-              path="/admin/all-products"
-              element={<AdminAllProductsPage />}
-            />
-            <Route path="/admin/all-orders" element={<AdminAllOrdersPage />} />
-            <Route
-              path="/admin/all-orders/:id"
-              element={<AdminOrderDetailsPage />}
-            />
+            <Route element={<AdminPage />}>
+              <Route
+                path="/admin/all-products"
+                element={<AdminAllProducts />}
+              />
+              <Route path="/admin/all-orders" element={<AdminAllOrders />} />
+              <Route
+                path="/admin/all-orders/:id"
+                element={<AdminOrderDetails />}
+              />
 
-            <Route path="/admin/add-brand" element={<AdminAddBrandPage />} />
-            <Route
-              path="/admin/all-categories"
-              element={<AdminAllCategoriesPage />}
-            />
-            <Route path="/admin/all-brands" element={<AdminAllBrandsPage />} />
+              <Route path="/admin/add-brand" element={<AdminAddBrand />} />
+              <Route
+                path="/admin/all-categories"
+                element={<AdminAllCategories />}
+              />
+              <Route path="/admin/all-brands" element={<AdminAllBrands />} />
 
-            <Route
-              path="/admin/all-categories/:id/all-subcategories"
-              element={<AdminAllSubcategoriesPage />}
-            />
+              <Route
+                path="/admin/all-categories/:id/all-subcategories"
+                element={<AdminAllSubcategories />}
+              />
 
-            <Route
-              path="/admin/all-categories/:id/all-subcategories/edit-subcategory/:id"
-              element={<AdminEditSubcategoryPage />}
-            />
+              <Route
+                path="/admin/all-categories/:id/all-subcategories/edit-subcategory/:id"
+                element={<AdminEditSubCategory />}
+              />
 
-            <Route
-              path="/admin/add-category"
-              element={<AdminAddCategoryPage />}
-            />
-            <Route
-              path="/admin/edit-category/:id"
-              element={<AdminEditCategoryPage />}
-            />
-            <Route
-              path="/admin/edit-brand/:id"
-              element={<AdminEditBrandPage />}
-            />
-            <Route
-              path="/admin/add-subcategory"
-              element={<AdminAddSubCategoryPage />}
-            />
-            <Route
-              path="/admin/add-product"
-              element={<AdminAddProductPage />}
-            />
-            <Route
-              path="/admin/edit-product/:id"
-              element={<AdminEditProductPage />}
-            />
+              <Route
+                path="/admin/add-category"
+                element={<AdminAddCategory />}
+              />
+              <Route
+                path="/admin/edit-category/:id"
+                element={<AdminEditCategory />}
+              />
+              <Route
+                path="/admin/edit-brand/:id"
+                element={<AdminEditBrand />}
+              />
+              <Route
+                path="/admin/add-subcategory"
+                element={<AdminAddSubCategory />}
+              />
+              <Route path="/admin/add-product" element={<AdminAddProduct />} />
+              <Route
+                path="/admin/edit-product/:id"
+                element={<AdminEditProduct />}
+              />
 
-            <Route
-              path="/admin/all-coupons"
-              element={<AdminAllCouponsPage />}
-            />
-            <Route path="/admin/add-coupon" element={<AdminAddCouponPage />} />
-            <Route
-              path="/admin/edit-coupon/:id"
-              element={<AdminEditCouponPage />}
-            />
+              <Route path="/admin/all-coupons" element={<AdminAllCoupons />} />
+              <Route path="/admin/add-coupon" element={<AdminAddCoupon />} />
+              <Route
+                path="/admin/edit-coupon/:id"
+                element={<AdminEditCoupon />}
+              />
+            </Route>
           </Route>
 
           {/* User Routes */}

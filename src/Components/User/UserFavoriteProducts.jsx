@@ -15,7 +15,7 @@ const UserFavoriteProducts = () => {
   return (
     <div>
       {/* Section title */}
-      <div className="admin-content-text pb-4">قائمة المفضلة</div>
+      <div className="title-text pb-4">قائمة المفضلة</div>
 
       <Row>
         {/* If there are favorite items, show them in product cards */}

@@ -11,7 +11,7 @@ const AdminAllCategories = () => {
     <Row>
       <Col>
         {/* Available Coupons */}
-        <div className="admin-content-text">التصنيفات المتاحة</div>
+        <div className="title-text">التصنيفات المتاحة</div>
         {categories ? (
           categories.map((item, index) => {
             return <AdminCategoryCard key={index} category={item} />;

@@ -9,7 +9,7 @@ const AdminAllCoupons = () => {
     <Row>
       <Col>
         {/* Available Coupons */}
-        <div className="admin-content-text">الكوبونات المتاحة</div>
+        <div className="title-text">الكوبونات المتاحة</div>
         {coupons ? (
           coupons.map((item, index) => {
             return <AdminCouponCard key={index} coupon={item} />;

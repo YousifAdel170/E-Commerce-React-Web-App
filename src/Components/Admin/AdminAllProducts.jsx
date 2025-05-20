@@ -1,13 +1,25 @@
-/* eslint-disable react/prop-types */
-
+// Import components from React Bootstrap
 import { Row } from "react-bootstrap";
-import AdminProductCard from "./AdminProductCard";
 
-const AdminAllProducts = ({ items, onDelete }) => {
+// Import custom components
+import AdminProductCard from "./AdminProductCard";
+import PaginationComponent from "../Utility/PaginationComponent";
+
+// Import custom hooks
+import AdminAllProductsPageHook from "../../hooks/admin/AdminAllProductsPageHook";
+
+// Component responsible for rendering all products in the admin panel
+const AdminAllProducts = () => {
+  // Custom hook to manage state and logic for the component
+  const [items, pageCount, onPress, onDelete] = AdminAllProductsPageHook();
+
   return (
     <div>
-      <div className="admin-content-text">ادارة جميع المنتجات</div>
+      {/* Title of the section */}
+      <div className="title-text">ادارة جميع المنتجات</div>
+
       <Row>
+        {/* Map through the items and render AdminProductCard for each item */}
         {items?.length ? (
           items.map((item, index) => (
             <AdminProductCard key={index} item={item} onDelete={onDelete} />
@@ -16,6 +28,11 @@ const AdminAllProducts = ({ items, onDelete }) => {
           <h4>لا يوجد منتجات الان</h4>
         )}
       </Row>
+
+      {/* Pagination component to navigate through pages */}
+      {pageCount > 1 ? (
+        <PaginationComponent pageCount={pageCount} onPress={onPress} />
+      ) : null}
     </div>
   );
 };

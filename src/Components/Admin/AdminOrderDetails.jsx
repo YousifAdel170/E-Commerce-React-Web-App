@@ -5,7 +5,7 @@ import UserOrderItem from "../User/UserOrderItem";
 import { ToastContainer } from "react-toastify";
 import ChangeOrderStatusHook from "../../hooks/admin/ChangeOrderStatusHook";
 
-const AdminOrderDetalis = () => {
+const AdminOrderDetails = () => {
   const { id } = useParams();
   const [orderDetails] = AdminOrderDetailsHook(id);
 
@@ -21,7 +21,7 @@ const AdminOrderDetalis = () => {
       {orderDetails ? <UserOrderItem order={orderDetails} /> : null}
 
       {/* Title of the order [Order Number] */}
-      <div className="admin-content-text mt-3 mb-2 mx-1">
+      <div className="title-text mt-3 mb-2 mx-1">
         تفاصيل الطلب رقم #{orderDetails ? orderDetails.id : ""}
       </div>
 
@@ -29,7 +29,7 @@ const AdminOrderDetalis = () => {
       <Row className="justify-content-center user-data mx-1 py-3">
         {/* Title */}
         <Col xs="12" className=" d-flex">
-          <div className="admin-content-text">تفاصيل العميل</div>
+          <div className="title-text">تفاصيل العميل</div>
         </Col>
 
         {/* Name Of The Customer */}
@@ -156,4 +156,4 @@ const AdminOrderDetalis = () => {
   );
 };
 
-export default AdminOrderDetalis;
+export default AdminOrderDetails;

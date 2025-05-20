@@ -83,7 +83,7 @@ const UserProfile = () => {
       </Modal>
 
       {/* Title of the User Profile */}
-      <div className="admin-content-text">الصفحه الشخصية</div>
+      <div className="title-text">الصفحه الشخصية</div>
 
       {/* User Info Card */}
       <div className="user-address-card px-2">
@@ -134,7 +134,7 @@ const UserProfile = () => {
         {/* Change Password Section */}
         <Row className="mt-4">
           <Col xs="10" sm="8" md="6">
-            <div className="admin-content-text">تغير كملة المرور</div>
+            <div className="title-text">تغير كملة المرور</div>
 
             {/* Current Password input field */}
             <input

@@ -11,7 +11,7 @@ const AdminEditSubCategory = () => {
   return (
     <div>
       <Row className="justify-content-start">
-        <div className="admin-content-text pb-4">تعديل التصنيف الفرعي</div>
+        <div className="title-text pb-4">تعديل التصنيف الفرعي</div>
         <Col sm="8">
           <div>
             <input

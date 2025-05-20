@@ -18,9 +18,7 @@ const UserAllOrders = () => {
   return (
     <div>
       {/* Orders Count Title */}
-      <div className="admin-content-text pb-4">
-        عدد الطلبات: {numberOfOrders}
-      </div>
+      <div className="title-text pb-4">عدد الطلبات: {numberOfOrders}</div>
 
       {/* Show all orders if available, otherwise display message */}
       <Row className="justify-content-between">

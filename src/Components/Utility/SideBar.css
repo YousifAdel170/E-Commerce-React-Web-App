@@ -1,0 +1,163 @@
+/* Container */
+.sidebar-container {
+  position: relative;
+  margin-bottom: 15px;
+  font-family: "Almarai", sans-serif;
+}
+
+/* Sidebar links style */
+.sidebar-text {
+  width: 100%;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 20px;
+  padding: 10px;
+  color: #272727;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(151, 151, 151, 0.3);
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease,
+    box-shadow 0.2s ease;
+  text-align: center;
+  display: block;
+  text-decoration: none;
+  user-select: none;
+  margin-bottom: 8px;
+}
+
+/* Hover & active styles */
+.sidebar-text:hover,
+.sidebar-text.active {
+  background-color: #272727;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile: horizontal links when burger NOT shown */
+.mobile-row {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  padding: 10px 0;
+  -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+}
+
+.mobile-row .sidebar-text {
+  flex: 0 0 auto;
+  width: auto;
+  margin: 0 5px;
+  white-space: nowrap;
+  margin-bottom: 0;
+}
+
+/* Burger button */
+.burger {
+  display: none;
+  position: relative;
+  width: 30px;
+  height: 24px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0;
+  z-index: 999;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.3s ease;
+}
+
+/* Show burger only on mobile */
+@media (max-width: 768px) {
+  .burger {
+    display: block;
+  }
+}
+
+/* Bars */
+.burger .bar {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 3.5px;
+  background-color: #333;
+  border-radius: 3px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Bar positions */
+.burger .bar1 {
+  top: 0;
+  left: 0;
+}
+.burger .bar2 {
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+.burger .bar3 {
+  bottom: 0;
+  left: 0;
+}
+
+/* Hover effect */
+.burger:hover .bar {
+  background-color: #555;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Open state transforms burger to X */
+.burger.open .bar1 {
+  transform: rotate(45deg);
+  top: 50%;
+}
+.burger.open .bar2 {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+.burger.open .bar3 {
+  transform: rotate(-45deg);
+  bottom: 50%;
+}
+
+/* Change color on open */
+.burger.open .bar1,
+.burger.open .bar3 {
+  background-color: #d32f2f;
+  box-shadow: 0 0 8px rgba(211, 47, 47, 0.7);
+}
+
+/* Sidebar menu - hidden by default */
+.sidebar-menu {
+  display: none;
+  flex-direction: column;
+  margin-top: 10px;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+}
+
+/* Show menu when open */
+.sidebar-menu.open {
+  display: flex;
+  max-height: 1000px; /* large to show all */
+  opacity: 1;
+}
+
+/* On desktop: show links in column, hide burger */
+@media (min-width: 769px) {
+  .mobile-row {
+    flex-direction: column;
+  }
+
+  .burger {
+    display: none !important;
+  }
+
+  .sidebar-menu {
+    display: flex !important;
+    max-height: none !important;
+    opacity: 1 !important;
+  }
+}

@@ -49,9 +49,7 @@ const AdminEditProduct = () => {
     <div>
       <Row className="justify-content-start ">
         {/* Title to add new product */}
-        <div className="admin-content-text pb-4">
-          تعديل المنتج - {productName}
-        </div>
+        <div className="title-text pb-4">تعديل المنتج - {productName}</div>
 
         <Col sm="8">
           {/* Title of product */}

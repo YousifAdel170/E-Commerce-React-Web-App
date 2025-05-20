@@ -30,7 +30,7 @@ const UserEditAddress = () => {
     <div>
       {/* Title */}
       <Row className="justify-content-start ">
-        <div className="admin-content-text pb-2">تعديل العنوان </div>
+        <div className="title-text pb-2">تعديل العنوان </div>
 
         <Col sm="8">
           {/* Input for editing the address alias */}

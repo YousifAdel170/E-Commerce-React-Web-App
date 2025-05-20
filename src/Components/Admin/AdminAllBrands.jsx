@@ -10,7 +10,7 @@ const AdminAllBrands = () => {
     <Row>
       <Col>
         {/* Available Coupons */}
-        <div className="admin-content-text">الماركات المتاحة</div>
+        <div className="title-text">الماركات المتاحة</div>
         {brands ? (
           brands.map((item, index) => {
             return <AdminBrandCard key={index} brand={item} />;

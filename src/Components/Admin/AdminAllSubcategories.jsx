@@ -17,7 +17,7 @@ const AdminAllSubcategories = () => {
     <Row>
       <Col>
         {/* Available Coupons */}
-        <div className="admin-content-text">
+        <div className="title-text">
           عدد التصنيفات الفرعية في هذا التصنيف #{numberOfSubcategories}
         </div>
         {subcategories ? (

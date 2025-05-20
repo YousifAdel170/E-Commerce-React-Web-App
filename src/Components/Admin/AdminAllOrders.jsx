@@ -8,7 +8,7 @@ const AdminAllOrders = () => {
 
   return (
     <div>
-      <div className="admin-content-text">ادارة جميع الطلبات</div>
+      <div className="title-text">ادارة جميع الطلبات</div>
       <Row className="justify-content-start">
         {allOrders ? (
           allOrders.map((order) => (

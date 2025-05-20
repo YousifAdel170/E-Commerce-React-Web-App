@@ -25,7 +25,7 @@ const UserAddAddress = () => {
       {/* Address Form Section */}
       <Row className="justify-content-start">
         {/* Form Title */}
-        <div className="admin-content-text pb-2">اضافة عنوان جديد</div>
+        <div className="title-text pb-2">اضافة عنوان جديد</div>
 
         {/* Address Form Fields */}
         <Col sm="8">

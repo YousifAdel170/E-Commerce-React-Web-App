@@ -9,7 +9,7 @@ const AdminAddSubCategory = () => {
   return (
     <div>
       <Row className="justify-content-start ">
-        <div className="admin-content-text pb-4">اضافه تصنيف فرعي جديد</div>
+        <div className="title-text pb-4">اضافه تصنيف فرعي جديد</div>
         <Col sm="8">
           <input
             value={name}
