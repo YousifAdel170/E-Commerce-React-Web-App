@@ -7,6 +7,7 @@ import PaginationComponent from "../Utility/PaginationComponent";
 
 // Import custom hooks
 import AdminAllProductsPageHook from "../../hooks/admin/AdminAllProductsPageHook";
+import { adminData } from "../../constants/admin";
 
 // Component responsible for rendering all products in the admin panel
 const AdminAllProducts = () => {
@@ -16,7 +17,7 @@ const AdminAllProducts = () => {
   return (
     <div>
       {/* Title of the section */}
-      <div className="title-text">ادارة جميع المنتجات</div>
+      <div className="title-text">{adminData.allProducts.title}</div>
 
       <Row>
         {/* Map through the items and render AdminProductCard for each item */}
@@ -25,7 +26,7 @@ const AdminAllProducts = () => {
             <AdminProductCard key={index} item={item} onDelete={onDelete} />
           ))
         ) : (
-          <h4>لا يوجد منتجات الان</h4>
+          <h4>{adminData.allProducts.notFound}</h4>
         )}
       </Row>
 

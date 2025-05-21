@@ -20,7 +20,7 @@ const AdminPage = () => {
         </Col>
 
         {/* Right Column - Page Content (changes dynamically using Outlet) */}
-        <Col md={10} xs={12}>
+        <Col md={10} xs={12} className="">
           <Outlet />
         </Col>
       </Row>

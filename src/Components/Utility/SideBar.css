@@ -5,7 +5,7 @@
   font-family: "Almarai", sans-serif;
 }
 
-/* Sidebar links style */
+/* Sidebar links */
 .sidebar-text {
   width: 100%;
   font-size: 13px;
@@ -16,33 +16,43 @@
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(151, 151, 151, 0.3);
-  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease,
-    box-shadow 0.2s ease;
   text-align: center;
   display: block;
-  text-decoration: none;
   user-select: none;
   margin-bottom: 8px;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease,
+    box-shadow 0.2s ease;
+  -webkit-transition: transform 0.2s ease, background-color 0.2s ease,
+    color 0.2s ease;
+  -moz-transition: transform 0.2s ease, background-color 0.2s ease,
+    color 0.2s ease;
+  -ms-transition: transform 0.2s ease, background-color 0.2s ease,
+    color 0.2s ease;
+  -o-transition: transform 0.2s ease, background-color 0.2s ease,
+    color 0.2s ease;
 }
 
-/* Hover & active styles */
+/* Hover & Active */
 .sidebar-text:hover,
 .sidebar-text.active {
   background-color: #272727;
   color: #ffffff;
-  transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  -webkit-transform: translateY(-2px);
+  -moz-transform: translateY(-2px);
+  -ms-transform: translateY(-2px);
+  -o-transform: translateY(-2px);
 }
 
-/* Mobile: horizontal links when burger NOT shown */
+/* Horizontal scrolling on mobile */
 .mobile-row {
   display: flex;
   flex-direction: row;
   overflow-x: auto;
   padding: 10px 0;
-  -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+  -webkit-overflow-scrolling: touch;
 }
-
 .mobile-row .sidebar-text {
   flex: 0 0 auto;
   width: auto;
@@ -51,29 +61,28 @@
   margin-bottom: 0;
 }
 
-/* Burger button */
+/* Burger button (mobile only) */
 .burger {
   display: none;
   position: relative;
   width: 30px;
   height: 24px;
   cursor: pointer;
-  border: none;
   background: transparent;
-  padding: 0;
+  border: none;
   z-index: 999;
+  padding: 0;
   -webkit-tap-highlight-color: transparent;
   transition: transform 0.3s ease;
 }
 
-/* Show burger only on mobile */
 @media (max-width: 768px) {
   .burger {
     display: block;
   }
 }
 
-/* Bars */
+/* Burger bars */
 .burger .bar {
   display: block;
   position: absolute;
@@ -84,8 +93,6 @@
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
-
-/* Bar positions */
 .burger .bar1 {
   top: 0;
   left: 0;
@@ -100,13 +107,12 @@
   left: 0;
 }
 
-/* Hover effect */
 .burger:hover .bar {
   background-color: #555;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* Open state transforms burger to X */
+/* Burger open (X animation) */
 .burger.open .bar1 {
   transform: rotate(45deg);
   top: 50%;
@@ -119,36 +125,41 @@
   transform: rotate(-45deg);
   bottom: 50%;
 }
-
-/* Change color on open */
 .burger.open .bar1,
 .burger.open .bar3 {
   background-color: #d32f2f;
   box-shadow: 0 0 8px rgba(211, 47, 47, 0.7);
 }
 
-/* Sidebar menu - hidden by default */
+/* Sidebar menu (toggleable) */
 .sidebar-menu {
-  display: none;
+  display: flex;
   flex-direction: column;
   margin-top: 10px;
-  transition: max-height 0.3s ease, opacity 0.3s ease;
   overflow: hidden;
   max-height: 0;
   opacity: 0;
+  pointer-events: none;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
 }
 
-/* Show menu when open */
 .sidebar-menu.open {
-  display: flex;
-  max-height: 1000px; /* large to show all */
+  max-height: 1000px;
   opacity: 1;
+  pointer-events: auto;
 }
 
-/* On desktop: show links in column, hide burger */
+/* Desktop view: vertical list, no burger */
 @media (min-width: 769px) {
   .mobile-row {
     flex-direction: column;
+    overflow-x: visible;
+  }
+
+  .sidebar-text {
+    width: 100%;
+    margin-bottom: 8px;
+    white-space: normal;
   }
 
   .burger {
@@ -157,7 +168,40 @@
 
   .sidebar-menu {
     display: flex !important;
+    flex-direction: column;
     max-height: none !important;
     opacity: 1 !important;
+    pointer-events: auto !important;
+    margin-top: 0;
   }
+}
+
+/* Animations */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.sidebar-text.animate {
+  animation: fadeUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.sidebar-menu.open .sidebar-text {
+  opacity: 0;
+  animation: fadeInUp 0.4s ease forwards;
 }

@@ -14,6 +14,9 @@
   --main-duration: 0.3s;
   --section-padding: 60px;
   --right-before-mobile: 5px;
+  --border-radius: 16px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --hover-box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
 }
 
 html,
@@ -131,6 +134,17 @@ textarea:focus::placeholder {
   }
 }
 
+/* Mobile default */
+.col-mobile {
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .col-mobile {
+    justify-content: flex-start;
+  }
+}
+
 .flex-grow-2 {
   flex-grow: 2 !important;
 }
@@ -218,13 +232,11 @@ textarea:focus::placeholder {
 
 .title-text {
   color: #555550;
-  font-family: Almarai;
+  font-family: "Almarai";
   font-size: 21px;
   font-weight: 800;
-  letter-spacing: 0;
-  line-height: 28px;
-  text-align: right;
 }
+
 .item-delete-edit {
   color: #979797;
   font-family: "Almarai";
@@ -256,14 +268,60 @@ textarea:focus::placeholder {
   border-radius: 8px;
   background-color: #f9f9f9;
 }
+
 .select {
-  box-sizing: border-box;
-  height: 40px;
-  color: #979797;
-  width: 100%;
-  border: 1px solid #979797;
+  height: 44px;
+  padding: 0 36px 0 12px;
+  border: 1px solid transparent;
   border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+  font-size: 16px;
+  appearance: none;
+
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20fill%3D'%23000'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%20width%3D'24'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M7%2010l5%205%205-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+
+  cursor: pointer;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  transition: border 0.2s ease, box-shadow 0.2s ease;
 }
+
+.select:focus {
+  border-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  outline: none;
+
+  /* border-color: #007bff; Bootstrap primary blue */
+  /* box-shadow: 0 0 6px rgba(0, 123, 255, 0.3); */
+}
+
+.select:hover {
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Disabled Select */
+.select:disabled {
+  background-color: #f5f5f5; /* light gray background */
+  color: #999; /* muted text */
+  cursor: not-allowed; /* no pointer cursor */
+  border: 1px solid #ccc; /* subtle border */
+  opacity: 0.7; /* slightly faded */
+  transition: background-color 0.3s ease;
+}
+
+/* Disabled Button */
+button:disabled {
+  background-color: #f5f5f5; /* same light gray */
+  color: #999; /* muted text */
+  cursor: not-allowed; /* no pointer cursor */
+  border: 1px solid #ccc; /* subtle border */
+  opacity: 0.7; /* slightly faded */
+  transition: background-color 0.3s ease;
+}
+
 .btn-save {
   border: none;
   color: white;
@@ -374,4 +432,3 @@ textarea:focus::placeholder {
   justify-content: center;
   align-items: center;
 }
-/* End Of Styling Dropdown in the NavBar */

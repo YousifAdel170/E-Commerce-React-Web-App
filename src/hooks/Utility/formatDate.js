@@ -8,4 +8,15 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString(userLang, options);
 };
 
+export const formatDateTime = (dateString) => {
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  return new Date(dateString).toLocaleString(userLang, options);
+};
+
 export default formatDate;

@@ -1,159 +1,167 @@
+// Import Components from React Bootstrap, react-toastify
 import { Col, Row } from "react-bootstrap";
-import { useParams } from "react-router-dom";
-import AdminOrderDetailsHook from "../../hooks/admin/AdminOrderDetailsHook";
-import UserOrderItem from "../User/UserOrderItem";
 import { ToastContainer } from "react-toastify";
-import ChangeOrderStatusHook from "../../hooks/admin/ChangeOrderStatusHook";
 
+// Import Custom Components
+import UserOrderItem from "../User/UserOrderItem";
+
+// Import Hooks from React Router Dom
+import { useParams } from "react-router-dom";
+// Import Custom Hooks
+import AdminOrderDetailsHook from "../../hooks/admin/AdminOrderDetailsHook";
+import ChangeOrderHook, {
+  getUserOrderInfoFields,
+} from "../../hooks/admin/ChangeOrderHook";
+
+// Import Constants for Admin Order Details
+import { adminOrderDetailsData } from "../../constants/admin/adminOrderDetails";
+
+// Component responsible for rendering order details in the admin panel
 const AdminOrderDetails = () => {
+  // Extracting the order ID from the URL parameters
   const { id } = useParams();
+
+  // Custom hook to fetch order details based on the order ID
   const [orderDetails] = AdminOrderDetailsHook(id);
 
-  const [
-    onChangePay,
-    onChangeDeliver,
-    changePayOrderStatus,
-    changeDeliverOrderStatus,
-  ] = ChangeOrderStatusHook(id);
+  // Custom hook to manage order status changes
+  const [onChangePay, onChangeDeliver, changeOrderStatus] = ChangeOrderHook(
+    id,
+    orderDetails
+  );
+
+  // Extracting user information fields from the order details
+  const userInfoFields = getUserOrderInfoFields(orderDetails);
+
+  // If no order details are found, display a not found message
+  if (!orderDetails) {
+    return (
+      <Col
+        sm="12"
+        className="d-flex justify-content-center h-100 align-items-center"
+      >
+        <div className="cart-item-body text-center p-4 text-muted border rounded bg-white shadow-sm card-animate w-100">
+          <div style={{ fontSize: "48px", marginBottom: "12px" }}>
+            {adminOrderDetailsData?.iconNotFound}
+          </div>
+          <p className="mb-0 fs-5">{adminOrderDetailsData?.notFound}</p>
+        </div>
+      </Col>
+    );
+  }
 
   return (
-    <div className="">
-      {orderDetails ? <UserOrderItem order={orderDetails} /> : null}
+    <div className="container-fluid">
+      {/* Order Item Section */}
+      {orderDetails && <UserOrderItem order={orderDetails} />}
 
-      {/* Title of the order [Order Number] */}
-      <div className="title-text mt-3 mb-2 mx-1">
-        تفاصيل الطلب رقم #{orderDetails ? orderDetails.id : ""}
+      {/* Order Details Section */}
+      <div className="cart-item-body mb-3 border rounded bg-white shadow-sm card-animate">
+        <Row>
+          {/* Title of the Order Details Section */}
+          <Col xs="12">
+            <div className="cat-title fs-5 fw-bold">
+              {adminOrderDetailsData?.title}
+            </div>
+          </Col>
+
+          {/* User Information Fields */}
+          {userInfoFields.map((field, index) => (
+            <Col
+              key={index}
+              xs="12"
+              className={`d-flex align-items-center ${
+                index === userInfoFields.length - 1 ? "mb-2" : ""
+              }`}
+            >
+              <div className="cat-title ms-2">{field?.label}:</div>
+              <div className="cat-text mb-0">{field?.value || ""}</div>
+            </Col>
+          ))}
+
+          {/* Order Status Section */}
+          <Col xs="12" className="border-top">
+            <div className="cat-title fs-6 mt-3 d-flex justify-content-center">
+              {adminOrderDetailsData?.orderStatus?.title}
+            </div>
+          </Col>
+
+          {/* Payment and Delivery Status Selectors */}
+          <Col
+            xs="12"
+            md="6"
+            className="d-flex flex-column align-items-center mt-2"
+          >
+            <label htmlFor="paid" className="cat-title mb-1">
+              {adminOrderDetailsData?.orderStatus?.payment?.title}
+            </label>
+            <select
+              name="pay"
+              id="paid"
+              onChange={onChangePay}
+              className="select text-center w-100"
+              aria-label={
+                adminOrderDetailsData?.orderStatus?.payment?.ariaLabel
+              }
+              disabled={orderDetails?.isPaid}
+              value={orderDetails?.isPaid ? "true" : "false"}
+            >
+              <option value="0">الدفع</option>
+              <option value="true">
+                {adminOrderDetailsData?.orderStatus?.payment?.done}
+              </option>
+              <option value="false">
+                {adminOrderDetailsData?.orderStatus?.payment?.notDone}
+              </option>
+            </select>
+          </Col>
+
+          <Col
+            xs="12"
+            md="6"
+            className="d-flex flex-column align-items-center mt-2"
+          >
+            <label htmlFor="deliver" className="cat-title mb-1">
+              {adminOrderDetailsData?.orderStatus?.delivery?.title}
+            </label>
+            <select
+              name="deliver"
+              id="deliver"
+              onChange={onChangeDeliver}
+              className="select text-center w-100"
+              aria-label={
+                adminOrderDetailsData?.orderStatus?.delivery?.ariaLabel
+              }
+              disabled={orderDetails?.isDelivered}
+              value={orderDetails?.isDelivered ? "true" : "false"}
+            >
+              <option value="0">التوصيل</option>
+              <option value="true">
+                {adminOrderDetailsData?.orderStatus?.delivery?.done}
+              </option>
+              <option value="false">
+                {adminOrderDetailsData?.orderStatus?.delivery?.notDone}
+              </option>
+            </select>
+          </Col>
+
+          {/* Save Changes Button */}
+          <Col xs="12" className="text-center mt-3">
+            <button
+              onClick={changeOrderStatus}
+              className="btn-a px-4"
+              aria-label={adminOrderDetailsData?.orderStatus?.save}
+              disabled={orderDetails?.isPaid && orderDetails?.isDelivered}
+            >
+              {adminOrderDetailsData?.orderStatus?.save}
+            </button>
+          </Col>
+        </Row>
       </div>
 
-      {/* Customer Details */}
-      <Row className="justify-content-center user-data mx-1 py-3">
-        {/* Title */}
-        <Col xs="12" className=" d-flex">
-          <div className="title-text">تفاصيل العميل</div>
-        </Col>
-
-        {/* Name Of The Customer */}
-        <Col xs="12" className="d-flex mt-3">
-          <div
-            style={{
-              color: "#555550",
-              fontFamily: "Almarai",
-              fontSize: "16px",
-            }}
-          >
-            الاسم:
-          </div>
-
-          <div
-            style={{
-              color: "#979797",
-              fontFamily: "Almarai",
-              fontSize: "16px",
-            }}
-            className="mx-2"
-          >
-            {orderDetails && orderDetails.user ? orderDetails.user.name : ""}
-          </div>
-        </Col>
-
-        {/* Phone Number of the customer */}
-        <Col xs="12" className="d-flex mt-1">
-          <div
-            style={{
-              color: "#555550",
-              fontFamily: "Almarai",
-              fontSize: "16px",
-            }}
-          >
-            رقم الهاتف:
-          </div>
-
-          <div
-            style={{
-              color: "#979797",
-              fontFamily: "Almarai",
-              fontSize: "16px",
-            }}
-            className="mx-2"
-          >
-            {orderDetails && orderDetails.user ? orderDetails.user.phone : ""}
-          </div>
-        </Col>
-
-        {/* Email of the Customer */}
-        <Col xs="12" className="d-flex mt-1">
-          <div
-            style={{
-              color: "#555550",
-              fontFamily: "Almarai",
-              fontSize: "16px",
-            }}
-          >
-            الايميل:
-          </div>
-
-          <div
-            style={{
-              color: "#979797",
-              fontFamily: "Almarai",
-              fontSize: "16px",
-            }}
-            className="mx-2"
-          >
-            {orderDetails && orderDetails.user ? orderDetails.user.email : ""}
-          </div>
-        </Col>
-
-        {/* Order Pay Status & Save Button to save */}
-        <div className="d-flex mt-2 justify-content-center">
-          {/* Order Status */}
-          <select
-            name="pay"
-            id="paid"
-            onChange={onChangePay}
-            className="select input-form-area mt-1  text-center w-50"
-          >
-            <option value="0">الدفع</option>
-            <option value="true">تم</option>
-            <option value="false">لم يتم</option>
-          </select>
-
-          {/* Save Pay Button */}
-          <button
-            onClick={changePayOrderStatus}
-            className="btn-a px-3 d-inline mx-2 "
-          >
-            حفظ
-          </button>
-        </div>
-
-        {/* Order Deliver Status & Save Button to save */}
-        <div className="d-flex my-2 justify-content-center">
-          {/* Order Status */}
-          <select
-            name="deliver"
-            id="deliver"
-            className="select input-form-area mt-1  text-center w-50"
-            onChange={onChangeDeliver}
-          >
-            <option value="0">التوصيل</option>
-            <option value="true">تم</option>
-            <option value="false">لم يتم</option>
-          </select>
-
-          {/* Save Pay Button */}
-          <button
-            onClick={changeDeliverOrderStatus}
-            className="btn-a px-3 d-inline mx-2"
-          >
-            {" "}
-            حفظ
-          </button>
-        </div>
-      </Row>
       <ToastContainer />
     </div>
   );
 };
-
+// Exporting the AdminOrderDetails component as default
 export default AdminOrderDetails;

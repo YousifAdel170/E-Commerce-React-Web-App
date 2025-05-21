@@ -1,92 +1,80 @@
 /* eslint-disable react/prop-types */
-import { Col, Row } from "react-bootstrap";
+
+// Import Components from React Bootstrap, react router-dom
+import { Col, Row, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-// import deletion from "../../assets/Imgs/delete.png";
+// Import Custom Components
+import { adminOrderItemData } from "../../constants/adminOrderItem";
 
+// Import Custom Hooks
+import {
+  getOrderStatusFields,
+  getUserInfoFields,
+} from "../../hooks/admin/AdminOrderItemHook";
+
+// Importing CSS for styling
+import "../Cart/CartItem.css"; // Importing CSS for styling
+
+// Component responsible for rendering individual order items in the admin panel
 const AdminOrderItem = ({ order }) => {
+  // Array for user info fields to loop over
+  const userInfoFields = getUserInfoFields(order);
+
+  // Array for order status fields to loop over with badge color and value logic
+  const orderStatusFields = getOrderStatusFields(order);
+
   return (
     <Col sm="12">
-      <Link
-        to={`/admin/all-orders/${order._id}`}
-        className="cart-item-body my-2 py-3 d-flex"
-        style={{ textDecoration: "none" }}
-      >
-        {/* Order Item Container */}
-        <div className="w-100 px-3">
-          {/* Order Item Name and deletion to remove it */}
-          <Row className="justify-content-between">
-            <Col
-              sm="12"
-              className=" d-flex flex-row justify-content-between pt-2"
-            >
-              <div className="cat-text">طلب رقم #{order.id || ""}</div>
-              {/* <div className="d-flex " style={{ cursor: "pointer" }}>
-                <img src={deletion} alt="" width="20px" height="24px" />
-                <div className="cat-text me-1">ازاله</div>
-              </div> */}
-            </Col>
-          </Row>
+      <div className="cart-item-body my-3 p-3 border rounded bg-white card-animate">
+        {/* Order ID and Details */}
+        <Row className="justify-content-between align-items-center border-bottom pb-2">
+          <Link
+            to={`${adminOrderItemData.link}${order?._id}`}
+            className="cat-title"
+            title={adminOrderItemData.linkTitle}
+          >
+            {adminOrderItemData.title}
+            {order?.id || ""}
+          </Link>
+        </Row>
 
-          <Row className="justify-content-center my-2">
-            <Col sm="12" className="">
-              <div className="cat-title">
-                <span style={{ fontWeight: "bold" }}> الاسم: </span>
-                {order && order.user ? order.user.name : ""}
+        {/* User Information */}
+        <Row className="mt-3 border-bottom pb-2">
+          <Col sm="12">
+            {userInfoFields.map(({ label, value }, idx) => (
+              <div key={idx} className={`cat-text${idx === 0 ? " mb-1" : ""}`}>
+                <strong className="cat-title ms-1">{label}:</strong> {value}
               </div>
-              <div className="cat-title">
-                <span style={{ fontWeight: "bold" }}> البريد الالكتروني: </span>
-                {order && order.user ? order.user.email : ""}
-              </div>
-            </Col>
-          </Row>
+            ))}
+          </Col>
+        </Row>
 
-          <Row className="d-flex justify-content-between">
-            <Col xs="6">
-              <div className="d-flex">
-                <div className="cat-title" style={{ fontWeight: "bold" }}>
-                  التوصيل:{" "}
-                </div>
-                <div className="mx-2 cat-title" style={{ color: "#979797" }}>
-                  {order.isDelivered === true
-                    ? "تم التوصيل"
-                    : "لم يتم التوصيل "}
-                </div>
+        {/* Order Status & Payment */}
+        <Row className="mt-3">
+          <Col sm="6">
+            {orderStatusFields.map(({ label, value, color }, idx) => (
+              <div key={idx} className={`cat-title mb-2${idx === 2 ? "" : ""}`}>
+                <strong className="ms-1">{label}:</strong>{" "}
+                <Badge bg={color}>{value}</Badge>
               </div>
+            ))}
+          </Col>
 
-              <div className="d-flex">
-                <div className="cat-title" style={{ fontWeight: "bold" }}>
-                  الدفع:{" "}
-                </div>
-                <div className="mx-2 cat-title" style={{ color: "#979797" }}>
-                  {order.isPaid === true ? "تم الدفع" : "لم يتم الدفع"}
-                </div>
-              </div>
-
-              <div className="d-flex">
-                <div className="cat-title" style={{ fontWeight: "bold" }}>
-                  طريقة الدفع:{" "}
-                </div>
-                <div className="mx-2 cat-title" style={{ color: "#979797" }}>
-                  {order.paymentMethodType === "cash"
-                    ? "كاش"
-                    : "بطاقة ائتمانية"}
-                </div>
-              </div>
-            </Col>
-
-            <Col xs="6" className="d-flex justify-content-end align-items-end">
-              <div>
-                <div className="barnd-text">
-                  {order.totalOrderPrice || 0} جنية
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </div>
-      </Link>
+          {/* Order Total Price */}
+          <Col sm="6" className="d-flex justify-content-end align-items-end">
+            <div className="cat-text">
+              <strong className="cat-title ms-1">
+                {adminOrderItemData.totalPrice}:
+              </strong>{" "}
+              {order?.totalOrderPrice || 0} {adminOrderItemData.currency}
+            </div>
+          </Col>
+        </Row>
+      </div>
     </Col>
   );
 };
 
+// Exporting the AdminOrderItem component for use in other parts of the application
 export default AdminOrderItem;
