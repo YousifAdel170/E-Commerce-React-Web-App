@@ -11,7 +11,7 @@ import ViewSearchProductHook from "../products/ViewSearchProductHook";
 import { getAllBrand } from "../../redux/actions/brandAction";
 
 // Import Configuration
-import { PAGE_BRANDS_LIMIT } from "../../config";
+import { PAGE_BRANDS_LIMIT } from "../../constants/pageLimits";
 
 // Hook Responsible for managing the sidebar search functionality
 const SidebarSearchHook = () => {

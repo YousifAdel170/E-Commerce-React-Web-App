@@ -1,21 +1,33 @@
 /* Start of styling Category Header Component */
 .cat-header {
-  height: 100%;
   background-color: white;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .cat-text-header {
-  color: #979797;
-  font-family: "Almarai";
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 0;
-  line-height: 23px;
-  padding-top: 10px;
-  margin-left: 17px;
+  color: #6c757d;
+  font-family: "Almarai", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 12px;
+  margin: 5px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease;
   cursor: pointer;
+  white-space: nowrap;
 }
+
 .cat-text-header:hover {
-  color: #555550;
+  background-color: #f8f9fa;
+  color: #343a40; /* dark gray on hover */
+}
+
+/* Mobile adjustments */
+@media (max-width: 576px) {
+  .cat-text-header {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
 }
 /* End of styling Category Header Component */

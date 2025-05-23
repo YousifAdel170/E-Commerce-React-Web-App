@@ -11,7 +11,7 @@ import {
 
 // Notification function and success constant
 import notify from "../Utility/useNotifyHook";
-import { SUCCESS, WARNING } from "../../config";
+import { SUCCESS, WARNING } from "../../constants/notificationTypes";
 import ViewAllCartItemsHook from "./ViewAllCartItemsHook";
 
 // Custom hook to handle deletion logic for cart items (all or specific)

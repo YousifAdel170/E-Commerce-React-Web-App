@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import notify from "../Utility/useNotifyHook";
 
 // Import constants for notification types
-import { ERROR, SUCCESS, WARNING } from "../../config";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 
 // Import action to apply coupon
 import { applyCoupon } from "../../redux/actions/cartAction";

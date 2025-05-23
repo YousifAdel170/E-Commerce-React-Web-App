@@ -6,6 +6,7 @@ import { getAllBrand } from "../../redux/actions/brandAction";
 import { getAllSubCategory } from "../../redux/actions/subCategoryAction";
 import { createNewProduct } from "../../redux/actions/productsAction";
 import notify from "../Utility/useNotifyHook";
+import { ERROR, SUCCESS } from "../../constants/notificationTypes";
 
 const AdminAddProductHook = () => {
   // Use Dispatch to tell that u will use actions from redux
@@ -98,8 +99,8 @@ const AdminAddProductHook = () => {
   };
   useEffect(() => {
     if (categoryID != 0) {
-      if (subCategory.data) {
-        setOptions(subCategory.data);
+      if (subCategory) {
+        setOptions(subCategory?.data);
       }
     }
   }, [categoryID, subCategory]);
@@ -110,14 +111,10 @@ const AdminAddProductHook = () => {
   };
 
   // Store the selected Sub categories list after being added
-  const onSelect = (selectedList) => {
-    setSelectedSubID(selectedList);
-  };
+  const onSelect = (selectedList) => setSelectedSubID(selectedList);
 
   // Store the selected Sub categories list after beging removed
-  const onRemove = (selectedList) => {
-    setSelectedSubID(selectedList);
-  };
+  const onRemove = (selectedList) => setSelectedSubID(selectedList);
 
   // Function to Convert 64 base Image into File
   function dataURLtoFile(dataurl, filename) {
@@ -147,7 +144,7 @@ const AdminAddProductHook = () => {
       categoryID === 0 ||
       productName === "" ||
       productDescription === "" ||
-      images.length <= 0 ||
+      images?.length <= 0 ||
       priceBefore <= 0
     ) {
       notify("من فضلك اكمل البيانات", "warn");
@@ -158,11 +155,11 @@ const AdminAddProductHook = () => {
     const imgCover = dataURLtoFile(images[0], Math.random() + ".png");
 
     // Create an array to store the new images after being converted [same size as the 64 base imaage array]
-    const itemImages = Array.from(Array(Object.keys(images).length).keys()).map(
-      (item, index) => {
-        return dataURLtoFile(images[index], Math.random() + ".png");
-      }
-    );
+    const itemImages = Array.from(
+      Array(Object.keys(images)?.length).keys()
+    ).map((item, index) => {
+      return dataURLtoFile(images[index], Math.random() + ".png");
+    });
 
     const formData = new FormData();
     formData.append("title", productName);
@@ -175,7 +172,7 @@ const AdminAddProductHook = () => {
     formData.append("brand", brandID);
 
     colors.map((color) => formData.append("availableColors", color));
-    selectedSubID.map((item) => formData.append("subcategory", item._id));
+    selectedSubID.map((item) => formData.append("subcategory", item?._id));
     itemImages.map((item) => formData.append("images", item));
 
     // Start The Adding Operation
@@ -207,9 +204,9 @@ const AdminAddProductHook = () => {
 
       if (product) {
         //   Check if the response status is OK
-        if (product.status === 201 || product.status === 200)
-          notify("تمت عملية الاضافة بنجاح", "success");
-        else notify("هناك مشكلة في عملية الاضافة", "error");
+        if (product?.status === 201 || product?.status === 200)
+          notify("تمت عملية الاضافة بنجاح", SUCCESS);
+        else notify("هناك مشكلة في عملية الاضافة", ERROR);
       }
     }
   }, [loading, product]);

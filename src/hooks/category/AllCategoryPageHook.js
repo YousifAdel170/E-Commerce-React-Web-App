@@ -7,7 +7,7 @@ import {
   getAllCategory,
   getAllCategoryInSelectedPage,
 } from "../../redux/actions/categoryAction";
-import { PAGE_CATEGORIES_LIMIT } from "../../config";
+import { PAGE_CATEGORIES_LIMIT } from "../../constants/pageLimits";
 
 // Hook Responsible for fetching all categories and managing pagination
 const AllCategoryPageHook = () => {

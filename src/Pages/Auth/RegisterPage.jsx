@@ -10,7 +10,9 @@ import { Link } from "react-router-dom";
 
 // Import Custom Hook
 import RegisterHook from "../../hooks/auth/RegisterHook";
-import { registerData } from "../../constants/register";
+
+// Import Constant Data
+import { registerData } from "../../data/auth/register";
 
 const RegisterPage = () => {
   // Destructure state and handlers from custom hook

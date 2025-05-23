@@ -1,5 +1,5 @@
 // Import Used Constants
-import { EMAIL_TYPE, PASSWORD_TYPE } from "../config";
+import { EMAIL_TYPE, PASSWORD_TYPE } from "../../constants/inputTypes";
 
 export const loginData = (email, password) => [
   // Email Input

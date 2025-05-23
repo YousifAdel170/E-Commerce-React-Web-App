@@ -8,7 +8,7 @@ import notify from "../../Utility/useNotifyHook";
 
 import favoff from "../../../assets/Imgs/fav-off.png";
 import favon from "../../../assets/Imgs/fav-on.png";
-import { ERROR, SUCCESS } from "../../../config";
+import { ERROR, SUCCESS } from "../../../constants/notificationTypes";
 
 const ProductCardHook = (item, favoriteProducts) => {
   // Dispatch

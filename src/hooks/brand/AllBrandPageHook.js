@@ -9,7 +9,7 @@ import {
 } from "../../redux/actions/brandAction";
 
 // Import Used Configuration
-import { PAGE_BRANDS_LIMIT } from "../../config";
+import { PAGE_BRANDS_LIMIT } from "../../constants/pageLimits";
 
 // Hook responsible to display all the brands
 const AllBrandPageHook = () => {

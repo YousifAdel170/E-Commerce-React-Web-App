@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import notify from "../Utility/useNotifyHook";
-import { ERROR, SUCCESS } from "../../config";
+import { ERROR, SUCCESS } from "../../constants/notificationTypes";
 import { resetPassword } from "../../redux/actions/authAction";
 
 const ResetPasswordHook = () => {

@@ -5,7 +5,7 @@ import {
   NAME_TYPE,
   PASSWORD_TYPE,
   PHONE_TYPE,
-} from "../config";
+} from "../../constants/inputTypes";
 
 export const registerData = (
   name,

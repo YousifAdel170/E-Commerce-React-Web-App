@@ -4,6 +4,7 @@ import notify from "../Utility/useNotifyHook";
 import { createNewBrand } from "../../redux/actions/brandAction";
 
 import uploadImage from "../../assets/Imgs/avatar.png";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 
 const AdminAddBrandHook = () => {
   // 0. States [image: new uploaded item  | name: Item name]
@@ -56,14 +57,14 @@ const AdminAddBrandHook = () => {
         console.log("Response: " + response);
       } catch (error) {
         console.error("Error creating brand:", error);
-        notify("حدثت مشكلة أثناء الإضافة", "error");
+        notify("حدثت مشكلة أثناء الإضافة", ERROR);
       } finally {
         // Since the result received (Turn the Loading OFF)
         setLoading(false);
       }
 
       //   The User Entered Empty Data
-    } else notify("من فضلك اكمل البيانات", "warn");
+    } else notify("من فضلك اكمل البيانات", WARNING);
   };
 
   useEffect(() => {
@@ -80,8 +81,8 @@ const AdminAddBrandHook = () => {
 
       //   Check if the response status is OK
       if (result.status === 201) {
-        notify("تمت عملية الاضافة بنجاح", "success");
-      } else notify("هناك مشكلة في عملية الاضافة", "error");
+        notify("تمت عملية الاضافة بنجاح", SUCCESS);
+      } else notify("هناك مشكلة في عملية الاضافة", ERROR);
     }
   }, [loading, result]);
 

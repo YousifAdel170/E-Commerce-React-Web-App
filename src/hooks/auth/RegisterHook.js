@@ -3,22 +3,29 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /* Importing constants and actions */
-import {
-  CONFIRMATION_PASSWORD_TYPE,
-  EGYPT_NUMBERS_ONLY,
-  EMAIL_ALREADY_USED,
-  EMAIL_TYPE,
-  ERROR,
-  NAME_TYPE,
-  PASSWORD_TYPE,
-  PASSWORD_VALIDATION,
-  PHONE_TYPE,
-  SUCCESS,
-  WARNING,
-} from "../../config"; // Constants for validation and message types
 import notify from "../../hooks/Utility/useNotifyHook"; // Notification hook for alerts
 import { createNewUser } from "../../redux/actions/authAction"; // Action to register a new user
 import { useNavigate } from "react-router-dom"; // Hook for navigation
+import {
+  CONFIRMATION_PASSWORD_TYPE,
+  EMAIL_TYPE,
+  NAME_TYPE,
+  PASSWORD_TYPE,
+  PHONE_TYPE,
+} from "../../constants/inputTypes";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
+import {
+  BACKEND_ERROR_MESSAGES,
+  EMAIL_INVALID_MESSAGE,
+  EMAIL_REQUIRED_MESSAGE,
+  MULTIPLE_ERRORS_MESSAGE,
+  PASSWORD_CONFIRMATION_MISMATCH_MESSAGE,
+  PASSWORD_REQUIRED_MESSAGE,
+  PASSWORD_WEAK_MESSAGE,
+  PHONE_INVALID_MESSAGE,
+  REGISTRATION_FAILURE_MESSAGE,
+  USERNAME_REQUIRED_MESSAGE,
+} from "../../constants/messagesConstants";
 
 // Custom Hook for handling user registration
 const RegisterHook = () => {
@@ -60,43 +67,43 @@ const RegisterHook = () => {
   const validateInputs = () => {
     // Validate Username
     if (name === "") {
-      notify("من فضلك ادخل اسم المستخدم", WARNING); // Notify if name is empty
+      notify(USERNAME_REQUIRED_MESSAGE, WARNING); // Notify if name is empty
       return false; // Stop the form submission
     }
 
     // Validate Email Address
     if (email === "") {
-      notify("من فضلك ادخل  البريد الالكتروني", WARNING); // Notify if email is empty
+      notify(EMAIL_REQUIRED_MESSAGE, WARNING); // Notify if email is empty
       return false; // Stop the form submission
     } else {
       // Check if the email is in a valid format
       if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
-        notify("من فضلك ادخل  البريد الالكتروني صحيح", WARNING); // Notify if email format is invalid
+        notify(EMAIL_INVALID_MESSAGE, WARNING); // Notify if email format is invalid
         return false; // Stop the form submission
       }
     }
 
     // Validate Phone Number
     if (phone.length <= 10) {
-      notify("من فضلك ادخل رقم هاتف صحيح", WARNING); // Notify if phone number is invalid
+      notify(PHONE_INVALID_MESSAGE, WARNING); // Notify if phone number is invalid
       return false; // Stop the form submission
     }
 
     // Validate Password
     if (password === "") {
-      notify("من فضلك ادخل  كلمة مرور", WARNING); // Notify if password is empty
+      notify(PASSWORD_REQUIRED_MESSAGE, WARNING); // Notify if password is empty
       return false; // Stop the form submission
     } else {
       // Check if password is strong enough
       if (password.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-        notify("من فضلك ادخل  كلمة مرور قوية", WARNING); // Notify if password is weak
+        notify(PASSWORD_WEAK_MESSAGE, WARNING); // Notify if password is weak
         return false; // Stop the form submission
       }
     }
 
     // Validate Password Confirmation
     if (confirmationPassword !== password) {
-      notify("من فضلك تأكد من  كلمة المرور", WARNING); // Notify if passwords don't match
+      notify(PASSWORD_CONFIRMATION_MISMATCH_MESSAGE, WARNING); // Notify if passwords don't match
       return false; // Stop the form submission
     }
 
@@ -134,25 +141,22 @@ const RegisterHook = () => {
         if (errors.errors && Array.isArray(errors.errors)) {
           if (errors.errors.length === 1) {
             switch (errors.errors[0].msg) {
-              case EMAIL_ALREADY_USED:
-                notify("هذا الايميل مسجل من قبل", ERROR);
+              case BACKEND_ERROR_MESSAGES.EMAIL_ALREADY_USED:
+                notify(BACKEND_ERROR_MESSAGES.EMAIL_ALREADY_USED, ERROR);
                 break;
-              case EGYPT_NUMBERS_ONLY:
-                notify("يجب ان يكون الرقم مصري مكون من 11 رقم", ERROR);
+              case BACKEND_ERROR_MESSAGES.EGYPT_NUMBERS_ONLY:
+                notify(BACKEND_ERROR_MESSAGES.EGYPT_NUMBERS_ONLY, ERROR);
                 break;
-              case PASSWORD_VALIDATION:
-                notify("يجب ان لا تقل كلمه السر عن 6 احرف او ارقام", ERROR);
+              case BACKEND_ERROR_MESSAGES.PASSWORD_VALIDATION:
+                notify(BACKEND_ERROR_MESSAGES.PASSWORD_VALIDATION, ERROR);
                 break;
               default:
                 notify(errors.errors[0].msg, ERROR);
             }
           } else {
-            notify(
-              "من فضلك تأكد من البيانات المدخلة لان يوجد اكثر من خطأ",
-              ERROR
-            );
+            notify(MULTIPLE_ERRORS_MESSAGE, ERROR);
           }
-        } else notify("حدث خطأ ما أثناء عملية التسجيل", ERROR);
+        } else notify(REGISTRATION_FAILURE_MESSAGE, ERROR);
 
         return;
       }

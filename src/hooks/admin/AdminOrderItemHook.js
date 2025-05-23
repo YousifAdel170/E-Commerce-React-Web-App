@@ -1,5 +1,5 @@
 // This file contains the constants for the admin order item page.
-import { adminOrderItemData } from "../../constants/adminOrderItem";
+import { adminOrderItemData } from "../../data/admin/adminOrderItem";
 
 // This function returns an array of objects containing user information fields
 export const getUserInfoFields = (order) => [

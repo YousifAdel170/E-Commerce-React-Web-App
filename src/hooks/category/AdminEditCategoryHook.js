@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import notify from "../Utility/useNotifyHook";
-import { ERROR, SUCCESS, WARNING } from "../../config";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 import {
   editCategory,
   getSpecificCategory,

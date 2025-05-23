@@ -1,73 +1,46 @@
-/* Start of Styling the Product Module */
-@media (max-width: 991px) {
-  .gap-mobile {
-    gap: 20px;
-  }
-}
-
-.image-gallery-slide {
-  height: 100% !important;
-  padding-top: 20px;
-  padding-bottom: 40px;
-  cursor: default !important;
-}
-
-.gallery-container {
-  background-color: white;
+/* Description */
+.product-description-container {
+  padding: 1.2rem 1.5rem;
+  text-align: right;
   display: flex;
-  align-items: center;
-  border-radius: 30px;
-  -webkit-border-radius: 30px;
-  -moz-border-radius: 30px;
-  -ms-border-radius: 30px;
-  -o-border-radius: 30px;
+  flex-direction: column;
+  background-color: red;
+  border-radius: 20px;
+  align-items: stretch;
 }
 
-@media (max-width: 767px) {
-  .gallery-container {
-    border-radius: 0px;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    -ms-border-radius: 0px;
-    -o-border-radius: 0px;
+@media (max-width: 768px) {
+  .product-description-container {
+    padding: 1rem;
+    gap: 0.5rem;
   }
-}
-
-img.image-gallery-slide {
-  display: flex !important;
-  align-items: center !important;
-}
-
-.product-gallary-card {
-  border-radius: 30px;
-  -webkit-border-radius: 30px;
-  -moz-border-radius: 30px;
-  -ms-border-radius: 30px;
-  -o-border-radius: 30px;
 }
 
 .product-description {
-  color: #555550;
-  font-family: Cairo;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 26px;
+  color: #444;
+  font-family: "Cairo", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.8;
   text-align: right;
+  margin-top: 1rem;
+  transition: color 0.3s ease;
 }
 
 .product-price {
-  height: 46px;
-  width: 150px;
+  display: inline-block;
+  min-height: 46px;
+  min-width: 150px;
   text-align: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px;
   border-radius: 9px;
-  color: #555550;
-  font-family: "Almarai";
-  font-size: 12px;
-  font-weight: bold;
-  background-color: #ffffff;
+  color: #555;
+  font-family: "Almarai", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-cart-add {
@@ -76,14 +49,69 @@ img.image-gallery-slide {
   height: 45px;
   border-radius: 9px;
   border: none;
-  background-color: #272727;
-  color: #ffffff;
-  font-family: "Almarai";
+  background-color: #1f1f1f;
+  color: #fafafa;
+  font-family: "Almarai", sans-serif;
   font-size: 14px;
-  font-weight: normal;
-}
-.product-cart-add:hover {
-  color: #bdbaba !important;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.1s ease,
+    box-shadow 0.3s ease;
 }
 
-/* End of Styling the Product Module */
+.product-cart-add:hover {
+  background-color: #333;
+  transform: scale(1.03);
+  color: #eaeaea;
+}
+
+.product-cart-add:focus {
+  outline: 2px solid #6ca0f6;
+  outline-offset: 3px;
+  box-shadow: 0 0 8px rgba(108, 160, 246, 0.5);
+}
+
+.product-cart-add:active {
+  transform: scale(0.97);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 600px) {
+  .product-description {
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 1rem;
+    margin-right: 0 !important;
+  }
+
+  .product-price {
+    width: 120px;
+    font-size: 12px;
+  }
+
+  .product-cart-add {
+    height: 42px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-description {
+    margin-right: 0 !important;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-description {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .product-price {
+    width: 100%;
+    font-size: 11px;
+  }
+  .product-cart-add {
+    height: 40px;
+    font-size: 12px;
+  }
+}

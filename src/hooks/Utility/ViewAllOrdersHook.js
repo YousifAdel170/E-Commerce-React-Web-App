@@ -1,7 +1,11 @@
+// Import Hooks from react, react-redux
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+// Import Custom Actions
 import { getAllOrders } from "../../redux/actions/ordersAction";
 
+// Hook Responsible to display all the orders and manage the pagination
 const ViewAllOrdersHook = () => {
   const dispatch = useDispatch();
 

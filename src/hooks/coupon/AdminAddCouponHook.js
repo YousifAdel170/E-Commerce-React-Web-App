@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import notify from "../Utility/useNotifyHook";
-import { ERROR, SUCCESS, WARNING } from "../../config";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 import { addCoupon } from "../../redux/actions/couponAction";
 
 // Hook for adding a coupon in the admin panel

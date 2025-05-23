@@ -1,0 +1,311 @@
+/* ----------------------------
+   Product Gallery Card Styles
+----------------------------- */
+
+/* Card container styling */
+.product-gallery-card {
+  background-color: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border-radius: 30px;
+}
+
+/* Show overflow content on hover */
+.product-gallery-card:hover {
+  overflow: inherit;
+}
+
+/* Add lift and shadow effect on hover */
+.product-gallery-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+/* ----------------------------
+   Gallery Layout and Image Box
+----------------------------- */
+
+/* Wrapper to center content vertically */
+.gallery-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: height 0.3s ease;
+}
+
+/* Image container with fixed size and centering */
+.image-gallery-container {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 12px;
+  background-color: #fefefe;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: height 0.3s ease;
+}
+
+/* ----------------------------
+   Product Image Styling
+----------------------------- */
+
+/* Main image inside the gallery */
+.product-image-gallery .image-gallery-slide img {
+  border-radius: 12px 12px 0 0;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+/* Zoom effect on hover */
+.product-image-gallery:hover .image-gallery-slide img {
+  transform: scale(1.05);
+}
+
+/* ----------------------------
+   Navigation Buttons
+----------------------------- */
+
+/* Shared slider button styles */
+.slider-button {
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.125);
+  border-radius: 50%;
+  padding: 8px;
+  user-select: none;
+  outline-offset: 3px;
+  position: absolute;
+  top: 50%;
+  z-index: 1000;
+  transform: translateY(-50%);
+  color: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease, color 0.3s ease, filter 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Positioning for arrows */
+.slider-button.left {
+  left: -10px;
+}
+
+.slider-button.right {
+  right: -10px;
+}
+
+/* Hover and active states */
+.slider-button:hover,
+.slider-button:active {
+  background-color: rgba(0, 0, 0, 0.25);
+  color: rgba(0, 0, 0, 0.85);
+  filter: brightness(1.1);
+  border-color: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus accessibility */
+.slider-button:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.3);
+  outline-offset: 3px;
+}
+
+/* Disabled state */
+.slider-button:disabled {
+  cursor: not-allowed;
+  filter: brightness(0.7);
+  color: rgba(0, 0, 0, 0.3);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: none;
+}
+
+/* ----------------------------
+   Responsive Adjustments
+----------------------------- */
+
+@media (max-width: 768px) {
+  .image-gallery-container {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-gallery-card {
+    border-radius: 20px;
+  }
+}
+
+/* ----------------------------
+   Image Index Badge
+----------------------------- */
+
+.image-gallery-index {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  padding: 6px 14px !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: #fff !important;
+  font-family: "Almarai", sans-serif !important;
+  font-size: 1rem !important;
+  border-radius: 12px !important;
+  z-index: 200 !important;
+  user-select: none !important;
+  pointer-events: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+  transition: background-color 0.3s ease;
+}
+
+/* Slight hover effect for index */
+.image-gallery-index:hover {
+  background: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* ----------------------------
+   Overlay Modal
+----------------------------- */
+
+/* Fallback for browsers that don't support blur */
+@supports not (
+  (-webkit-backdrop-filter: blur(6px)) or (backdrop-filter: blur(6px))
+) {
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.85);
+  }
+}
+
+/* Overlay full-screen background */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: pointer;
+}
+
+/* Close button inside overlay */
+.overlay-close {
+  position: fixed;
+  top: 20px;
+  right: 30px;
+  font-size: 3rem;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  z-index: 10000;
+  transition: color 0.25s ease;
+}
+
+/* Hover/focus effects for close button */
+.overlay-close:hover,
+.overlay-close:focus {
+  color: #ff4444;
+  outline: none;
+}
+
+/* Hide gallery controls in overlay view */
+.overlay-image-gallery .image-gallery-thumbnails,
+.overlay-image-gallery .image-gallery-fullscreen-button,
+.overlay-image-gallery .image-gallery-play-button {
+  display: none !important;
+}
+
+/* Image styling inside overlay */
+.overlay-image-gallery .image-gallery-slide img {
+  max-height: 80vh !important;
+  max-width: 90vw !important;
+  object-fit: contain !important;
+  cursor: default !important;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease;
+}
+
+/* Hover zoom inside overlay */
+.overlay-image-gallery .image-gallery-slide img:hover {
+  transform: scale(1.03);
+}
+
+/* Prevent click bubbling */
+.overlay > div {
+  cursor: default;
+}
+
+/* ----------------------------
+   Overlay Slider Buttons Animation
+----------------------------- */
+
+.overlay-active .slider-button {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  width: 50px;
+  height: 50px;
+  padding: 12px;
+  z-index: 1002;
+  filter: brightness(1.5);
+  opacity: 0;
+  animation: fadeInSlider 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform: translateY(30px);
+}
+
+/* Hover effect in overlay */
+.overlay-active .slider-button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  filter: brightness(2);
+}
+
+/* Fade-in animation for overlay buttons */
+@keyframes fadeInSlider {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive tweaks for overlay elements */
+@media (max-width: 768px) {
+  .overlay-active .slider-button {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+  }
+
+  .overlay-close {
+    font-size: 2rem;
+    top: 10px;
+    right: 15px;
+  }
+}
+
+/* ----------------------------
+   Image Index Badge (Top Right)
+----------------------------- */
+
+.image-index-badge {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  z-index: 10;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  user-select: none;
+  pointer-events: none;
+}

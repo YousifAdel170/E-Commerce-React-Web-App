@@ -10,7 +10,7 @@ import { getAllProductsByBrand } from "../../redux/actions/productsAction";
 import { getSpecificBrand } from "../../redux/actions/brandAction";
 
 // Import constants
-import { PAGE_PRODUCTS_LIMIT } from "../../config";
+import { PAGE_PRODUCTS_LIMIT } from "../../constants/pageLimits";
 
 // Custom hook to fetch products by a specific brand
 const ViewProductsByBrandHook = (brandID) => {

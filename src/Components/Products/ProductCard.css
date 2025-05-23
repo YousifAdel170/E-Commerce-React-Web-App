@@ -1,38 +1,167 @@
-/* Start Of Styling Product Card Component */
+/*================== GLOBAL & UTILITIES ==================*/
 
-.card-title {
-  color: #555550;
-  font-family: Almarai;
-  font-size: 16px;
-  letter-spacing: 0;
-  line-height: 20px;
-  text-align: right;
+/* Focus Rings - Accessibility */
+.product-link:focus-visible,
+.action-btn:focus-visible {
+  outline: 3px solid #ffc107;
+  outline-offset: 3px;
 }
 
-.card-rate {
-  color: #ffc107;
-  font-family: Almarai;
-  font-size: 14px;
+/* Pointer cursor and padding for buttons */
+.action-btn {
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-family: "Almarai", sans-serif;
+  color: #6c757d;
+  border: none;
+  background: none;
+  transition: color 0.3s ease;
+}
+
+.action-btn:hover,
+.action-btn:focus {
+  color: #333;
   font-weight: bold;
-  letter-spacing: 0;
-  line-height: 19px;
 }
 
-.card-price {
+.action-btn:focus-visible {
+  outline: 2px solid #005fcc; /* blue ring */
+  outline-offset: 2px;
+}
+
+/*================== PRODUCT CARD ==================*/
+
+/* Hover effects on card */
+.product-card:hover,
+.product-card:focus-within {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  outline: none;
+  transform: translateY(-4px);
+  transition: transform 0.3s ease;
+}
+
+/* Image zoom on hover */
+.product-card:hover .image-container img,
+.product-card:focus-within .image-container img {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* Product link reset (inherit color) */
+.product-link {
+  color: inherit;
+}
+
+/* Product title styling */
+.product-title {
+  font-family: "Almarai", sans-serif;
+  color: #222;
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
+/*================== IMAGE ==================*/
+
+.image-container {
+  position: relative;
+  height: 228px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fefefe;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.image-container img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 12px 12px 0 0;
+  transition: transform 0.3s ease;
+}
+
+/*================== DISCOUNT BADGE ==================*/
+
+.discount-badge {
+  position: absolute;
+  top: 12px;
+  right: -36px;
+  width: 120px;
+  background-color: #28a745;
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 6px 0;
+  border-radius: 4px;
+  transform: rotate(45deg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: 0.05em;
+  z-index: 10;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@keyframes fadeInBadge {
+  to {
+    opacity: 1;
+  }
+}
+
+/*================== RATING ==================*/
+
+.star-rating svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+/*================== PRICE ==================*/
+
+.price-container {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.price-container span {
+  font-weight: 700;
+  font-size: 1.2rem;
   color: #272727;
-  font-family: Almarai;
-  font-size: 21px;
-  font-weight: bold;
-  letter-spacing: 0;
-  line-height: 28px;
 }
 
-.card-currency {
-  color: #555550;
-  font-family: Almarai;
-  font-size: 18px;
-  letter-spacing: 0;
-  line-height: 24px;
+.price-container span.price-discounted {
+  color: #28a745;
+  font-weight: 700;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
 }
 
-/* End Of Styling Product Card Component */
+.price-container .price-discounted:hover {
+  color: #218838; /* darker green on hover */
+  cursor: default;
+}
+
+.price-container del {
+  color: #777;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/*================== RESPONSIVE ==================*/
+
+@media (max-width: 768px) {
+  .all-products {
+    margin-top: 10px;
+  }
+
+  .image-container {
+    height: 180px;
+  }
+}

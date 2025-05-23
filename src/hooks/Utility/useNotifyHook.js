@@ -2,7 +2,7 @@
 import { toast } from "react-toastify";
 
 // Import Used Configurations
-import { ERROR, SUCCESS, WARNING } from "../../config";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 
 // Custom notification function (Check the type of notification and display the appropriate toast message)
 const notify = (msg, type) => {

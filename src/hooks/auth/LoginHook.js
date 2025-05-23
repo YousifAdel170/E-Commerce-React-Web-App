@@ -11,13 +11,15 @@ import { loginUser, setUser } from "../../redux/actions/authAction";
 import { getAllCartItems } from "../../redux/actions/cartAction";
 
 // Import Constants and Configurations
+import { EMAIL_TYPE, PASSWORD_TYPE } from "../../constants/inputTypes";
 import {
-  EMAIL_TYPE,
-  ERROR,
-  PASSWORD_TYPE,
-  SUCCESS,
-  WARNING,
-} from "../../config";
+  BACKEND_ERROR_MESSAGES,
+  EMAIL_INVALID_MESSAGE,
+  EMAIL_REQUIRED_MESSAGE,
+  LOGIN_SUCCESS_MESSAGE,
+  PASSWORD_REQUIRED_MESSAGE,
+} from "../../constants/messagesConstants";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 
 // Hook Responsible for handling user login
 const LoginHook = () => {
@@ -47,17 +49,17 @@ const LoginHook = () => {
   const validateInputs = () => {
     // Validate Email Address
     if (email === "") {
-      notify("من فضلك ادخل  البريد الالكتروني", WARNING);
+      notify(EMAIL_REQUIRED_MESSAGE, WARNING);
       return false;
     } else {
       if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
-        notify("من فضلك ادخل  البريد الالكتروني صحيح", WARNING);
+        notify(EMAIL_INVALID_MESSAGE, WARNING);
         return false;
       }
     }
     // Validate Password
     if (password === "") {
-      notify("من فضلك ادخل  كلمة مرور", WARNING);
+      notify(PASSWORD_REQUIRED_MESSAGE, WARNING);
       return false;
     }
 
@@ -117,7 +119,7 @@ const LoginHook = () => {
           setUserData();
 
           // Notification For Success
-          notify("تم تسجيل الدخول بنجاح", SUCCESS);
+          notify(LOGIN_SUCCESS_MESSAGE, SUCCESS);
 
           // Navigate to Login Page
           setTimeout(() => navigate("/"), 1000);
@@ -125,7 +127,7 @@ const LoginHook = () => {
           // Remove the User From the Local Storage [require login again]
           localStorage.removeItem("token");
           localStorage.removeItem("user");
-          notify("كلمة السر او الايميل خطا", ERROR);
+          notify(BACKEND_ERROR_MESSAGES.LOGIN_WRONG, ERROR);
         }
       }
     }

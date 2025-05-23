@@ -2,7 +2,7 @@
 import { Col, Container, Row } from "react-bootstrap";
 
 // Import Constants
-import { footerData } from "../../constants/footer";
+import { footerData } from "../../data/utilities/footer";
 
 // Import The Used CSS
 import "./Footer.css";

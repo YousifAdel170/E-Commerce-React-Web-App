@@ -8,9 +8,11 @@ import { ToastContainer } from "react-toastify";
 /* Importing custom hook for login logic */
 import LoginHook from "../../hooks/auth/LoginHook";
 
-/* Importing form input configurations and reusable input field component */
-import { loginData } from "../../constants/login";
+// Imporrt Custom Components
 import InputField from "../../Components/Utility/InputField";
+
+// Import Constant Data
+import { loginData } from "../../data/auth/login";
 
 // Component to handle login page UI and logic
 const LoginPage = () => {

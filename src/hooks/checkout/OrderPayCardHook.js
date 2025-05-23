@@ -11,7 +11,7 @@ import notify from "../Utility/useNotifyHook";
 import { createOrderCard } from "../../redux/actions/checkoutAction";
 
 // Import Used Configurations
-import { ERROR, SUCCESS, WARNING } from "../../config";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 
 // Hook responsible for handling the order payment via card
 const OrderPayCardHook = (addressDetalis) => {

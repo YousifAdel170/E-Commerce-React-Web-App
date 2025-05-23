@@ -119,11 +119,11 @@ const AdminEditProduct = () => {
             value={categoryID}
           >
             <option value="0">اختر التصنيف الرئيسي</option>
-            {category.data
+            {category?.data
               ? category.data.map((item) => {
                   return (
-                    <option key={item._id} value={item._id}>
-                      {item.name}
+                    <option key={item?._id} value={item?._id}>
+                      {item?.name}
                     </option>
                   );
                 })
@@ -150,11 +150,11 @@ const AdminEditProduct = () => {
             value={brandID}
           >
             <option value="0">اختر الماركة</option>
-            {brand.data
+            {brand?.data
               ? brand.data.map((item) => {
                   return (
-                    <option key={item._id} value={item._id}>
-                      {item.name}
+                    <option key={item?._id} value={item?._id}>
+                      {item?.name}
                     </option>
                   );
                 })
@@ -165,7 +165,7 @@ const AdminEditProduct = () => {
           <div className="text-form mt-3 "> الالوان المتاحه للمنتج</div>
 
           <div className="mt-1 d-flex">
-            {colors.length
+            {colors?.length
               ? colors.map((color, index) => (
                   <div
                     onClick={() => removeColor(color)}

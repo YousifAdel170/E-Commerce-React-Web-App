@@ -13,7 +13,7 @@ import {
 import notify from "../Utility/useNotifyHook";
 
 // Import Configuration (Constants for notification types)
-import { ERROR, SUCCESS } from "../../config"; // Constants for notification types (error and success)
+import { ERROR, SUCCESS } from "../../constants/notificationTypes"; // Constants for notification types (error and success)
 
 /* Hook for editing a user address */
 const UserEditAddressHook = (id) => {

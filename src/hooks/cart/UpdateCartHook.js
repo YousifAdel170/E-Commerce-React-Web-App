@@ -12,7 +12,7 @@ import ViewSpecificProductHook from "../products/ViewSpecificProductHook";
 import { updateCartSpecificItem } from "../../redux/actions/cartAction";
 
 // Import Configuration for toastify notifications
-import { SUCCESS, WARNING } from "../../config";
+import { SUCCESS, WARNING } from "../../constants/notificationTypes";
 
 const UpdateCartHook = (item) => {
   const dispatch = useDispatch();

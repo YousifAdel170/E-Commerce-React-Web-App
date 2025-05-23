@@ -9,12 +9,11 @@ import UserOrderItem from "../User/UserOrderItem";
 import { useParams } from "react-router-dom";
 // Import Custom Hooks
 import AdminOrderDetailsHook from "../../hooks/admin/AdminOrderDetailsHook";
-import ChangeOrderHook, {
-  getUserOrderInfoFields,
-} from "../../hooks/admin/ChangeOrderHook";
+import ChangeOrderHook from "../../hooks/admin/ChangeOrderHook";
 
 // Import Constants for Admin Order Details
-import { adminOrderDetailsData } from "../../constants/admin/adminOrderDetails";
+import { adminOrderDetailsData } from "../../data/admin/adminOrderDetails";
+import StatusSelector from "../Utility/StatusSelector";
 
 // Component responsible for rendering order details in the admin panel
 const AdminOrderDetails = () => {
@@ -25,13 +24,8 @@ const AdminOrderDetails = () => {
   const [orderDetails] = AdminOrderDetailsHook(id);
 
   // Custom hook to manage order status changes
-  const [onChangePay, onChangeDeliver, changeOrderStatus] = ChangeOrderHook(
-    id,
-    orderDetails
-  );
-
-  // Extracting user information fields from the order details
-  const userInfoFields = getUserOrderInfoFields(orderDetails);
+  const [orderStatus, userInfoFields, statusItems, changeOrderStatus] =
+    ChangeOrderHook(id, orderDetails);
 
   // If no order details are found, display a not found message
   if (!orderDetails) {
@@ -87,63 +81,16 @@ const AdminOrderDetails = () => {
           </Col>
 
           {/* Payment and Delivery Status Selectors */}
-          <Col
-            xs="12"
-            md="6"
-            className="d-flex flex-column align-items-center mt-2"
-          >
-            <label htmlFor="paid" className="cat-title mb-1">
-              {adminOrderDetailsData?.orderStatus?.payment?.title}
-            </label>
-            <select
-              name="pay"
-              id="paid"
-              onChange={onChangePay}
-              className="select text-center w-100"
-              aria-label={
-                adminOrderDetailsData?.orderStatus?.payment?.ariaLabel
-              }
-              disabled={orderDetails?.isPaid}
-              value={orderDetails?.isPaid ? "true" : "false"}
-            >
-              <option value="0">الدفع</option>
-              <option value="true">
-                {adminOrderDetailsData?.orderStatus?.payment?.done}
-              </option>
-              <option value="false">
-                {adminOrderDetailsData?.orderStatus?.payment?.notDone}
-              </option>
-            </select>
-          </Col>
-
-          <Col
-            xs="12"
-            md="6"
-            className="d-flex flex-column align-items-center mt-2"
-          >
-            <label htmlFor="deliver" className="cat-title mb-1">
-              {adminOrderDetailsData?.orderStatus?.delivery?.title}
-            </label>
-            <select
-              name="deliver"
-              id="deliver"
-              onChange={onChangeDeliver}
-              className="select text-center w-100"
-              aria-label={
-                adminOrderDetailsData?.orderStatus?.delivery?.ariaLabel
-              }
-              disabled={orderDetails?.isDelivered}
-              value={orderDetails?.isDelivered ? "true" : "false"}
-            >
-              <option value="0">التوصيل</option>
-              <option value="true">
-                {adminOrderDetailsData?.orderStatus?.delivery?.done}
-              </option>
-              <option value="false">
-                {adminOrderDetailsData?.orderStatus?.delivery?.notDone}
-              </option>
-            </select>
-          </Col>
+          {statusItems.map((item) => (
+            <StatusSelector
+              key={item.key}
+              id={orderStatus[item.key].label}
+              name={orderStatus[item.key].label}
+              data={orderStatus[item.key]}
+              onChange={item.onChange}
+              disabled={item.disabled}
+            />
+          ))}
 
           {/* Save Changes Button */}
           <Col xs="12" className="text-center mt-3">

@@ -7,9 +7,9 @@ import notify from "../Utility/useNotifyHook"; // Custom notification hook
 
 // Import Custom Actions
 import { deleteRate } from "../../redux/actions/reviewAction"; // Import the action to delete the review
+import { ERROR, SUCCESS } from "../../constants/notificationTypes";
 
 // Import Used Configurations
-import { ERROR, SUCCESS } from "../../config"; // Constants for notification types
 
 // Custom hook to delete a review
 const DeleteRateHook = (review, removeReview) => {

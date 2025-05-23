@@ -7,7 +7,9 @@ import PaginationComponent from "../Utility/PaginationComponent";
 
 // Import custom hooks
 import AdminAllProductsPageHook from "../../hooks/admin/AdminAllProductsPageHook";
-import { adminData } from "../../constants/admin";
+
+// Import Constant data
+import { adminData } from "../../data/admin/adminData";
 
 // Component responsible for rendering all products in the admin panel
 const AdminAllProducts = () => {

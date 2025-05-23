@@ -9,7 +9,7 @@ import { getAllProductRates } from "../../redux/actions/reviewAction";
 import {
   PAGE_NUMBER_PRODUCT_DETAILS_RATES,
   PRODUCT_DETAILS_RATES_LIMIT,
-} from "../../config";
+} from "../../constants/pageLimits";
 
 // Custom Hook to fetch and view all product ratings based on the product id
 const ViewAllRatesHook = (id) => {

@@ -9,7 +9,7 @@ import {
 } from "../../redux/actions/productsAction";
 
 // Import The Used Config
-import { PAGE_PRODUCTS_LIMIT } from "../../config";
+import { PAGE_PRODUCTS_LIMIT } from "../../constants/pageLimits";
 
 // Hook Responsible for fetching and managing the products data after searching
 const ViewSearchProductHook = () => {

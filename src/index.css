@@ -190,6 +190,13 @@ textarea:focus::placeholder {
   }
 }
 
+@media (max-width: 767px) {
+  .gap-mobile {
+    gap: 1rem;
+    flex-direction: column;
+  }
+}
+
 /* end login and register */
 
 /* cart page */
@@ -245,6 +252,7 @@ textarea:focus::placeholder {
   text-align: right;
   cursor: pointer;
   margin-bottom: 0;
+  transition: color 0.3s ease;
 }
 
 .text-form {
@@ -431,4 +439,20 @@ button:disabled {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* Animate */
+.animated-card-product {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform, box-shadow;
+  cursor: pointer;
+}
+
+.animated-card-product:hover {
+  transform: scale(1.03);
+  box-shadow: rgba(0, 0, 0, 0.2) 4px 8px 16px !important;
+  -webkit-transform: scale(1.03);
+  -moz-transform: scale(1.03);
+  -ms-transform: scale(1.03);
+  -o-transform: scale(1.03);
 }

@@ -13,8 +13,10 @@ import {
 } from "../../redux/actions/ordersAction";
 
 // Import Constants for Admin Order Details
-import { adminOrderDetailsData } from "../../constants/admin/adminOrderDetails";
-import { ERROR, SUCCESS, WARNING } from "../../config";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
+
+// Import Constant Data
+import { adminOrderDetailsData } from "../../data/admin/adminOrderDetails";
 
 // Hook Responsible for managing the change order status functionality
 const ChangeOrderHook = (id, orderDetails) => {
@@ -24,11 +26,17 @@ const ChangeOrderHook = (id, orderDetails) => {
 
   //   Initialize loading states and order status states
   const [loadingPay, setLoadingPay] = useState(true);
-  const [pay, setPay] = useState(orderDetails?.isPaid ? "true" : "0");
+  const [pay, setPay] = useState("0");
   const [loadingDeliver, setLoadingDeliver] = useState(true);
-  const [deliver, setDeliver] = useState(
-    orderDetails?.isDelivered ? "true" : "0"
-  );
+  const [deliver, setDeliver] = useState("0");
+
+  // Useeffect to get the status of the payment, deliver of the order
+  useEffect(() => {
+    if (orderDetails) {
+      setPay(orderDetails.isPaid ? "true" : "0");
+      setDeliver(orderDetails.isDelivered ? "true" : "0");
+    }
+  }, [orderDetails]);
 
   //   Function to handle changes in payment status, and delivery status
   const onChangePay = (e) => setPay(e.target.value);
@@ -134,25 +142,40 @@ const ChangeOrderHook = (id, orderDetails) => {
     }
   }, [loadingPay, loadingDeliver, resultPay, resultDeliver, navigate]);
 
+  const orderStatus = adminOrderDetailsData.orderStatus;
+
+  // Extracting user information fields from the order details
+  const userInfoFields = [
+    {
+      label: adminOrderDetailsData?.user?.name,
+      value: orderDetails?.user?.name || "",
+    },
+    {
+      label: adminOrderDetailsData?.user?.email,
+      value: orderDetails?.user?.email || "",
+    },
+    {
+      label: adminOrderDetailsData?.user?.phone,
+      value: orderDetails?.user?.phone || "",
+    },
+  ];
+
+  const statusItems = [
+    {
+      key: "payment",
+      onChange: onChangePay,
+      disabled: orderDetails?.isPaid,
+    },
+    {
+      key: "delivery",
+      onChange: onChangeDeliver,
+      disabled: orderDetails?.isDelivered,
+    },
+  ];
+
   //   Return the loading states and functions to handle changes in payment and delivery status
-  return [onChangePay, onChangeDeliver, changeOrderStatus];
+  return [orderStatus, userInfoFields, statusItems, changeOrderStatus];
 };
 
 // Export the ChangeOrderHook function as default
 export default ChangeOrderHook;
-
-// Export the function to get user order information fields
-export const getUserOrderInfoFields = (orderDetails) => [
-  {
-    label: adminOrderDetailsData?.user?.name,
-    value: orderDetails?.user?.name || "",
-  },
-  {
-    label: adminOrderDetailsData?.user?.email,
-    value: orderDetails?.user?.email || "",
-  },
-  {
-    label: adminOrderDetailsData?.user?.phone,
-    value: orderDetails?.user?.phone || "",
-  },
-];

@@ -5,7 +5,7 @@ import { Col, Row, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 // Import Custom Components
-import { adminOrderItemData } from "../../constants/adminOrderItem";
+import { adminOrderItemData } from "../../data/admin/adminOrderItem";
 
 // Import Custom Hooks
 import {

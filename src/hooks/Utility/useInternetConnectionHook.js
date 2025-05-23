@@ -2,7 +2,7 @@
 import notify from "./useNotifyHook";
 
 // Import Used Configuartions
-import { WARNING } from "../../config";
+import { WARNING } from "../../constants/notificationTypes";
 
 // Custom hook to detect internet connection status
 const internetDetect = () => {

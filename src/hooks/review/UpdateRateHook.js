@@ -9,7 +9,7 @@ import notify from "../Utility/useNotifyHook"; // Custom hook for notifications
 import { updateRate } from "../../redux/actions/reviewAction"; // Action for updating the review
 
 // // Constants for notification types
-import { ERROR, SUCCESS, WARNING } from "../../config";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 
 // Custom hook to update the review rate
 const UpdateRateHook = (review, updateReviews) => {

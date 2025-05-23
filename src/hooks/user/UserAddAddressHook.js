@@ -10,7 +10,7 @@ import notify from "../Utility/useNotifyHook";
 import { addUserAddress } from "../../redux/actions/userAddressAction";
 
 // Import Used Configuaration
-import { ERROR, SUCCESS, WARNING } from "../../config"; // Constants for notification types
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes"; // Constants for notification types
 
 // Hook responsible for adding a user address
 const UserAddAddressHook = () => {

@@ -7,9 +7,9 @@ import notify from "../Utility/useNotifyHook";
 
 // Import Actions
 import { createReview } from "../../redux/actions/reviewAction";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 
 // Import Used Configuration
-import { ERROR, SUCCESS, WARNING } from "../../config";
 
 /**
  * Custom hook to handle adding a review for a product.

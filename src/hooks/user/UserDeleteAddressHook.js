@@ -9,7 +9,7 @@ import notify from "../Utility/useNotifyHook";
 import { deleteUserAddress } from "../../redux/actions/userAddressAction"; // Action to delete user address
 
 // Import Used Configurations
-import { SUCCESS } from "../../config";
+import { SUCCESS } from "../../constants/notificationTypes";
 
 // Hook for deleting a user address
 const UserDeleteAddressHook = (id, onDeleteSuccess) => {

@@ -34,8 +34,8 @@ const ViewProductDetailsHook = (productID) => {
   useEffect(() => {
     const getData = async () => {
       // If product has a category, fetch products that belong to the same category
-      if (specificProduct && specificProduct.category)
-        await dispatch(getProductsLikeThis(specificProduct.category));
+      if (specificProduct)
+        await dispatch(getProductsLikeThis(specificProduct?.category));
     };
 
     getData();
@@ -45,8 +45,8 @@ const ViewProductDetailsHook = (productID) => {
   useEffect(() => {
     const getData = async () => {
       // If product has a category, fetch the category details
-      if (specificProduct && specificProduct.category)
-        await dispatch(getSpecificCategory(specificProduct.category));
+      if (specificProduct)
+        await dispatch(getSpecificCategory(specificProduct?.category));
     };
 
     getData();
@@ -56,8 +56,8 @@ const ViewProductDetailsHook = (productID) => {
   useEffect(() => {
     const getData = async () => {
       // If product has a brand, fetch the brand details
-      if (specificProduct && specificProduct.brand)
-        await dispatch(getSpecificBrand(specificProduct.brand));
+      if (specificProduct)
+        await dispatch(getSpecificBrand(specificProduct?.brand));
     };
 
     getData();
@@ -65,7 +65,7 @@ const ViewProductDetailsHook = (productID) => {
 
   // Memoize the product images and set a default image if no images are available
   const images = useMemo(() => {
-    if (specificProduct && specificProduct.images) {
+    if (specificProduct?.images) {
       return specificProduct.images.map((image) => {
         return { original: image };
       });
@@ -74,22 +74,22 @@ const ViewProductDetailsHook = (productID) => {
 
   // Memoize the category details of the product
   const itemCategory = useMemo(() => {
-    if (category && category.data) return category.data;
+    if (category) return category?.data;
     else return [];
   }, [category]);
 
   // Memoize the brand details of the product
   const itemBrand = useMemo(() => {
-    if (brand && brand.data) return brand.data;
+    if (brand) return brand?.data;
     else return [];
   }, [brand]);
 
   // Memoize the related products in the same category, limiting the number of displayed items to 4
   const prodouctsLikeSample = useMemo(() => {
-    if (productsLike && productsLike.data)
-      return productsLike.data.length > 4
-        ? productsLike.data.slice(0, 4) // Show at most 4 related products
-        : productsLike.data;
+    if (productsLike?.data)
+      return productsLike?.data?.length > 4
+        ? productsLike?.data.slice(0, 4) // Show at most 4 related products
+        : productsLike?.data;
     else return [];
   }, [productsLike]);
 

@@ -1,8 +1,8 @@
 // Import The Used Assets
-import phone from "../Assets/Imgs/phone.png";
-import facebook from "../Assets/Imgs/facebook.png";
-import twitter from "../Assets/Imgs/twitter.png";
-import instagram from "../Assets/Imgs/instagram.png";
+import phone from "../../assets/imgs/phone.png";
+import facebook from "../../assets/imgs/facebook.png";
+import twitter from "../../assets/imgs/twitter.png";
+import instagram from "../../assets/imgs/instagram.png";
 
 // Export the footer data with multilingual support
 export const footerData = {

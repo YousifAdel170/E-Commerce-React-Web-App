@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // Import Actions from Redux
 import { getAllBrand } from "../../redux/actions/brandAction";
-import { PAGE_BRANDS_HOME_LIMIT } from "../../config";
+import { PAGE_BRANDS_HOME_LIMIT } from "../../constants/pageLimits";
 
 // Hook Responsible for fetching and managing brand data
 const HomeBrandHook = () => {

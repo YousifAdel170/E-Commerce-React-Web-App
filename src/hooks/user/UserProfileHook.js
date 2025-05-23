@@ -13,7 +13,7 @@ import {
 import notify from "../Utility/useNotifyHook";
 
 // Import Custom Conigurations
-import { ERROR, SUCCESS, WARNING } from "../../config";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 
 const UserProfileHook = () => {
   const dispatch = useDispatch();

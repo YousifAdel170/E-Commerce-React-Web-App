@@ -13,7 +13,7 @@ import ViewAllCartItemsHook from "../../hooks/cart/ViewAllCartItemsHook";
 import notify from "../../hooks/Utility/useNotifyHook";
 
 // Import constants
-import { WARNING } from "../../config";
+import { WARNING } from "../../constants/notificationTypes";
 
 // ChoosePayMethod component to handle payment method selection
 const ChoosePayMethod = () => {

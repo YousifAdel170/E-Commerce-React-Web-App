@@ -13,7 +13,7 @@ import { getSpecificUserAddress } from "../../redux/actions/userAddressAction";
 import { clearAllCart } from "../../redux/actions/cartAction";
 
 // Import Used Configurations
-import { ERROR, SUCCESS, WARNING } from "../../config";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 
 // Hook responsible for managing the order payment process with cash
 const OrderPayCashHook = () => {

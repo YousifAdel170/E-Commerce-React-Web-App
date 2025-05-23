@@ -1,8 +1,8 @@
 // Import Hooks from React
 import { useCallback, useState } from "react";
 
-// Import Constants Data
-import { sidebarData } from "../../constants/sidebar";
+// Import  Data
+import { sidebarData } from "../../data/utilities/sidebar";
 
 // Hook Responsible for managing the sidebar state and behavior
 const SideBarHook = (role) => {

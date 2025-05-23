@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllCategory } from "../../redux/actions/categoryAction";
 
 // Import Constants from config file
-import { PAGE_CATEGORIES_HOME_LIMIT } from "../../config";
+import { PAGE_CATEGORIES_HOME_LIMIT } from "../../constants/pageLimits";
 
 // Hook Responsible for fetching and managing the categories data
 const HomeCategoryHook = () => {

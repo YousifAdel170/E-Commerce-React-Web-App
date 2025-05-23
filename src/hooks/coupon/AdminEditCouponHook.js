@@ -7,7 +7,7 @@ import {
   getSpecificCoupon,
 } from "../../redux/actions/couponAction";
 import notify from "../Utility/useNotifyHook";
-import { ERROR, SUCCESS, WARNING } from "../../config";
+import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 import formatDate from "../Utility/formatDate";
 
 // Hook for editing a coupon in the admin panel

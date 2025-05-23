@@ -8,8 +8,8 @@ import PaginationComponent from "../Utility/PaginationComponent";
 // Import Custom Hooks
 import ViewAllOrdersHook from "../../hooks/Utility/ViewAllOrdersHook";
 
-// Import Constants for Admin Data
-import { adminData } from "../../constants/admin";
+// Import Constant Data
+import { adminData } from "../../data/admin/adminData";
 
 // Component responsible for rendering all orders in the admin panel
 const AdminAllOrders = () => {
@@ -21,7 +21,7 @@ const AdminAllOrders = () => {
       {/* Title of the section */}
       <div className="title-text">{adminData?.allOrders?.title}</div>
 
-      <Row>
+      <Row className="all-products">
         {/* Map through the allOrders and render AdminOrderItem for each order */}
         {allOrders ? (
           allOrders.map((order) => (

@@ -4,7 +4,7 @@ import notify from "../Utility/useNotifyHook";
 import { createNewCategory } from "../../redux/actions/categoryAction";
 
 import uploadImage from "../../assets/Imgs/avatar.png";
-import { ERROR } from "../../config";
+import { ERROR } from "../../constants/notificationTypes";
 
 const AdminAddCategoryHook = () => {
   // 0. States [image: new uploaded item  | name: Item name]

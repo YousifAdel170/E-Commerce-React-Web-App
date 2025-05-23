@@ -10,7 +10,7 @@ import { getSpecificCategory } from "../../redux/actions/categoryAction";
 import internetDetect from "../Utility/useInternetConnectionHook";
 
 // Import Used Configurations
-import { PAGE_PRODUCTS_LIMIT } from "../../config";
+import { PAGE_PRODUCTS_LIMIT } from "../../constants/pageLimits";
 
 // Custom hook to get all products by a specific category
 const ViewProductsByCategoryHook = (categoryID) => {

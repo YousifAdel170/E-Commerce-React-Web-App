@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import notify from "../Utility/useNotifyHook";
 
 // Import alert types
-import { SUCCESS, WARNING } from "../../config";
 
 // Import cart-related action to add product
 import {
@@ -15,6 +14,7 @@ import {
 
 // Import hooks from React-Redux to dispatch actions and access state
 import { useDispatch, useSelector } from "react-redux";
+import { SUCCESS, WARNING } from "../../constants/notificationTypes";
 
 // Custom hook responsible for handling adding a product to the cart
 const AddToCartHook = (id, itemProduct) => {

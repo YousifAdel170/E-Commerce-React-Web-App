@@ -11,7 +11,7 @@ import {
 } from "../../redux/actions/productsAction";
 import notify from "../Utility/useNotifyHook";
 import { useNavigate } from "react-router-dom";
-import { ERROR, SUCCESS } from "../../config";
+import { ERROR, SUCCESS } from "../../constants/notificationTypes";
 
 const AdminEditProductHook = (id, onEdit) => {
   // Use Dispatch to tell that u will use actions from redux
@@ -70,16 +70,16 @@ const AdminEditProductHook = (id, onEdit) => {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    if (product && product.data) {
-      setImages(product.data.images);
-      setProductName(product.data.title);
-      setProductDescription(product.data.description);
-      setPriceBefore(product.data.price);
-      setPriceAfter(product.data.priceAfterDiscount);
-      setQTY(product.data.quantity);
-      setCategoryID(product.data.category);
-      setBrandID(product.data.brand);
-      setColors(product.data.availableColors);
+    if (product?.data) {
+      setImages(product?.data?.images);
+      setProductName(product?.data?.title);
+      setProductDescription(product?.data?.description);
+      setPriceBefore(product?.data?.price);
+      setPriceAfter(product?.data?.priceAfterDiscount);
+      setQTY(product?.data?.quantity);
+      setCategoryID(product?.data?.category);
+      setBrandID(product?.data?.brand);
+      setColors(product?.data?.availableColors);
     }
   }, [product]);
 
@@ -122,7 +122,7 @@ const AdminEditProductHook = (id, onEdit) => {
   // Function to handle the color picker
   const handleChangeComplete = (color) => {
     setShowColor(!showColor);
-    setColors([...colors, color.hex]);
+    setColors([...colors, color?.hex]);
   };
 
   // Function to remove the selected color
@@ -145,7 +145,7 @@ const AdminEditProductHook = (id, onEdit) => {
   }, [categoryID, dispatch]);
 
   useEffect(() => {
-    if (subCategory && subCategory.data) setOptions(subCategory.data);
+    if (subCategory) setOptions(subCategory?.data);
   }, [subCategory]);
 
   // Store The selected brandID
@@ -189,7 +189,7 @@ const AdminEditProductHook = (id, onEdit) => {
       categoryID === 0 ||
       productName === "" ||
       productDescription === "" ||
-      images.length <= 0 ||
+      images?.length <= 0 ||
       priceBefore <= 0
     ) {
       notify("من فضلك اكمل البيانات", "warn");
@@ -207,7 +207,7 @@ const AdminEditProductHook = (id, onEdit) => {
 
     // Create an array to store the new images after being converted [same size as the 64 base imaage array]
     Array.from(Array(Object.keys(images).length).keys()).map((_, index) => {
-      if (images[index].length <= 1000)
+      if (images[index]?.length <= 1000)
         convertURLtoFile(images[index]).then((val) => itemImages.push(val));
       else
         itemImages.push(dataURLtoFile(images[index], Math.random() + ".png"));
@@ -227,7 +227,7 @@ const AdminEditProductHook = (id, onEdit) => {
     }, 1000);
 
     colors.map((color) => formData.append("availableColors", color));
-    selectedSubID.map((item) => formData.append("subcategory", item._id));
+    selectedSubID.map((item) => formData.append("subcategory", item?._id));
 
     setTimeout(async () => {
       // Start The Updating Operation
@@ -261,7 +261,7 @@ const AdminEditProductHook = (id, onEdit) => {
       if (updatedProduct) {
         //   Check if the response status is OK
 
-        if (updatedProduct.status === 201 || updatedProduct.status === 200) {
+        if (updatedProduct?.status === 201 || updatedProduct?.status === 200) {
           notify("تمت عملية التعديل بنجاح", SUCCESS);
           getProducts();
         } else notify("هناك مشكلة في عملية التعديل", ERROR);

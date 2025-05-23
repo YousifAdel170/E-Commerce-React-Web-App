@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsInSelectedPage } from "../../redux/actions/productsAction";
-import { PAGE_PRODUCTS_LIMIT } from "../../config";
+import { PAGE_PRODUCTS_LIMIT } from "../../constants/pageLimits";
 
 const AdminAllProductsPageHook = () => {
   // Use Dispatch to tell that u will use actions from redux

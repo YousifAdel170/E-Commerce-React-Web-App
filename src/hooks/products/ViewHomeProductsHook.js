@@ -15,9 +15,8 @@ const ViewHomeProductsHook = () => {
 
   useEffect(() => {
     if (!loading?.fetchAll) {
-      if (viewProducts) setItems(viewProducts.data.slice(0, 4));
+      if (viewProducts) setItems(viewProducts?.data.slice(0, 4));
       else setItems([]);
-
       setIsLoading(false);
     } else setIsLoading(true);
   }, [loading, viewProducts]);
