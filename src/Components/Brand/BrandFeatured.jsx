@@ -26,14 +26,25 @@ const BrandFeatured = ({ title, btnTitle }) => {
         {/* Check if loading is false and brands array has items */}
         {!loading ? (
           brands ? (
-            brands.map((item) => (
-              <BrandCard key={item._id} id={item._id} img={item.image} />
+            brands.map((item, index) => (
+              <BrandCard
+                key={item._id}
+                id={item._id}
+                img={item.image}
+                index={index}
+              />
             ))
           ) : (
             <h4>لا يوجد ماركات</h4>
           )
         ) : (
-          <Spinner className="mx-auto" animation="border" variant="dark" />
+          <Spinner
+            className="mx-auto"
+            animation="border"
+            variant="dark"
+            role="status"
+            aria-label="Loading Brands"
+          />
         )}
       </Row>
     </Container>

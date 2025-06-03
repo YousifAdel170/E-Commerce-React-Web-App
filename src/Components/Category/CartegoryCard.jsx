@@ -1,14 +1,18 @@
 /* eslint-disable react/prop-types */
 
-// Import Compontents from React Bootstrap and React Router Dom
+// Import Components from React Bootstrap and React Router Dom
 import { Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-// Import Custom CSS File
+// Import Custom Hooks for in-view animation
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
+
+// Import Custom CSS
 import "./CartegoryCard.css";
 
-// Component Responsible for displaying the Specific Category Card
-const CartegoryCard = ({ background, img, title, id }) => {
+const CartegoryCard = ({ background, img, title, id, index }) => {
+  const [sectionRef, isVisible] = useInviewAnimation();
+
   return (
     <Col
       xs="6"
@@ -18,17 +22,21 @@ const CartegoryCard = ({ background, img, title, id }) => {
       className="my-4 d-flex justify-content-around mx-auto"
     >
       <div
-        className="category-card"
-        style={{ backgroundColor: `${background}` }}
+        className={`category-card ${isVisible ? "fade-in" : ""}`}
+        style={{
+          backgroundColor: background,
+          animationDelay: `${index * 0.1}s`,
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+        }}
+        ref={sectionRef}
       >
-        <Link to={`/products/category/${id}`}>
+        <Link to={`/products/category/${id}`} className="category-link">
           <img
             src={img}
-            className="categoty-card-img"
-            alt={`Image of ${title} `}
-            title={`Image of ${title} `}
+            className="category-card-img"
+            alt={`Category: ${title}`}
           />
-          <p className="categoty-card-text my-2">{title}</p>
+          <p className="category-card-text">{title}</p>
         </Link>
       </div>
     </Col>

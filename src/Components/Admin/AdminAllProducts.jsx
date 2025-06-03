@@ -25,7 +25,12 @@ const AdminAllProducts = () => {
         {/* Map through the items and render AdminProductCard for each item */}
         {items?.length ? (
           items.map((item, index) => (
-            <AdminProductCard key={index} item={item} onDelete={onDelete} />
+            <AdminProductCard
+              key={item?._id}
+              item={item}
+              onDelete={onDelete}
+              index={index}
+            />
           ))
         ) : (
           <h4>{adminData.allProducts.notFound}</h4>

@@ -4,12 +4,13 @@
 
 /* Card container styling */
 .product-gallery-card {
-  background-color: #fff;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   overflow: hidden;
   transition: all 0.3s ease;
   border-radius: 30px;
+  height: 400px;
+  display: flex;
 }
 
 /* Show overflow content on hover */
@@ -22,6 +23,10 @@
   transform: translateY(-6px) scale(1.03);
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
   cursor: pointer;
+  -webkit-transform: translateY(-6px) scale(1.03);
+  -moz-transform: translateY(-6px) scale(1.03);
+  -ms-transform: translateY(-6px) scale(1.03);
+  -o-transform: translateY(-6px) scale(1.03);
 }
 
 /* ----------------------------
@@ -37,25 +42,12 @@
   transition: height 0.3s ease;
 }
 
-/* Image container with fixed size and centering */
-.image-gallery-container {
-  max-width: 100%;
-  max-height: 300px;
-  border-radius: 12px;
-  background-color: #fefefe;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: height 0.3s ease;
-}
-
 /* ----------------------------
    Product Image Styling
 ----------------------------- */
 
 /* Main image inside the gallery */
 .product-image-gallery .image-gallery-slide img {
-  border-radius: 12px 12px 0 0;
   max-width: 100%;
   object-fit: contain;
   transition: transform 0.3s ease;

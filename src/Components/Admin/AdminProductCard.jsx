@@ -10,12 +10,13 @@ import { StarRating } from "../Utility/StartRating";
 
 // Import custom hook for admin product card logic
 import AdminProductCardHook from "../../hooks/admin/AdminProductCardHook";
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
 
 // Import modal message data for delete and edit operations
 import { deleteModal, editModal } from "../../data/utilities/modalMessages";
 
 // Component responsible for rendering individual product cards in admin panel
-const AdminProductCard = ({ item, onDelete }) => {
+const AdminProductCard = ({ item, onDelete, index }) => {
   // Destructure modal visibility and handlers from custom hook
   const [
     showDelete,
@@ -29,6 +30,8 @@ const AdminProductCard = ({ item, onDelete }) => {
     discountPercent,
   ] = AdminProductCardHook(item, onDelete);
 
+  const [sectionRef, isVisible] = useInviewAnimation();
+
   return (
     <Col xs="12" sm="6" md="5" lg="4">
       {/* Delete Confirmation Modal */}
@@ -40,6 +43,7 @@ const AdminProductCard = ({ item, onDelete }) => {
         modalBody={deleteModal.modalBody}
         modalFooter={deleteModal.modalFooter}
         className={deleteModal.className}
+        ariaLabel={`Delete product ${item?.title}`}
       />
 
       {/* Edit Product Modal */}
@@ -51,19 +55,20 @@ const AdminProductCard = ({ item, onDelete }) => {
         modalBody={editModal.modalBody}
         modalFooter={editModal.modalFooter}
         className={editModal.className}
+        ariaLabel={`Edit product ${item?.title}`}
       />
 
       {/* Main Product Card */}
       <Card
-        className="my-2 product-card"
-        style={{
-          boxShadow: "0 0 5px rgba(0, 0, 0, 0.15)",
-          borderRadius: "12px",
-          transition: "box-shadow 0.3s ease, transform 0.3s ease",
-        }}
+        className={`my-2 product-card ${isVisible ? "fade-in" : ""}`}
         tabIndex={0}
         aria-labelledby={`product-title-${item?._id}`}
         role="group"
+        style={{
+          animationDelay: `${index * 0.1}s`,
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+        }}
+        ref={sectionRef}
       >
         {/* Action buttons for Edit/Delete */}
         <Col className="d-flex justify-content-between px-3 pt-3">
@@ -75,7 +80,7 @@ const AdminProductCard = ({ item, onDelete }) => {
               aria-label={action.label}
               className="action-btn"
             >
-              {action.label}
+              {action?.label}
             </button>
           ))}
         </Col>
@@ -88,7 +93,7 @@ const AdminProductCard = ({ item, onDelete }) => {
         >
           <div className="image-container" aria-hidden="true">
             {/* Discount badge shown if discount exists */}
-            {discountAmount && (
+            {(discountPercent > 0 || discountAmount > 0) && (
               <span
                 className="discount-badge"
                 aria-label={`خصم ${
@@ -118,22 +123,17 @@ const AdminProductCard = ({ item, onDelete }) => {
           </div>
 
           {/* Product title, rating, and price */}
-          <Card.Body className="d-flex flex-column justify-content-between px-3 pb-3">
+          <Card.Body className="d-flex flex-column justify-content-between px-3 pb-3 w-100">
             <Card.Title
               id={`product-title-${item?._id}`}
-              className="product-title"
-              style={{
-                fontWeight: "700",
-                fontSize: "1.25rem",
-                marginBottom: "0.25rem",
-              }}
+              className="product-title d-flex justify-content-between align-items-center w-100"
             >
               {item?.title}
             </Card.Title>
 
             <div
               id={`product-desc-${item?._id}`}
-              className="d-flex align-items-center justify-content-between "
+              className="d-flex align-items-center justify-content-between w-100"
             >
               {/* Display rating stars */}
               <StarRating rating={item?.ratingsAverage || 0} />

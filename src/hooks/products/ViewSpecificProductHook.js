@@ -8,13 +8,16 @@ import internetDetect from "../Utility/useInternetConnectionHook"; // Custom hoo
 // Import The Action To get the specific product details using its ID
 import { getSpecificProduct } from "../../redux/actions/productsAction"; // Action to fetch product data
 
+// Import Constants
+import { EMPTY } from "../../constants/general";
+
 // Custom Hook to view a specific product by its productID
 const ViewSpecificProductHook = (productID) => {
   // Initialize dispatch to interact with Redux actions
   const dispatch = useDispatch();
 
   // Local state to store the fetched product data
-  const [specificProduct, setSpecificProduct] = useState([]);
+  const [specificProduct, setSpecificProduct] = useState(EMPTY.ARRAY);
 
   // Fetch product data only once when the component mounts using its ID
   useEffect(() => {
@@ -22,7 +25,9 @@ const ViewSpecificProductHook = (productID) => {
     internetDetect();
 
     // 2. Dispatch the action to fetch the specific product based on productID
-    const getData = async () => await dispatch(getSpecificProduct(productID));
+    const getData = async () => {
+      if (productID) await dispatch(getSpecificProduct(productID));
+    };
 
     // 3. Trigger the fetch operation
     getData();
@@ -37,8 +42,9 @@ const ViewSpecificProductHook = (productID) => {
   useEffect(() => {
     if (!loading?.fetchSpecific) {
       // If the product is fetched, store it in state; otherwise, set it to an empty array
-      if (viewSpecificProduct) setSpecificProduct(viewSpecificProduct.data);
-      else setSpecificProduct([]); // Clear state if no product found
+      if (viewSpecificProduct?.data)
+        setSpecificProduct(viewSpecificProduct?.data);
+      else setSpecificProduct(EMPTY.ARRAY); // Clear state if no product found
     }
   }, [loading, viewSpecificProduct]); // Dependencies ensure this runs when loading or viewSpecificProduct changes
 

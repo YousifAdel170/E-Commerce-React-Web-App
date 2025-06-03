@@ -48,7 +48,7 @@ const UserOrderItem = ({ order }) => {
     <Col sm="12">
       <div className="cart-item-body mb-3 border rounded bg-white shadow-sm card-animate">
         {/* Order Header without border-bottom */}
-        <Row className="justify-content-between align-items-center">
+        <Row>
           {/* Title and Date inline */}
           <div
             className="cat-title fs-5 fw-bold d-flex align-items-center justify-content-between"
@@ -84,8 +84,8 @@ const UserOrderItem = ({ order }) => {
         </Row>
 
         {/* Statuses and Payment Info */}
-        <Row className="align-items-center">
-          <Col sm="6" className="d-flex flex-column gap-3">
+        <Row className="align-items-center status-payment-container">
+          <Col className="gap-3 status-container">
             {renderStatusBadge(
               order?.isDelivered,
               "تم التوصيل",
@@ -131,10 +131,7 @@ const UserOrderItem = ({ order }) => {
             </OverlayTrigger>
           </Col>
 
-          <Col
-            sm="6"
-            className="d-flex justify-content-end align-items-center mt-2"
-          >
+          <Col className="mt-2 payment-container">
             <FaMoneyBill size={22} />
             <OverlayTrigger
               placement="top"

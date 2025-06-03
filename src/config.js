@@ -3,12 +3,6 @@ export const FAVORITE_PRODUCTS_BASE_URL = "http://127.0.0.1:8000/products/";
 export const PRODUCTS_BASE_URL = "http://127.0.0.1:8000/products/";
 export const CATEGORIES_BASE_URL = "http://127.0.0.1:8000/categories/";
 
-// Importing images for the Slider Component at HomePage
-import firstSlider from "./assets/Imgs/slider1.png";
-import secondSlider from "./assets/Imgs/slider4.png";
-import thirdSlider from "./assets/Imgs/prod4.png";
-import fourthSlider from "./assets/Imgs/prod3.png";
-
 // Define the colors for the categories
 export const colors = {
   light: [
@@ -30,41 +24,6 @@ export const colors = {
     "#ffc107", // strong yellow
   ],
 };
-
-// Slider Component At HomePage Configuration [Array of Objects that contains the data of the slider => title, paragraph, image, styleClass]
-const SLIDER_TITLE = "هناك خصم كبير";
-const SLIDER_PARAGRAPH = "خصم يصل ٥٠٪ عند شرائك";
-const SLIDER_DELAY = 2000;
-export const slidersItems = [
-  {
-    title: SLIDER_TITLE,
-    paragraph: SLIDER_PARAGRAPH,
-    image: firstSlider,
-    styleClass: "one",
-    delay: SLIDER_DELAY,
-  },
-  {
-    title: SLIDER_TITLE,
-    paragraph: SLIDER_PARAGRAPH,
-    image: secondSlider,
-    styleClass: "two",
-    delay: SLIDER_DELAY,
-  },
-  {
-    title: SLIDER_TITLE,
-    paragraph: SLIDER_PARAGRAPH,
-    image: thirdSlider,
-    styleClass: "three",
-    delay: SLIDER_DELAY,
-  },
-  {
-    title: SLIDER_TITLE,
-    paragraph: SLIDER_PARAGRAPH,
-    image: fourthSlider,
-    styleClass: "four",
-    delay: SLIDER_DELAY,
-  },
-];
 
 // HomePage Title Configuration
 export const CATEGORIES_TITLE = "التصنيفات";

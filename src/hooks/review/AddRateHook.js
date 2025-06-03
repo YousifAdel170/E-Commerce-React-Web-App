@@ -8,6 +8,8 @@ import notify from "../Utility/useNotifyHook";
 // Import Actions
 import { createReview } from "../../redux/actions/reviewAction";
 import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
+import { EMPTY, STATUS, USER_ROLES, ZERO } from "../../constants/general";
+import { REVIEW_MESSAGES } from "../../constants/messagesConstants";
 
 // Import Used Configuration
 
@@ -21,8 +23,8 @@ const AddRateHook = (id, addReview) => {
   const dispatch = useDispatch();
 
   // State hooks to manage the rate value, rate text, and loading state
-  const [rateText, setRateText] = useState(""); // Rate text input
-  const [rateValue, setRateValue] = useState(0); // Rate value (numeric score)
+  const [rateText, setRateText] = useState(EMPTY.TEXT); // Rate text input
+  const [rateValue, setRateValue] = useState(ZERO); // Rate value (numeric score)
   const [loading, setLoading] = useState(false); // Loading state while submitting review
 
   /**
@@ -39,15 +41,15 @@ const AddRateHook = (id, addReview) => {
 
   // Retrieve user data from localStorage using useMemo (memoized for optimization)
   const user = useMemo(() => {
-    if (localStorage.getItem("user") != null)
-      return JSON.parse(localStorage.getItem("user"));
+    if (localStorage.getItem(USER_ROLES.USER) != null)
+      return JSON.parse(localStorage.getItem(USER_ROLES.USER));
     else return null;
   }, []);
 
   // Retrieve the user's name from the user object, if available
   const userName = useMemo(() => {
     if (user) return user.name;
-    else return "";
+    else return EMPTY.TEXT;
   }, [user]);
 
   /**
@@ -56,14 +58,14 @@ const AddRateHook = (id, addReview) => {
    */
   const handleSubmit = async () => {
     // Check if the rating value is zero
-    if (rateValue === 0) {
-      notify("من فضلك ادخل تقييم", WARNING); // Notify user to enter a rating
+    if (rateValue === ZERO) {
+      notify(REVIEW_MESSAGES.ENTER_RATING, WARNING);
       return;
     }
 
     // Check if the rate text is empty
-    if (rateText === "") {
-      notify("من فضلك اكتب تعليق", WARNING); // Notify user to enter a comment
+    if (rateText === EMPTY.TEXT) {
+      notify(REVIEW_MESSAGES.ENTER_COMMENT, WARNING);
       return;
     }
 
@@ -88,15 +90,19 @@ const AddRateHook = (id, addReview) => {
   // Use effect to handle side effects once the review creation is complete
   useEffect(() => {
     // Check if the creation process is complete and loading is false
-    if (!loading && result && result.status) {
+    if (!loading && result) {
       // Handle error if the admin is trying to rate
-      if (result.status === 403) notify("غير مسموح للادمن بالتقييم", ERROR);
+      if (result?.status === STATUS.FORBIDDEN)
+        notify(REVIEW_MESSAGES.ADMIN_RESTRICTED, ERROR);
       // Handle error if the user has already rated the product
-      else if (result.status === 400)
-        notify("لقد قمت باضافة تقييم لهذا المنتج مسبقا", ERROR);
+      else if (result?.status === STATUS.BAD_REQUEST)
+        notify(REVIEW_MESSAGES.ALREADY_RATED, ERROR);
       // If the review is successfully added
-      else if (result.status === 200 || result.status === 201) {
-        notify("تمت اضافة التقييم بنجاح", SUCCESS); // Notify success
+      else if (
+        result?.status === STATUS.SUCCESS_OK ||
+        result?.status === STATUS.SUCCESS_CREATED
+      ) {
+        notify(REVIEW_MESSAGES.ADD_SUCCESS, SUCCESS); // Notify success
 
         // Extract the review data from the result
         const review = result.data.data;
@@ -111,7 +117,7 @@ const AddRateHook = (id, addReview) => {
         });
 
         // Reset the form fields after successful submission
-        setRateText("");
+        setRateText(EMPTY.TEXT);
         setRateValue("0");
       }
       // Set loading back to true to prevent multiple submissions

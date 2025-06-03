@@ -1,8 +1,10 @@
 // Import The Used Assets
-import phone from "../../assets/imgs/phone.png";
-import facebook from "../../assets/imgs/facebook.png";
-import twitter from "../../assets/imgs/twitter.png";
-import instagram from "../../assets/imgs/instagram.png";
+import { faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFacebookF,
+  faTwitter,
+  faInstagram,
+} from "@fortawesome/free-brands-svg-icons";
 
 // Export the footer data with multilingual support
 export const footerData = {
@@ -14,7 +16,6 @@ export const footerData = {
       },
       className: "",
     },
-
     {
       name: {
         ar: "سياسة الخصوصية",
@@ -22,7 +23,6 @@ export const footerData = {
       },
       className: "mx-2",
     },
-
     {
       name: {
         ar: "اتصل بنا",
@@ -34,24 +34,30 @@ export const footerData = {
 
   phone: {
     number: "0123456789",
-    image: phone,
+    icon: faPhone,
     alt: "Phone Icon",
   },
 
   icons: [
     {
-      image: facebook,
+      icon: faFacebookF,
       alt: "Facebook Icon",
+      link: "https://facebook.com",
     },
-
     {
-      image: twitter,
+      icon: faTwitter,
       alt: "Twitter Icon",
+      link: "https://twitter.com",
     },
-
     {
-      image: instagram,
+      icon: faInstagram,
       alt: "Instagram Icon",
+      link: "https://instagram.com",
+    },
+    {
+      icon: faEnvelope,
+      alt: "Email Icon",
+      link: "mailto:ya842245@gmail.com",
     },
   ],
 };

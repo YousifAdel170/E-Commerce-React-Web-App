@@ -13,6 +13,8 @@ import ProductCardContainer from "../../Components/Products/ProductCardContainer
 // Import the custom hook to fetch product details data
 import ViewProductDetailsHook from "../../hooks/products/ViewProductDetailsHook";
 
+// Import constants
+import { PRODUCT_YOU_COULD_LIKE_TITLE } from "../../constants/titles";
 // Page responsible for displaying the details of the product
 const ProductDetailsPage = () => {
   // Get the product ID from the URL
@@ -23,7 +25,7 @@ const ProductDetailsPage = () => {
     ViewProductDetailsHook(id);
 
   return (
-    <div>
+    <div style={{ flex: "1" }}>
       {/* Category Header Section */}
       <CategoryHeader />
 
@@ -46,7 +48,7 @@ const ProductDetailsPage = () => {
         {/* Display similar products that the user may like */}
         <ProductCardContainer
           products={prodouctsLikeSample}
-          title="منتجات قد تعجبك"
+          title={PRODUCT_YOU_COULD_LIKE_TITLE}
         />
       </Container>
     </div>

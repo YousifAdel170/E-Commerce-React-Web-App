@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+
+// Import Component from react-bootstrap
 import {
   Col,
   Row,
@@ -8,68 +9,81 @@ import {
   Tooltip,
   Spinner,
 } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+
+// Custom Components
+import { StarRating } from "../Utility/StartRating";
+
+// Custom Hooks
 import AddToCartHook from "../../hooks/cart/AddToCartHook";
+import ProductDescriptionHook from "../../hooks/products/ProductDescriptionHook";
 
+// Custom CSS
+import "./ProductModule.css";
+
+// Component responsible to display the description details of the product
 const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
-  const { id } = useParams();
-  const [colorClicked, indexColorClicked, handleAddToCart] = AddToCartHook(
-    id,
-    itemProduct
-  );
+  // Handle color selection and add-to-cart logic
+  const [colorClicked, indexColorClicked, handleAddToCart] =
+    AddToCartHook(itemProduct);
 
-  const [isAdding, setIsAdding] = useState(false);
-  const isAddDisabled = indexColorClicked === -1 || itemProduct?.quantity === 0;
-
-  const discountPercent = itemProduct?.priceAfterDiscount
-    ? Math.round(
-        ((itemProduct.price - itemProduct.priceAfterDiscount) /
-          itemProduct.price) *
-          100
-      )
-    : 0;
-
-  const onAddToCart = () => {
-    if (isAddDisabled) return;
-    setIsAdding(true);
-    handleAddToCart();
-    setTimeout(() => setIsAdding(false), 1000); // simulate loading
-  };
+  // Get state and handlers from custom product description hook
+  const [discountPercent, isAddDisabled, isAdding, onAddToCart] =
+    ProductDescriptionHook(itemProduct, indexColorClicked, handleAddToCart);
 
   return (
-    <div className="product-description-container">
-      {/* Product Title and Rating */}
+    <div className="product-description-container justify-content-around">
+      {/* Title and Star Rating */}
       <Row className="mb-2">
-        <Col md="8" className="d-flex align-items-center">
-          <div className="cat-title">{itemProduct?.title}</div>
-          <div className="cat-rate mx-2 mb-0">
-            ⭐ {itemProduct?.ratingsAverage} ({itemProduct?.ratingsQuantity})
-          </div>
+        <Col
+          xs={12}
+          md={8}
+          className="d-flex flex-wrap align-items-center justify-content-start"
+        >
+          <h1 className="product-details-title ms-2">{itemProduct?.title}</h1>
+          <StarRating
+            rating={itemProduct?.ratingsAverage || 0}
+            direction="rtl"
+          />
+          <span className="d-flex">
+            <div className="rate mx-2">{itemProduct?.ratingsAverage}</div>
+            <div className="rate-count">
+              ({itemProduct?.ratingsQuantity} تقييم)
+            </div>
+          </span>
         </Col>
       </Row>
 
-      {/* Product Category */}
-      <Row>
-        <Col md="8" className="d-flex align-items-center">
-          <div className="cat-text">التصنيف:</div>
-          <div className="cat-text mx-1">{itemCategory?.name}</div>
+      {/* Category Information */}
+      <Row className="mb-2">
+        <Col md="8" className="d-flex align-items-center justify-content-start">
+          <span className="product-details-sub-title">التصنيف:</span>
+          <span className="product-details-sub-text mx-1">
+            {itemCategory?.name}
+          </span>
         </Col>
       </Row>
 
-      {/* Product Brand */}
-      <Row>
-        <Col md="8" className="d-flex align-items-center">
-          <div className="cat-text">الماركة :</div>
-          <div className="cat-text mx-1">{itemBrand?.name}</div>
+      {/* Brand Information */}
+      <Row className="mb-2">
+        <Col md="8" className="d-flex align-items-center justify-content-start">
+          <span className="product-details-sub-title">الماركة :</span>
+          <span className="product-details-sub-text mx-1">
+            {itemBrand?.name}
+          </span>
         </Col>
       </Row>
 
-      {/* Available Colors and Quantity */}
-      <Row className="mt-1">
-        <Col md="8" className="d-flex flex-wrap align-items-center">
+      {/* Available Colors with Selectable Buttons */}
+      <Row className="mb-2">
+        <Col
+          md="8"
+          className="d-flex flex-wrap align-items-center justify-content-start"
+          role="list"
+          aria-label="Available colors"
+        >
           {itemProduct?.availableColors?.map((color, index) => (
             <OverlayTrigger
-              key={index}
+              key={color + index}
               overlay={<Tooltip>{color}</Tooltip>}
               placement="top"
             >
@@ -83,26 +97,29 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
                       ? "3px solid black"
                       : "1px solid #ccc",
                   cursor: "pointer",
-                  width: "30px",
-                  height: "30px",
+                  width: 30,
+                  height: 30,
                   borderRadius: "50%",
                   position: "relative",
-                  margin: "5px",
+                  margin: 5,
                 }}
                 aria-label={`Select color ${color}`}
                 aria-pressed={indexColorClicked === index}
                 type="button"
+                role="listitem"
               >
+                {/* Selected checkmark */}
                 {indexColorClicked === index && (
                   <span
+                    aria-hidden="true"
                     style={{
                       position: "absolute",
-                      top: "-5px",
-                      right: "-5px",
+                      top: -5,
+                      right: -5,
                       background: "white",
                       borderRadius: "50%",
                       padding: "1px 4px",
-                      fontSize: "12px",
+                      fontSize: 12,
                       fontWeight: "bold",
                       color: "green",
                     }}
@@ -114,33 +131,41 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
             </OverlayTrigger>
           ))}
 
+          {/* Quantity and Stock Alert Messages */}
           <div
-            className="cat-text d-flex mb-0 flex-column align-items-start me-3"
-            style={{ color: "#555550", fontWeight: "600" }}
+            className="mb-0 d-flex align-items-center me-3"
+            style={{ color: "#555550", fontWeight: 600, fontSize: "1rem" }}
+            aria-live="polite"
           >
             <span>الكمية المتاحة : {itemProduct?.quantity}</span>
 
+            {/* Out of Stock */}
             {itemProduct?.quantity === 0 && (
               <span
                 style={{
-                  marginTop: "5px",
+                  marginTop: 5,
                   color: "#b71c1c",
                   fontWeight: "bold",
                   fontSize: "0.95em",
+                  marginLeft: 10,
                 }}
+                role="alert"
               >
                 ❌ غير متوفر حالياً
               </span>
             )}
 
+            {/* Low Stock */}
             {itemProduct?.quantity > 0 && itemProduct?.quantity <= 5 && (
               <span
                 style={{
-                  marginTop: "5px",
+                  marginTop: 5,
                   color: "#e65100",
                   fontWeight: "bold",
                   fontSize: "0.95em",
+                  marginLeft: 10,
                 }}
+                role="alert"
               >
                 ⚠️ الكمية محدودة، أسرع قبل النفاد!
               </span>
@@ -149,48 +174,48 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
         </Col>
       </Row>
 
-      {/* Product Specifications */}
-      <Row className="mt-4">
-        <div className="cat-text">المواصفات :</div>
-      </Row>
-
-      {/* Product Description */}
-      <Row className="mt-2">
+      {/* Description and Specifications */}
+      <Row className="mb-2">
         <Col md="10">
-          <div className="product-description d-inline">
-            {itemProduct?.description}
-          </div>
+          <h2 className="product-details-sub-title">المواصفات :</h2>
+        </Col>
+        <Col md="10">
+          <p className="product-description">{itemProduct?.description}</p>
         </Col>
       </Row>
 
-      {/* Product Price and Add to Cart */}
-      <Row className="mt-4 align-items-center">
-        <Col md="auto">
+      {/* Price Display with Discount Handling */}
+      <Row className="align-items-center d-flex flex-wrap">
+        <Col xs={12} md="auto" className="mb-2 mb-md-0">
           <div
-            className="product-price d-inline px-3 py-3 border"
-            style={{ fontSize: "18px", fontWeight: "700" }}
+            className="product-price px-3 py-2 border"
+            aria-label={
+              itemProduct?.priceAfterDiscount
+                ? `Discounted price ${itemProduct.priceAfterDiscount} جنيه, original price ${itemProduct.price} جنيه, save ${discountPercent} percent`
+                : `Price ${itemProduct?.price} جنيه`
+            }
           >
             {itemProduct?.priceAfterDiscount ? (
               <>
                 <span style={{ color: "green", fontWeight: "bold" }}>
-                  {itemProduct?.priceAfterDiscount}{" "}
-                  <span style={{ fontSize: "14px" }}>جنية</span>
+                  {itemProduct.priceAfterDiscount} جنيه
                 </span>
+
                 <del
                   className="mx-2"
                   style={{
                     color: "#888",
-                    fontSize: "14px",
+                    fontSize: "0.9rem",
                     fontWeight: "normal",
                   }}
                 >
-                  {itemProduct?.price} جنيه
+                  {itemProduct.price} جنيه
                 </del>
+
                 <span
                   style={{
                     color: "crimson",
-                    fontWeight: "600",
-                    fontSize: "14px",
+                    fontSize: "0.9rem",
                   }}
                 >
                   (وفر {discountPercent}%)
@@ -202,7 +227,8 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
           </div>
         </Col>
 
-        <Col md="auto">
+        {/* Add to Cart Button with Spinner and Tooltip */}
+        <Col xs={12} md className="mt-2 mt-md-0">
           <OverlayTrigger
             placement="top"
             overlay={
@@ -217,12 +243,13 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
               )
             }
           >
-            <span className="d-inline-block">
+            <span>
               <Button
+                className="px-3 py-2 w-sm-100"
                 variant="dark"
                 disabled={isAddDisabled || isAdding}
                 onClick={onAddToCart}
-                style={{ borderRadius: "9px", minWidth: "120px" }}
+                aria-disabled={isAddDisabled || isAdding}
               >
                 {isAdding ? (
                   <>
@@ -244,32 +271,6 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
           </OverlayTrigger>
         </Col>
       </Row>
-
-      {/* Sticky Add to Cart on Mobile */}
-      <div className="d-md-none sticky-bottom bg-white p-3 shadow">
-        <Button
-          variant="dark"
-          block
-          disabled={isAddDisabled || isAdding}
-          onClick={onAddToCart}
-        >
-          {isAdding ? (
-            <>
-              <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden="true"
-                className="me-2"
-              />
-              جار الإضافة...
-            </>
-          ) : (
-            "اضف للعربة"
-          )}
-        </Button>
-      </div>
     </div>
   );
 };

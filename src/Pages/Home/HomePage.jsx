@@ -24,7 +24,7 @@ const HomePage = () => {
   FetchWishList();
   return (
     // Main Container of the Home Page
-    <div className="font">
+    <div style={{ flex: "1" }}>
       {/* Slider Component */}
       <Slider />
 

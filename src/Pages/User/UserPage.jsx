@@ -11,7 +11,7 @@ import { Outlet } from "react-router-dom";
 const UserPage = () => {
   return (
     // Bootstrap Container to center and wrap the layout
-    <Container>
+    <Container style={{ flex: "1" }}>
       {/* Row to split the page into sidebar and content sections */}
       <Row className="py-3">
         {/* Left Column - Sidebar (User Navigation) */}

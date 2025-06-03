@@ -5,7 +5,7 @@ import ForgotPasswordHook from "../../hooks/auth/ForgotPasswordHook";
 const ForgotPasswordPage = () => {
   const [OnChangeEmail, email, handleSubmit] = ForgotPasswordHook();
   return (
-    <Container style={{ minHeight: "690px" }}>
+    <Container style={{ flex: "1" }}>
       <Row className="py-5 d-flex justify-content-center ">
         <Col sm="12" className="d-flex flex-column ">
           {/* Label */}

@@ -21,7 +21,7 @@ const ViewProductsByCategoryPage = () => {
     ViewProductsByCategoryHook(id);
 
   return (
-    <div style={{ minHeight: "670px" }}>
+    <div style={{ flex: "1" }}>
       <Container>
         <Row className="d-flex flex-row">
           <Col sm="12">

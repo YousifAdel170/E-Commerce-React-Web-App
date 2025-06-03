@@ -27,7 +27,7 @@ const LoginPage = () => {
 
   // JSX returned for rendering the login page
   return (
-    <Container style={{ minHeight: "680px" }}>
+    <Container style={{ flex: "1" }}>
       <Row className="py-5 d-flex justify-content-center">
         <Col sm="12" className="d-flex flex-column">
           {/* Login page title */}

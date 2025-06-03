@@ -20,7 +20,7 @@ const ShopProductsPage = () => {
     ViewSearchProductHook();
 
   return (
-    <div>
+    <div style={{ flex: "1" }}>
       {/* Header for the categories */}
       <CategoryHeader />
 

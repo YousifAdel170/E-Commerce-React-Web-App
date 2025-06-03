@@ -10,7 +10,6 @@
   -moz-transition: box-shadow 0.3s ease, transform 0.3s ease !important;
   -ms-transition: box-shadow 0.3s ease, transform 0.3s ease !important;
   -o-transition: box-shadow 0.3s ease, transform 0.3s ease !important;
-  /* will-change: transform, box-shadow; */
 }
 
 .cart-item-body:hover {
@@ -87,4 +86,31 @@
     transform: translateY(0);
   }
 }
+
+.status-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.payment-container {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+@media (max-width: 991px) {
+  .status-payment-container {
+    flex-direction: column;
+  }
+
+  .status-container {
+    width: 100% !important;
+  }
+
+  .payment-container {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
 /* End styling of cart item component */

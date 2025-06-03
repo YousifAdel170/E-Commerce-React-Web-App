@@ -18,7 +18,7 @@ const CartPage = () => {
     ViewAllCartItemsHook();
 
   return (
-    <Container>
+    <Container style={{ flex: "1" }}>
       <Row>
         <div className="cart-title mt-4 mb-2">عربة التسوق</div>
       </Row>

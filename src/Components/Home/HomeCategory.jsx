@@ -42,12 +42,13 @@ const HomeCategory = () => {
             categories.map((item, index) => (
               <CartegoryCard
                 id={item._id}
-                key={index}
+                key={item?._id || index}
                 title={item.name}
                 img={item.image}
                 background={
                   colors[mode][Math.floor(Math.random() * colors[mode].length)]
                 }
+                index={index}
               />
             ))
           ) : (
@@ -56,7 +57,13 @@ const HomeCategory = () => {
           )
         ) : (
           // If the data is loading, show a spinner
-          <Spinner className="mx-auto" animation="border" variant="dark" />
+          <Spinner
+            className="mx-auto"
+            animation="border"
+            variant="dark"
+            role="status"
+            aria-label="Loading categories"
+          />
         )}
       </Row>
     </Container>

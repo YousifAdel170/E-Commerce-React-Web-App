@@ -8,7 +8,7 @@ import ChoosePayMethod from "../../Components/Checkout/ChoosePayMethod";
 const CartMethodPage = () => {
   return (
     // Container with a minimum height of 670px for layout styling
-    <Container style={{ minHeight: "670px" }}>
+    <Container style={{ flex: "1" }}>
       {/* ChoosePayMethod component to handle the payment method selection */}
       <ChoosePayMethod />
     </Container>

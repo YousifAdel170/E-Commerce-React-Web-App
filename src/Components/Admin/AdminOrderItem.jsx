@@ -12,20 +12,29 @@ import {
   getOrderStatusFields,
   getUserInfoFields,
 } from "../../hooks/admin/AdminOrderItemHook";
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
 
 // Importing CSS for styling
 import "../Cart/CartItem.css"; // Importing CSS for styling
-
 // Component responsible for rendering individual order items in the admin panel
-const AdminOrderItem = ({ order }) => {
+const AdminOrderItem = ({ order, index }) => {
   // Array for user info fields to loop over
   const userInfoFields = getUserInfoFields(order);
 
   // Array for order status fields to loop over with badge color and value logic
   const orderStatusFields = getOrderStatusFields(order);
 
+  const [sectionRef, isVisible] = useInviewAnimation();
+
   return (
-    <Col sm="12">
+    <Col
+      sm="12"
+      className={`order-item ${isVisible ? "fade-in" : ""}`}
+      style={{
+        animationDelay: `${index * 0.1}s`,
+      }}
+      ref={sectionRef}
+    >
       <div className="cart-item-body my-3 p-3 border rounded bg-white card-animate">
         {/* Order ID and Details */}
         <Row className="justify-content-between align-items-center border-bottom pb-2">

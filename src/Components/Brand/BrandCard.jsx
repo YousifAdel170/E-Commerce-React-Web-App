@@ -4,8 +4,13 @@
 import { Card, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+// Import Custom CSS
+import "./BrandCard.css";
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
+
 // Component responsible for displaying a single brand card
-const BrandCard = ({ img, id }) => {
+const BrandCard = ({ img, id, index }) => {
+  const [sectionRef, isVisible] = useInviewAnimation();
   return (
     // Card component to display the brand image
     <Col
@@ -16,17 +21,15 @@ const BrandCard = ({ img, id }) => {
       className="d-flex my-2 justify-content-center"
     >
       <Card
+        className={`my-1 brand-card ${isVisible ? "fade-in" : ""}`}
+        ref={sectionRef}
         style={{
-          width: "100%",
-          height: "151px",
-          borderRadius: "8px",
-          border: "none",
-          backgroundColor: "#fff",
+          animationDelay: `${index * 0.1}s`,
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
         }}
-        className="my-1"
       >
         <Link to={`/products/brands/${id}`}>
-          <Card.Img style={{ height: "151px", width: "100%" }} src={img} />
+          <Card.Img src={img} alt={`Brand ${id}`} loading="lazy" />
         </Link>
       </Card>
     </Col>

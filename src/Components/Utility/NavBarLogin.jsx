@@ -1,123 +1,191 @@
-// Import Components from react-bootstrap
+// Import Components from React Bootstrap, React Router, and FontAwesome icons
 import {
   Navbar,
   Container,
   Nav,
   FormControl,
   NavDropdown,
+  Spinner,
 } from "react-bootstrap";
-
-// Import Components from react-router-dom
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSignInAlt,
+  faShoppingCart,
+  faUser,
+  faStore,
+} from "@fortawesome/free-solid-svg-icons";
 
-// Import The Used Custom Hooks
+// Import Custom Hooks
 import NavbarSearchHook from "../../hooks/search/NavbarSearchHook";
 import { NavBarLoginHook } from "../../hooks/Utility/NavBarLoginHook";
 import ViewAllCartItemsHook from "../../hooks/cart/ViewAllCartItemsHook";
 
-// Import The Used Assets
-import logo from "../../Assets/Imgs/logo.png";
-import login from "../../Assets/Imgs/login.png";
-import cart from "../../Assets/Imgs/cart.png";
+// Import data for the navbar (configuration)
+import { navbarData } from "../../data/utilities/navbar";
 
-// Import The Used CSS
+// Import CSS styles
 import "./NavBarLogin.css";
 
-// Component Responsible To Display The NavBar For The Login User
+// Component responsible for rendering the navigation bar with login functionality
 const NavBarLogin = () => {
-  // Custom Hooks
+  // Custom hooks to manage search input, user login state, and cart items
   const [searchWord, onChangeSearch] = NavbarSearchHook();
-  const [user, logOut] = NavBarLoginHook();
-  const [, numberOfItems] = ViewAllCartItemsHook();
+  const [user, logOut, loggingOut] = NavBarLoginHook();
+  const [, numberOfItems, , , , , , pop] = ViewAllCartItemsHook();
+
   return (
-    <Navbar className="sticky-top" bg="dark" variant="dark" expand="sm">
-      <Container className="d-flex justify-content-between align-items-center">
-        {/* Logo */}
-        <Navbar.Brand>
-          <Link to={"/"}>
-            <img src={logo} alt="logo" className="logo" />
-          </Link>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    // Main navigation bar with sticky behavior and responsive design
+    <nav role="navigation" aria-label="Main Navigation">
+      <Navbar className="sticky-top" bg="dark" variant="dark" expand="sm">
+        <Container className="d-flex justify-content-between align-items-center">
+          {/* Brand logo and title with link to home page */}
+          <Navbar.Brand>
+            <Link
+              to={navbarData?.home?.path}
+              aria-label={navbarData?.home?.ariaLabel}
+              className="d-flex align-items-center"
+            >
+              <FontAwesomeIcon
+                icon={faStore}
+                size="2x"
+                className="text-light"
+                title="Logo"
+              />
+              <span className="me-2 fs-5 fw-bold text-light">متجري</span>
+            </Link>
+          </Navbar.Brand>
 
-        <Navbar.Collapse id="basic-navbar-nav">
-          {/* Search input */}
-          <FormControl
-            value={searchWord}
-            onChange={onChangeSearch}
-            type="search"
-            placeholder="ابحث..."
-            className="me-2 text-center"
-            aria-label="Search"
+          {/* Toggle button for responsive navigation */}
+          <Navbar.Toggle
+            aria-controls="basic-navbar-nav"
+            aria-label="Toggle navigation"
           />
-          <Nav className="me-auto">
-            {/* Handle if the person is user or admin and display the page for the specified role */}
-            {user != null ? (
-              <NavDropdown title={user?.name} id="basic-nav-dropdown">
-                {user?.role === "admin" ? (
-                  // Display the control page for the admin
-                  <NavDropdown.Item
-                    as={Link}
-                    to="/admin/all-products"
-                    className="nav-text"
-                  >
-                    لوحة التحكم
-                  </NavDropdown.Item>
-                ) : (
-                  // Display the profile page for the user
-                  <NavDropdown.Item
-                    as={Link}
-                    to="/user/profile"
-                    className="nav-text"
-                  >
-                    الصفحه الشخصية
-                  </NavDropdown.Item>
-                )}
 
-                {/* Logout if the user Logged in */}
-                <NavDropdown.Item
-                  as={Link}
-                  to="/"
-                  className="nav-text"
-                  onClick={logOut}
+          {/* Collapsible section containing search input and nav links */}
+          <Navbar.Collapse id="basic-navbar-nav">
+            {/* Search input in the navbar */}
+            <FormControl
+              value={searchWord}
+              onChange={onChangeSearch}
+              type={navbarData?.search?.type}
+              placeholder={navbarData?.search?.placeholder}
+              className="mx-5 text-center"
+              aria-label={navbarData?.search?.ariaLabel}
+              autoComplete="off"
+              spellCheck="false"
+            />
+
+            {/* Navigation links (Login, Cart, Dropdown) */}
+            <Nav className="me-auto align-items-center">
+              {/* If user is logged in, show dropdown with user name */}
+              {user ? (
+                <NavDropdown
+                  title={
+                    <>
+                      <FontAwesomeIcon
+                        icon={faUser}
+                        className="nav-icon ms-1"
+                      />
+                      {user?.name}
+                    </>
+                  }
+                  id="basic-nav-dropdown"
+                  role="menu"
+                  menuVariant="dark"
+                  align="end"
                 >
-                  تسجيل خروج
-                </NavDropdown.Item>
-              </NavDropdown>
-            ) : (
-              // Login if the user is not logged in
-              <Link
-                to={"/login"}
-                className="d-flex justify-content-center align-items-center me-2"
-              >
-                <img src={login} className="login-img" alt="Authentication" />
-                <p className="d-flex align-items-center m-0 me-1 nav-text">
-                  دخول
-                </p>
-              </Link>
-            )}
+                  {/* Link to user role-specific page (Admin, User, etc.) */}
+                  <NavDropdown.Item
+                    as={Link}
+                    to={navbarData.role[user?.role].path}
+                    className="nav-text"
+                    role="menuitem"
+                    tabIndex={0}
+                  >
+                    {navbarData.role[user?.role].title}
+                  </NavDropdown.Item>
 
-            {/* check if the user is logged in and display the cart icon */}
-            {user?.role === "user" ? (
-              <Link
-                className="d-flex justify-content-center position-relative align-items-center me-2"
-                to={"/cart"}
-              >
-                <img src={cart} className="login-img" alt="Cart" />
-                <p className="d-flex align-items-center m-0 ms-2 me-1 nav-text">
-                  العربة
-                </p>
-                {/* Display the number of items in the cart */}
-                <span className="position-absolute top-25 start-0 translate-middle badge rounded-pill bg-danger">
-                  {numberOfItems || 0}
-                </span>
-              </Link>
-            ) : null}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+                  {/* Divider between role page and logout */}
+                  <NavDropdown.Divider />
+
+                  {/* Logout button (shows spinner while logging out) */}
+                  <NavDropdown.Item
+                    as="button"
+                    className="nav-text"
+                    onClick={logOut}
+                    disabled={loggingOut}
+                    role="menuitem"
+                    tabIndex={0}
+                  >
+                    {loggingOut ? (
+                      <>
+                        <Spinner
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                          className="me-2"
+                        />
+                        تسجيل خروج...
+                      </>
+                    ) : (
+                      "تسجيل خروج"
+                    )}
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                // If user is not logged in, show login link
+                <Link
+                  to="/login"
+                  className="d-flex justify-content-center align-items-center nav-link flex-nowrap"
+                  aria-label="Go to login page"
+                >
+                  <FontAwesomeIcon
+                    icon={faSignInAlt}
+                    className="nav-icon ms-1"
+                  />
+                  <span className="nav-text">دخول</span>
+                </Link>
+              )}
+
+              {/* If the logged-in user has role "user", show the shopping cart link */}
+              {user?.role === "user" && (
+                <Link
+                  className="d-flex justify-content-center position-relative align-items-center me-2 nav-link"
+                  to="/cart"
+                  aria-label={`العربة تحتوي على ${numberOfItems || 0} عناصر`}
+                >
+                  <div className="d-flex justify-content-center align-items-center flex-nowrap">
+                    <FontAwesomeIcon
+                      icon={faShoppingCart}
+                      className="nav-icon ms-1"
+                    />
+                    <span className="nav-text">العربة</span>
+                  </div>
+                  {/* Display number of items in the cart if greater than 0 */}
+                  {numberOfItems > 0 && (
+                    <div className="position-absolute top-25 start-0 translate-middle">
+                      <span
+                        className={`badge rounded-pill bg-danger ${
+                          pop ? "pop" : ""
+                        }`}
+                        aria-live="polite"
+                        aria-atomic="true"
+                      >
+                        {numberOfItems}
+                      </span>
+                    </div>
+                  )}
+                </Link>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </nav>
   );
 };
 
+// Export the component for use in other parts of the app
 export default NavBarLogin;

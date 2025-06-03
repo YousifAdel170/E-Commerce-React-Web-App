@@ -4,16 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 
 // Import Custom Actions
 import { getAllOrders } from "../../redux/actions/ordersAction";
+import { NUMBER_OF_ORDERS_PER_PAGE } from "../../constants/pageLimits";
 
 // Hook Responsible to display all the orders and manage the pagination
 const ViewAllOrdersHook = () => {
   const dispatch = useDispatch();
 
-  const limit = 1;
-
   useEffect(() => {
     const getOrders = async () => {
-      await dispatch(getAllOrders(1));
+      await dispatch(getAllOrders(NUMBER_OF_ORDERS_PER_PAGE));
       // await dispatch(getAllOrders());
     };
 
@@ -23,22 +22,22 @@ const ViewAllOrdersHook = () => {
   const result = useSelector((state) => state.ordersReducer.viewAllOrders);
 
   const allOrders = useMemo(() => {
-    if (result && result.data) return result.data;
+    if (result) return result.data;
     else return [];
   }, [result]);
 
   const numberOfOrders = useMemo(() => {
-    if (result && result.results) return result.results;
+    if (result) return result.results;
     else return 0;
   }, [result]);
 
   const pageCount = useMemo(() => {
-    if (result && result.paginationResult)
-      return result.paginationResult.numberOfPages;
+    if (result?.paginationResult) return result.paginationResult.numberOfPages;
     else return 0;
   }, [result]);
 
-  const onPress = async (page) => await dispatch(getAllOrders(limit, page));
+  const onPress = async (page) =>
+    await dispatch(getAllOrders(NUMBER_OF_ORDERS_PER_PAGE, page));
 
   const user = JSON.parse(localStorage.getItem("user"));
 

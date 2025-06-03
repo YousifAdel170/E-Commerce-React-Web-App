@@ -27,3 +27,6 @@ export const PRODUCT_DETAILS_RATES_LIMIT = 3;
 
 // Number of Rates To be displayed of Details Product in the ProductDetailsPage
 export const PAGE_NUMBER_PRODUCT_DETAILS_RATES = 1;
+
+// Number of Orders To be displayed in the View All Orders Page
+export const NUMBER_OF_ORDERS_PER_PAGE = 2;

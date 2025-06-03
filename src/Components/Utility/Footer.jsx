@@ -1,5 +1,9 @@
-// Import Components from react-bootstrap
+// Import Components
 import { Col, Container, Row } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+// Import Custom Hooks
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
 
 // Import Constants
 import { footerData } from "../../data/utilities/footer";
@@ -7,18 +11,22 @@ import { footerData } from "../../data/utilities/footer";
 // Import The Used CSS
 import "./Footer.css";
 
-// Component responsible for displaying the footer of the web Application
 const Footer = () => {
   const language = "ar";
+  const [textRef, textVisible] = useInviewAnimation();
+  const [iconsRef, iconsVisible] = useInviewAnimation();
+
   return (
-    <div
-      className="footer w-100 bg-white mt-3 py-2"
-      style={{ maxHeight: "50px" }}
-    >
+    <footer>
       <Container>
         <Row className="d-flex justify-content-between align-items-center">
-          {/* Display The Text of The Footer */}
-          <Col sm="6" className="d-flex align-items-center">
+          {/* Footer Text Terms */}
+          <Col
+            className={`d-flex align-items-center footer-animate ${
+              textVisible ? "fade-in" : ""
+            }`}
+            ref={textRef}
+          >
             {footerData.terms.map((term, index) => (
               <div className={`footer-text ${term.className}`} key={index}>
                 {term.name[language]}
@@ -26,23 +34,44 @@ const Footer = () => {
             ))}
           </Col>
 
-          {/* Icons of the footer */}
-          <Col sm="6" className="d-flex justify-content-end align-items-center">
+          {/* Footer Icons */}
+          <Col className="footer-icons-container">
             {/* Phone */}
-            <div className="d-flex mx-2 align-items-center">
-              <img src={footerData.phone.image} alt={footerData.phone.alt} />
-              <p className="footer-text m-0">{footerData.phone.number}</p>
+            <div
+              className={`phone-container footer-animate ${
+                iconsVisible ? "fade-in" : ""
+              }`}
+              ref={iconsRef}
+            >
+              <FontAwesomeIcon
+                icon={footerData.phone.icon}
+                className="phone-icon"
+                size="lg"
+              />
+              <p className="footer-text mb-0 me-2">{footerData.phone.number}</p>
             </div>
-            {/* Icons */}
-            {footerData.icons.map((icon, index) => (
-              <div key={index}>
-                <img src={icon.image} alt={icon.alt} />
-              </div>
+
+            {/* Social Icons */}
+            {footerData.icons.map((item, index) => (
+              <a
+                key={index}
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={item.alt}
+                className="mx-2 d-flex align-items-center justify-content-center social-icon"
+              >
+                <FontAwesomeIcon
+                  icon={item.icon}
+                  size="lg"
+                  className={`${iconsVisible ? "fade-in" : ""}`}
+                />
+              </a>
             ))}
           </Col>
         </Row>
       </Container>
-    </div>
+    </footer>
   );
 };
 

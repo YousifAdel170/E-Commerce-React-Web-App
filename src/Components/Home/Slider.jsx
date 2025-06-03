@@ -1,11 +1,17 @@
 // Importing necessary libraries and hooks from React and React Bootstrap
 import { useState } from "react";
 import { Carousel } from "react-bootstrap";
+
+// Import slider title , delay, slider items and paragraph from constants and data files
+import { SLIDER_TITLE } from "../../constants/titles";
+import {
+  SLIDER_PARAGRAPH,
+  slidersItems,
+} from "../../data/utilities/slidersItems";
+import { SLIDER_DELAY } from "../../constants/delays";
+
 // Import necessary CSS styles for the component
 import "./Slider.css";
-
-// Import configuration data for the slider
-import { slidersItems } from "../../config";
 
 // Component Responsible for rendering the slider
 const Slider = () => {
@@ -23,13 +29,13 @@ const Slider = () => {
             <Carousel.Item
               key={index}
               className={`slider-background slider-${item.styleClass}`}
-              interval={item.delay}
+              interval={SLIDER_DELAY}
             >
               <div className="d-flex justify-content-center align-items-center flex-column-mobile">
-                <img src={item.image} alt={`${item.title} Image`} />
+                <img src={item.image} alt={`${SLIDER_TITLE} Image`} />
                 <div>
-                  <h3 className="slider-title">{item.title}</h3>
-                  <p className="slider-text">{item.paragraph}</p>
+                  <h3 className="slider-title">{SLIDER_TITLE}</h3>
+                  <p className="slider-text">{SLIDER_PARAGRAPH}</p>
                 </div>
               </div>
             </Carousel.Item>

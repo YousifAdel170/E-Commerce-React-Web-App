@@ -16,7 +16,7 @@ const AllBrandPage = () => {
     AllBrandPageHook();
 
   return (
-    <Container>
+    <Container style={{ flex: "1" }}>
       {/* Title of the Page */}
       <SubTitle title="اشهر الماركات" />{" "}
       {/* Display subtitle "اشهر الماركات" */}

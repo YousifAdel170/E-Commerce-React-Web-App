@@ -58,3 +58,36 @@ export const SUBCATEGORY_MESSAGES = {
   MAIN_CATEGORY_REQUIRED: "من فضلك اختر تصنيف رئيسي",
   DUPLICATE_NAME: "هذا الاسم مكرر من فضلك اختر اسم اخر",
 };
+
+// ================================
+// Cart Messages [Notify]
+// ================================
+export const CART_MESSAGES = {
+  ADMIN_CANNOT_ADD: "عذرًا، لا يُسمح للمسؤولين بإضافة منتجات إلى العربة",
+  PRODUCT_OUT_OF_STOCK: "هذا المنتج غير متوفر حاليًا، نعتذر عن الإزعاج",
+  COLOR_REQUIRED: "يرجى اختيار لون المنتج أولًا قبل إضافته إلى العربة",
+  LOGIN_REQUIRED: "يرجى تسجيل الدخول أولًا لإضافة منتجات إلى العربة",
+};
+
+// ================================
+// Wishlist Notification Messages [Notify]
+// ================================
+export const WISHLIST_MESSAGES = {
+  ADD_SUCCESS: "تم إضافة المنتج إلى المفضلة بنجاح!",
+  REMOVE_SUCCESS: "تم حذف المنتج من المفضلة بنجاح.",
+  LOGIN_REQUIRED: "الرجاء تسجيل الدخول للمتابعة.",
+  ADMIN_RESTRICTED: "عذراً، لا يمكن للمسؤول إضافة أو حذف منتجات من المفضلة.",
+  UNKNOWN_ERROR: "حدث خطأ غير متوقع، الرجاء المحاولة لاحقاً.",
+};
+
+// ================================
+// Review Notification Messages [Notify]
+// ================================
+export const REVIEW_MESSAGES = {
+  ENTER_RATING: "يرجى اختيار تقييم من 1 إلى 5 نجوم.",
+  ENTER_COMMENT: "يرجى كتابة تعليق توضيحي لتحسين التجربة.",
+  ADMIN_RESTRICTED: "لا يمكنك تقييم المنتجات كمسؤول.",
+  ALREADY_RATED: "لقد قمت بالفعل بتقييم هذا المنتج، شكراً لمساهمتك!",
+  ADD_SUCCESS: "شكراً لتقييمك! تم إضافة التقييم بنجاح.",
+  UNKNOWN_ERROR: "عذراً، حدث خطأ غير متوقع. يرجى المحاولة لاحقاً.",
+};

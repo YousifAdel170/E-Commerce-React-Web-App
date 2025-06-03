@@ -10,6 +10,11 @@ import { updateRate } from "../../redux/actions/reviewAction"; // Action for upd
 
 // // Constants for notification types
 import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
+import {
+  GENERAL_MESSAGES,
+  REVIEW_MESSAGES,
+} from "../../constants/messagesConstants";
+import { EMPTY, STATUS, ZERO } from "../../constants/general";
 
 // Custom hook to update the review rate
 const UpdateRateHook = (review, updateReviews) => {
@@ -37,13 +42,13 @@ const UpdateRateHook = (review, updateReviews) => {
   // Function to handle the update process when the user submits the new review
   const handleUpdate = async () => {
     // Validate that both rating and review text are provided
-    if (newRateValue === 0) {
-      notify("من فضلك ادخل تقييم", WARNING); // Notify user to enter a rating
+    if (newRateValue === ZERO) {
+      notify(REVIEW_MESSAGES.ENTER_RATING, WARNING); // Notify user to enter a rating
       return;
     }
 
-    if (newRateText === "") {
-      notify("من فضلك اكتب تعليق", WARNING); // Notify user to enter a review comment
+    if (newRateText === EMPTY.TEXT) {
+      notify(REVIEW_MESSAGES.ENTER_COMMENT, WARNING); // Notify user to enter a review comment
       return;
     }
 
@@ -52,7 +57,7 @@ const UpdateRateHook = (review, updateReviews) => {
 
     // Dispatch the updateRate action to update the review in the backend
     await dispatch(
-      updateRate(review._id, {
+      updateRate(review?._id, {
         review: newRateText, // New review text entered by the user
         rating: newRateValue, // New rating value (e.g., number of stars)
       })
@@ -72,18 +77,17 @@ const UpdateRateHook = (review, updateReviews) => {
   useEffect(() => {
     if (!loading) {
       // Check if the update was successful (status code 200)
-      if (result && result.status === 200) {
-        notify("تم تعديل التقييم بنجاح", SUCCESS); // Notify the user about the success
+      if (result?.status === STATUS.SUCCESS_OK) {
+        notify(GENERAL_MESSAGES.UPDATE_SUCCESSFULLY, SUCCESS); // Notify the user about the success
 
         // Update the review list with the new review data
-        updateReviews(review._id, {
+        updateReviews(review?._id, {
           review: newRateText,
           rating: newRateValue,
         });
-      } else {
-        // Notify failure if the update was not successful
-        notify("هناك مشكله فى عملية التعديل", ERROR);
       }
+      // Notify failure if the update was not successful
+      else notify(GENERAL_MESSAGES.UPDATE_FAILED, ERROR);
 
       // Reset loading to true for future actions
       setLoading(true);

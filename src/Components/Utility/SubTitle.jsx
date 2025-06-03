@@ -9,9 +9,15 @@ const SubTitle = ({ title, btnTitle, path }) => {
   return (
     <div className="d-flex justify-content-between pt-4">
       <div className="sub-title">{title}</div>
-      <Link to={`${path}`}>
-        {btnTitle ? <div className="shopping-now">{btnTitle}</div> : null}
-      </Link>
+      {btnTitle && (
+        <Link
+          to={path}
+          className="shopping-now"
+          aria-label={`Navigate to ${btnTitle}`}
+        >
+          {btnTitle}
+        </Link>
+      )}
     </div>
   );
 };

@@ -1,13 +1,14 @@
 /* eslint-disable react/prop-types */
-export const StarRating = ({ rating, maxRating = 5 }) => {
-  // Round rating to nearest half star
+export const StarRating = ({ rating, maxRating = 5, direction = "ltr" }) => {
   const roundedRating = Math.round(rating * 2) / 2;
-
-  // Create array for stars
   const stars = [];
 
+  // Define gradient id uniquely per star to avoid conflicts
+  // (Could be improved by unique id per component instance)
+
   for (let i = 1; i <= maxRating; i++) {
-    if (i <= roundedRating) {
+    if (i <= Math.floor(roundedRating)) {
+      // full star
       stars.push(
         <svg
           key={i}
@@ -27,8 +28,9 @@ export const StarRating = ({ rating, maxRating = 5 }) => {
           <polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9" />
         </svg>
       );
-    } else if (i - 0.5 === roundedRating) {
-      // half star
+    } else if (i === Math.ceil(roundedRating) && roundedRating % 1 !== 0) {
+      // half star with gradient depending on direction
+      const gradientId = `half-grad-${direction}-${i}`;
       stars.push(
         <svg
           key={i}
@@ -46,18 +48,37 @@ export const StarRating = ({ rating, maxRating = 5 }) => {
         >
           <title>Half star</title>
           <defs>
-            <linearGradient id="half-grad">
-              <stop offset="50%" stopColor="#ffc107" />
-              <stop offset="50%" stopColor="transparent" />
+            <linearGradient
+              id={gradientId}
+              x1={direction === "ltr" ? "100%" : "0%"}
+              y1="0%"
+              x2={direction === "ltr" ? "0%" : "100%"}
+              y2="0%"
+            >
+              {direction === "ltr" ? (
+                <>
+                  <stop offset="50%" stopColor="#ffc107" />
+                  <stop offset="50%" stopColor="transparent" />
+                </>
+              ) : (
+                <>
+                  <stop offset="50%" stopColor="transparent" />
+                  <stop offset="50%" stopColor="#ffc107" />
+                </>
+              )}
             </linearGradient>
           </defs>
           <polygon
             points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"
-            fill="url(#half-grad)"
+            fill={`url(#${gradientId})`}
+            transform={
+              direction === "rtl" ? "scale(-1,1) translate(-24,0)" : undefined
+            }
           />
         </svg>
       );
     } else {
+      // empty star
       stars.push(
         <svg
           key={i}
@@ -79,12 +100,17 @@ export const StarRating = ({ rating, maxRating = 5 }) => {
       );
     }
   }
+
   return (
     <div
       className="star-rating"
       aria-label={`Rating: ${rating} out of ${maxRating} stars`}
       role="img"
-      style={{ display: "flex", gap: "2px" }}
+      style={{
+        display: "flex",
+        gap: "2px",
+        flexDirection: direction === "rtl" ? "row-reverse" : "row",
+      }}
     >
       {stars}
     </div>

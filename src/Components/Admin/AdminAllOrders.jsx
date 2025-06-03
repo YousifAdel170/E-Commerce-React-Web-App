@@ -21,14 +21,15 @@ const AdminAllOrders = () => {
       {/* Title of the section */}
       <div className="title-text">{adminData?.allOrders?.title}</div>
 
-      <Row className="all-products">
+      <Row>
         {/* Map through the allOrders and render AdminOrderItem for each order */}
         {allOrders ? (
-          allOrders.map((order) => (
+          allOrders.map((order, index) => (
             <AdminOrderItem
               key={order?._id}
               order={order}
               userName={userName}
+              index={index}
             />
           ))
         ) : (

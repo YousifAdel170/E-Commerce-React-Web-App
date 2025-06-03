@@ -20,7 +20,7 @@ const AllCategoryPage = () => {
 
   return (
     // Main Container of The Page
-    <Container>
+    <Container style={{ flex: "1" }}>
       {/* Title Of The Page */}
       <SubTitle title={CATEGORIES_TITLE} />
 

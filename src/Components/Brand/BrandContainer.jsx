@@ -14,8 +14,13 @@ const BrandContainer = ({ brands, loading }) => {
       {/* Check if loading is false and brands array has items */}
       {!loading ? (
         brands.length > 0 ? (
-          brands.map((item) => (
-            <BrandCard key={item._id} id={item._id} img={item.image} />
+          brands.map((item, index) => (
+            <BrandCard
+              key={item._id}
+              id={item._id}
+              img={item.image}
+              index={index}
+            />
           ))
         ) : (
           // If no brands are available, display a message
@@ -23,7 +28,13 @@ const BrandContainer = ({ brands, loading }) => {
         )
       ) : (
         // If loading is true, display a spinner
-        <Spinner className="mx-auto" animation="border" variant="dark" />
+        <Spinner
+          className="mx-auto"
+          animation="border"
+          variant="dark"
+          role="status"
+          aria-label="Loading Brands"
+        />
       )}
     </Row>
   );

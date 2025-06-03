@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 const VerifyPasswordPage = () => {
   const [code, onChangeCode, handleSubmit] = VerifyPasswordHook();
   return (
-    <Container style={{ minHeight: "690px" }}>
+    <Container style={{ flex: "1" }}>
       <Row className="py-5 d-flex justify-content-center ">
         <Col sm="12" className="d-flex flex-column ">
           <label className="mx-auto title-login">

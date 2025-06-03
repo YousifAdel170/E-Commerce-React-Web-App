@@ -22,7 +22,7 @@ const RateContainerHook = () => {
    */
   const removeReview = (id) =>
     setReviews((prevReviews) =>
-      prevReviews.filter((review) => review._id !== id)
+      prevReviews.filter((review) => review?._id !== id)
     );
 
   // Sync the reviews state whenever new data is fetched from the hook

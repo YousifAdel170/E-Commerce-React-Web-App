@@ -33,6 +33,27 @@
 /*================== PRODUCT CARD ==================*/
 
 /* Hover effects on card */
+.product-card {
+  box-shadow: 0 2px 2px 0 rgba(151, 151, 151, 0.5) !important;
+  background-color: #fff !important;
+  border-radius: 8px !important;
+  -webkit-border-radius: 8px !important;
+  -moz-border-radius: 8px !important;
+  -ms-border-radius: 8px !important;
+  -o-border-radius: 8px !important;
+  margin-bottom: 10px;
+  width: 100%;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  -webkit-transition: box-shadow 0.3s ease, transform 0.3s ease;
+  -moz-transition: box-shadow 0.3s ease, transform 0.3s ease;
+  -ms-transition: box-shadow 0.3s ease, transform 0.3s ease;
+  -o-transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+  /* Start hidden */
+  opacity: 0;
+  transform: translateY(30px);
+}
+
 .product-card:hover,
 .product-card:focus-within {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
@@ -53,12 +74,23 @@
   color: inherit;
 }
 
+.product-card-description {
+  background-color: #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+
 /* Product title styling */
 .product-title {
   font-family: "Almarai", sans-serif;
-  color: #222;
+  color: red;
   letter-spacing: 0;
   line-height: 1.2;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
 }
 
 /*================== IMAGE ==================*/
@@ -152,6 +184,31 @@
   color: #777;
   font-size: 1rem;
   font-weight: 400;
+}
+
+/*================== Favorite Icon ==================*/
+.fav-icon {
+  height: 26px;
+  width: 26px;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.fav-icon.animate {
+  animation: pop-scale 0.3s ease forwards;
+}
+
+@keyframes pop-scale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /*================== RESPONSIVE ==================*/

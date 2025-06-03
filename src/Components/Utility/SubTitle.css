@@ -8,21 +8,33 @@
 .sub-title {
   font-size: 21px;
   font-weight: bold;
+  flex: 1 1 auto;
 }
+
 .shopping-now {
+  display: inline-block;
   padding: 5px 25px;
   text-align: center;
   border: 1px solid var(--main-sub-title-color);
   border-radius: 14px;
-  -webkit-border-radius: 14px;
-  -moz-border-radius: 14px;
-  -ms-border-radius: 14px;
-  -o-border-radius: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  flex: 0 0 auto;
 }
 
-.shopping-now:hover {
+.shopping-now:hover,
+.shopping-now:focus {
   background-color: var(--main-sub-title-color);
   color: #f9f9f9;
+  outline: 2px solid var(--main-sub-title-color);
+  outline-offset: 2px;
+}
+
+.d-flex {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 /* End Styling of SubTitle Component */

@@ -7,77 +7,112 @@ import { Link } from "react-router-dom";
 // Import Toastify for notifications
 import { ToastContainer } from "react-toastify";
 
-// Import  Assets
-import rate from "../../Assets/Imgs/rate.png";
-
 // Import Custom Components to display the product card
 import ProductCardHook from "../../hooks/products/wishList/ProductCardHook";
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
 
 // Import Custom CSS
 import "./ProductCard.css";
+import { StarRating } from "../Utility/StartRating";
 
 // Component responsible for displaying a single product card
-const ProductCard = ({ item, favoriteProducts }) => {
+const ProductCard = ({ item, favoriteProducts, index }) => {
   // Custom Hook to handle the favorite products
-  const [handleFav, favImage] = ProductCardHook(item, favoriteProducts);
+  const [
+    favImage,
+    discountAmount,
+    discountPercent,
+    animateFav,
+    onFavClick,
+    handleAnimationEnd,
+  ] = ProductCardHook(item, favoriteProducts);
+
+  const [sectionRef, isVisible] = useInviewAnimation();
 
   return (
-    <Col xs="12" sm="6" md="4" lg="3" className="d-flex">
+    <Col xs="12" sm="6" md="4" lg="3">
       {/* Card Component from React Bootstrap that contains The Image of the Product */}
       <Card
+        className={`my-2 product-card ${isVisible ? "fade-in" : ""}`}
+        tabIndex={0}
+        aria-labelledby={`product-title-${item?._id}`}
+        role="group"
         style={{
-          borderRadius: "8px",
-          border: "none",
-          backgroundColor: "#fff",
-          boxShadow: "0 2px 2px 0 rgba(151,151,151, 0.5)",
-          marginBottom: "10px",
-          width: "100%",
+          animationDelay: `${index * 0.1}s`,
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
         }}
+        ref={sectionRef}
       >
         <Link to={`/products/${item?._id}`}>
-          <Card.Img
-            style={{ height: "228px", width: "100%" }}
-            src={item?.imageCover}
-          />
+          <div className="image-container" aria-hidden="true">
+            {/* Discount badge shown if discount exists */}
+            {(discountPercent > 0 || discountAmount > 0) && (
+              <span
+                className="discount-badge"
+                aria-label={`خصم ${
+                  discountPercent
+                    ? discountPercent + "%"
+                    : discountAmount + " جنيه"
+                }`}
+                role="note"
+                tabIndex={-1}
+              >
+                {discountPercent
+                  ? ` ${discountPercent}%`
+                  : `خصم ${discountAmount} جنيه`}
+              </span>
+            )}
+
+            {/* Product image with fallback on error */}
+            <Card.Img
+              src={item?.imageCover}
+              alt={`Image of ${item?.title}`}
+              loading="lazy"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/fallback-image.png";
+              }}
+            />
+          </div>
         </Link>
 
-        <Card.Body>
+        <Card.Body className="px-3 pb-3 product-card-description">
           {/* Title of the Product */}
-          <Card.Title className="d-flex justify-content-between">
+          <Card.Title
+            id={`product-title-${item?._id}`}
+            className="product-title d-flex justify-content-between align-items-center w-100"
+          >
             <div className="card-title">{item?.title}</div>
             {/* Favorite Button */}
             <img
               src={favImage}
-              onClick={handleFav}
+              onClick={onFavClick}
+              onAnimationEnd={handleAnimationEnd}
               alt="Favorite Button"
-              className="text-center"
-              style={{ height: "24px", width: "26px", cursor: "pointer" }}
+              className={`fav-icon ${animateFav ? "animate" : ""}`}
+              style={{ cursor: "pointer" }}
             />
           </Card.Title>
 
           {/* Description of the Product */}
-          <div className="card-text">
-            <div className="d-flex justify-content-between">
-              <div className="d-flex">
-                {/* Rate Image */}
-                <img alt="Rate Image" src={rate} height="16px" width="16px" />
-                <div className="card-rate mx-2">{item?.ratingsQuantity}</div>
-              </div>
+          <div className="d-flex justify-content-between align-items-center w-100">
+            {/* Display rating stars */}
+            <StarRating rating={item?.ratingsAverage || 0} />
 
-              {/* Price Of the Product */}
-              <div className="d-flex">
-                <div className="card-price">
-                  {item?.priceAfterDiscount >= 1 ? (
-                    <>
-                      {item?.priceAfterDiscount}
-                      <del className="mx-2 fs-6">{item?.price}</del>
-                    </>
-                  ) : (
-                    item?.price
-                  )}
-                </div>
-                <div className="card-currency mx-1">جنيه</div>
-              </div>
+            {/* Show price with discount if available */}
+            <div className="price-container">
+              {item?.priceAfterDiscount ? (
+                <>
+                  <span className="price-discounted">
+                    {item?.priceAfterDiscount} جنيه
+                  </span>
+                  <del aria-label={`Original price ${item?.price} جنيه`}>
+                    {item?.price} جنيه
+                  </del>
+                </>
+              ) : (
+                <span>{item?.price} جنيه</span>
+              )}
             </div>
           </div>
         </Card.Body>

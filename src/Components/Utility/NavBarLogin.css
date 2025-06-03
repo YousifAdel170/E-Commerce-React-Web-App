@@ -1,60 +1,105 @@
-/* Start Of Styling NavBarLogin Component */
+/* Logo */
 .logo {
   height: 46px;
   width: 50px;
 }
 
-.login-img {
-  height: 20px;
-  width: 20px;
+/* Icon Styling */
+.nav-icon {
+  font-size: 1.1rem;
+  color: #ffffff;
 }
 
+/* Text Styling */
 .nav-text {
   color: #ffffff;
   font-weight: 500;
 }
 
-.nav-item.dropdown div {
-  border: none;
+/* Navigation Link */
+.nav-link {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.nav-link:hover {
+  transform: scale(1.05);
+}
+
+.nav-link:hover .nav-icon,
+.nav-link:hover .nav-text {
+  color: #ccc;
+}
+
+/* Dropdown */
+.dropdown-item {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .dropdown-item:hover {
   background-color: #fff;
-  border-bottom: 1px solid #fff;
   border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
 }
 
 .dropdown-item:hover .nav-text {
-  color: black;
+  color: #000;
 }
 
+/* Cart Badge */
+.badge {
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Responsive Styles */
 @media (max-width: 767px) {
+  /* Center and resize the search bar */
   input.form-control {
-    width: 80% !important;
-    margin: 0 auto !important;
-    margin-top: 10px !important;
-    margin-bottom: 10px !important;
+    width: 80%;
+    margin: 10px auto;
+    display: block;
   }
 
+  /* Adjust dropdown layout */
   .nav-item.dropdown {
     flex-direction: column;
-    margin-bottom: 10px !important;
+    margin-bottom: 10px;
   }
 
-  a span.badge {
-    position: absolute;
-    left: 0% !important;
+  /* Adjust cart badge for medium devices */
+  .nav-link .badge {
+    left: 0;
   }
 }
 
 @media (max-width: 575px) {
-  a span.badge {
-    left: 41.5% !important;
+  /* Fine-tune badge position for small devices */
+  .nav-link .badge {
+    left: 41.5%;
   }
 }
 
-/* End Of Styling NavBarLogin Component */
+/* Animte to pop up cart badge */
+@keyframes pop {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  30% {
+    transform: scale(1.6) translateY(-6px);
+  }
+  60% {
+    transform: scale(0.9) translateY(3px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+.badge {
+  display: flex !important;
+}
+
+.pop {
+  animation: pop 0.6s ease-out;
+}

@@ -20,6 +20,7 @@ const ProductCardContainer = ({
 }) => {
   // Custom Hook to get the favorite products
   const [favoriteProducts] = ViewAllWishListHook();
+
   return (
     //  Main Container of the Product Card
     <Container>
@@ -34,16 +35,23 @@ const ProductCardContainer = ({
             products.map((item, index) => (
               // Check if the product is in the favorite products list
               <ProductCard
-                key={index}
+                key={item?._id}
                 item={item}
                 favoriteProducts={favoriteProducts}
+                index={index}
               />
             ))
           ) : (
             <h4>لا يوجد منتجات</h4>
           )
         ) : (
-          <Spinner className="mx-auto" animation="border" variant="dark" />
+          <Spinner
+            className="mx-auto"
+            animation="border"
+            variant="dark"
+            role="status"
+            aria-label="Loading Products"
+          />
         )}
       </Row>
     </Container>

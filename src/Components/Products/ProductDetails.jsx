@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 // Import Components from React Bootstrap
-import { Col, Row, Container } from "react-bootstrap";
+import { Col, Row, Container, Spinner } from "react-bootstrap";
 import { motion } from "framer-motion";
 
 // Import Custom Components
@@ -10,39 +10,62 @@ import ProductDescription from "./ProductDescription";
 
 // Component responsible for displaying full product details layout
 const ProductDetails = ({ itemProduct, itemCategory, itemBrand, images }) => {
-  // Loading fallback (optional)
-  if (!itemProduct || !images) return <h5>جاري التحميل...</h5>;
+  // If it still loading
+  if (!itemProduct || !images)
+    return (
+      <Container className="py-5 text-center">
+        <Spinner
+          className="mx-auto"
+          animation="border"
+          variant="dark"
+          role="status"
+          aria-label="Loading categories"
+        />
+        <p>جاري التحميل...</p>
+      </Container>
+    );
 
   return (
-    <Container className="py-5">
-      {/* Main layout row for product details */}
-      <Row className="gap-4 gap-lg-0 align-items-start">
+    <Container className="py-3">
+      <Row className="align-items-stretch" style={{ minHeight: "100%" }}>
         {/* Left column: product images gallery */}
-        <Col xs={12} lg={4}>
+        <Col xs={12} lg={4} className="mb-4 mb-lg-0">
           <motion.div
+            className="w-100 h-100"
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <ProductGallery images={images} />
+            <div className="w-100 h-100">
+              {!images ? (
+                <Spinner
+                  className="mx-auto"
+                  animation="border"
+                  variant="dark"
+                  role="status"
+                  aria-label="Loading categories"
+                />
+              ) : (
+                <ProductGallery images={images} />
+              )}
+            </div>
           </motion.div>
         </Col>
 
-        {/* Right column: product description, category, and brand */}
-        <Col xs={12} lg={8}>
-          <div className="product-description-wrapper">
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
-            >
-              <ProductDescription
-                itemProduct={itemProduct}
-                itemCategory={itemCategory}
-                itemBrand={itemBrand}
-              />
-            </motion.div>
-          </div>
+        {/* Right column: product description */}
+        <Col xs={12} lg={8} className="d-flex">
+          <motion.div
+            className="w-100 h-100 d-flex"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+          >
+            <ProductDescription
+              itemProduct={itemProduct}
+              itemCategory={itemCategory}
+              itemBrand={itemBrand}
+            />
+          </motion.div>
         </Col>
       </Row>
     </Container>

@@ -1,16 +1,56 @@
-/* Start of styling discount sction component */
+/* Main container styling */
 .discount-background {
   height: 130px;
   border-radius: 8px;
-  background: radial-gradient(circle, #767676 0%, #4d4f50 100%, #494c4d 100%);
-}
-.discount-title {
-  color: #ffffff;
-  font-family: "Cairo";
-  font-size: 21px;
-  font-weight: bold;
+  background: radial-gradient(circle, #767676 0%, #4d4f50 100%);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out,
+    transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* When visible in viewport */
+.animate-discount {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Title styling */
+.discount-title {
+  color: #ffffff;
+  font-family: "Cairo", sans-serif;
+  font-size: 21px;
+  font-weight: bold;
+  direction: rtl;
+}
+
+/* Highlighted percentage */
+.highlighted-percentage {
+  color: #ffc107;
+  font-size: 24px;
+  margin: 0 5px;
+}
+
+/* CTA Button */
+.discount-btn {
+  font-family: "Cairo", sans-serif;
+  font-weight: bold;
+  padding: 6px 16px;
+  border-radius: 20px;
+}
+
+/* Image styling with hover effect */
+.discount-img {
+  max-height: 130px;
+  max-width: 80%;
+  transition: transform 0.3s ease-in-out;
+}
+
+.discount-img:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive styles */
 @media (max-width: 768px) {
   .discount-title {
     font-size: 18px;
@@ -18,13 +58,17 @@
     margin-bottom: 10px;
   }
 
-  .mb-30px-mobile {
-    margin-bottom: 30px;
+  .highlighted-percentage {
+    font-size: 20px;
+  }
+
+  .discount-background {
+    height: auto;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .discount-img {
+    margin-top: 10px;
   }
 }
-
-.discount-img {
-  max-height: 130px;
-  max-width: 80%;
-}
-/* End of styling discount sction component */
