@@ -6,9 +6,6 @@ import {
   THIRD_SLIDER_IMAGE,
 } from "../../constants/images";
 
-// Export the paragraph for the slider
-export const SLIDER_PARAGRAPH = "خصم يصل ٥٠٪ عند شرائك";
-
 // Export the items for the slider, each with an image and a style class
 export const slidersItems = [
   {

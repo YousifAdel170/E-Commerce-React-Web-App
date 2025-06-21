@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 // Import Custom Actions
 import { getAllCartItems } from "../../redux/actions/cartAction";
 import { logoutUser } from "../../redux/actions/authAction";
+import { USER_ROLES } from "../../constants/general";
 
 // Hook Responsible for managing user login state and logout functionality
 export const NavBarLoginHook = () => {
@@ -17,6 +18,8 @@ export const NavBarLoginHook = () => {
 
   // 2. useEffect to check if the user is logged in or not
   useEffect(() => {
+    if (user?.role === USER_ROLES.ADMIN) return;
+
     const getCartItems = async () => {
       await dispatch(getAllCartItems());
       setCartFetched(true);

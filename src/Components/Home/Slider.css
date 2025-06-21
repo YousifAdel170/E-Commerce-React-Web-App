@@ -1,21 +1,36 @@
-/* Start Of Styling Slider Component */
+/* ========== Slider Component Styling ========== */
 
-/* Background gradient styles for different slider variations */
-.slider-one {
+/* ===== Background gradients per theme ===== */
+
+/* Light Theme Gradients */
+.light-theme .slider-one {
   background: linear-gradient(173.68deg, #ffedf5 0%, #ffd5e7 100%);
 }
-.slider-two {
+.light-theme .slider-two {
   background: linear-gradient(174.76deg, #d3deff 0%, #a8baff 100%);
 }
-.slider-three {
+.light-theme .slider-three {
   background: linear-gradient(176.69deg, #f8f0d5 0%, #efdcab 100%);
 }
-.slider-four {
+.light-theme .slider-four {
   background: linear-gradient(175.24deg, #b2e8f0 0%, #7bccdc 100%);
 }
 
-/* Styling the image inside the slider */
-/* Adds spacing at top and left, fixes the height, and limits max width */
+/* Dark Theme Gradients (cooler tones for eye comfort) */
+.dark-theme .slider-one {
+  background: linear-gradient(173.68deg, #1f2937 0%, #374151 100%);
+}
+.dark-theme .slider-two {
+  background: linear-gradient(174.76deg, #0f172a 0%, #1e293b 100%);
+}
+.dark-theme .slider-three {
+  background: linear-gradient(176.69deg, #1e293b 0%, #334155 100%);
+}
+.dark-theme .slider-four {
+  background: linear-gradient(175.24deg, #0f172a 0%, #1e293b 100%);
+}
+
+/* ===== Image Styling ===== */
 .slider-background img {
   margin-top: 10px;
   margin-left: 15px;
@@ -23,72 +38,90 @@
   max-width: 294.26px;
 }
 
-/* Common styles for slider titles and paragraph text */
-/* Sets color, font, center alignment, and initial animation state */
+/* ===== Title and Paragraph Styling ===== */
 .slider-title,
 .slider-text {
-  color: #915970;
-  font-family: "Almarai";
+  color: var(--main-text-color);
   text-align: center;
-
   user-select: none;
-
-  /* Animation to fade in and move up smoothly */
   animation: fadeInUp 1s ease forwards;
   opacity: 0; /* Start invisible for animation */
 }
 
-/* Keyframes for fadeInUp animation */
-/* From slightly below and transparent to fully visible and positioned */
+.light-theme .slider-title,
+.light-theme .slider-text {
+  color: var(--main-color);
+}
+
+/* Animation Keyframes */
 @keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
   from {
     opacity: 0;
     transform: translateY(20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Specific font size for slider title */
+/* Font Sizes */
 .slider-title {
   font-size: 24px;
 }
 
-/* Specific font size and weight for slider text */
 .slider-text {
   font-size: 30px;
   font-weight: 800;
 }
 
-/* Responsive styles for screen widths 767px and below */
+/* ===== Responsive Styles ===== */
 @media (max-width: 767px) {
-  /* Make flex container stack vertically on mobile */
+  /* Stack layout vertically */
   .flex-column-mobile {
     display: flex;
     flex-direction: column;
   }
 
-  /* Adjust image size and remove left margin on small screens */
+  /* Image resizing for small screens */
   .slider-background img {
     width: 250px;
     max-height: 296px;
     margin-left: 0;
   }
 
-  /* Smaller font size and spacing adjustments for title on mobile */
+  /* Title font adjustments */
   .slider-title {
     font-size: 20px;
     margin-top: 10px;
     margin-bottom: 0;
   }
 
-  /* Smaller font size and bottom margin for slider text on mobile */
+  /* Text adjustments */
   .slider-text {
     margin-bottom: 50px;
     font-size: 20px;
   }
 }
 
-/* End Of Styling Slider Component */
+/* ===== Light Theme Carousel Controls ===== */
+.light-theme .carousel-control-next-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%232563eb'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.light-theme .carousel-control-prev-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%232563eb'%3e%3cpath d='M11.354 1.646a.5.5 0 0 0-.708 0L4.646 8l6 6a.5.5 0 0 0 .708-.708L5.707 8l5.647-5.646a.5.5 0 0 0 0-.708z'/%3e%3c/svg%3e");
+}
+
+/* ===== Dark Theme Carousel Controls ===== */
+.dark-theme .carousel-control-next-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23facc15'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.dark-theme .carousel-control-prev-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23facc15'%3e%3cpath d='M11.354 1.646a.5.5 0 0 0-.708 0L4.646 8l6 6a.5.5 0 0 0 .708-.708L5.707 8l5.647-5.646a.5.5 0 0 0 0-.708z'/%3e%3c/svg%3e");
+}
+
+.dark-theme .carousel-indicators button {
+  background-color: var(--focus-color) !important;
+}

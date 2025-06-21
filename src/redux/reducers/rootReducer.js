@@ -12,6 +12,7 @@ import userAddressReducer from "./userAddressReducer";
 import cartReducer from "./cartReducer";
 import checkoutReducer from "./checkoutReducer";
 import ordersReducer from "./ordersReducer";
+import uiSettingsReducer from "./uiSetttingsReducer";
 
 // Combine all reducers into a single root reducer
 export default combineReducers({
@@ -27,4 +28,6 @@ export default combineReducers({
   cartReducer: cartReducer, // Reducer for Cart
   checkoutReducer: checkoutReducer, // Reducer for Checkout
   ordersReducer: ordersReducer, // Reducer for Orders
+
+  ui: uiSettingsReducer,
 });

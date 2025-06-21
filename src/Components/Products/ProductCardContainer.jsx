@@ -9,6 +9,7 @@ import ProductCard from "./ProductCard";
 
 // Import Custom Hook to get the favorite products
 import ViewAllWishListHook from "../../hooks/products/wishList/ViewAllWishListHook";
+import { useTranslation } from "react-i18next";
 
 // Component responsible for displaying the product cards in a container
 const ProductCardContainer = ({
@@ -20,6 +21,8 @@ const ProductCardContainer = ({
 }) => {
   // Custom Hook to get the favorite products
   const [favoriteProducts] = ViewAllWishListHook();
+
+  const { t } = useTranslation("home");
 
   return (
     //  Main Container of the Product Card
@@ -42,7 +45,7 @@ const ProductCardContainer = ({
               />
             ))
           ) : (
-            <h4>لا يوجد منتجات</h4>
+            <h4>{t("homeThereIsNoMostSold")}</h4>
           )
         ) : (
           <Spinner
@@ -50,7 +53,7 @@ const ProductCardContainer = ({
             animation="border"
             variant="dark"
             role="status"
-            aria-label="Loading Products"
+            aria-label={t("homeLoadingProductsAriaLabel")}
           />
         )}
       </Row>

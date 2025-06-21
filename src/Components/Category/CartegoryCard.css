@@ -1,6 +1,6 @@
 /* Container for each category card */
 .category-card {
-  position: relative;
+  position: relative !important;
   height: 140px;
   width: 140px;
   display: flex;
@@ -9,14 +9,32 @@
   border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
-
   opacity: 0;
   transform: translateY(30px);
+  transition: transform var(--main-duration) ease,
+    opacity var(--main-duration) ease;
+  -webkit-transition: transform var(--main-duration) ease,
+    opacity var(--main-duration) ease;
+  -moz-transition: transform var(--main-duration) ease,
+    opacity var(--main-duration) ease;
+  -ms-transition: transform var(--main-duration) ease,
+    opacity var(--main-duration) ease;
+  -o-transition: transform var(--main-duration) ease,
+    opacity var(--main-duration) ease;
 }
 
-/* On hover, allow overflow to be visible (if any) */
-.category-card:hover {
-  overflow: visible;
+.light-theme .category-card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark-theme .category-card {
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Fade-in animation */
+.category-card.fade-in {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Link that fills the entire card, making it clickable */
@@ -24,20 +42,13 @@
   position: absolute;
   inset: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   text-decoration: none;
   z-index: 1;
   color: inherit;
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* add transition here */
   border-radius: 50%;
-}
-
-/* Hover effect on the link - scale up and add shadow */
-.category-link:hover {
-  transform: scale(1.07);
-  /* box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important; */
 }
 
 /* Image inside the card */
@@ -48,19 +59,62 @@
   pointer-events: none;
   user-select: none;
   z-index: 2;
+  transition: transform var(--main-duration) ease;
+  -webkit-transition: transform var(--main-duration) ease;
+  -moz-transition: transform var(--main-duration) ease;
+  -ms-transition: transform var(--main-duration) ease;
+  -o-transition: transform var(--main-duration) ease;
 }
 
-/* Text below the image */
+/* Overlay that appears on hover */
+.category-card-overlay {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: top var(--main-duration) ease-in-out;
+  z-index: 3;
+  pointer-events: none;
+  -webkit-transition: top var(--main-duration) ease-in-out;
+  -moz-transition: top var(--main-duration) ease-in-out;
+  -ms-transition: top var(--main-duration) ease-in-out;
+  -o-transition: top var(--main-duration) ease-in-out;
+}
+
+/* Dark Mode Overlay Color */
+.dark-theme .category-card-overlay {
+  background-color: rgba(15, 23, 42, 0.6);
+}
+
+/* Light Mode Overlay Color */
+.light-theme .category-card-overlay {
+  background-color: rgba(59, 130, 246, 0.5);
+}
+
+/* Show overlay on hover */
+.category-card:hover .category-card-overlay {
+  top: 0;
+}
+
+/* Text shown in overlay */
 .category-card-text {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  margin-top: 10px;
-  text-align: center;
-  z-index: 2;
+  font-weight: bold !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 4;
+  pointer-events: none;
+  margin: 0;
 }
 
-/* Accessibility: If user prefers reduced motion, disable animations */
+/* Accessibility: Disable animations if user prefers reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .category-card {
     animation: none;

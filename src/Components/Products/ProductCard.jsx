@@ -1,25 +1,25 @@
 /* eslint-disable react/prop-types */
 
-// Import Components from React bootstrap, React Router DOM
+// Imports
 import { Card, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
-// Import Toastify for notifications
 import { ToastContainer } from "react-toastify";
 
-// Import Custom Components to display the product card
 import ProductCardHook from "../../hooks/products/wishList/ProductCardHook";
 import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
 
-// Import Custom CSS
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
+
 import "./ProductCard.css";
 import { StarRating } from "../Utility/StartRating";
 
-// Component responsible for displaying a single product card
 const ProductCard = ({ item, favoriteProducts, index }) => {
-  // Custom Hook to handle the favorite products
+  // Custom Hook for favorites and animations
   const [
-    favImage,
+    ,
+    // favImage is not needed now
     discountAmount,
     discountPercent,
     animateFav,
@@ -27,11 +27,14 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
     handleAnimationEnd,
   ] = ProductCardHook(item, favoriteProducts);
 
+  // Animation + in-view hook
   const [sectionRef, isVisible] = useInviewAnimation();
+
+  // Check if this item is favorited
+  const isFavorited = favoriteProducts.some((p) => p._id === item._id);
 
   return (
     <Col xs="12" sm="6" md="4" lg="3">
-      {/* Card Component from React Bootstrap that contains The Image of the Product */}
       <Card
         className={`my-2 product-card ${isVisible ? "fade-in" : ""}`}
         tabIndex={0}
@@ -45,7 +48,6 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
       >
         <Link to={`/products/${item?._id}`}>
           <div className="image-container" aria-hidden="true">
-            {/* Discount badge shown if discount exists */}
             {(discountPercent > 0 || discountAmount > 0) && (
               <span
                 className="discount-badge"
@@ -63,7 +65,6 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
               </span>
             )}
 
-            {/* Product image with fallback on error */}
             <Card.Img
               src={item?.imageCover}
               alt={`Image of ${item?.title}`}
@@ -73,50 +74,66 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
                 e.target.src = "/fallback-image.png";
               }}
             />
-          </div>
-        </Link>
 
-        <Card.Body className="px-3 pb-3 product-card-description">
-          {/* Title of the Product */}
-          <Card.Title
-            id={`product-title-${item?._id}`}
-            className="product-title d-flex justify-content-between align-items-center w-100"
-          >
-            <div className="card-title">{item?.title}</div>
-            {/* Favorite Button */}
-            <img
-              src={favImage}
-              onClick={onFavClick}
-              onAnimationEnd={handleAnimationEnd}
-              alt="Favorite Button"
-              className={`fav-icon ${animateFav ? "animate" : ""}`}
-              style={{ cursor: "pointer" }}
-            />
-          </Card.Title>
+            <div
+              className="image-overlay"
+              aria-label={`Product info for ${item?.title}`}
+            >
+              <div className="product-title" id={`product-title-${item?._id}`}>
+                {item?.title}
 
-          {/* Description of the Product */}
-          <div className="d-flex justify-content-between align-items-center w-100">
-            {/* Display rating stars */}
-            <StarRating rating={item?.ratingsAverage || 0} />
+                <span
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={isFavorited}
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent link navigation on click
+                    onFavClick();
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      onFavClick();
+                    }
+                  }}
+                  className={`fav-icon ${animateFav ? "animate" : ""}`}
+                  onAnimationEnd={handleAnimationEnd}
+                  style={{ cursor: "pointer", marginLeft: 8 }}
+                  title={
+                    isFavorited ? "Remove from favorites" : "Add to favorites"
+                  }
+                >
+                  <FontAwesomeIcon
+                    icon={isFavorited ? solidHeart : regularHeart}
+                    color={isFavorited ? "#facc15" : "#ffffff"}
+                    size="lg"
+                  />
+                </span>
+              </div>
 
-            {/* Show price with discount if available */}
-            <div className="price-container">
-              {item?.priceAfterDiscount ? (
-                <>
-                  <span className="price-discounted">
-                    {item?.priceAfterDiscount} جنيه
-                  </span>
-                  <del aria-label={`Original price ${item?.price} جنيه`}>
-                    {item?.price} جنيه
-                  </del>
-                </>
-              ) : (
-                <span>{item?.price} جنيه</span>
-              )}
+              <div className="rating-price">
+                <StarRating rating={item?.ratingsAverage || 0} />
+
+                <div className="price-container">
+                  {item?.priceAfterDiscount ? (
+                    <>
+                      <span className="price-discounted">
+                        {item?.priceAfterDiscount}
+                      </span>
+                      <del aria-label={`Original price ${item?.price} جنيه`}>
+                        {item?.price} جنيه
+                      </del>
+                    </>
+                  ) : (
+                    <span>{item?.price} جنيه</span>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
-        </Card.Body>
+        </Link>
       </Card>
+
       <ToastContainer />
     </Col>
   );

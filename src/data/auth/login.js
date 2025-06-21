@@ -1,30 +1,32 @@
 // Import Used Constants
 import { EMAIL_TYPE, PASSWORD_TYPE } from "../../constants/inputTypes";
 
-export const loginData = (email, password) => [
-  // Email Input
-  {
-    value: email,
-    onChangeInputType: EMAIL_TYPE,
-    placeholder: {
-      ar: "البريد الالكتروني  ...",
-      "en-US": "Email ...",
-    },
-    type: "email",
-    className: "my-3",
-    required: true,
+export const loginData = (email, password) => ({
+  title: {
+    ar: "تسجيل الدخول",
+    "en-US": "Login",
   },
 
-  // Password Input
-  {
-    value: password,
-    onChangeInputType: PASSWORD_TYPE,
-    placeholder: {
-      ar: "كلمة المرور ...",
-      "en-US": "Password ...",
+  inputs: [
+    {
+      name: "email",
+      type: EMAIL_TYPE,
+      value: email,
+      required: true,
+      label: {
+        ar: "البريد الإلكتروني",
+        "en-US": "Email",
+      },
     },
-    type: "password",
-    className: "",
-    required: true,
-  },
-];
+    {
+      name: "password",
+      type: PASSWORD_TYPE,
+      value: password,
+      required: true,
+      label: {
+        ar: "كلمة المرور",
+        "en-US": "Password",
+      },
+    },
+  ],
+});

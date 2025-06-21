@@ -11,6 +11,7 @@ import { deleteProduct } from "../../redux/actions/productsAction";
 
 // Import notification types constants and custom notification hook
 import { ERROR, SUCCESS } from "../../constants/notificationTypes";
+import { EMPTY } from "../../constants/general";
 
 // Custom hook for managing admin product card logic (modals, actions, discount calculation)
 const AdminProductCardHook = (item, onDelete) => {
@@ -50,7 +51,7 @@ const AdminProductCardHook = (item, onDelete) => {
   // Effect runs on loading/result change to show notification messages
   useEffect(() => {
     if (!loading) {
-      if (result === "")
+      if (result === EMPTY.TEXT)
         notify("تم حذف المنتج بنجاح", SUCCESS); // Notify success
       else notify("حدث خطأ ما اثناء عملية الحذف", ERROR); // Notify error
     }

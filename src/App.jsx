@@ -53,95 +53,166 @@ import AdminEditCoupon from "./Components/Admin/AdminEditCoupon";
 import AdminOrderDetails from "./Components/Admin/AdminOrderDetails";
 import AdminAddBrand from "./Components/Admin/AdminAddBrand";
 
+import "./i18n/i18n"; // important! load i18n config
+import {
+  ADMIN_ADD_BRAND_PATH,
+  ADMIN_ADD_CATEGORY_PATH,
+  ADMIN_ADD_COUPON_PATH,
+  ADMIN_ADD_PRODUCT_PATH,
+  ADMIN_ADD_SUBCATEGORY_PATH,
+  ADMIN_ALL_BRANDS_PATH,
+  ADMIN_ALL_CATEGORIES_PATH,
+  ADMIN_ALL_COUPONS_PATH,
+  ADMIN_ALL_ORDERS_PATH,
+  ADMIN_ALL_PRODUCTS_PATH,
+  ADMIN_ALL_SUBCATEGORIES_PATH,
+  ADMIN_EDIT_BRAND_PATH,
+  ADMIN_EDIT_CATEGORY_PATH,
+  ADMIN_EDIT_COUPON_PATH,
+  ADMIN_EDIT_PRODUCT_PATH,
+  ADMIN_EDIT_SUBCATEGORY_PATH,
+  ADMIN_ORDER_DETAILS_PATH,
+  AUTH_FORGOT_PASSWORD_PATH,
+  AUTH_LOGIN_PATH,
+  AUTH_REGISTER_PATH,
+  AUTH_RESET_PASSWORD_PATH,
+  AUTH_VERIFY_CODE_PATH,
+  GENERAL_ALL_BRANDS_PATH,
+  GENERAL_ALL_CATEGORIES_PATH,
+  GENERAL_CART_PATH,
+  GENERAL_PRODUCT_DETAILS_PATH,
+  GENERAL_SHOP_PRODUCTS_PATH,
+  GENERAL_VIEW_PRODUCTS_BY_BRAND_PATH,
+  GENERAL_VIEW_PRODUCTS_BY_CATEGORY_PATH,
+  USER_ADD_ADDRESS_PATH,
+  USER_ALL_ADDRESSES_PATH,
+  USER_ALL_ORDERS_PATH,
+  USER_EDIT_ADDRESS_PATH,
+  USER_FAVORITE_PRODUCTS_PATH,
+  USER_ORDER_PAY_METHOD_PATH,
+  USER_PROFILE_PATH,
+} from "./constants/paths";
+
 function App() {
   const [isUser, isAdmin, isLoading] = ProtectedRouteHook();
   if (isLoading) return null; // Show a loading spinner or placeholder while checking auth status
+
   return (
-    <div className="font app">
+    <div className={`app`}>
       <BrowserRouter>
         <NavBarLogin />
         <Routes>
           {/* General Routes */}
           <Route index element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/all-categories" element={<AllCategoryPage />} />
-          <Route path="/all-brands" element={<AllBrandPage />} />
-          <Route path="/products" element={<ShopProductsPage />} />
+          <Route path={AUTH_LOGIN_PATH} element={<LoginPage />} />
+          <Route path={AUTH_REGISTER_PATH} element={<RegisterPage />} />
           <Route
-            path="/products/category/:id"
+            path={GENERAL_ALL_CATEGORIES_PATH}
+            element={<AllCategoryPage />}
+          />
+          <Route path={GENERAL_ALL_BRANDS_PATH} element={<AllBrandPage />} />
+          <Route
+            path={GENERAL_SHOP_PRODUCTS_PATH}
+            element={<ShopProductsPage />}
+          />
+          <Route
+            path={GENERAL_VIEW_PRODUCTS_BY_CATEGORY_PATH}
             element={<ViewProductsByCategoryPage />}
           />
           <Route
-            path="/products/brands/:id"
+            path={GENERAL_VIEW_PRODUCTS_BY_BRAND_PATH}
             element={<ViewProductsByBrandPage />}
           />
 
-          <Route path="/products/:id" element={<ProductDetailsPage />} />
-          <Route path="/cart" element={<CartPage />} />
           <Route
-            path="/user/forgot-password"
+            path={GENERAL_PRODUCT_DETAILS_PATH}
+            element={<ProductDetailsPage />}
+          />
+          <Route path={GENERAL_CART_PATH} element={<CartPage />} />
+          <Route
+            path={AUTH_FORGOT_PASSWORD_PATH}
             element={<ForgotPasswordPage />}
           />
-          <Route path="/user/verify-code" element={<VerifyPasswordPage />} />
-          <Route path="/user/reset-password" element={<ResetPasswordPage />} />
+          <Route
+            path={AUTH_VERIFY_CODE_PATH}
+            element={<VerifyPasswordPage />}
+          />
+          <Route
+            path={AUTH_RESET_PASSWORD_PATH}
+            element={<ResetPasswordPage />}
+          />
 
           {/* Admin Routes */}
           <Route element={<ProtectedRoute auth={isAdmin} />}>
             <Route element={<AdminPage />}>
               <Route
-                path="/admin/all-products"
+                path={ADMIN_ALL_PRODUCTS_PATH}
                 element={<AdminAllProducts />}
               />
-              <Route path="/admin/all-orders" element={<AdminAllOrders />} />
               <Route
-                path="/admin/all-orders/:id"
+                path={ADMIN_ALL_ORDERS_PATH}
+                element={<AdminAllOrders />}
+              />
+              <Route
+                path={ADMIN_ORDER_DETAILS_PATH}
                 element={<AdminOrderDetails />}
               />
 
-              <Route path="/admin/add-brand" element={<AdminAddBrand />} />
+              <Route path={ADMIN_ADD_BRAND_PATH} element={<AdminAddBrand />} />
               <Route
-                path="/admin/all-categories"
+                path={ADMIN_ALL_CATEGORIES_PATH}
                 element={<AdminAllCategories />}
               />
-              <Route path="/admin/all-brands" element={<AdminAllBrands />} />
+              <Route
+                path={ADMIN_ALL_BRANDS_PATH}
+                element={<AdminAllBrands />}
+              />
 
               <Route
-                path="/admin/all-categories/:id/all-subcategories"
+                path={ADMIN_ALL_SUBCATEGORIES_PATH}
                 element={<AdminAllSubcategories />}
               />
 
               <Route
-                path="/admin/all-categories/:id/all-subcategories/edit-subcategory/:id"
+                path={ADMIN_EDIT_SUBCATEGORY_PATH}
                 element={<AdminEditSubCategory />}
               />
 
               <Route
-                path="/admin/add-category"
+                path={ADMIN_ADD_CATEGORY_PATH}
                 element={<AdminAddCategory />}
               />
               <Route
-                path="/admin/edit-category/:id"
+                path={ADMIN_EDIT_CATEGORY_PATH}
                 element={<AdminEditCategory />}
               />
               <Route
-                path="/admin/edit-brand/:id"
+                path={ADMIN_EDIT_BRAND_PATH}
                 element={<AdminEditBrand />}
               />
               <Route
-                path="/admin/add-subcategory"
+                path={ADMIN_ADD_SUBCATEGORY_PATH}
                 element={<AdminAddSubCategory />}
               />
-              <Route path="/admin/add-product" element={<AdminAddProduct />} />
               <Route
-                path="/admin/edit-product/:id"
+                path={ADMIN_ADD_PRODUCT_PATH}
+                element={<AdminAddProduct />}
+              />
+              <Route
+                path={ADMIN_EDIT_PRODUCT_PATH}
                 element={<AdminEditProduct />}
               />
 
-              <Route path="/admin/all-coupons" element={<AdminAllCoupons />} />
-              <Route path="/admin/add-coupon" element={<AdminAddCoupon />} />
               <Route
-                path="/admin/edit-coupon/:id"
+                path={ADMIN_ALL_COUPONS_PATH}
+                element={<AdminAllCoupons />}
+              />
+              <Route
+                path={ADMIN_ADD_COUPON_PATH}
+                element={<AdminAddCoupon />}
+              />
+              <Route
+                path={ADMIN_EDIT_COUPON_PATH}
                 element={<AdminEditCoupon />}
               />
             </Route>
@@ -150,23 +221,29 @@ function App() {
           {/* User Routes */}
           <Route element={<ProtectedRoute auth={isUser} />}>
             <Route element={<UserPage />}>
-              <Route path="/user/all-orders" element={<UserAllOrders />} />
+              <Route path={USER_ALL_ORDERS_PATH} element={<UserAllOrders />} />
               <Route
-                path="/user/favorite-products"
+                path={USER_FAVORITE_PRODUCTS_PATH}
                 element={<UserFavoriteProducts />}
               />
-              <Route path="/user/addresses" element={<UserAllAddresses />} />
               <Route
-                path="/user/addresses/add-address"
+                path={USER_ALL_ADDRESSES_PATH}
+                element={<UserAllAddresses />}
+              />
+              <Route
+                path={USER_ADD_ADDRESS_PATH}
                 element={<UserAddAddress />}
               />
               <Route
-                path="/user/addresses/edit-address/:id"
+                path={USER_EDIT_ADDRESS_PATH}
                 element={<UserEditAddress />}
               />
-              <Route path="/user/profile" element={<UserProfile />} />
+              <Route path={USER_PROFILE_PATH} element={<UserProfile />} />
             </Route>
-            <Route path="/order/pay-method" element={<CartMethodPage />} />
+            <Route
+              path={USER_ORDER_PAY_METHOD_PATH}
+              element={<CartMethodPage />}
+            />
           </Route>
 
           {/* Test For Isolated Protected Rout */}

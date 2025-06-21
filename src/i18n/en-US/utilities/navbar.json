@@ -1,0 +1,29 @@
+{
+  "title": "My Store",
+  "loggingOut": "Logging out...",
+  "logout": "Logout",
+  "loggingIn": "Logging in...",
+  "login": "Login",
+
+  "search": "Search",
+  "searchPlaceholder": "Search for products",
+  "searchAriaLabel": "Search for products in the store",
+  "searchRole": "search",
+
+  "cart": "Cart",
+  "cartContains": "Your cart contains",
+  "cartItems": "items",
+  "cartAriaLabel": "Shopping cart, contains {{count}} items",
+
+  "adminControlPanel": "Control Panel",
+  "userProfile": "User Profile",
+  "userDropdownLabel": "User account options",
+
+  "homeAriaLabel": "Home Page",
+
+  "toggleTheme": "Toggle dark/light theme",
+  "toggleLanguage": "Toggle language",
+
+  "themeToggleLabel": "Toggle between dark and light theme",
+  "languageToggleLabel": "Toggle language"
+}

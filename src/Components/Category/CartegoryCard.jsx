@@ -36,7 +36,9 @@ const CartegoryCard = ({ background, img, title, id, index }) => {
             className="category-card-img"
             alt={`Category: ${title}`}
           />
-          <p className="category-card-text">{title}</p>
+          <div className="category-card-overlay">
+            <p className="category-card-text">{title}</p>
+          </div>
         </Link>
       </div>
     </Col>

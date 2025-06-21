@@ -1,105 +1,256 @@
-/* Logo */
-.logo {
-  height: 46px;
-  width: 50px;
+/* ========== NAVBAR ========== */
+/* Main navbar styles including background, shadow, and smooth transitions */
+.navbar {
+  background-color: var(--main-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: background-color var(--main-duration) ease-in-out;
+  -webkit-transition: background-color var(--main-duration) ease-in-out;
+  -moz-transition: background-color var(--main-duration) ease-in-out;
+  -ms-transition: background-color var(--main-duration) ease-in-out;
+  -o-transition: background-color var(--main-duration) ease-in-out;
 }
 
-/* Icon Styling */
-.nav-icon {
-  font-size: 1.1rem;
-  color: #ffffff;
+/* ========== INPUT + Logo ========== */
+/* General input styling for better padding, font size, and transition effects */
+input.form-control {
+  padding: 0.45rem 0.75rem;
+  font-size: 0.9rem;
+  max-width: 100% !important;
+  transition: all var(--main-duration) ease-in-out;
+  -webkit-transition: all var(--main-duration) ease-in-out;
+  -moz-transition: all var(--main-duration) ease-in-out;
+  -ms-transition: all var(--main-duration) ease-in-out;
+  -o-transition: all var(--main-duration) ease-in-out;
+  overflow-x: auto;
 }
 
-/* Text Styling */
-.nav-text {
-  color: #ffffff;
-  font-weight: 500;
+/* ========== BADGE ========== */
+/* Badge appearance with dynamic background/text color and animation */
+.badge {
+  background-color: var(--badge-bg);
+  padding: 3px 7px;
+  font-size: 0.7rem;
+  border-radius: 999px;
+  animation: pop calc(2 * var(--main-duration)) ease;
+  -webkit-animation: pop calc(2 * var(--main-duration)) ease;
+  left: 95%;
+  top: 5%;
+  background-color: var(--badge-bg);
+  color: var(--badge-text);
 }
 
-/* Navigation Link */
-.nav-link {
-  padding: 0;
+/* When dir is rtl, switch position */
+[dir="rtl"] .badge {
+  left: auto;
+  right: 65%;
+}
+
+/* Badge animation trigger class */
+.pop {
+  animation: pop calc(2 * var(--main-duration)) ease-out;
+  -webkit-animation: pop calc(2 * var(--main-duration)) ease-out;
+}
+
+/* Keyframes for the "pop" animation effect */
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.4);
+  }
+  60% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ========== DROPDOWN MENU ========== */
+/* Position correction wrapper for the badge (used in navbar icon badge) */
+.badge-wrapper {
+  left: 0%;
+}
+
+/* Dropdown menu appearance and shadow */
+.dropdown-menu {
+  background-color: var(--main-color) !important;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Dropdown toggle styling for alignment */
+.dropdown-toggle {
   display: flex;
   align-items: center;
-  transition: transform 0.2s ease;
+  justify-content: center;
 }
 
-.nav-link:hover {
-  transform: scale(1.05);
+/* Small spacing fix for dropdown caret icon */
+.dropdown-toggle::after {
+  margin-right: 0.255em;
 }
 
-.nav-link:hover .nav-icon,
-.nav-link:hover .nav-text {
-  color: #ccc;
-}
-
-/* Dropdown */
+/* Dropdown item style: text color, padding, and flex centering */
 .dropdown-item {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+  color: var(--main-text-hover-color);
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  display: flex !important;
+  justify-content: center;
+  transition: color var(--main-duration) ease;
+  -webkit-transition: color var(--main-duration) ease;
+  -moz-transition: color var(--main-duration) ease;
+  -ms-transition: color var(--main-duration) ease;
+  -o-transition: color var(--main-duration) ease;
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important; */
+}
+
+/* 
+.dropdown-item:last-child {
+  border-bottom: none !important;
+} */
+
+.dropdown-item::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: var(--main-text-hover-color);
+  transition: width var(--main-duration) ease, left var(--main-duration) ease;
+  border-radius: 2px;
+  -webkit-transition: width var(--main-duration) ease,
+    left var(--main-duration) ease;
+  -moz-transition: width var(--main-duration) ease,
+    left var(--main-duration) ease;
+  -ms-transition: width var(--main-duration) ease,
+    left var(--main-duration) ease;
+  -o-transition: width var(--main-duration) ease, left var(--main-duration) ease;
 }
 
 .dropdown-item:hover {
-  background-color: #fff;
-  border-radius: 4px;
+  color: var(--main-text-hover-color);
+  border-bottom-color: transparent !important; /* hide faint border on hover */
 }
 
-.dropdown-item:hover .nav-text {
-  color: #000;
+.dropdown-item:hover::after {
+  width: 65%; /* or whatever width you prefer */
+  left: 17.5%; /* centers the underline */
 }
 
-/* Cart Badge */
-.badge {
-  transition: transform 0.3s ease, background-color 0.3s ease;
+.dropdown-item:hover {
+  background-color: transparent !important;
 }
 
-/* Responsive Styles */
-@media (max-width: 767px) {
-  /* Center and resize the search bar */
-  input.form-control {
-    width: 80%;
-    margin: 10px auto;
-    display: block;
-  }
-
-  /* Adjust dropdown layout */
-  .nav-item.dropdown {
-    flex-direction: column;
-    margin-bottom: 10px;
-  }
-
-  /* Adjust cart badge for medium devices */
-  .nav-link .badge {
-    left: 0;
-  }
+/* ========== NAVBAR TOGGLER ========== */
+/* Toggler button border color using the focus variable */
+.navbar-toggler {
+  border-color: var(--focus-color) !important;
 }
 
+.navbar-toggler:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 0.25rem rgba(250, 204, 21, 0.5) !important; /* facc15 */
+}
+
+/* Custom hamburger icon with themed stroke color */
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23facc15' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* Light theme override: lighter icon stroke and border color */
+.light-theme .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+.light-theme .navbar-toggler {
+  border-color: var(--main-text-color) !important;
+}
+.light-theme .navbar-toggler:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 0.25rem rgba(204, 204, 204, 0.8) !important; /* ccc */
+}
+
+/* Theme & Language Buttons */
+.nav-theme-btn,
+.nav-lang-btn {
+  height: 38px;
+  padding: 0px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid var(--focus-color);
+  background-color: transparent;
+  color: var(--main-text-color);
+  transition: background-color var(--main-duration) ease-in-out,
+    color var(--main-duration) ease-in-out;
+}
+
+/* Ensure icons inside have consistent size */
+.nav-theme-btn svg,
+.nav-lang-btn svg {
+  font-size: 1.25rem; /* consistent icon size */
+}
+
+/* Optional: ensure language text is vertically centered */
+.nav-lang-btn span {
+  line-height: 1;
+  font-weight: bold;
+}
+
+.nav-theme-btn:hover,
+.nav-lang-btn:hover {
+  background-color: var(--main-text-hover-color);
+  color: var(--main-color);
+}
+
+.light-theme .nav-theme-btn,
+.light-theme .nav-lang-btn {
+  border-color: var(--main-text-color);
+}
+
+/* ========== RESPONSIVE STYLES ========== */
+/* Adjustments for small screens (≤ 575px) */
 @media (max-width: 575px) {
-  /* Fine-tune badge position for small devices */
-  .nav-link .badge {
-    left: 41.5%;
+  /* Center nav links and reduce margin */
+  a.nav-link {
+    margin-right: 0px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Add spacing below dropdown on mobile */
+  .dropdown-menu {
+    margin-bottom: 10px !important;
+  }
+
+  /* Move badge further left on small screens */
+  .badge-wrapper {
+    left: -20% !important;
+  }
+
+  .nav-theme-btn,
+  .nav-lang-btn {
+    width: 70px;
   }
 }
 
-/* Animte to pop up cart badge */
-@keyframes pop {
-  0% {
-    transform: scale(1) translateY(0);
+/* Adjustments for medium screens (≤ 768px) */
+@media (max-width: 768px) {
+  /* Center and resize input field */
+  input.form-control {
+    margin: 10px auto;
+    width: 80% !important;
+    text-align: center;
+    margin-right: auto !important;
+    margin-left: auto !important;
   }
-  30% {
-    transform: scale(1.6) translateY(-6px);
-  }
-  60% {
-    transform: scale(0.9) translateY(3px);
-  }
-  100% {
-    transform: scale(1) translateY(0);
-  }
-}
-
-.badge {
-  display: flex !important;
-}
-
-.pop {
-  animation: pop 0.6s ease-out;
 }

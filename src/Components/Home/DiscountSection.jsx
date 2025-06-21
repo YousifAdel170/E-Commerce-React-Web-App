@@ -9,10 +9,13 @@ import { DISCOUNT_SECTION_IMAGE } from "../../constants/images";
 
 // Import Custom CSS
 import "./DiscountSection.css";
+import { useTranslation } from "react-i18next";
 
 // Component responsible for displaying the discount section
 const DiscountSection = () => {
   const [sectionRef, isVisible] = useInviewAnimation();
+
+  const { t } = useTranslation("home");
 
   return (
     <section aria-label="Laptop Discount Section">
@@ -25,9 +28,11 @@ const DiscountSection = () => {
         >
           <Col sm="6" className="mb-3 mb-md-0">
             <div className="discount-title">
-              خصم يصل حتى
-              <span className="highlighted-percentage"> 30%</span>
-              على أجهزة اللاب توب
+              {t("homeDiscountTitlePart1")}
+              <span className="highlighted-percentage">
+                {t("homeDiscountPercentage")}
+              </span>
+              {t("homeDiscountTitlePart2")}
             </div>
           </Col>
 
@@ -35,7 +40,7 @@ const DiscountSection = () => {
             <img
               className="discount-img"
               src={DISCOUNT_SECTION_IMAGE}
-              alt="Laptop Discount"
+              alt={t("homeDiscountAriaLabel")}
               loading="lazy"
             />
           </Col>

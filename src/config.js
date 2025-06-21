@@ -3,27 +3,6 @@ export const FAVORITE_PRODUCTS_BASE_URL = "http://127.0.0.1:8000/products/";
 export const PRODUCTS_BASE_URL = "http://127.0.0.1:8000/products/";
 export const CATEGORIES_BASE_URL = "http://127.0.0.1:8000/categories/";
 
-// Define the colors for the categories
-export const colors = {
-  light: [
-    "#ffd3e8", // soft pink
-    "#f4dba5", // sand yellow
-    "#55cfdf", // aqua
-    "#ffb3b3", // light red
-    "#a5c8ff", // light blue (matches #0d6efd)
-    "#d0ffe3", // minty green
-  ],
-  dark: [
-    "#0d6efd", // your main theme blue
-    "#00bcd4", // cyan
-    "#8e44ad", // deep purple
-    "#e67e22", // orange
-    "#2ecc71", // green
-    "#e91e63", // pink-red
-    "#ff5722", // vivid orange
-    "#ffc107", // strong yellow
-  ],
-};
 
 // HomePage Title Configuration
 export const CATEGORIES_TITLE = "التصنيفات";

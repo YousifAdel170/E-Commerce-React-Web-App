@@ -1,8 +1,9 @@
-// Import Components from React Bootstrap, React Router, and FontAwesome icons
+// Import Components from react bootstrap
 import {
   Navbar,
   Container,
   Nav,
+  Form,
   FormControl,
   NavDropdown,
   Spinner,
@@ -14,109 +15,129 @@ import {
   faShoppingCart,
   faUser,
   faStore,
+  faGlobe,
+  faSun,
+  faMoon,
 } from "@fortawesome/free-solid-svg-icons";
 
-// Import Custom Hooks
+// i18n
+import { useTranslation } from "react-i18next";
+
+// Hooks
 import NavbarSearchHook from "../../hooks/search/NavbarSearchHook";
 import { NavBarLoginHook } from "../../hooks/Utility/NavBarLoginHook";
 import ViewAllCartItemsHook from "../../hooks/cart/ViewAllCartItemsHook";
 
-// Import data for the navbar (configuration)
-import { navbarData } from "../../data/utilities/navbar";
+// Constants
+import {
+  ADMIN_ALL_PRODUCTS_PATH,
+  GENERAL_HOME_PATH,
+  USER_PROFILE_PATH,
+} from "../../constants/paths";
+import { SEARCH_TYPE } from "../../constants/inputTypes";
+import { USER_ROLES } from "../../constants/general";
 
-// Import CSS styles
+// Styles
 import "./NavBarLogin.css";
 
-// Component responsible for rendering the navigation bar with login functionality
+import NavbarSettingsHook from "../../hooks/Utility/NavbarSettingsHook";
+import {
+  LANGUAGE_ENGLISH,
+  LANGUAGE_LABEL_AR,
+  LANGUAGE_LABEL_EN,
+} from "../../constants/settings";
+
 const NavBarLogin = () => {
-  // Custom hooks to manage search input, user login state, and cart items
+  const { t } = useTranslation("navbar");
+
   const [searchWord, onChangeSearch] = NavbarSearchHook();
   const [user, logOut, loggingOut] = NavBarLoginHook();
   const [, numberOfItems, , , , , , pop] = ViewAllCartItemsHook();
+  const [
+    onChangeTheme,
+    onChangeLanguage,
+    isDark,
+    lang,
+    isThemeLoading,
+    isLanguageLoading,
+  ] = NavbarSettingsHook();
 
   return (
-    // Main navigation bar with sticky behavior and responsive design
-    <nav role="navigation" aria-label="Main Navigation">
-      <Navbar className="sticky-top" bg="dark" variant="dark" expand="sm">
-        <Container className="d-flex justify-content-between align-items-center">
-          {/* Brand logo and title with link to home page */}
-          <Navbar.Brand>
-            <Link
-              to={navbarData?.home?.path}
-              aria-label={navbarData?.home?.ariaLabel}
-              className="d-flex align-items-center"
-            >
-              <FontAwesomeIcon
-                icon={faStore}
-                size="2x"
-                className="text-light"
-                title="Logo"
-              />
-              <span className="me-2 fs-5 fw-bold text-light">متجري</span>
-            </Link>
+    <nav role="navigation" aria-label="Main Navigation" data-testid="navbar">
+      <Navbar className="sticky-top" expand="sm">
+        <Container>
+          {/* Logo */}
+          <Navbar.Brand
+            as={Link}
+            to={GENERAL_HOME_PATH}
+            title={t("homeAriaLabel")}
+            className="d-flex align-items-center fw-bold fs-4"
+          >
+            <FontAwesomeIcon icon={faStore} className="me-2 fs-2" />
+            <span className="d-flex align-items-center fw-bold">
+              {t("title")}
+            </span>
           </Navbar.Brand>
 
-          {/* Toggle button for responsive navigation */}
+          {/* Toggler */}
           <Navbar.Toggle
             aria-controls="basic-navbar-nav"
             aria-label="Toggle navigation"
           />
 
-          {/* Collapsible section containing search input and nav links */}
           <Navbar.Collapse id="basic-navbar-nav">
-            {/* Search input in the navbar */}
-            <FormControl
-              value={searchWord}
-              onChange={onChangeSearch}
-              type={navbarData?.search?.type}
-              placeholder={navbarData?.search?.placeholder}
-              className="mx-5 text-center"
-              aria-label={navbarData?.search?.ariaLabel}
-              autoComplete="off"
-              spellCheck="false"
-            />
+            {/* Search */}
+            <Form className="d-flex mx-2 w-100 justify-content-center">
+              <FormControl
+                value={searchWord}
+                onChange={onChangeSearch}
+                type={SEARCH_TYPE}
+                placeholder={t("searchPlaceholder")}
+                aria-label={t("searchAriaLabel")}
+                title={t("searchAriaLabel")}
+                autoComplete="off"
+                spellCheck="false"
+              />
+            </Form>
 
-            {/* Navigation links (Login, Cart, Dropdown) */}
-            <Nav className="me-auto align-items-center">
-              {/* If user is logged in, show dropdown with user name */}
+            <Nav className="d-flex align-items-center gap-2">
+              {/* User/Login */}
               {user ? (
                 <NavDropdown
                   title={
                     <>
-                      <FontAwesomeIcon
-                        icon={faUser}
-                        className="nav-icon ms-1"
-                      />
-                      {user?.name}
+                      <FontAwesomeIcon icon={faUser} className="ms-1" />
+                      <span className="ms-1">{user?.name}</span>
                     </>
                   }
-                  id="basic-nav-dropdown"
-                  role="menu"
-                  menuVariant="dark"
+                  id="user-dropdown"
                   align="end"
+                  aria-label={t("userDropdownLabel")}
                 >
-                  {/* Link to user role-specific page (Admin, User, etc.) */}
                   <NavDropdown.Item
                     as={Link}
-                    to={navbarData.role[user?.role].path}
-                    className="nav-text"
-                    role="menuitem"
-                    tabIndex={0}
+                    to={
+                      user?.role === USER_ROLES.ADMIN
+                        ? ADMIN_ALL_PRODUCTS_PATH
+                        : USER_PROFILE_PATH
+                    }
+                    title={
+                      user?.role === USER_ROLES.ADMIN
+                        ? t("adminControlPanel")
+                        : t("userProfile")
+                    }
                   >
-                    {navbarData.role[user?.role].title}
+                    {user?.role === USER_ROLES.ADMIN
+                      ? t("adminControlPanel")
+                      : t("userProfile")}
                   </NavDropdown.Item>
 
-                  {/* Divider between role page and logout */}
-                  <NavDropdown.Divider />
-
-                  {/* Logout button (shows spinner while logging out) */}
                   <NavDropdown.Item
-                    as="button"
-                    className="nav-text"
                     onClick={logOut}
                     disabled={loggingOut}
-                    role="menuitem"
-                    tabIndex={0}
+                    aria-disabled={loggingOut}
+                    aria-busy={loggingOut}
+                    title={t("logout")}
                   >
                     {loggingOut ? (
                       <>
@@ -124,61 +145,82 @@ const NavBarLogin = () => {
                           animation="border"
                           size="sm"
                           role="status"
-                          aria-hidden="true"
+                          aria-live="polite"
                           className="me-2"
                         />
-                        تسجيل خروج...
+                        {t("loggingOut")}
                       </>
                     ) : (
-                      "تسجيل خروج"
+                      t("logout")
                     )}
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
-                // If user is not logged in, show login link
                 <Link
                   to="/login"
-                  className="d-flex justify-content-center align-items-center nav-link flex-nowrap"
-                  aria-label="Go to login page"
+                  className="nav-link d-flex align-items-center"
+                  title={t("login")}
                 >
-                  <FontAwesomeIcon
-                    icon={faSignInAlt}
-                    className="nav-icon ms-1"
-                  />
-                  <span className="nav-text">دخول</span>
+                  <FontAwesomeIcon icon={faSignInAlt} className="me-1" />
+                  {t("login")}
                 </Link>
               )}
 
-              {/* If the logged-in user has role "user", show the shopping cart link */}
-              {user?.role === "user" && (
+              {/* Cart */}
+              {user?.role === USER_ROLES.USER && (
                 <Link
-                  className="d-flex justify-content-center position-relative align-items-center me-2 nav-link"
                   to="/cart"
-                  aria-label={`العربة تحتوي على ${numberOfItems || 0} عناصر`}
+                  className="nav-link position-relative d-flex align-items-center"
+                  aria-label={`${t("cartContains")} ${numberOfItems} ${t(
+                    "cartItems"
+                  )}`}
+                  title={`${t("cart")} (${numberOfItems} ${t("cartItems")})`}
                 >
-                  <div className="d-flex justify-content-center align-items-center flex-nowrap">
-                    <FontAwesomeIcon
-                      icon={faShoppingCart}
-                      className="nav-icon ms-1"
-                    />
-                    <span className="nav-text">العربة</span>
-                  </div>
-                  {/* Display number of items in the cart if greater than 0 */}
+                  <FontAwesomeIcon icon={faShoppingCart} className="me-1" />
+                  {t("cart")}
                   {numberOfItems > 0 && (
-                    <div className="position-absolute top-25 start-0 translate-middle">
-                      <span
-                        className={`badge rounded-pill bg-danger ${
-                          pop ? "pop" : ""
-                        }`}
-                        aria-live="polite"
-                        aria-atomic="true"
-                      >
-                        {numberOfItems}
-                      </span>
-                    </div>
+                    <span
+                      className={`badge rounded-pill bg-danger position-absolute translate-middle ${
+                        pop ? "pop" : ""
+                      }`}
+                      aria-live="polite"
+                      aria-atomic="true"
+                      title={`${numberOfItems} ${t("cartItems")}`}
+                    >
+                      {numberOfItems}
+                    </span>
                   )}
                 </Link>
               )}
+
+              {/* Theme Toggle */}
+              <button
+                className="nav-theme-btn"
+                onClick={onChangeTheme}
+                aria-label={t("toggleTheme")}
+                title={t("themeToggleLabel")}
+                disabled={isThemeLoading}
+                aria-busy={isThemeLoading}
+              >
+                <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
+              </button>
+
+              {/* Language Toggle */}
+              <button
+                className="nav-lang-btn"
+                onClick={onChangeLanguage}
+                aria-label={t("toggleLanguage")}
+                title={t("languageToggleLabel")}
+                disabled={isLanguageLoading}
+                aria-busy={isLanguageLoading}
+              >
+                <FontAwesomeIcon icon={faGlobe} />
+                <span>
+                  {lang === LANGUAGE_ENGLISH
+                    ? LANGUAGE_LABEL_AR
+                    : LANGUAGE_LABEL_EN}
+                </span>
+              </button>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -187,5 +229,4 @@ const NavBarLogin = () => {
   );
 };
 
-// Export the component for use in other parts of the app
 export default NavBarLogin;

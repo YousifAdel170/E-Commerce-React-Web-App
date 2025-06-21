@@ -2,7 +2,17 @@
 
 .sub-title,
 .shopping-now {
-  color: var(--main-sub-title-color);
+  font-weight: bold;
+}
+
+.light-theme .sub-title,
+.light-theme .shopping-now {
+  color: var(--main-color);
+}
+
+.dark-theme .sub-title,
+.dark-theme .shopping-now {
+  color: var(--main-text-color) !important;
 }
 
 .sub-title {
@@ -12,29 +22,39 @@
 }
 
 .shopping-now {
-  display: inline-block;
   padding: 5px 25px;
-  text-align: center;
-  border: 1px solid var(--main-sub-title-color);
-  border-radius: 14px;
+  border: 1px solid var(--main-color);
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  flex: 0 0 auto;
+  transition: background-color var(--main-duration) ease,
+    color var(--main-duration) ease;
+  -webkit-transition: background-color var(--main-duration) ease,
+    color var(--main-duration) ease;
+  -moz-transition: background-color var(--main-duration) ease,
+    color var(--main-duration) ease;
+  -ms-transition: background-color var(--main-duration) ease,
+    color var(--main-duration) ease;
+  -o-transition: background-color var(--main-duration) ease,
+    color var(--main-duration) ease;
+
+  color: var(--main-color) !important;
+
+  border-radius: 14px;
+}
+
+.dark-theme .shopping-now {
+  border-color: var(--main-text-color);
 }
 
 .shopping-now:hover,
 .shopping-now:focus {
-  background-color: var(--main-sub-title-color);
-  color: #f9f9f9;
-  outline: 2px solid var(--main-sub-title-color);
-  outline-offset: 2px;
+  background-color: var(--main-text-color);
+  color: var(--main-color) !important;
 }
 
-.d-flex {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  align-items: center;
+.light-theme .shopping-now:hover,
+.light-theme .shopping-now:focus {
+  background-color: var(--main-color);
+  color: var(--main-text-color) !important;
 }
 
 /* End Styling of SubTitle Component */

@@ -1,96 +1,103 @@
+/*================== THEME VARIABLES ==================*/
+
+:root {
+  /* Background colors */
+  --card-bg-light: #fff;
+  --card-bg-dark: #0f172a;
+
+  /* Text colors */
+  --text-light: #3b82f6; /* bright blue for light theme text */
+  --text-dark: #facc15; /* golden yellow for dark theme text */
+
+  /* Subtle backgrounds */
+  --subtle-light: #eee;
+  --subtle-dark: #2c2c2c;
+
+  /* Highlight greens */
+  --highlight-green: #28a745;
+  --highlight-green-dark: #5ec27f;
+
+  /* Discount badges */
+  --discount-badge: #28a745;
+  --discount-badge-dark: #43d17a;
+
+  /* Overlay background with opacity for better UX */
+  --overlay-bg-light: rgba(59, 130, 246, 0.7); /* #3b82f6 with 70% opacity */
+  --overlay-bg-dark: rgba(51, 51, 51, 0.7); /* #facc15 with 70% opacity */
+}
+
 /*================== GLOBAL & UTILITIES ==================*/
 
 /* Focus Rings - Accessibility */
-.product-link:focus-visible,
-.action-btn:focus-visible {
-  outline: 3px solid #ffc107;
+.product-link:focus-visible {
   outline-offset: 3px;
-}
-
-/* Pointer cursor and padding for buttons */
-.action-btn {
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
-  font-family: "Almarai", sans-serif;
-  color: #6c757d;
-  border: none;
-  background: none;
-  transition: color 0.3s ease;
-}
-
-.action-btn:hover,
-.action-btn:focus {
-  color: #333;
-  font-weight: bold;
-}
-
-.action-btn:focus-visible {
-  outline: 2px solid #005fcc; /* blue ring */
-  outline-offset: 2px;
+  outline: 3px solid var(--text-light);
 }
 
 /*================== PRODUCT CARD ==================*/
 
-/* Hover effects on card */
 .product-card {
   box-shadow: 0 2px 2px 0 rgba(151, 151, 151, 0.5) !important;
-  background-color: #fff !important;
   border-radius: 8px !important;
-  -webkit-border-radius: 8px !important;
-  -moz-border-radius: 8px !important;
-  -ms-border-radius: 8px !important;
-  -o-border-radius: 8px !important;
   margin-bottom: 10px;
   width: 100%;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  -webkit-transition: box-shadow 0.3s ease, transform 0.3s ease;
-  -moz-transition: box-shadow 0.3s ease, transform 0.3s ease;
-  -ms-transition: box-shadow 0.3s ease, transform 0.3s ease;
-  -o-transition: box-shadow 0.3s ease, transform 0.3s ease;
-
-  /* Start hidden */
   opacity: 0;
   transform: translateY(30px);
+  transition: box-shadow var(--main-duration) ease,
+    transform var(--main-duration) ease;
+  -webkit-transition: box-shadow var(--main-duration) ease,
+    transform var(--main-duration) ease;
+  -moz-transition: box-shadow var(--main-duration) ease,
+    transform var(--main-duration) ease;
+  -ms-transition: box-shadow var(--main-duration) ease,
+    transform var(--main-duration) ease;
+  -o-transition: box-shadow var(--main-duration) ease,
+    transform var(--main-duration) ease;
 }
 
 .product-card:hover,
 .product-card:focus-within {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-  outline: none;
-  transform: translateY(-4px);
-  transition: transform 0.3s ease;
+  transform: translateY(-6px) scale(1.01);
 }
 
-/* Image zoom on hover */
-.product-card:hover .image-container img,
-.product-card:focus-within .image-container img {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
+.product-card:focus-visible {
+  outline: 3px solid var(--text-light);
+  outline-offset: 3px;
 }
 
-/* Product link reset (inherit color) */
-.product-link {
-  color: inherit;
-}
-
+/* Remove product-card-description margin/padding because info is on overlay now */
 .product-card-description {
-  background-color: #eee;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column;
+  display: none;
 }
 
-/* Product title styling */
-.product-title {
-  font-family: "Almarai", sans-serif;
-  color: red;
-  letter-spacing: 0;
-  line-height: 1.2;
-  font-weight: 700;
-  font-size: 1.25rem;
-  margin-bottom: 0.25rem;
+/* Title styling will be inside overlay */
+
+/*================== DARK THEME ==================*/
+
+.dark-theme .product-card {
+  background-color: var(--card-overlay-bg-dark) !important;
+  color: var(--text-dark) !important;
+}
+
+.dark-theme .price-container span {
+  color: var(--text-dark);
+}
+
+.dark-theme .price-container .price-discounted {
+  color: var(--highlight-green-dark) !important;
+}
+
+.dark-theme .discount-badge {
+  background-color: var(--discount-badge-dark) !important;
+}
+
+.dark-theme .image-container img {
+  border-radius: 8px 8px 0 0 !important;
+  -webkit-border-radius: 8px 8px 0 0 !important;
+  -moz-border-radius: 8px 8px 0 0 !important;
+  -ms-border-radius: 8px 8px 0 0 !important;
+  -o-border-radius: 8px 8px 0 0 !important;
 }
 
 /*================== IMAGE ==================*/
@@ -102,19 +109,132 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fefefe;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  background-color: var(--card-bg-light);
+  border-radius: 12px;
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: transform var(--main-duration) ease;
+  -webkit-transition: transform var(--main-duration) ease;
+  -moz-transition: transform var(--main-duration) ease;
+  -ms-transition: transform var(--main-duration) ease;
+  -o-transition: transform var(--main-duration) ease;
+}
+
+.dark-theme .image-container {
+  background-color: var(--card-bg-dark) !important;
 }
 
 .image-container img {
   max-height: 100%;
   max-width: 100%;
   object-fit: contain;
-  border-radius: 12px 12px 0 0;
+  border-radius: 12px;
+  transition: transform var(--main-duration) ease;
+  -webkit-transition: transform var(--main-duration) ease;
+  -moz-transition: transform var(--main-duration) ease;
+  -ms-transition: transform var(--main-duration) ease;
+  -o-transition: transform var(--main-duration) ease;
+}
+
+.product-card:hover .image-container img,
+.product-card:focus-within .image-container img {
+  transform: scale(1.05);
+}
+
+/*================== OVERLAY ==================*/
+
+.image-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -70%;
+  padding: 10px 12px;
+  background-color: var(--overlay-bg-light);
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: flex-end;
+  font-family: "Almarai", sans-serif;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  transition: bottom var(--main-duration) ease;
+  -webkit-transition: bottom var(--main-duration) ease;
+  -moz-transition: bottom var(--main-duration) ease;
+  -ms-transition: bottom var(--main-duration) ease;
+  -o-transition: bottom var(--main-duration) ease;
+}
+
+/* On dark theme, switch overlay & text colors */
+.dark-theme .image-overlay {
+  background-color: var(--overlay-bg-dark) !important;
+  color: var(--text-dark) !important;
+}
+
+.product-card:hover .image-overlay,
+.product-card:focus-within .image-overlay {
+  bottom: 0;
+}
+
+.image-overlay .product-title {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dark-theme .image-overlay .product-title {
+  /* color: var(--text-dark) !important; */
+}
+
+.image-overlay .fav-icon {
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
   transition: transform 0.3s ease;
+  margin-left: 8px;
+}
+
+.dark-theme .fav-icon {
+  color: var(--text-dark) !important;
+}
+
+.image-overlay .fav-icon.animate {
+  animation: pop-scale 0.3s ease forwards;
+  -webkit-animation: pop-scale 0.3s ease forwards;
+}
+
+.image-overlay .rating-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.image-overlay .price-container {
+  gap: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.image-overlay .price-container span,
+.image-overlay .price-container del {
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.image-overlay .price-discounted {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.dark-theme .image-overlay {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
 }
 
 /*================== DISCOUNT BADGE ==================*/
@@ -124,7 +244,7 @@
   top: 12px;
   right: -36px;
   width: 120px;
-  background-color: #28a745;
+  background-color: var(--discount-badge);
   color: white;
   font-weight: 700;
   font-size: 0.85rem;
@@ -140,12 +260,6 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-@keyframes fadeInBadge {
-  to {
-    opacity: 1;
-  }
-}
-
 /*================== RATING ==================*/
 
 .star-rating svg {
@@ -154,50 +268,7 @@
   height: 20px;
 }
 
-/*================== PRICE ==================*/
-
-.price-container {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-}
-
-.price-container span {
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: #272727;
-}
-
-.price-container span.price-discounted {
-  color: #28a745;
-  font-weight: 700;
-  font-size: 1.2rem;
-  transition: color 0.3s ease;
-}
-
-.price-container .price-discounted:hover {
-  color: #218838; /* darker green on hover */
-  cursor: default;
-}
-
-.price-container del {
-  color: #777;
-  font-size: 1rem;
-  font-weight: 400;
-}
-
-/*================== Favorite Icon ==================*/
-.fav-icon {
-  height: 26px;
-  width: 26px;
-  cursor: pointer;
-  text-align: center;
-  transition: transform 0.3s ease;
-}
-
-.fav-icon.animate {
-  animation: pop-scale 0.3s ease forwards;
-}
+/*================== FAVORITE ICON ANIMATION ==================*/
 
 @keyframes pop-scale {
   0% {
@@ -220,5 +291,23 @@
 
   .image-container {
     height: 180px;
+  }
+
+  .image-overlay {
+    padding: 6px 8px;
+  }
+
+  .image-overlay .product-title {
+    font-size: 0.85rem;
+  }
+
+  .image-overlay .price-container span,
+  .image-overlay .price-container del {
+    font-size: 0.8rem;
+  }
+
+  .image-overlay .fav-icon {
+    height: 20px;
+    width: 20px;
   }
 }

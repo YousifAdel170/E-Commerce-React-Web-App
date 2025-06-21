@@ -1,82 +1,128 @@
-/* Importing necessary components from react-bootstrap and react-router */
-import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
-/* Importing Toast container for notifications */
 import { ToastContainer } from "react-toastify";
-
-/* Importing custom hook for login logic */
 import LoginHook from "../../hooks/auth/LoginHook";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { EMAIL_TYPE, PASSWORD_TYPE } from "../../constants/inputTypes";
 
-// Imporrt Custom Components
 import InputField from "../../Components/Utility/InputField";
 
-// Import Constant Data
-import { loginData } from "../../data/auth/login";
+const isDark = false; // Replace with dynamic theme if needed
 
-// Component to handle login page UI and logic
 const LoginPage = () => {
-  // Destructuring states and functions from custom login hook
   const [email, password, , isPress, onChangeInput, handleSubmit] = LoginHook();
+  const { t } = useTranslation("auth");
 
-  // Set language for placeholder text (currently Arabic)
-  const language = "ar";
+  const backgroundColor = isDark ? "#1f1f1f" : "#ffffff";
+  const containerColor = isDark ? "#121212" : "#f0f0f0";
+  const textColor = isDark ? "#ffffff" : "#000000";
 
-  // Preparing form input fields using current values
-  const formData = loginData(email, password);
-
-  // JSX returned for rendering the login page
   return (
-    <Container style={{ flex: "1" }}>
-      <Row className="py-5 d-flex justify-content-center">
-        <Col sm="12" className="d-flex flex-column">
-          {/* Login page title */}
-          <label className="mx-auto title-login">تسجيل الدخول</label>
+    <Container
+      fluid
+      className={`d-flex align-items-center justify-content-center ${
+        isDark ? "dark-theme" : "light-theme"
+      }`}
+      style={{ flex: "1", backgroundColor: containerColor }}
+    >
+      <Row className="w-100 justify-content-center">
+        <Col xs={11} sm={10} md={6} lg={4}>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            style={{
+              backgroundColor,
+              borderRadius: "12px",
+              padding: "30px",
+              boxShadow: "0 0 20px rgba(0, 0, 0, 0.3)",
+              color: textColor,
+            }}
+          >
+            <h2 className="text-center mb-4">{t("title")}</h2>
+            <Form onSubmit={handleSubmit}>
+              {/* Email Field (you can optionally replace with InputField) */}
+              <Form.Group controlId="formEmail" className="mb-3">
+                <Form.Label style={{ color: textColor }}>
+                  {t("email")}
+                </Form.Label>
 
-          {/* Dynamically render input fields using loginData config */}
-          {formData.map((input, index) => (
-            <InputField
-              key={index}
-              value={input?.value}
-              onChangeInput={onChangeInput}
-              onChangeInputType={input.onChangeInputType}
-              placeholder={input?.placeholder[language]}
-              type={input?.type}
-              className={input?.className}
-            />
-          ))}
+                <InputField
+                  value={email}
+                  onChangeInput={onChangeInput}
+                  onChangeInputType={EMAIL_TYPE}
+                  type={EMAIL_TYPE}
+                  placeholder={t("emailPlaceholder")}
+                  name={EMAIL_TYPE}
+                  required
+                  isDark={isDark}
+                />
+              </Form.Group>
 
-          {/* Login button to trigger submission */}
-          <button onClick={handleSubmit} className="btn-login mx-auto mt-3">
-            تسجيل الدخول
-          </button>
+              {/* Password Field using your custom InputField with show/hide */}
+              <Form.Group controlId="formPassword" className="mb-3">
+                <Form.Label style={{ color: textColor }}>
+                  {t("password")}
+                </Form.Label>
 
-          {/* Redirect to register page if user does not have an account */}
-          <label className="mx-auto mt-3">
-            ليس لديك حساب ؟{" "}
-            <Link to={"/register"}>
-              <span className="text-danger">اضغط هنا</span>
-            </Link>
-          </label>
+                <InputField
+                  value={password}
+                  onChangeInput={onChangeInput}
+                  onChangeInputType={PASSWORD_TYPE}
+                  placeholder={t("passwordPlaceholder")}
+                  type={PASSWORD_TYPE}
+                  required
+                  isDark={isDark}
+                />
+              </Form.Group>
 
-          {/* Link to forgot password page */}
-          <label className="mx-auto mt-3">
-            <Link to="/user/forgot-password" style={{ color: "red" }}>
-              هل نسيت كلمه السر
-            </Link>
-          </label>
-        </Col>
+              <Button
+                variant="danger"
+                type="submit"
+                className="w-100 fw-bold py-2"
+                style={{ fontSize: "1.1rem", borderRadius: "6px" }}
+                disabled={isPress}
+              >
+                {isPress ? (
+                  <Spinner animation="border" size="sm" />
+                ) : (
+                  t("loginButton")
+                )}
+              </Button>
 
-        <Col className="d-flex justify-content-center mt-4">
-          {/* Show spinner while waiting for login request */}
-          {isPress ? <Spinner animation="border" variant="dark" /> : null}
+              <div className="mt-3 text-center">
+                <small>{t("dontHaveAccount")}</small>
+                <Link
+                  to="/register"
+                  className="fw-bold mx-2"
+                  style={{ color: isDark ? "#ffc107" : "#0d6efd" }}
+                >
+                  {t("pressHere")}
+                </Link>
+              </div>
+
+              <div className="mt-2 text-center">
+                <Link
+                  to="/user/forgot-password"
+                  style={{
+                    color: isDark ? "#b0bec5" : "#b0bec5",
+                    textDecoration: "underline",
+                    fontStyle: "italic",
+                  }}
+                  className="forgot-password-link"
+                >
+                  {t("forgotPassword")}
+                </Link>
+              </div>
+            </Form>
+          </motion.div>
         </Col>
       </Row>
 
-      {/* Toast notifications container */}
       <ToastContainer />
     </Container>
   );
 };
 
-export default LoginPage; // Exporting component for use in router or parent component
+export default LoginPage;

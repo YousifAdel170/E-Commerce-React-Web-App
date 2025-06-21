@@ -20,6 +20,7 @@ import {
   PASSWORD_REQUIRED_MESSAGE,
 } from "../../constants/messagesConstants";
 import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
+import { EMPTY } from "../../constants/general";
 
 // Hook Responsible for handling user login
 const LoginHook = () => {
@@ -48,7 +49,7 @@ const LoginHook = () => {
   //   Function To Validate Inputs Before Submit
   const validateInputs = () => {
     // Validate Email Address
-    if (email === "") {
+    if (email === EMPTY.TEXT) {
       notify(EMAIL_REQUIRED_MESSAGE, WARNING);
       return false;
     } else {
@@ -58,7 +59,7 @@ const LoginHook = () => {
       }
     }
     // Validate Password
-    if (password === "") {
+    if (password === EMPTY.TEXT) {
       notify(PASSWORD_REQUIRED_MESSAGE, WARNING);
       return false;
     }
@@ -67,7 +68,8 @@ const LoginHook = () => {
   };
 
   //   Function To Submit the Data [Login]
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
     const fetchCartData = async () => await dispatch(getAllCartItems());
 
     // Validate Inputs Before Submit
@@ -77,12 +79,7 @@ const LoginHook = () => {
 
     // Start The Login [Loading ON] &  Dispatch the action To Login User
     setIsPress(true);
-    await dispatch(
-      loginUser({
-        email,
-        password,
-      })
-    );
+    await dispatch(loginUser({ email, password }));
     setIsPress(false);
     // End The Login [Loading OFF]
 
@@ -108,7 +105,7 @@ const LoginHook = () => {
       // Check if the user has been registered successfully
       if (result) {
         // Set The Token In the Local Storage [To Get The User Data]
-        if (result.data && result.data.token) {
+        if (result?.data?.token) {
           // Set The Token when the user has been registered
           localStorage.setItem("token", result.data.token);
 

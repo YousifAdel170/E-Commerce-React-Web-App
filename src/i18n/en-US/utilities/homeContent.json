@@ -1,0 +1,24 @@
+{
+  "homeSliderTitle": "Shop Now",
+  "homeSliderParagraph": "Enjoy!  50% off on your purchase!",
+
+  "homeCategoriesTitle": "Categories",
+  "homeThereIsNoCategories": "No categories are available at the moment.",
+  "homeLoadingCategoriesAriaLabel": "Loading categories",
+
+  "homeMostSoldTitle": "Best Sellers",
+  "homeThereIsNoMostSold": "No best-selling products are available right now.",
+
+  "homeNewestTitle": "New Arrivals",
+  "homeThereIsNoNewest": "No new products have been added yet.",
+
+  "homeMostCommonBrandsTitle": "Top Brands",
+  "homeThereIsNoMostCommonBrands": "No brands are available at this time.",
+
+  "homeMoreButton": "More",
+
+  "homeDiscountTitlePart1": "Discount up to",
+  "homeDiscountTitlePart2": "on laptops",
+  "homeDiscountPercentage": "30%",
+  "homeDiscountAriaLabel": "Discount up to 30% on laptops"
+}

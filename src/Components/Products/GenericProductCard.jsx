@@ -14,6 +14,10 @@ import { deleteModal, editModal } from "../../data/utilities/modalMessages";
 // Import Custom Hook
 import { calculateDiscounts } from "../../hooks/Utility/useCalculateDiscounts";
 
+// Import Constants
+import { USER_ROLES } from "../../constants/general";
+
+// Component responsible to display the product card
 const GenericProductCard = ({
   role,
   item,
@@ -35,7 +39,7 @@ const GenericProductCard = ({
 
   return (
     <Col xs="12" sm="6" md="5" lg="4">
-      {role === "admin" ? (
+      {role === USER_ROLES.ADMIN ? (
         <>
           {/* Delete Confirmation Modal */}
           <ModalComponent
@@ -68,7 +72,7 @@ const GenericProductCard = ({
         aria-labelledby={`product-title-${item?._id}`}
         role="group"
       >
-        {role === "admin" ? (
+        {role === USER_ROLES.ADMIN ? (
           <>
             {/* Action buttons for Edit/Delete */}
             <Col className="d-flex justify-content-between px-3 pt-3">
@@ -133,7 +137,7 @@ const GenericProductCard = ({
           >
             {item?.title}
 
-            {role != "admin" ? (
+            {role != USER_ROLES.ADMIN ? (
               <>
                 {/* Favorite Button */}
                 <img
@@ -150,7 +154,7 @@ const GenericProductCard = ({
 
           <div
             id={`product-desc-${item?._id}`}
-            className="d-flex align-items-center justify-content-between "
+            className="d-flex align-items-center justify-content-between"
           >
             {/* Display rating stars */}
             <StarRating rating={item?.ratingsAverage || 0} />
@@ -160,7 +164,7 @@ const GenericProductCard = ({
               {item?.priceAfterDiscount ? (
                 <>
                   <span className="price-discounted">
-                    {item?.priceAfterDiscount} جنيه
+                    {item?.priceAfterDiscount}
                   </span>
                   <del aria-label={`Original price ${item?.price} جنيه`}>
                     {item?.price} جنيه

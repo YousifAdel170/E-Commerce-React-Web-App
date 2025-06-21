@@ -1,0 +1,29 @@
+{
+  "title": "متجري",
+  "loggingOut": "جارٍ تسجيل الخروج...",
+  "logout": "تسجيل الخروج",
+  "loggingIn": "جارٍ تسجيل الدخول...",
+  "login": "تسجيل الدخول",
+
+  "search": "بحث",
+  "searchPlaceholder": "ابحث عن المنتجات",
+  "searchAriaLabel": "ابحث عن المنتجات في المتجر",
+  "searchRole": "بحث",
+
+  "cart": "العربة",
+  "cartContains": "عربة التسوق تحتوي على",
+  "cartItems": "عناصر",
+  "cartAriaLabel": "عربة التسوق تحتوي على {{count}} عناصر",
+
+  "adminControlPanel": "لوحة التحكم",
+  "userProfile": "الملف الشخصي",
+  "userDropdownLabel": "خيارات حساب المستخدم",
+
+  "homeAriaLabel": "الصفحة الرئيسية",
+
+  "toggleTheme": "تبديل الوضع الداكن/الفاتح",
+  "toggleLanguage": "تبديل اللغة",
+
+  "themeToggleLabel": "التبديل بين الوضع الداكن والوضع الفاتح",
+  "languageToggleLabel": "تبديل اللغة"
+}

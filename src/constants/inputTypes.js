@@ -1,6 +1,23 @@
-// Types of Inputs
+// Types of Inputs + same in name for the input
 export const NAME_TYPE = "name";
 export const EMAIL_TYPE = "email";
 export const PASSWORD_TYPE = "password";
 export const CONFIRMATION_PASSWORD_TYPE = "confirmPassword";
 export const PHONE_TYPE = "phone";
+export const TEXT_TYPE = "text";
+export const NUMBER_TYPE = "number";
+export const DATE_TYPE = "date";
+export const TIME_TYPE = "time";
+export const FILE_TYPE = "file";
+export const SELECT_TYPE = "select";
+export const CHECKBOX_TYPE = "checkbox";
+export const RADIO_TYPE = "radio";
+export const TEXTAREA_TYPE = "textarea";
+export const HIDDEN_TYPE = "hidden";
+export const BUTTON_TYPE = "button";
+export const SUBMIT_TYPE = "submit";
+export const RESET_TYPE = "reset";
+export const SEARCH_TYPE = "search";
+export const COLOR_TYPE = "color";
+export const RANGE_TYPE = "range";
+export const URL_TYPE = "url";

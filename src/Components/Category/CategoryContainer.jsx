@@ -6,7 +6,7 @@ import { Row, Spinner } from "react-bootstrap";
 // Import Custom Components
 import CartegoryCard from "./CartegoryCard";
 
-import { colors } from "../../config";
+import { colors } from "../../constants/colors";
 
 // Component Responsible for displaying the Category Container
 const CategoryContainer = ({ categories, loading }) => {

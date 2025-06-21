@@ -1,13 +1,12 @@
-// Importing necessary libraries and hooks from React and React Bootstrap
+// Import hooks from react and react-i18next
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
+// Impot Components from React Bootstrap
 import { Carousel } from "react-bootstrap";
 
-// Import slider title , delay, slider items and paragraph from constants and data files
-import { SLIDER_TITLE } from "../../constants/titles";
-import {
-  SLIDER_PARAGRAPH,
-  slidersItems,
-} from "../../data/utilities/slidersItems";
+// Import data for the slider items and delay constant
+import { slidersItems } from "../../data/utilities/slidersItems";
 import { SLIDER_DELAY } from "../../constants/delays";
 
 // Import necessary CSS styles for the component
@@ -15,8 +14,13 @@ import "./Slider.css";
 
 // Component Responsible for rendering the slider
 const Slider = () => {
+  // Using the useTranslation hook to access translation functions
+  const { t } = useTranslation("home");
+
   // State to manage the active index of the carousel
   const [index, setIndex] = useState(0);
+
+  // Function to handle the selection of a carousel item
   const handleSelect = (selectedIndex) => setIndex(selectedIndex);
 
   // Returning the carousel component with multiple items
@@ -32,10 +36,10 @@ const Slider = () => {
               interval={SLIDER_DELAY}
             >
               <div className="d-flex justify-content-center align-items-center flex-column-mobile">
-                <img src={item.image} alt={`${SLIDER_TITLE} Image`} />
+                <img src={item.image} alt={`${t("homeSliderTitle")} Image`} />
                 <div>
-                  <h3 className="slider-title">{SLIDER_TITLE}</h3>
-                  <p className="slider-text">{SLIDER_PARAGRAPH}</p>
+                  <h3 className="slider-title">{t("homeSliderTitle")}</h3>
+                  <p className="slider-text">{t("homeSliderParagraph")}</p>
                 </div>
               </div>
             </Carousel.Item>

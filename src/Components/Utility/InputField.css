@@ -1,20 +1,60 @@
-/* Start of styling Input Field Component */
+/* ========== InputField Component Styles ========== */
 
 .user-input {
-  box-sizing: border-box;
-  height: 37px;
-  width: 375px;
-  border: 1px solid #979797;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
   border-radius: 8px;
+  border: 1px solid var(--input-border);
+  outline: none;
+  transition: all var(--main-duration) ease;
+  -webkit-transition: all var(--main-duration) ease;
+  -moz-transition: all var(--main-duration) ease;
+  -ms-transition: all var(--main-duration) ease;
+  -o-transition: all var(--main-duration) ease;
+}
+
+.input-light {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.input-dark {
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--input-border);
+}
+
+.user-input:focus {
+  box-shadow: 0 0 0 3px var(--focus-glow);
 }
 
 .user-input.is-invalid {
-  border-color: red;
+  border-color: red !important;
+  box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.2);
+}
+
+.toggle-password-icon {
+  position: absolute;
+  inset-inline-end: 1rem; /* handles left/right based on direction */
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: var(--focus-border);
+  transition: color 0.2s ease;
+  -webkit-transition: color 0.2s ease;
+  -moz-transition: color 0.2s ease;
+  -ms-transition: color 0.2s ease;
+  -o-transition: color 0.2s ease;
+}
+
+.toggle-password-icon:hover {
+  color: var(--focus-color);
 }
 
 .text-danger {
-  font-size: 12px;
+  font-size: 13px;
   color: red;
 }
-
-/* End of styling Input Field Component */

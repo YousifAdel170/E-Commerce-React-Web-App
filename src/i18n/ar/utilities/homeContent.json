@@ -1,0 +1,27 @@
+{
+  "homeSliderTitle": "تسوق الآن",
+  "homeSliderParagraph": "استمتع بخصم  50٪ على مشترياتك!",
+
+  "homeCategoriesTitle": "التصنيفات",
+  "homeThereIsNoCategories": "لا توجد تصنيفات متاحة حالياً.",
+  "homeLoadingCategoriesAriaLabel": "جارٍ تحميل التصنيفات",
+
+  "homeMostSoldTitle": "الأكثر مبيعًا",
+  "homeThereIsNoMostSold": "لا توجد منتجات شائعة حالياً.",
+
+  "homeNewestTitle": "المنتجات الجديدة",
+  "homeThereIsNoNewest": "لم تتم إضافة منتجات جديدة بعد.",
+
+  "homeMostCommonBrandsTitle": "أفضل الماركات",
+  "homeThereIsNoMostCommonBrands": "لا توجد ماركات متاحة حالياً.",
+
+  "homeLoadingProductsAriaLabel": "جارٍ تحميل المنتجات",
+
+  "homeMoreButton": "المزيد",
+
+  "homeDiscountTitlePart1": "خصم يصل حتى",
+  "homeDiscountTitlePart2": "على أجهزة اللاب توب",
+  "homeDiscountPercentage": "30%",
+
+  "homeDiscountAriaLabel": "خصم يصل حتى 30% على أجهزة اللاب توب"
+}
