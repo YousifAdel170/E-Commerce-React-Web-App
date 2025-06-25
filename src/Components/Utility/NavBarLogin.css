@@ -22,6 +22,11 @@ input.form-control {
   -ms-transition: all var(--main-duration) ease-in-out;
   -o-transition: all var(--main-duration) ease-in-out;
   overflow-x: auto;
+  color: var(--focus-color) !important;
+}
+
+.light-theme input.form-control {
+  color: var(--main-text-hover-color) !important;
 }
 
 /* ========== BADGE ========== */

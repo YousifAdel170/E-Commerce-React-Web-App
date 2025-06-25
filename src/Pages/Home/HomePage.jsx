@@ -9,19 +9,17 @@ import BrandFeatured from "../../Components/Brand/BrandFeatured";
 import ViewHomeProductsHook from "../../hooks/products/ViewHomeProductsHook";
 import FetchWishList from "../../hooks/products/wishList/FetchWishList";
 
-// Import Used Configurations
-import {
-  MOST_SOLD_PRODUCTS_TITLE,
-  MORE_BUTTON_TITLE,
-  LATEST_FASHION_PRODUCTS_TITLE,
-  MOST_COMMMON_BRANDS_TITLE,
-} from "../../config";
+// Import hook for the translation
+import { useTranslation } from "react-i18next";
 
 // Page Responsible for displaying the Home Page of the Application
 const HomePage = () => {
   // Custom Hook to fetch the products data and the favorite products
   const [items, isLoading] = ViewHomeProductsHook();
   FetchWishList();
+
+  const { t } = useTranslation("home");
+
   return (
     // Main Container of the Home Page
     <div style={{ flex: "1" }}>
@@ -35,8 +33,8 @@ const HomePage = () => {
       <ProductCardContainer
         products={items}
         isLoading={isLoading}
-        title={MOST_SOLD_PRODUCTS_TITLE}
-        btnTitle={MORE_BUTTON_TITLE}
+        title={t("homeMostSoldTitle")}
+        btnTitle={t("homeMoreButton")}
         path={"products"}
       />
 
@@ -47,15 +45,15 @@ const HomePage = () => {
       <ProductCardContainer
         products={items}
         isLoading={isLoading}
-        title={LATEST_FASHION_PRODUCTS_TITLE}
-        btnTitle={MORE_BUTTON_TITLE}
+        title={t("homeNewestTitle")}
+        btnTitle={t("homeMoreButton")}
         path={"products"}
       />
 
       {/* Most Common Brands */}
       <BrandFeatured
-        title={MOST_COMMMON_BRANDS_TITLE}
-        btnTitle={MORE_BUTTON_TITLE}
+        title={t("homeMostCommonBrandsTitle")}
+        btnTitle={t("homeMoreButton")}
       />
     </div>
   );

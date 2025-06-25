@@ -12,10 +12,6 @@ import {
   removeFromWishList,
 } from "../../../redux/actions/wishListAction";
 
-// Import Assets
-import favoff from "../../../assets/Imgs/fav-off.png";
-import favon from "../../../assets/Imgs/fav-on.png";
-
 // Import Used Constants
 import { ERROR, SUCCESS } from "../../../constants/notificationTypes";
 import { STATUS, USER_ROLES } from "../../../constants/general";
@@ -33,7 +29,7 @@ const ProductCardHook = (item, favoriteProducts) => {
   let favorite = favoriteProducts.some((fav) => fav === item?._id);
 
   // States
-  const [favImage, setFavImage] = useState(favoff);
+  const [favIcon, setFavIcon] = useState(0);
   const [isFav, setIsFav] = useState(favorite);
   const [loadingAdd, setLoadingAdd] = useState(true);
   const [loadingRemove, setLoadingRemove] = useState(true);
@@ -52,8 +48,8 @@ const ProductCardHook = (item, favoriteProducts) => {
 
   // UseEffect to change favorite button image
   useEffect(() => {
-    if (isFav) setFavImage(favon);
-    else setFavImage(favoff);
+    if (isFav) setFavIcon(1);
+    else setFavIcon(0);
   }, [isFav]);
 
   // select the response of addToWishList from the store
@@ -76,7 +72,7 @@ const ProductCardHook = (item, favoriteProducts) => {
     }
 
     setIsFav(true);
-    setFavImage(favon);
+    setFavIcon(1);
 
     // Start Loading
     setLoadingAdd(true);
@@ -94,7 +90,7 @@ const ProductCardHook = (item, favoriteProducts) => {
     }
 
     setIsFav(false);
-    setFavImage(favoff);
+    setFavIcon(0);
 
     // Start Loading of Remove favorite product
     setLoadingRemove(true);
@@ -142,7 +138,7 @@ const ProductCardHook = (item, favoriteProducts) => {
   const handleAnimationEnd = () => setAnimateFav(false);
 
   return [
-    favImage,
+    favIcon,
     discountAmount,
     discountPercent,
     animateFav,

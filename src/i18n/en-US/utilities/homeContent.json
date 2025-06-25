@@ -15,10 +15,26 @@
   "homeMostCommonBrandsTitle": "Top Brands",
   "homeThereIsNoMostCommonBrands": "No brands are available at this time.",
 
+  "homeLoadingProductsAriaLabel": "Loading products",
+
   "homeMoreButton": "More",
+  "navigateToButton": "Navigate to {{button}}",
 
   "homeDiscountTitlePart1": "Discount up to",
   "homeDiscountTitlePart2": "on laptops",
   "homeDiscountPercentage": "30%",
-  "homeDiscountAriaLabel": "Discount up to 30% on laptops"
+
+  "homeDiscountAriaLabel": "Discount up to 30% on laptops",
+
+  "currency": "EGP",
+  "productCardAriaLabel": "View details for {{title}}",
+  "productImageAlt": "Image of {{title}}",
+  "productDiscountAriaLabel": "{{percent}}% discount or {{amount}} off",
+  "productDiscountLabelPercent": "{{percent}}% OFF",
+  "productDiscountLabelAmount": "Save {{amount}} {{currency}}",
+  "addToFavorites": "Add {{title}} to favorites",
+  "removeFromFavorites": "Remove {{title}} from favorites",
+  "originalPrice": "Original price: {{price}} {{currency}}",
+  "discountedPrice": "{{price}} {{currency}}",
+  "normalPrice": "{{price}} {{currency}}"
 }

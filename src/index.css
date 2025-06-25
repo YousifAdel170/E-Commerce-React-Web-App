@@ -393,6 +393,19 @@ button:disabled,
   color: red;
 }
 
+/* ===== Rating Stars Component ===== */
+.star-rating .star polygon {
+  transition: fill var(--main-duration) ease, stroke var(--main-duration) ease;
+  -webkit-transition: fill var(--main-duration) ease,
+    stroke var(--main-duration) ease;
+  -moz-transition: fill var(--main-duration) ease,
+    stroke var(--main-duration) ease;
+  -ms-transition: fill var(--main-duration) ease,
+    stroke var(--main-duration) ease;
+  -o-transition: fill var(--main-duration) ease,
+    stroke var(--main-duration) ease;
+}
+
 /* ===== Layout & Cards ===== */
 .user-order,
 .user-address-card,

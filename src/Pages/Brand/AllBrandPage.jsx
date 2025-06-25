@@ -7,30 +7,40 @@ import PaginationComponent from "../../Components/Utility/PaginationComponent";
 import BrandContainer from "../../Components/Brand/BrandContainer";
 
 // Import Custom Hooks
-import AllBrandPageHook from "../../hooks/brand/AllBrandPageHook"; // Custom hook to manage brand data
+import AllBrandPageHook from "../../hooks/brand/AllBrandPageHook";
 
-// Page Responsible to display all brands
+// i18n
+import { useTranslation } from "react-i18next";
+
+// Page responsible to display all brands
 const AllBrandPage = () => {
-  // Use the custom hook to fetch brands data, loading status, page count, and page number handling function
   const [brands, loading, pageCount, getSelectedPageNumber] =
     AllBrandPageHook();
 
+  const { t } = useTranslation("home");
+
   return (
-    <Container style={{ flex: "1" }}>
-      {/* Title of the Page */}
-      <SubTitle title="اشهر الماركات" />{" "}
-      {/* Display subtitle "اشهر الماركات" */}
+    <Container
+      style={{ flex: "1" }}
+      role="region"
+      aria-labelledby="brands-section-title"
+    >
+      {/* Title of the page */}
+      <SubTitle
+        title={t("homeMostCommonBrandsTitle")}
+        id="brands-section-title"
+      />
+
       {/* Container of Brand Items */}
       <BrandContainer brands={brands} loading={loading} />
-      {/* Pass the brands data and loading status to the BrandContainer component */}
-      {/* Pagination Component */}
-      {pageCount > 1 ? (
-        // If more than 1 page exists, render the pagination component
+
+      {/* Pagination only if more than 1 page */}
+      {pageCount > 1 && (
         <PaginationComponent
-          pageCount={pageCount} // Pass the total page count to the PaginationComponent
-          onPress={getSelectedPageNumber} // Pass the function to handle page number change
+          pageCount={pageCount}
+          onPress={getSelectedPageNumber}
         />
-      ) : null}
+      )}
     </Container>
   );
 };

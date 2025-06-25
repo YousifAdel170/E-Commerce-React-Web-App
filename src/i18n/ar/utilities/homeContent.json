@@ -18,10 +18,23 @@
   "homeLoadingProductsAriaLabel": "جارٍ تحميل المنتجات",
 
   "homeMoreButton": "المزيد",
+  "navigateToButton": "انتقل إلى {{button}}",
 
   "homeDiscountTitlePart1": "خصم يصل حتى",
   "homeDiscountTitlePart2": "على أجهزة اللاب توب",
   "homeDiscountPercentage": "30%",
 
-  "homeDiscountAriaLabel": "خصم يصل حتى 30% على أجهزة اللاب توب"
+  "homeDiscountAriaLabel": "خصم يصل حتى 30% على أجهزة اللاب توب",
+
+  "currency": "جنيه",
+  "productCardAriaLabel": "عرض تفاصيل {{title}}",
+  "productImageAlt": "صورة لـ {{title}}",
+  "productDiscountAriaLabel": "{{percent}}٪ خصم أو خصم {{amount}}",
+  "productDiscountLabelPercent": "{{percent}}٪ خصم",
+  "productDiscountLabelAmount": "وفر {{amount}} {{currency}}",
+  "addToFavorites": "أضف {{title}} إلى المفضلة",
+  "removeFromFavorites": "إزالة {{title}} من المفضلة",
+  "originalPrice": "السعر الأصلي: {{price}} {{currency}}",
+  "discountedPrice": "{{price}} {{currency}}",
+  "normalPrice": "{{price}} {{currency}}"
 }

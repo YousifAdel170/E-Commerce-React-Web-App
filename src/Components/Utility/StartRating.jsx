@@ -1,101 +1,101 @@
+import { useSelector } from "react-redux";
+import {
+  DIRECTION_LTR,
+  DIRECTION_RTL,
+  LANGUAGE_ARABIC,
+} from "../../constants/settings";
+
 /* eslint-disable react/prop-types */
-export const StarRating = ({ rating, maxRating = 5, direction = "ltr" }) => {
+export const StarRating = ({ rating, maxRating = 5 }) => {
   const roundedRating = Math.round(rating * 2) / 2;
   const stars = [];
 
-  // Define gradient id uniquely per star to avoid conflicts
-  // (Could be improved by unique id per component instance)
+  const { lang, isDark } = useSelector((state) => state.ui);
+  const direction = lang === LANGUAGE_ARABIC ? DIRECTION_RTL : DIRECTION_LTR;
 
   for (let i = 1; i <= maxRating; i++) {
     if (i <= Math.floor(roundedRating)) {
-      // full star
+      // Full Star
       stars.push(
         <svg
           key={i}
+          className="star full"
           aria-hidden="true"
-          focusable="false"
           width="20"
           height="20"
           viewBox="0 0 24 24"
-          fill="#ffc107"
-          stroke="#ffc107"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
           role="img"
+          aria-label="Full star"
         >
-          <title>Star</title>
-          <polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9" />
+          <title>Full star</title>
+          <polygon
+            points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"
+            fill={isDark ? "var(--main-text-hover-color)" : "white"}
+            stroke={isDark ? "var(--main-text-hover-color)" : "white"}
+          />
         </svg>
       );
     } else if (i === Math.ceil(roundedRating) && roundedRating % 1 !== 0) {
-      // half star with gradient depending on direction
+      // Half Star
       const gradientId = `half-grad-${direction}-${i}`;
       stars.push(
         <svg
           key={i}
+          className="star half"
           aria-hidden="true"
-          focusable="false"
           width="20"
           height="20"
           viewBox="0 0 24 24"
-          fill="none"
-          stroke="#ffc107"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
           role="img"
+          aria-label="Half star"
         >
           <title>Half star</title>
           <defs>
             <linearGradient
               id={gradientId}
-              x1={direction === "ltr" ? "100%" : "0%"}
+              x1={direction === DIRECTION_LTR ? "0%" : "100%"}
               y1="0%"
-              x2={direction === "ltr" ? "0%" : "100%"}
+              x2={direction === DIRECTION_LTR ? "100%" : "0%"}
               y2="0%"
             >
-              {direction === "ltr" ? (
-                <>
-                  <stop offset="50%" stopColor="#ffc107" />
-                  <stop offset="50%" stopColor="transparent" />
-                </>
-              ) : (
-                <>
-                  <stop offset="50%" stopColor="transparent" />
-                  <stop offset="50%" stopColor="#ffc107" />
-                </>
-              )}
+              <stop
+                offset="50%"
+                stopColor={isDark ? "var(--main-text-hover-color)" : "white"}
+              />
+              <stop offset="50%" stopColor="transparent" />
             </linearGradient>
           </defs>
           <polygon
             points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"
             fill={`url(#${gradientId})`}
+            stroke={isDark ? "var(--main-text-hover-color)" : "white"}
             transform={
-              direction === "rtl" ? "scale(-1,1) translate(-24,0)" : undefined
+              direction === DIRECTION_RTL
+                ? "scale(-1,1) translate(-24,0)"
+                : undefined
             }
           />
         </svg>
       );
     } else {
-      // empty star
+      // Empty Star
       stars.push(
         <svg
           key={i}
+          className="star empty"
           aria-hidden="true"
-          focusable="false"
           width="20"
           height="20"
           viewBox="0 0 24 24"
-          fill="none"
-          stroke="#ffc107"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
           role="img"
+          aria-label="Empty star"
         >
           <title>Empty star</title>
-          <polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9" />
+          <polygon
+            points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"
+            fill="none"
+            stroke={isDark ? "var(--main-text-hover-color)" : "white"}
+          />
         </svg>
       );
     }
@@ -109,7 +109,7 @@ export const StarRating = ({ rating, maxRating = 5, direction = "ltr" }) => {
       style={{
         display: "flex",
         gap: "2px",
-        flexDirection: direction === "rtl" ? "row-reverse" : "row",
+        flexDirection: direction === DIRECTION_RTL ? "row-reverse" : "row",
       }}
     >
       {stars}

@@ -11,6 +11,7 @@ import HomeCategoryHook from "../../hooks/category/HomeCategoryHook";
 // Import Config File for Constants
 import { colors } from "../../constants/colors";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 // Component Responsible for displaying the Home Page Categories
 const HomeCategory = () => {
@@ -21,11 +22,10 @@ const HomeCategory = () => {
   const { t } = useTranslation("home");
 
   // Get The Mode of the Application (Light or Dark) from the Redux Store
-  // (Static for testing)
-  const darkMode = 1;
+  const isDark = useSelector((state) => state.ui.isDark);
 
   // Apply the mode to display the background color of the categories
-  const mode = darkMode ? "dark" : "light";
+  const mode = isDark ? "dark" : "light";
 
   return (
     // Main Container of the Home Category
@@ -38,7 +38,10 @@ const HomeCategory = () => {
       />
 
       {/* Check if the data is loading or not */}
-      <Row className="my-2 d-flex flex-wrap justify-content-between">
+      <Row
+        className="my-2 d-flex flex-wrap justify-content-between"
+        aria-busy={isLoading}
+      >
         {!isLoading ? (
           categories && categories.length > 0 ? (
             // Map over the categories to display each category card
@@ -54,7 +57,18 @@ const HomeCategory = () => {
             ))
           ) : (
             // If no categories, show a message
-            <h4>{t("homeThereIsNoCategories")}</h4>
+            <h4
+              className="text-center w-100"
+              role="note"
+              aria-live="polite"
+              style={{
+                color: "var(--secondary-text-color)",
+                fontSize: "1.1rem",
+                padding: "1rem",
+              }}
+            >
+              {t("homeThereIsNoCategories")}
+            </h4>
           )
         ) : (
           // If loading, show spinner with variant based on mode
@@ -62,8 +76,9 @@ const HomeCategory = () => {
             className="mx-auto"
             animation="border"
             variant={mode === "dark" ? "light" : "dark"}
-            role="status"
             aria-label={t("homeLoadingCategoriesAriaLabel")}
+            role="status"
+            aria-busy="true"
           />
         )}
       </Row>

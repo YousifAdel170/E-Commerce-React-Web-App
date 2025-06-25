@@ -1,55 +1,72 @@
 /* eslint-disable react/prop-types */
-
-// Import Components from React Bootstrap
 import { Container, Row, Spinner } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
-// Import Custom Components
+// Components
 import SubTitle from "../Utility/SubTitle";
 import BrandCard from "./BrandCard";
 
-// Import Custom Hooks
+// Hook
 import HomeBrandHook from "../../hooks/brand/HomeBrandHook";
+import { useSelector } from "react-redux";
 
-// Component responsible for displaying the featured brands on the home page
+// Featured Brands Section
 const BrandFeatured = ({ title, btnTitle }) => {
-  // Custom Hook to fetch the brands data
+  const { t } = useTranslation("home");
   const [brands, loading] = HomeBrandHook();
 
-  return (
-    // Main Container for the Brand Featured Section
-    <Container>
-      {/* SubTitle Component to display the title and button */}
-      <SubTitle title={title} btnTitle={btnTitle} path={"all-brands"} />
+  const showBrands = !loading && Array.isArray(brands) && brands.length > 0;
 
-      {/* Row to display the brand cards */}
-      <Row className="my-2 d-flex justify-content-between">
-        {/* Check if loading is false and brands array has items */}
-        {!loading ? (
-          brands ? (
-            brands.map((item, index) => (
-              <BrandCard
-                key={item._id}
-                id={item._id}
-                img={item.image}
-                index={index}
-              />
-            ))
-          ) : (
-            <h4>لا يوجد ماركات</h4>
-          )
-        ) : (
+  // Detect current theme from the HTML tag class
+  const isDark = useSelector((state) => state.ui.isDark);
+  const spinnerVariant = isDark ? "light" : "dark";
+
+  return (
+    <Container
+      className="brand-featured-container my-4"
+      aria-labelledby="featured-brands-heading"
+    >
+      <SubTitle title={title} btnTitle={btnTitle} path="all-brands" />
+
+      <Row
+        className="my-2 d-flex justify-content-between"
+        role="region"
+        aria-label={t("homeMostCommonBrandsTitle")}
+      >
+        {loading ? (
           <Spinner
-            className="mx-auto"
+            className="mx-auto mb-4"
             animation="border"
-            variant="dark"
+            variant={spinnerVariant}
             role="status"
-            aria-label="Loading Brands"
+            aria-label={t("homeLoadingCategoriesAriaLabel")}
           />
+        ) : showBrands ? (
+          brands.map((item, index) => (
+            <BrandCard
+              key={item._id}
+              id={item._id}
+              img={item.image}
+              index={index}
+            />
+          ))
+        ) : (
+          <h4
+            className="text-center w-100"
+            role="note"
+            aria-live="polite"
+            style={{
+              color: "var(--secondary-text-color)",
+              fontSize: "1.1rem",
+              padding: "1rem",
+            }}
+          >
+            {t("homeThereIsNoMostCommonBrands")}
+          </h4>
         )}
       </Row>
     </Container>
   );
 };
 
-// Export the BrandFeatured component for use in other components
 export default BrandFeatured;

@@ -3,23 +3,23 @@
 // Imports
 import { Card, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-
-import ProductCardHook from "../../hooks/products/wishList/ProductCardHook";
-import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
 
-import "./ProductCard.css";
+import ProductCardHook from "../../hooks/products/wishList/ProductCardHook";
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
+
 import { StarRating } from "../Utility/StartRating";
+import { useTranslation } from "react-i18next";
+
+import "./ProductCard.css";
 
 const ProductCard = ({ item, favoriteProducts, index }) => {
-  // Custom Hook for favorites and animations
+  const { t } = useTranslation("home");
+
   const [
-    ,
-    // favImage is not needed now
+    favIcon,
     discountAmount,
     discountPercent,
     animateFav,
@@ -27,11 +27,7 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
     handleAnimationEnd,
   ] = ProductCardHook(item, favoriteProducts);
 
-  // Animation + in-view hook
   const [sectionRef, isVisible] = useInviewAnimation();
-
-  // Check if this item is favorited
-  const isFavorited = favoriteProducts.some((p) => p._id === item._id);
 
   return (
     <Col xs="12" sm="6" md="4" lg="3">
@@ -46,28 +42,34 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
         }}
         ref={sectionRef}
       >
-        <Link to={`/products/${item?._id}`}>
+        <Link
+          to={`/products/${item?._id}`}
+          aria-label={t("productCardAriaLabel", { title: item?.title })}
+        >
           <div className="image-container" aria-hidden="true">
             {(discountPercent > 0 || discountAmount > 0) && (
               <span
                 className="discount-badge"
-                aria-label={`خصم ${
-                  discountPercent
-                    ? discountPercent + "%"
-                    : discountAmount + " جنيه"
-                }`}
                 role="note"
                 tabIndex={-1}
+                aria-label={t("productDiscountAriaLabel", {
+                  percent: discountPercent,
+                  amount: discountAmount,
+                })}
               >
-                {discountPercent
-                  ? ` ${discountPercent}%`
-                  : `خصم ${discountAmount} جنيه`}
+                {discountPercent > 0
+                  ? t("productDiscountLabelPercent", {
+                      percent: discountPercent,
+                    })
+                  : t("productDiscountLabelAmount", {
+                      amount: discountAmount,
+                    })}
               </span>
             )}
 
             <Card.Img
               src={item?.imageCover}
-              alt={`Image of ${item?.title}`}
+              alt={t("productImageAlt", { title: item?.title })}
               loading="lazy"
               onError={(e) => {
                 e.target.onerror = null;
@@ -75,19 +77,20 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
               }}
             />
 
-            <div
-              className="image-overlay"
-              aria-label={`Product info for ${item?.title}`}
-            >
-              <div className="product-title" id={`product-title-${item?._id}`}>
+            <div className="image-overlay">
+              <div
+                className="product-title"
+                id={`product-title-${item?._id}`}
+                aria-level={3}
+              >
                 {item?.title}
 
                 <span
                   role="button"
                   tabIndex={0}
-                  aria-pressed={isFavorited}
+                  aria-pressed={favIcon}
                   onClick={(e) => {
-                    e.preventDefault(); // Prevent link navigation on click
+                    e.preventDefault();
                     onFavClick();
                   }}
                   onKeyDown={(e) => {
@@ -100,12 +103,14 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
                   onAnimationEnd={handleAnimationEnd}
                   style={{ cursor: "pointer", marginLeft: 8 }}
                   title={
-                    isFavorited ? "Remove from favorites" : "Add to favorites"
+                    favIcon
+                      ? t("removeFromFavorites", { title: item?.title })
+                      : t("addToFavorites", { title: item?.title })
                   }
                 >
                   <FontAwesomeIcon
-                    icon={isFavorited ? solidHeart : regularHeart}
-                    color={isFavorited ? "#facc15" : "#ffffff"}
+                    icon={favIcon ? solidHeart : regularHeart}
+                    className={`favorite-icon ${favIcon ? "favorited" : ""}`}
                     size="lg"
                   />
                 </span>
@@ -118,14 +123,27 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
                   {item?.priceAfterDiscount ? (
                     <>
                       <span className="price-discounted">
-                        {item?.priceAfterDiscount}
+                        {t("discountedPrice", {
+                          price: item?.priceAfterDiscount,
+                          currency: t("currency"),
+                        })}
                       </span>
-                      <del aria-label={`Original price ${item?.price} جنيه`}>
-                        {item?.price} جنيه
+                      <del
+                        aria-label={t("originalPrice", {
+                          price: item?.price,
+                          currency: t("currency"),
+                        })}
+                      >
+                        {item?.price} {t("currency")}
                       </del>
                     </>
                   ) : (
-                    <span>{item?.price} جنيه</span>
+                    <span>
+                      {t("normalPrice", {
+                        price: item?.price,
+                        currency: t("currency"),
+                      })}
+                    </span>
                   )}
                 </div>
               </div>
@@ -133,8 +151,6 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
           </div>
         </Link>
       </Card>
-
-      <ToastContainer />
     </Col>
   );
 };

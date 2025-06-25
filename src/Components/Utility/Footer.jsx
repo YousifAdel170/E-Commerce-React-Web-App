@@ -1,47 +1,52 @@
-// Import Components
 import { Col, Container, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslation } from "react-i18next";
 
-// Import Custom Hooks
+// Hooks & Data
 import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
-
-// Import Constants
 import { footerData } from "../../data/utilities/footer";
 
-// Import The Used CSS
+// Styles
 import "./Footer.css";
 
 const Footer = () => {
-  const language = "ar";
+  const { t } = useTranslation("footer");
+
   const [textRef, textVisible] = useInviewAnimation();
   const [iconsRef, iconsVisible] = useInviewAnimation();
 
+  const terms = t("terms", { returnObjects: true });
+
   return (
-    <footer>
+    <footer role="contentinfo">
       <Container>
         <Row className="d-flex justify-content-between align-items-center">
-          {/* Footer Text Terms */}
+          {/* Terms */}
           <Col
             className={`d-flex align-items-center footer-animate ${
               textVisible ? "fade-in" : ""
             }`}
             ref={textRef}
+            aria-label="Footer Navigation"
           >
-            {footerData.terms.map((term, index) => (
-              <div className={`footer-text ${term.className}`} key={index}>
-                {term.name[language]}
+            {terms.map((term, index) => (
+              <div
+                className={`footer-text ${index !== 0 ? "mx-2" : ""}`}
+                key={index}
+              >
+                {term}
               </div>
             ))}
           </Col>
 
-          {/* Footer Icons */}
+          {/* Contact and Icons */}
           <Col className="footer-icons-container">
-            {/* Phone */}
             <div
               className={`phone-container footer-animate ${
                 iconsVisible ? "fade-in" : ""
               }`}
               ref={iconsRef}
+              aria-label={t("phoneLabel")}
             >
               <FontAwesomeIcon
                 icon={footerData.phone.icon}
@@ -58,7 +63,7 @@ const Footer = () => {
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={item.alt}
+                aria-label={t(item.altKey)}
                 className="mx-2 d-flex align-items-center justify-content-center social-icon"
               >
                 <FontAwesomeIcon

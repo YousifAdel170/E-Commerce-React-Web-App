@@ -1,22 +1,51 @@
-/* Brand Card Styling */
+/* ===== Brand Card Styling (Theme Aware) ===== */
 .brand-card {
-  width: 100%;
-  height: 151px;
   border-radius: 8px;
-  border: none;
-  background-color: #fff;
   overflow: hidden;
-
-  /* Start hidden */
+  background-color: transparent;
   opacity: 0;
   transform: translateY(30px);
+  transition: opacity calc(2 * var(--main-duration)) ease,
+    transform calc(2 * var(--main-duration)) ease,
+    box-shadow var(--main-duration) ease, border-color var(--main-duration) ease;
+  will-change: opacity, transform, box-shadow, border-color;
+  box-shadow: 0 2px 2px 0 rgba(151, 151, 151, 0.5) !important;
+  -webkit-transition: opacity calc(2 * var(--main-duration)) ease,
+    transform calc(2 * var(--main-duration)) ease,
+    box-shadow var(--main-duration) ease, border-color var(--main-duration) ease;
+  -moz-transition: opacity calc(2 * var(--main-duration)) ease,
+    transform calc(2 * var(--main-duration)) ease,
+    box-shadow var(--main-duration) ease, border-color var(--main-duration) ease;
+  -ms-transition: opacity calc(2 * var(--main-duration)) ease,
+    transform calc(2 * var(--main-duration)) ease,
+    box-shadow var(--main-duration) ease, border-color var(--main-duration) ease;
+  -o-transition: opacity calc(2 * var(--main-duration)) ease,
+    transform calc(2 * var(--main-duration)) ease,
+    box-shadow var(--main-duration) ease, border-color var(--main-duration) ease;
 }
 
-/* Hover Effects */
-.brand-card:hover {
+/* Fade-in animation when in view */
+.brand-card.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+}
+
+/* Hover & focus-within effects */
+.brand-card:hover,
+.brand-card:focus-within {
   overflow: visible;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-  outline: none;
+  border-color: var(--main-text-hover-color);
+  box-shadow: 0 6px 18px var(--focus-glow);
+  cursor: pointer;
+}
+
+.light-theme .brand-card:hover,
+.light-theme .brand-card:focus-within {
+  border-color: var(--main-color);
 }
 
 /* Image Styling */
@@ -24,15 +53,21 @@
   height: 151px;
   width: 100%;
   object-fit: contain;
-  transition: transform 0.3s ease;
+  user-select: none;
+  pointer-events: none;
+  transition: transform var(--main-duration) ease;
+  -webkit-transition: transform var(--main-duration) ease;
+  -moz-transition: transform var(--main-duration) ease;
+  -ms-transition: transform var(--main-duration) ease;
+  -o-transition: transform var(--main-duration) ease;
 }
 
-/* Optional hover effect */
-.brand-card img:hover {
+/* .brand-card:hover img,
+.brand-card:focus-within img {
   transform: scale(1.05);
-}
+} */
 
-/* Responsive tweaks (optional) */
+/* Responsive tweaks */
 @media (max-width: 768px) {
   .brand-card {
     height: 130px;

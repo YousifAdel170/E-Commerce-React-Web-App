@@ -22,8 +22,8 @@ export const DEFAULT_THEME = THEME_LIGHT;
 export const DEFAULT_DIRECTION = DIRECTION_LTR;
 
 // Language Labels for buttons/toggles (short forms)
-export const LANGUAGE_LABEL_EN = "EN";
-export const LANGUAGE_LABEL_AR = "AR";
+export const LANGUAGE_LABEL_EN = "English";
+export const LANGUAGE_LABEL_AR = "العربية";
 
 // ARIA Labels for Accessibility
 export const ARIA_LABEL_TOGGLE_LANGUAGE = "Toggle language";
