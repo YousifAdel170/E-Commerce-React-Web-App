@@ -1,64 +1,92 @@
 /* eslint-disable react/prop-types */
-
-// Import Used Components
 import UnopDropdown from "unop-react-dropdown";
-
-// Import Assets
-import sort from "../../Assets/Imgs/sort.png";
-
-// Import Configuartions
-import { seachCountResultFilter } from "../../config";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSort } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import "./SearchCountResult.css";
 
-// Component Responsible for displaying the search count result and sorting options
-const SearchCountResult = ({ title, onClickGetProduct }) => {
-  // Function to handle the appearance and disappearance of the dropdown
-  const handler = () => {};
-
-  // Function to handle the click event on sorting options
-  const clickMe = (key) => {
-    localStorage.setItem("sortType", key);
-    onClickGetProduct();
-  };
+// Create a safe dropdown trigger button
+const DropdownTrigger = ({ children, ...props }) => {
+  const { show, hide, ...safeProps } = props;
   return (
-    <div className="d-flex justify-content-between pt-3 px-2">
-      {/* Display the title of the search result */}
-      <div className="sub-title">{title}</div>
+    <button
+      type="button"
+      {...safeProps}
+      className="sort-div"
+      aria-haspopup="listbox"
+      aria-expanded="false"
+    >
+      {children}
+    </button>
+  );
+};
 
-      <div className="search-count-text d-flex">
-        {/* Dropdown for sorting options */}
+const SearchCountResult = ({ title, onClickGetProduct }) => {
+  const { t } = useTranslation("shopProducts");
+  const isDark = useSelector((state) => state.ui.isDark);
+
+  const currentSort = localStorage.getItem("sortType") || "";
+
+  const sortOptions = [
+    { key: "", label: t("sortOptions.none") },
+    { key: "الاكثر مبيعا", label: t("sortOptions.bestSelling") },
+    { key: "الاعلي تقييما", label: t("sortOptions.topRated") },
+    { key: "السعر من الاقل للاعلي", label: t("sortOptions.priceLowToHigh") },
+    { key: "السعر من الاعلي للاقل", label: t("sortOptions.priceHighToLow") },
+  ];
+
+  const handleSort = (key) => {
+    if (key !== currentSort) {
+      localStorage.setItem("sortType", key);
+      onClickGetProduct();
+    }
+  };
+
+  return (
+    <div className="d-flex justify-content-between align-items-center pt-3">
+      {/* Live region for announcing result count */}
+      <div className="sub-title" aria-live="polite">
+        {title}
+      </div>
+
+      {/* Sort Dropdown */}
+      <div className="search-count-text d-flex align-items-center">
         <UnopDropdown
-          onAppear={handler}
-          onDisappearStart={handler}
-          trigger={
-            <>
-              <img
-                width={"20px"}
-                height={"20px"}
-                className="ms-2"
-                src={sort}
-                alt="Sort Image"
-              />
-              ترتيب حسب
-            </>
-          }
+          onAppear={() => {}}
+          onDisappearStart={() => {}}
           delay={0}
           align="CENTER"
           hover
+          trigger={
+            <DropdownTrigger>
+              <FontAwesomeIcon icon={faSort} className="mx-2" />
+              {t("sortBy")}
+            </DropdownTrigger>
+          }
         >
-          <div className="card-filter">
-            {seachCountResultFilter
-              ? seachCountResultFilter.map((search, index) => (
-                  <div
-                    key={index}
-                    className={search.style}
-                    onClick={() => clickMe(search.click)}
-                  >
-                    {search.title}
-                  </div>
-                ))
-              : null}
+          <div
+            className={`card-filter ${isDark ? "dark-theme" : "light-theme"}`}
+            role="listbox"
+            aria-label={t("sortOptionsLabel")}
+          >
+            {sortOptions.map(({ key, label }, index) => (
+              <div
+                key={index}
+                className={`card-filter-item ${
+                  key === currentSort ? "active-sort" : ""
+                }`}
+                role="option"
+                aria-selected={key === currentSort}
+                tabIndex={0}
+                onClick={() => handleSort(key)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSort(key);
+                }}
+              >
+                {label}
+              </div>
+            ))}
           </div>
         </UnopDropdown>
       </div>
@@ -66,5 +94,4 @@ const SearchCountResult = ({ title, onClickGetProduct }) => {
   );
 };
 
-// Exporting the SearchCountResult component to be used in other parts of the application
 export default SearchCountResult;

@@ -1,0 +1,78 @@
+{
+  "backendErrors": {
+    "emailAlreadyUsed": "This email is already used.",
+    "egyptNumbersOnly": "Phone number must be Egyptian and 11 digits.",
+    "passwordValidation": "Password must be at least 8 characters with a capital letter, a number, and a special character.",
+    "loginWrong": "Email or password is incorrect.",
+    "network": "Something went wrong with the connection. Please try again.",
+    "server": "Server error. Please try again later.",
+    "sessionEnded": "Session expired. Please log in again.",
+    "notFound": "The requested item was not found.",
+    "generic": "Unexpected error. Please try again.",
+    "failure": "The operation failed. Please check your data.",
+    "unauthorized": "You're not authorized. Please log in again.",
+    "forbidden": "Access denied. You don't have permission.",
+    "unknown": "An unknown error occurred. Please try again later."
+  },
+  "validation": {
+    "usernameRequired": "Username is required.",
+    "emailRequired": "Email is required.",
+    "emailInvalid": "Please enter a valid email address.",
+    "phoneRequired": "Phone number is required.",
+    "phoneInvalid": "Please enter a valid Egyptian phone number.",
+    "passwordRequired": "Password is required.",
+    "passwordWeak": "Choose a stronger password with symbols and numbers.",
+    "passwordMismatch": "Passwords do not match."
+  },
+  "success": {
+    "register": "Your account has been created successfully!",
+    "login": "You’ve logged in successfully!",
+    "emailCodeSentSuccess": "A verification code was sent to your email.",
+    "resetPassword": "Password changed successfully"
+  },
+  "error": {
+    "multiple": "Please review the form. Multiple errors found.",
+    "loginFailed": "An error occurred during login. Please try again.",
+    "accountNotFoundError": "We couldn't find an account with that email.",
+    "resetPassword": "Please request a new code"
+  },
+  "general": {
+    "addSuccess": "Item added successfully!",
+    "deleteSuccess": "Item deleted successfully!",
+    "updateSuccess": "Changes saved successfully!",
+    "addFail": "Could not add item. Please try again.",
+    "deleteFail": "Could not delete item. Please try again.",
+    "updateFail": "Could not update item. Please try again."
+  },
+  "subcategory": {
+    "nameRequired": "Subcategory name is required.",
+    "mainCategoryRequired": "Main category must be selected.",
+    "duplicate": "This name is already taken. Try a different one."
+  },
+  "cart": {
+    "adminRestricted": "Admins cannot add items to the cart.",
+    "outOfStock": "This item is currently out of stock.",
+    "colorRequired": "Please choose a color before adding to cart.",
+    "loginRequired": "Please log in to add items to your cart."
+  },
+  "wishlist": {
+    "added": "Item added to your wishlist!",
+    "removed": "Item removed from your wishlist.",
+    "loginRequired": "Please log in to manage your wishlist.",
+    "adminRestricted": "Admins cannot manage wishlists.",
+    "error": "An unexpected error occurred. Please try again later."
+  },
+  "review": {
+    "enterRating": "Please give a rating from 1 to 5 stars.",
+    "enterComment": "Write a comment to help us improve.",
+    "adminRestricted": "Admins cannot submit reviews.",
+    "alreadyRated": "You’ve already reviewed this item. Thank you!",
+    "success": "Thank you! Your review was submitted successfully.",
+    "error": "Something went wrong. Please try again."
+  },
+  "verify": {
+    "success": "Verification successful!",
+    "failure": "Invalid or expired verification code",
+    "required": "Please enter the verification code"
+  }
+}

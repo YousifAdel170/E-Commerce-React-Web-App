@@ -2,7 +2,7 @@
 .brand-card {
   border-radius: 8px;
   overflow: hidden;
-  background-color: transparent;
+  background-color: transparent !important;
   opacity: 0;
   transform: translateY(30px);
   transition: opacity calc(2 * var(--main-duration)) ease,

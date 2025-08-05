@@ -1,19 +1,195 @@
 /* Start Of Styling Side Filter Component */
+
+.side-filter-container {
+  transition: all var(--main-duration) ease;
+}
+
+/* Title */
 .filter-title {
-  color: #555550;
-  font-family: "Almarai";
-  font-size: 16px;
-  font-weight: bold;
-  letter-spacing: 0;
+  color: var(--main-color);
   line-height: 20px;
-  text-align: right;
+  margin-bottom: 6px;
 }
-.filter-sub {
-  color: #555550;
-  font-family: "Almarai";
+
+.dark-theme .filter-title {
+  color: var(--main-text-color);
+}
+
+/* Checkbox wrapper */
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 5px 0;
+  transition: transform var(--main-duration) ease;
+}
+
+.filter-option:hover {
+  transform: scale(1.02);
+}
+
+/* Hide native checkbox and use custom */
+.filter-option input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--main-color);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: all var(--main-duration) ease;
+}
+
+.filter-option input[type="checkbox"]:checked {
+  background-color: var(--main-color) !important;
+}
+
+/* Show black checkmark when checked */
+.filter-option input[type="checkbox"]:checked::after {
+  content: "✓";
+  color: var(--main-text-hover-color);
   font-size: 12px;
-  letter-spacing: 0;
-  line-height: 17px;
-  text-align: center;
+  position: absolute;
+  top: -2px;
+  left: 2px;
+  transition: all var(--main-duration) ease;
 }
+
+/* Label next to checkbox */
+.filter-option label {
+  font-size: 13px;
+  color: var(--paragraph-color);
+  user-select: none;
+}
+
+.filter-option input[type="checkbox"]:hover {
+  transform: scale(1.1);
+}
+
+.filter-option label {
+  font-size: 13px;
+  color: var(--paragraph-color);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Price filter */
+.filter-price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--paragraph-color);
+  gap: 6px;
+  margin: 6px 0;
+  font-size: 13px;
+}
+
+.filter-price input[type="number"]::-webkit-inner-spin-button,
+.filter-price input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.filter-price input[type="number"] {
+  width: 60px;
+  height: 35px;
+  padding: 2px 4px;
+  border-radius: 6px;
+  border: 1px solid var(--main-border-color);
+  color: var(--paragraph-color) !important;
+  font-size: 13px;
+  text-align: center;
+  transition: border-color var(--main-duration) ease;
+}
+
+.filter-price input:focus {
+  outline: none;
+  border-color: var(--main-color);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.number-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.number-wrapper input[type="number"] {
+  padding-right: 28px;
+}
+
+/* Arrows */
+.arrow {
+  position: absolute;
+  right: 4px;
+  width: 11px;
+  height: 11px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+}
+
+.arrow.up {
+  top: 0px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5.5px solid var(--paragraph-color);
+}
+
+.arrow.up:hover {
+  border-bottom-color: var(--main-color);
+}
+
+.dark-theme .arrow.up:hover {
+  border-bottom-color: var(--main-text-color);
+}
+
+.arrow.down {
+  bottom: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5.5px solid var(--paragraph-color);
+}
+
+.arrow.down:hover {
+  border-top-color: var(--main-color);
+}
+
+.dark-theme .arrow.down:hover {
+  border-top-color: var(--main-text-color);
+}
+
+.arrow.down:hover,
+.arrow.up:hover {
+  transform: scale(1.1) !important;
+  -webkit-transform: scale(1.1) !important;
+  -moz-transform: scale(1.1) !important;
+  -ms-transform: scale(1.1) !important;
+  -o-transform: scale(1.1) !important;
+  transition: all var(--main-duration) ease-in-out;
+  -webkit-transition: all var(--main-duration) ease-in-out;
+  -moz-transition: all var(--main-duration) ease-in-out;
+  -ms-transition: all var(--main-duration) ease-in-out;
+  -o-transition: all var(--main-duration) ease-in-out;
+}
+
+.arrow:focus {
+  outline: none;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .filter-title {
+    font-size: 14px;
+  }
+
+  .filter-option label,
+  .filter-price label {
+    font-size: 12px;
+  }
+}
+
 /* End Of Styling Side Filter Component */

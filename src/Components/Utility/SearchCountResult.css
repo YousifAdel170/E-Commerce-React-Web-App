@@ -1,29 +1,137 @@
 /* Start of styling SearchCountResult Component */
 .search-count-text {
-  color: #979797;
-  font-family: "Almarai";
+  color: var(--main-text-color);
   font-size: 16px;
   font-weight: bold;
-  letter-spacing: 0;
-  line-height: 20px;
-  text-align: right;
 }
+
+.sort-div {
+  all: unset; /* reset button appearance */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--main-text-color);
+  transition: all var(--main-duration) ease;
+}
+
+/* Keyboard focus for accessibility */
+.sort-div:focus-visible {
+  outline: 2px solid var(--main-text-color);
+  outline-offset: 3px;
+  transform: scale(1.05);
+}
+
+.dark-theme .sort-div:focus-visible {
+  outline: 2px solid var(--main-text-color);
+}
+
+.UnopdropDown_EMFQP:focus-visible {
+  outline: none !important;
+}
+
+.light-theme .sort-div {
+  color: var(--main-color) !important;
+}
+
+.light-theme .sort-div:focus-visible {
+  outline: 2px solid var(--main-color);
+}
+
+.sort-div:hover,
+.sort-div:focus {
+  color: var(--main-text-hover-color);
+  outline: none;
+  transform: scale(1.05);
+  -webkit-transform: scale(1.05);
+  -moz-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  -o-transform: scale(1.05);
+}
+
+.light-theme .sort-div:hover,
+.light-theme .sort-div:focus {
+  color: var(--hover-main-color) !important;
+}
+
+/* Filter card dropdown container */
 .card-filter {
-  background-color: #ffffff;
   border-radius: 10px;
-  padding: 15px;
+  padding: 12px;
   width: 170px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  user-select: none; /* Prevent accidental text selection */
+  will-change: background-color, color;
 }
 
+.card-filter.light-theme {
+  background-color: var(--main-text-hover-color);
+  color: var(--main-color);
+}
+
+.card-filter.dark-theme {
+  background-color: var(--main-color);
+  color: var(--fous-color);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.65);
+}
+
+/* Dropdown items */
 .card-filter-item {
-  font-size: 12px;
-  font-weight: 400;
   padding: 10px;
-}
-.card-filter-item:hover {
-  background-color: #272727;
-  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  border-bottom: 1px solid;
+  will-change: background-color, color, box-shadow;
+  margin-bottom: 0.255rem;
+  transition: background-color var(--main-duration) ease,
+    color var(--main-duration) ease, box-shadow 0.2s ease;
 }
 
+.card-filter-item.active-sort {
+  background-color: var(--main-color);
+  color: var(--main-text-hover-color);
+  font-weight: bold;
+}
+
+.dark-theme .card-filter-item.active-sort {
+  background-color: var(--main-text-hover-color);
+  color: var(--main-color);
+}
+
+/* Hover & keyboard focus */
+.card-filter-item:hover,
+.card-filter-item:focus {
+  background-color: var(--main-color);
+  color: #fff;
+  outline: none;
+  box-shadow: 0 0 8px var(--main-color);
+  border-color: var(--main-color);
+}
+
+.card-filter.dark-theme .card-filter-item:hover,
+.card-filter.dark-theme .card-filter-item:focus {
+  background-color: var(--main-text-hover-color);
+  color: var(--main-color);
+  border-color: var(--main-text-hover-color);
+}
+
+/* Keyboard focus visible outline for accessibility */
+.card-filter-item:focus-visible {
+  outline: 2px solid var(--main-color);
+  outline-offset: 3px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .search-count-text {
+    font-size: 14px;
+  }
+  .card-filter-item {
+    font-size: 12px;
+    padding: 8px;
+  }
+}
 /* End of styling SearchCountResult Component */

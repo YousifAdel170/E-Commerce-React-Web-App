@@ -35,4 +35,12 @@ export const STATUS = {
 // ================================
 export const ZERO = 0;
 export const NEGATIVE_ONE = -1;
+export const ONE = 1;
 export const HUNDRED = 100;
+
+export const NUMBERS = {
+  NEGATIVE_ONE: NEGATIVE_ONE,
+  ZERO: ZERO,
+  ONE: ONE,
+  HUNDRED: HUNDRED,
+};

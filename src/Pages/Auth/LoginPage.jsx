@@ -1,118 +1,141 @@
+// Import Components and Libraries
 import { Container, Row, Col, Form, Button, Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import LoginHook from "../../hooks/auth/LoginHook";
 import { motion } from "framer-motion";
-import { useTranslation } from "react-i18next";
-import { EMAIL_TYPE, PASSWORD_TYPE } from "../../constants/inputTypes";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
+// Import Custom Components
 import InputField from "../../Components/Utility/InputField";
 
-const isDark = false; // Replace with dynamic theme if needed
+// Import Used Hooks from react-router-dom and react-i18next
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
+// Import Custom Hooks
+import LoginHook from "../../hooks/auth/LoginHook";
+
+// Import Constants and Enums
+import { INPUT_NAMES, INPUT_TYPES } from "../../constants/inputs";
+
+// Import CSS Styles
+import "./Auth.css";
+import { ROUTES } from "../../constants/routes";
+
+// Component responsible for rendering the Login Page
 const LoginPage = () => {
-  const [email, password, , isPress, onChangeInput, handleSubmit] = LoginHook();
+  // Use the custom LoginHook to manage state and functionality
+  const [
+    email,
+    password,
+    isPress,
+    onChangeInput,
+    handleSubmit,
+    handleGoogleLogin,
+    isGoogleLogin,
+  ] = LoginHook();
+
+  // Use the translation hook for internationalization
   const { t } = useTranslation("auth");
 
-  const backgroundColor = isDark ? "#1f1f1f" : "#ffffff";
-  const containerColor = isDark ? "#121212" : "#f0f0f0";
-  const textColor = isDark ? "#ffffff" : "#000000";
-
   return (
-    <Container
-      fluid
-      className={`d-flex align-items-center justify-content-center ${
-        isDark ? "dark-theme" : "light-theme"
-      }`}
-      style={{ flex: "1", backgroundColor: containerColor }}
-    >
+    <Container fluid className="auth-container" style={{ flex: "1" }}>
       <Row className="w-100 justify-content-center">
         <Col xs={11} sm={10} md={6} lg={4}>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            style={{
-              backgroundColor,
-              borderRadius: "12px",
-              padding: "30px",
-              boxShadow: "0 0 20px rgba(0, 0, 0, 0.3)",
-              color: textColor,
-            }}
+            className="auth-form-wrapper"
           >
-            <h2 className="text-center mb-4">{t("title")}</h2>
-            <Form onSubmit={handleSubmit}>
-              {/* Email Field (you can optionally replace with InputField) */}
-              <Form.Group controlId="formEmail" className="mb-3">
-                <Form.Label style={{ color: textColor }}>
-                  {t("email")}
-                </Form.Label>
+            <h2>{t("login.title")}</h2>
 
+            <Form onSubmit={handleSubmit} noValidate>
+              {/* Email */}
+              <Form.Group className="mb-3">
+                <Form.Label htmlFor="formEmail">{t("login.email")}</Form.Label>
                 <InputField
                   value={email}
                   onChangeInput={onChangeInput}
-                  onChangeInputType={EMAIL_TYPE}
-                  type={EMAIL_TYPE}
-                  placeholder={t("emailPlaceholder")}
-                  name={EMAIL_TYPE}
+                  onChangeInputName={INPUT_NAMES.EMAIL}
+                  type={INPUT_TYPES.EMAIL}
+                  placeholder={t("login.emailPlaceholder")}
+                  name={INPUT_NAMES.EMAIL}
+                  id="formEmail"
                   required
-                  isDark={isDark}
                 />
               </Form.Group>
 
-              {/* Password Field using your custom InputField with show/hide */}
-              <Form.Group controlId="formPassword" className="mb-3">
-                <Form.Label style={{ color: textColor }}>
-                  {t("password")}
+              {/* Password + Forgot link */}
+              <Form.Group className="mb-3">
+                <Form.Label
+                  htmlFor="formPassword"
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <div>{t("login.password")}</div>
+                  <Link to={ROUTES.AUTH.FORGOT_PASSWORD}>
+                    {t("login.forgotPassword")}
+                  </Link>
                 </Form.Label>
-
                 <InputField
                   value={password}
                   onChangeInput={onChangeInput}
-                  onChangeInputType={PASSWORD_TYPE}
-                  placeholder={t("passwordPlaceholder")}
-                  type={PASSWORD_TYPE}
+                  onChangeInputName={INPUT_NAMES.PASSWORD}
+                  type={INPUT_TYPES.PASSWORD}
+                  placeholder={t("login.passwordPlaceholder")}
+                  name={INPUT_NAMES.PASSWORD}
+                  id="formPassword"
                   required
-                  isDark={isDark}
                 />
               </Form.Group>
 
+              {/* Login Button */}
               <Button
-                variant="danger"
                 type="submit"
-                className="w-100 fw-bold py-2"
-                style={{ fontSize: "1.1rem", borderRadius: "6px" }}
+                className="submit-button w-100"
                 disabled={isPress}
+                aria-busy={isPress}
               >
                 {isPress ? (
                   <Spinner animation="border" size="sm" />
                 ) : (
-                  t("loginButton")
+                  t("login.loginButton")
                 )}
               </Button>
 
-              <div className="mt-3 text-center">
-                <small>{t("dontHaveAccount")}</small>
-                <Link
-                  to="/register"
-                  className="fw-bold mx-2"
-                  style={{ color: isDark ? "#ffc107" : "#0d6efd" }}
+              {/* Divider */}
+              <hr className="my-3" />
+
+              {/* Google Login */}
+              <div className="google-auth-container d-block">
+                <Button
+                  onClick={handleGoogleLogin}
+                  className="submit-button google-login-button w-100"
+                  disabled={isGoogleLogin}
+                  aria-busy={isGoogleLogin}
                 >
-                  {t("pressHere")}
-                </Link>
+                  {isGoogleLogin ? (
+                    <Spinner animation="border" size="sm" />
+                  ) : (
+                    <>
+                      <FontAwesomeIcon icon={faGoogle} className="icon mx-2" />
+                      {t("google.continueWithGoogle")}
+                    </>
+                  )}
+                </Button>
+                <p className="small text-center mt-2">
+                  {t("google.googleNotice")}
+                </p>
               </div>
 
-              <div className="mt-2 text-center">
-                <Link
-                  to="/user/forgot-password"
-                  style={{
-                    color: isDark ? "#b0bec5" : "#b0bec5",
-                    textDecoration: "underline",
-                    fontStyle: "italic",
-                  }}
-                  className="forgot-password-link"
-                >
-                  {t("forgotPassword")}
+              {/* Divider */}
+              <hr className="my-3" />
+
+              {/* Register link */}
+              <div className="mt-3 text-center">
+                <small>{t("login.dontHaveAccount")}</small>
+                <Link to={ROUTES.AUTH.REGISTER} className="fw-bold mx-2">
+                  {t("login.pressHere")}
                 </Link>
               </div>
             </Form>

@@ -1,9 +1,11 @@
 // Import Components from React Bootstrap
-import { Container, Row, Spinner } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 
 // Import Custom Components
 import SubTitle from "../Utility/SubTitle";
 import CartegoryCard from "../Category/CartegoryCard";
+import SpinnerComponent from "../Utility/SpinnerComponent";
+import ItemsNotFound from "../Utility/ItemsNotFound";
 
 // Import Custom Hooks
 import HomeCategoryHook from "../../hooks/category/HomeCategoryHook";
@@ -57,29 +59,11 @@ const HomeCategory = () => {
             ))
           ) : (
             // If no categories, show a message
-            <h4
-              className="text-center w-100"
-              role="note"
-              aria-live="polite"
-              style={{
-                color: "var(--secondary-text-color)",
-                fontSize: "1.1rem",
-                padding: "1rem",
-              }}
-            >
-              {t("homeThereIsNoCategories")}
-            </h4>
+            <ItemsNotFound msg={t("homeThereIsNoCategories")} />
           )
         ) : (
           // If loading, show spinner with variant based on mode
-          <Spinner
-            className="mx-auto"
-            animation="border"
-            variant={mode === "dark" ? "light" : "dark"}
-            aria-label={t("homeLoadingCategoriesAriaLabel")}
-            role="status"
-            aria-busy="true"
-          />
+          <SpinnerComponent msg={t("homeLoadingCategoriesAriaLabel")} />
         )}
       </Row>
     </Container>

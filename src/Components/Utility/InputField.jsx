@@ -8,18 +8,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 // Import custom Constatnts
-import { TEXT_TYPE, PASSWORD_TYPE } from "../../constants/inputTypes";
 import { EMPTY } from "../../constants/general";
 
 // Import custom CSS
 import "./InputField.css";
+import { INPUT_TYPES } from "../../constants/inputs";
 
 // Component responsible for rendering an input field with various features like password visibility toggle, error handling, and theming.
 const InputField = ({
   value,
   onChangeInput,
-  onChangeInputType,
-  type = TEXT_TYPE,
+  onChangeInputName,
+  type = INPUT_TYPES.TEXT,
   placeholder,
   className = EMPTY.TEXT,
   error,
@@ -32,14 +32,15 @@ const InputField = ({
   const [showPassword, setShowPassword] = useState(false);
 
   // Determine the input type based on whether the password is shown or not
-  const inputType = type === PASSWORD_TYPE && showPassword ? TEXT_TYPE : type;
+  const inputType =
+    type === INPUT_TYPES.PASSWORD && showPassword ? INPUT_TYPES.TEXT : type;
   const toggleAriaLabel = showPassword ? "Hide password" : "Show password";
 
   return (
     <div className="input-wrapper mx-auto position-relative">
       <input
         value={value}
-        onChange={(e) => onChangeInput(e, onChangeInputType)}
+        onChange={(e) => onChangeInput(e, onChangeInputName)}
         placeholder={placeholder}
         type={inputType}
         className={`user-input ${className} ${
@@ -49,25 +50,15 @@ const InputField = ({
         disabled={disabled}
         aria-invalid={!!error}
         name={name}
-        autoComplete={type === PASSWORD_TYPE ? "current-password" : "off"}
-        autoFocus={type === PASSWORD_TYPE ? false : true}
+        autoComplete={
+          type === INPUT_TYPES.PASSWORD ? "current-password" : "off"
+        }
         aria-label={placeholder || "Input field"}
         data-testid={`input-${name}`}
-        data-type={type}
-        data-show-password={showPassword ? "true" : "false"}
-        data-on-change-input-type={onChangeInputType}
-        data-on-change-input={onChangeInput}
-        data-value={value}
-        data-required={required ? "true" : "false"}
-        data-disabled={disabled ? "true" : "false"}
-        data-name={name}
-        data-class={className}
-        data-is-dark={isDark ? "true" : "false"}
-        data-placeholder={placeholder}
       />
 
       {/* Conditionally render the toggle button for password visibility */}
-      {type === PASSWORD_TYPE && (
+      {type === INPUT_TYPES.PASSWORD && (
         <button
           type="button"
           onClick={() => setShowPassword((prev) => !prev)}

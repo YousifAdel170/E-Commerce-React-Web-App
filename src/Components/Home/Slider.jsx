@@ -7,7 +7,7 @@ import { Carousel } from "react-bootstrap";
 
 // Import data for the slider items and delay constant
 import { slidersItems } from "../../data/utilities/slidersItems";
-import { SLIDER_DELAY } from "../../constants/delays";
+import { DELAYS } from "../../constants/delays";
 
 // Import necessary CSS styles for the component
 import "./Slider.css";
@@ -33,7 +33,7 @@ const Slider = () => {
             <Carousel.Item
               key={index}
               className={`slider-background slider-${item.styleClass}`}
-              interval={SLIDER_DELAY}
+              interval={DELAYS.SLIDER}
             >
               <div className="d-flex justify-content-center align-items-center flex-column-mobile">
                 <img src={item.image} alt={`${t("homeSliderTitle")} Image`} />

@@ -72,11 +72,6 @@ import {
   ADMIN_EDIT_PRODUCT_PATH,
   ADMIN_EDIT_SUBCATEGORY_PATH,
   ADMIN_ORDER_DETAILS_PATH,
-  AUTH_FORGOT_PASSWORD_PATH,
-  AUTH_LOGIN_PATH,
-  AUTH_REGISTER_PATH,
-  AUTH_RESET_PASSWORD_PATH,
-  AUTH_VERIFY_CODE_PATH,
   GENERAL_ALL_BRANDS_PATH,
   GENERAL_ALL_CATEGORIES_PATH,
   GENERAL_CART_PATH,
@@ -92,162 +87,172 @@ import {
   USER_ORDER_PAY_METHOD_PATH,
   USER_PROFILE_PATH,
 } from "./constants/paths";
+import { ROUTES } from "./constants/routes";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GOOGLE_CLIENT_ID } from "./constants/settings";
 
 function App() {
   const [isUser, isAdmin, isLoading] = ProtectedRouteHook();
   if (isLoading) return null; // Show a loading spinner or placeholder while checking auth status
 
   return (
-    <div className={`app`}>
-      <BrowserRouter>
-        <NavBarLogin />
-        <Routes>
-          {/* General Routes */}
-          <Route index element={<HomePage />} />
-          <Route path={AUTH_LOGIN_PATH} element={<LoginPage />} />
-          <Route path={AUTH_REGISTER_PATH} element={<RegisterPage />} />
-          <Route
-            path={GENERAL_ALL_CATEGORIES_PATH}
-            element={<AllCategoryPage />}
-          />
-          <Route path={GENERAL_ALL_BRANDS_PATH} element={<AllBrandPage />} />
-          <Route
-            path={GENERAL_SHOP_PRODUCTS_PATH}
-            element={<ShopProductsPage />}
-          />
-          <Route
-            path={GENERAL_VIEW_PRODUCTS_BY_CATEGORY_PATH}
-            element={<ViewProductsByCategoryPage />}
-          />
-          <Route
-            path={GENERAL_VIEW_PRODUCTS_BY_BRAND_PATH}
-            element={<ViewProductsByBrandPage />}
-          />
-
-          <Route
-            path={GENERAL_PRODUCT_DETAILS_PATH}
-            element={<ProductDetailsPage />}
-          />
-          <Route path={GENERAL_CART_PATH} element={<CartPage />} />
-          <Route
-            path={AUTH_FORGOT_PASSWORD_PATH}
-            element={<ForgotPasswordPage />}
-          />
-          <Route
-            path={AUTH_VERIFY_CODE_PATH}
-            element={<VerifyPasswordPage />}
-          />
-          <Route
-            path={AUTH_RESET_PASSWORD_PATH}
-            element={<ResetPasswordPage />}
-          />
-
-          {/* Admin Routes */}
-          <Route element={<ProtectedRoute auth={isAdmin} />}>
-            <Route element={<AdminPage />}>
-              <Route
-                path={ADMIN_ALL_PRODUCTS_PATH}
-                element={<AdminAllProducts />}
-              />
-              <Route
-                path={ADMIN_ALL_ORDERS_PATH}
-                element={<AdminAllOrders />}
-              />
-              <Route
-                path={ADMIN_ORDER_DETAILS_PATH}
-                element={<AdminOrderDetails />}
-              />
-
-              <Route path={ADMIN_ADD_BRAND_PATH} element={<AdminAddBrand />} />
-              <Route
-                path={ADMIN_ALL_CATEGORIES_PATH}
-                element={<AdminAllCategories />}
-              />
-              <Route
-                path={ADMIN_ALL_BRANDS_PATH}
-                element={<AdminAllBrands />}
-              />
-
-              <Route
-                path={ADMIN_ALL_SUBCATEGORIES_PATH}
-                element={<AdminAllSubcategories />}
-              />
-
-              <Route
-                path={ADMIN_EDIT_SUBCATEGORY_PATH}
-                element={<AdminEditSubCategory />}
-              />
-
-              <Route
-                path={ADMIN_ADD_CATEGORY_PATH}
-                element={<AdminAddCategory />}
-              />
-              <Route
-                path={ADMIN_EDIT_CATEGORY_PATH}
-                element={<AdminEditCategory />}
-              />
-              <Route
-                path={ADMIN_EDIT_BRAND_PATH}
-                element={<AdminEditBrand />}
-              />
-              <Route
-                path={ADMIN_ADD_SUBCATEGORY_PATH}
-                element={<AdminAddSubCategory />}
-              />
-              <Route
-                path={ADMIN_ADD_PRODUCT_PATH}
-                element={<AdminAddProduct />}
-              />
-              <Route
-                path={ADMIN_EDIT_PRODUCT_PATH}
-                element={<AdminEditProduct />}
-              />
-
-              <Route
-                path={ADMIN_ALL_COUPONS_PATH}
-                element={<AdminAllCoupons />}
-              />
-              <Route
-                path={ADMIN_ADD_COUPON_PATH}
-                element={<AdminAddCoupon />}
-              />
-              <Route
-                path={ADMIN_EDIT_COUPON_PATH}
-                element={<AdminEditCoupon />}
-              />
-            </Route>
-          </Route>
-
-          {/* User Routes */}
-          <Route element={<ProtectedRoute auth={isUser} />}>
-            <Route element={<UserPage />}>
-              <Route path={USER_ALL_ORDERS_PATH} element={<UserAllOrders />} />
-              <Route
-                path={USER_FAVORITE_PRODUCTS_PATH}
-                element={<UserFavoriteProducts />}
-              />
-              <Route
-                path={USER_ALL_ADDRESSES_PATH}
-                element={<UserAllAddresses />}
-              />
-              <Route
-                path={USER_ADD_ADDRESS_PATH}
-                element={<UserAddAddress />}
-              />
-              <Route
-                path={USER_EDIT_ADDRESS_PATH}
-                element={<UserEditAddress />}
-              />
-              <Route path={USER_PROFILE_PATH} element={<UserProfile />} />
-            </Route>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <div className={"app"}>
+        <BrowserRouter>
+          <NavBarLogin />
+          <Routes>
+            {/* General Routes */}
+            <Route index element={<HomePage />} />
+            <Route path={ROUTES.AUTH.LOGIN} element={<LoginPage />} />
+            <Route path={ROUTES.AUTH.REGISTER} element={<RegisterPage />} />
             <Route
-              path={USER_ORDER_PAY_METHOD_PATH}
-              element={<CartMethodPage />}
+              path={GENERAL_ALL_CATEGORIES_PATH}
+              element={<AllCategoryPage />}
             />
-          </Route>
+            <Route path={GENERAL_ALL_BRANDS_PATH} element={<AllBrandPage />} />
+            <Route
+              path={GENERAL_SHOP_PRODUCTS_PATH}
+              element={<ShopProductsPage />}
+            />
+            <Route
+              path={GENERAL_VIEW_PRODUCTS_BY_CATEGORY_PATH}
+              element={<ViewProductsByCategoryPage />}
+            />
+            <Route
+              path={GENERAL_VIEW_PRODUCTS_BY_BRAND_PATH}
+              element={<ViewProductsByBrandPage />}
+            />
 
-          {/* Test For Isolated Protected Rout */}
-          {/* <Route
+            <Route
+              path={GENERAL_PRODUCT_DETAILS_PATH}
+              element={<ProductDetailsPage />}
+            />
+            <Route path={GENERAL_CART_PATH} element={<CartPage />} />
+            <Route
+              path={ROUTES.AUTH.FORGOT_PASSWORD}
+              element={<ForgotPasswordPage />}
+            />
+            <Route
+              path={ROUTES.AUTH.VERIFY_CODE}
+              element={<VerifyPasswordPage />}
+            />
+            <Route
+              path={ROUTES.AUTH.RESET_PASSWORD}
+              element={<ResetPasswordPage />}
+            />
+
+            {/* Admin Routes */}
+            <Route element={<ProtectedRoute auth={isAdmin} />}>
+              <Route element={<AdminPage />}>
+                <Route
+                  path={ADMIN_ALL_PRODUCTS_PATH}
+                  element={<AdminAllProducts />}
+                />
+                <Route
+                  path={ADMIN_ALL_ORDERS_PATH}
+                  element={<AdminAllOrders />}
+                />
+                <Route
+                  path={ADMIN_ORDER_DETAILS_PATH}
+                  element={<AdminOrderDetails />}
+                />
+
+                <Route
+                  path={ADMIN_ADD_BRAND_PATH}
+                  element={<AdminAddBrand />}
+                />
+                <Route
+                  path={ADMIN_ALL_CATEGORIES_PATH}
+                  element={<AdminAllCategories />}
+                />
+                <Route
+                  path={ADMIN_ALL_BRANDS_PATH}
+                  element={<AdminAllBrands />}
+                />
+
+                <Route
+                  path={ADMIN_ALL_SUBCATEGORIES_PATH}
+                  element={<AdminAllSubcategories />}
+                />
+
+                <Route
+                  path={ADMIN_EDIT_SUBCATEGORY_PATH}
+                  element={<AdminEditSubCategory />}
+                />
+
+                <Route
+                  path={ADMIN_ADD_CATEGORY_PATH}
+                  element={<AdminAddCategory />}
+                />
+                <Route
+                  path={ADMIN_EDIT_CATEGORY_PATH}
+                  element={<AdminEditCategory />}
+                />
+                <Route
+                  path={ADMIN_EDIT_BRAND_PATH}
+                  element={<AdminEditBrand />}
+                />
+                <Route
+                  path={ADMIN_ADD_SUBCATEGORY_PATH}
+                  element={<AdminAddSubCategory />}
+                />
+                <Route
+                  path={ADMIN_ADD_PRODUCT_PATH}
+                  element={<AdminAddProduct />}
+                />
+                <Route
+                  path={ADMIN_EDIT_PRODUCT_PATH}
+                  element={<AdminEditProduct />}
+                />
+
+                <Route
+                  path={ADMIN_ALL_COUPONS_PATH}
+                  element={<AdminAllCoupons />}
+                />
+                <Route
+                  path={ADMIN_ADD_COUPON_PATH}
+                  element={<AdminAddCoupon />}
+                />
+                <Route
+                  path={ADMIN_EDIT_COUPON_PATH}
+                  element={<AdminEditCoupon />}
+                />
+              </Route>
+            </Route>
+
+            {/* User Routes */}
+            <Route element={<ProtectedRoute auth={isUser} />}>
+              <Route element={<UserPage />}>
+                <Route
+                  path={USER_ALL_ORDERS_PATH}
+                  element={<UserAllOrders />}
+                />
+                <Route
+                  path={USER_FAVORITE_PRODUCTS_PATH}
+                  element={<UserFavoriteProducts />}
+                />
+                <Route
+                  path={USER_ALL_ADDRESSES_PATH}
+                  element={<UserAllAddresses />}
+                />
+                <Route
+                  path={USER_ADD_ADDRESS_PATH}
+                  element={<UserAddAddress />}
+                />
+                <Route
+                  path={USER_EDIT_ADDRESS_PATH}
+                  element={<UserEditAddress />}
+                />
+                <Route path={USER_PROFILE_PATH} element={<UserProfile />} />
+              </Route>
+              <Route
+                path={USER_ORDER_PAY_METHOD_PATH}
+                element={<CartMethodPage />}
+              />
+            </Route>
+
+            {/* Test For Isolated Protected Rout */}
+            {/* <Route
             path="/order/pay-method"
             element={
               <ProtectedRoute auth={isUser}>
@@ -255,10 +260,11 @@ function App() {
               </ProtectedRoute>
             }
           /> */}
-        </Routes>
-      </BrowserRouter>
-      <Footer />
-    </div>
+          </Routes>
+        </BrowserRouter>
+        <Footer />
+      </div>
+    </GoogleOAuthProvider>
   );
 }
 

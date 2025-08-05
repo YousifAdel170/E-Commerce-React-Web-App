@@ -32,7 +32,7 @@ const UserFavoriteProductsHook = () => {
   useEffect(() => {
     if (!loading) {
       // Check if there are favorite products
-      if (result && result.data) {
+      if (result?.data) {
         // Update The URL of the images
         const updatedItems = result.data.map((product) => ({
           ...product,

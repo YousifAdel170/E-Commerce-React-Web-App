@@ -12,44 +12,79 @@ import PaginationComponent from "../../Components/Utility/PaginationComponent";
 import ViewSearchProductHook from "../../hooks/products/ViewSearchProductHook";
 import FetchWishList from "../../hooks/products/wishList/FetchWishList";
 
-// Page Responsible for displaying the products in the shop
+// Import Translation + Theme
+import { useTranslation } from "react-i18next";
+// import { useSelector } from "react-redux";
+
 const ShopProductsPage = () => {
+  const { t } = useTranslation("shopProducts");
+  // const isDark = useSelector((state) => state.ui.isDark);
+
+  // Initialize wishlist
   FetchWishList();
-  // Get The Products Data From The Custom Hook
+
+  // Get product data
   const [items, pageCount, onPress, getProduct, results] =
     ViewSearchProductHook();
 
   return (
-    <div style={{ flex: "1" }}>
-      {/* Header for the categories */}
+    <main style={{ flex: "1" }} aria-label={t("shopMainRegionLabel")}>
+      {/* Accessible Category Navigation */}
       <CategoryHeader />
 
-      <Container>
-        {/* Search Count Result Component */}
+      <Container
+        fluid="lg"
+        role="region"
+        aria-labelledby="search-results-heading"
+      >
+        {/* Accessible Heading */}
+        <h2 id="search-results-heading" className="visually-hidden">
+          {t("shopSearchResultsHeading")}
+        </h2>
+
+        {/* Display number of results with i18n */}
         <SearchCountResult
           onClickGetProduct={getProduct}
-          title={`هناك ${results} نتيجة بحث`}
+          title={t("shopSearchCount", { count: results })}
         />
-        <Row className="d-flex">
-          {/* Side Filter Component */}
-          <Col sm="2" xs="2" md="1" className="d-flex">
+
+        {/* Grid Layout */}
+        <Row className="d-flex justify-content-between">
+          {/* Sidebar Filter */}
+          <Col
+            sm="2"
+            xs="2"
+            md="1"
+            className="d-flex"
+            role="complementary"
+            aria-label={t("shopSideFilter")}
+          >
             <SideFilter />
           </Col>
 
-          {/* Product Card Container Component */}
-          <Col sm="10" xs="10" md="11">
+          {/* Product Cards */}
+          <Col
+            sm="10"
+            xs="10"
+            md="11"
+            role="region"
+            aria-label={t("shopProductGrid")}
+          >
             <ProductCardContainer products={items} />
           </Col>
         </Row>
 
-        {/* Pagination Component */}
-        {pageCount && pageCount > 1 ? (
-          <PaginationComponent pageCount={pageCount} onPress={onPress} />
-        ) : null}
+        {/* Pagination */}
+        {pageCount > 1 && (
+          <PaginationComponent
+            pageCount={pageCount}
+            onPress={onPress}
+            ariaLabel={t("shopPagination")}
+          />
+        )}
       </Container>
-    </div>
+    </main>
   );
 };
 
-// Exporting the ShopProductsPage component to be used in other parts of the application
 export default ShopProductsPage;

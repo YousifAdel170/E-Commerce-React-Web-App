@@ -1,61 +1,95 @@
+// ================================
+// Forgot Password Hook
+// ================================
+
+// External Imports
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import notify from "../Utility/useNotifyHook";
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
-import { forgotPassword } from "../../redux/actions/authAction";
 
-const ForgotPasswordHook = () => {
+// Custom Utilities and Constants
+import notify from "../Utility/useNotifyHook";
+import { forgotPassword } from "../../redux/actions/authAction";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+import { EMPTY } from "../../constants/general";
+import { REGEX_PATTERNS } from "../../constants/validationPatterns";
+import { isApiStatus, STATUS_TYPES } from "../../constants/responseStatus";
+import { ROUTES } from "../../constants/routes";
+import { DELAYS } from "../../constants/delays";
+import { STORAGE_KEYS } from "../../constants/storage";
+
+/**
+ * Custom Hook: useForgotPassword
+ * Handles forgot password logic including:
+ * - Validation
+ * - API interaction
+ * - Notifications
+ * - Navigation
+ */
+const useForgotPassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(true);
+  const { t } = useTranslation("notification_messages");
 
-  const onChangeEmail = (e) => setEmail(e.target.value);
+  const [email, setEmail] = useState(EMPTY.TEXT);
+  const [isPress, setIsPress] = useState(false);
 
-  const handleSubmit = async () => {
-    // Check If Email is Empty
-    if (email === "") {
-      notify("من فضلك ادخل الايميل", WARNING);
+  const response = useSelector((state) => state.authReducer.forgotPassword);
+  const loading = useSelector((state) => state.authReducer.loading.forgot);
+  const errors = useSelector((state) => state.authReducer.errors.forgot);
+
+  const handleEmailChange = (e) => setEmail(e.target.value);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Input validation
+    if (!email) {
+      notify(t("validation.emailRequired"), NOTIFICATION_TYPES.WARNING);
       return;
     }
 
-    // Set User Email into Local Storage
-    localStorage.setItem("user-email", email);
+    if (!REGEX_PATTERNS.EMAIL.test(email)) {
+      notify(t("validation.emailInvalid"), NOTIFICATION_TYPES.WARNING);
+      return;
+    }
 
-    // Start The Login [Loading ON] &  Dispatch the action Of Forgot The Password
-    setLoading(true);
-    await dispatch(
-      forgotPassword({
-        email,
-      })
-    );
-    setLoading(false);
-    // End The action Of Forgot The Password [Loading OFF]
+    setIsPress(true);
+
+    // Save to localStorage
+    localStorage.setItem(STORAGE_KEYS.LOCAL.AUTH.EMAIL, email);
+
+    // Dispatch action;
+    await dispatch(forgotPassword({ email }));
+
+    setIsPress(false);
   };
 
-  // Get The Response After The Action Has Been Done
-  const response = useSelector((state) => state.authReducer.forgotPassword);
-
   useEffect(() => {
-    console.log("response", response);
-    console.log("loading", loading);
-    // Check if the Forget Password Operation End
-    if (!loading) {
-      if (response) {
-        // // Check if The Response is Successfull
-        if (response.data && response.data.status === "Success") {
-          notify("تم ارسال الكود للايميل بنجاح", SUCCESS);
-          setTimeout(() => navigate("/user/verify-code"), 1000);
-        }
-        // Check if The Response Fail
-        if (response.data && response.data.status === "fail")
-          notify("هذا الحساب غير موجود لدينا", ERROR);
-      }
+    if (!loading && isPress) {
+      if (!errors && isApiStatus(response?.status, STATUS_TYPES.SUCCESS)) {
+        notify(t("success.emailCodeSentSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        setTimeout(
+          () => navigate(ROUTES.AUTH.VERIFY_CODE),
+          DELAYS.NAVIGATION_DELAY
+        );
+      } else if (isApiStatus(errors?.status, STATUS_TYPES.FAILURE))
+        notify(t("backendErrors.failure"), NOTIFICATION_TYPES.ERROR);
+      else if (isApiStatus(errors?.status, STATUS_TYPES.UNAUTHORIZED))
+        notify(t("backendErrors.unauthorized"), NOTIFICATION_TYPES.ERROR);
+      else if (isApiStatus(errors?.status, STATUS_TYPES.FORBIDDEN))
+        notify(t("backendErrors.forbidden"), NOTIFICATION_TYPES.ERROR);
+      else if (isApiStatus(errors?.status, STATUS_TYPES.NOT_FOUND))
+        notify(t("backendErrors.notFound"), NOTIFICATION_TYPES.ERROR);
+      else if (isApiStatus(errors?.status, STATUS_TYPES.SERVER_ERROR))
+        notify(t("backendErrors.server"), NOTIFICATION_TYPES.ERROR);
+      else if (isApiStatus(errors?.status, STATUS_TYPES.NETWORK_ERROR))
+        notify(t("backendErrors.network"), NOTIFICATION_TYPES.ERROR);
     }
-  }, [loading, navigate, response]);
+  }, [loading, response, t, navigate, isPress, errors]);
 
-  return [onChangeEmail, email, handleSubmit];
+  return [handleEmailChange, email, handleSubmit, isPress];
 };
 
-export default ForgotPasswordHook;
+export default useForgotPassword;

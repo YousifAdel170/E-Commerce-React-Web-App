@@ -29,12 +29,6 @@ import { NavBarLoginHook } from "../../hooks/Utility/NavBarLoginHook";
 import ViewAllCartItemsHook from "../../hooks/cart/ViewAllCartItemsHook";
 
 // Constants
-import {
-  ADMIN_ALL_PRODUCTS_PATH,
-  GENERAL_HOME_PATH,
-  USER_PROFILE_PATH,
-} from "../../constants/paths";
-import { SEARCH_TYPE } from "../../constants/inputTypes";
 import { USER_ROLES } from "../../constants/general";
 
 // Styles
@@ -46,6 +40,8 @@ import {
   LANGUAGE_LABEL_AR,
   LANGUAGE_LABEL_EN,
 } from "../../constants/settings";
+import { INPUT_NAMES, INPUT_TYPES } from "../../constants/inputs";
+import { ROUTES } from "../../constants/routes";
 
 const NavBarLogin = () => {
   const { t } = useTranslation("navbar");
@@ -69,7 +65,7 @@ const NavBarLogin = () => {
           {/* Logo */}
           <Navbar.Brand
             as={Link}
-            to={GENERAL_HOME_PATH}
+            to={ROUTES.GENERAL.HOME}
             title={t("homeAriaLabel")}
             className="d-flex align-items-center fw-bold fs-4"
           >
@@ -91,7 +87,8 @@ const NavBarLogin = () => {
               <FormControl
                 value={searchWord}
                 onChange={onChangeSearch}
-                type={SEARCH_TYPE}
+                type={INPUT_TYPES.SEARCH_TYPE}
+                name={INPUT_NAMES.SEARCH}
                 placeholder={t("searchPlaceholder")}
                 aria-label={t("searchAriaLabel")}
                 title={t("searchAriaLabel")}
@@ -106,8 +103,8 @@ const NavBarLogin = () => {
                 <NavDropdown
                   title={
                     <>
-                      <FontAwesomeIcon icon={faUser} className="ms-1" />
-                      <span className="ms-1">{user?.name}</span>
+                      <FontAwesomeIcon icon={faUser} className="mx-1" />
+                      <span className="mx-1">{user?.name}</span>
                     </>
                   }
                   id="user-dropdown"
@@ -118,8 +115,8 @@ const NavBarLogin = () => {
                     as={Link}
                     to={
                       user?.role === USER_ROLES.ADMIN
-                        ? ADMIN_ALL_PRODUCTS_PATH
-                        : USER_PROFILE_PATH
+                        ? ROUTES.ADMIN.PRODUCTS.ALL
+                        : ROUTES.USER.PROFILE
                     }
                     title={
                       user?.role === USER_ROLES.ADMIN
@@ -146,7 +143,7 @@ const NavBarLogin = () => {
                           size="sm"
                           role="status"
                           aria-live="polite"
-                          className="me-2"
+                          className="mx-2"
                         />
                         {t("loggingOut")}
                       </>
@@ -157,11 +154,11 @@ const NavBarLogin = () => {
                 </NavDropdown>
               ) : (
                 <Link
-                  to="/login"
+                  to={ROUTES.AUTH.LOGIN}
                   className="nav-link d-flex align-items-center"
                   title={t("login")}
                 >
-                  <FontAwesomeIcon icon={faSignInAlt} className="me-1" />
+                  <FontAwesomeIcon icon={faSignInAlt} className="mx-1" />
                   {t("login")}
                 </Link>
               )}
@@ -169,14 +166,14 @@ const NavBarLogin = () => {
               {/* Cart */}
               {user?.role === USER_ROLES.USER && (
                 <Link
-                  to="/cart"
-                  className="nav-link position-relative d-flex align-items-center"
+                  to={ROUTES.GENERAL.CART}
+                  className="cart nav-link position-relative d-flex align-items-center"
                   aria-label={`${t("cartContains")} ${numberOfItems} ${t(
                     "cartItems"
                   )}`}
                   title={`${t("cart")} (${numberOfItems} ${t("cartItems")})`}
                 >
-                  <FontAwesomeIcon icon={faShoppingCart} className="me-1" />
+                  <FontAwesomeIcon icon={faShoppingCart} className="mx-1" />
                   {t("cart")}
                   {numberOfItems > 0 && (
                     <span

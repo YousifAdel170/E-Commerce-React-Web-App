@@ -1,25 +1,28 @@
 /* eslint-disable react/prop-types */
-import { Container, Row, Spinner } from "react-bootstrap";
+
+// Import Components from React Bootstrap
+import { Container, Row } from "react-bootstrap";
+
+// Import Hooks from react-i18next for translations
 import { useTranslation } from "react-i18next";
 
-// Components
+// Import Custom Components
 import SubTitle from "../Utility/SubTitle";
 import BrandCard from "./BrandCard";
+import SpinnerComponent from "../Utility/SpinnerComponent";
+import ItemsNotFound from "../Utility/ItemsNotFound";
 
-// Hook
+// Import Custom Hook for fetching brands
 import HomeBrandHook from "../../hooks/brand/HomeBrandHook";
-import { useSelector } from "react-redux";
 
-// Featured Brands Section
+// Component responsible for displaying featured brands on the home page
 const BrandFeatured = ({ title, btnTitle }) => {
+  // Using the custom hook to fetch brands data + t for translations
   const { t } = useTranslation("home");
   const [brands, loading] = HomeBrandHook();
 
+  // Check if brands are available and loading is complete
   const showBrands = !loading && Array.isArray(brands) && brands.length > 0;
-
-  // Detect current theme from the HTML tag class
-  const isDark = useSelector((state) => state.ui.isDark);
-  const spinnerVariant = isDark ? "light" : "dark";
 
   return (
     <Container
@@ -27,20 +30,13 @@ const BrandFeatured = ({ title, btnTitle }) => {
       aria-labelledby="featured-brands-heading"
     >
       <SubTitle title={title} btnTitle={btnTitle} path="all-brands" />
-
       <Row
         className="my-2 d-flex justify-content-between"
         role="region"
         aria-label={t("homeMostCommonBrandsTitle")}
       >
         {loading ? (
-          <Spinner
-            className="mx-auto mb-4"
-            animation="border"
-            variant={spinnerVariant}
-            role="status"
-            aria-label={t("homeLoadingCategoriesAriaLabel")}
-          />
+          <SpinnerComponent msg={t("homeLoadingBrandsAriaLabel")} />
         ) : showBrands ? (
           brands.map((item, index) => (
             <BrandCard
@@ -51,18 +47,7 @@ const BrandFeatured = ({ title, btnTitle }) => {
             />
           ))
         ) : (
-          <h4
-            className="text-center w-100"
-            role="note"
-            aria-live="polite"
-            style={{
-              color: "var(--secondary-text-color)",
-              fontSize: "1.1rem",
-              padding: "1rem",
-            }}
-          >
-            {t("homeThereIsNoMostCommonBrands")}
-          </h4>
+          <ItemsNotFound msg={t("homeThereIsNoMostCommonBrands")} />
         )}
       </Row>
     </Container>

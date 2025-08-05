@@ -1,126 +1,256 @@
-/* Importing necessary hooks from react, react-redux */
+/* Importing necessary hooks from react, react-redux, react-router-dom and react-i18next */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 /* Importing constants and actions */
 import notify from "../../hooks/Utility/useNotifyHook"; // Notification hook for alerts
 import { createNewUser } from "../../redux/actions/authAction"; // Action to register a new user
-import { useNavigate } from "react-router-dom"; // Hook for navigation
-import {
-  CONFIRMATION_PASSWORD_TYPE,
-  EMAIL_TYPE,
-  NAME_TYPE,
-  PASSWORD_TYPE,
-  PHONE_TYPE,
-} from "../../constants/inputTypes";
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
-import {
-  BACKEND_ERROR_MESSAGES,
-  EMAIL_INVALID_MESSAGE,
-  EMAIL_REQUIRED_MESSAGE,
-  MULTIPLE_ERRORS_MESSAGE,
-  PASSWORD_CONFIRMATION_MISMATCH_MESSAGE,
-  PASSWORD_REQUIRED_MESSAGE,
-  PASSWORD_WEAK_MESSAGE,
-  PHONE_INVALID_MESSAGE,
-  REGISTRATION_FAILURE_MESSAGE,
-  USERNAME_REQUIRED_MESSAGE,
-} from "../../constants/messagesConstants";
 
-// Custom Hook for handling user registration
+// Import Functions from libphonenumber
+import {
+  getExampleNumber,
+  parsePhoneNumberFromString,
+} from "libphonenumber-js";
+
+// Import Constants
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+import { INPUT_NAMES } from "../../constants/inputs";
+import { EMPTY, ZERO } from "../../constants/general";
+import { OPERATORS } from "../../constants/operators";
+import { REGEX_PATTERNS } from "../../constants/validationPatterns";
+import { CONSTRAINTS } from "../../constants/length";
+import {
+  API_STATUS,
+  isApiStatus,
+  STATUS_TYPES,
+} from "../../constants/responseStatus";
+import { ROUTES } from "../../constants/routes";
+import { DELAYS } from "../../constants/delays";
+import { useGoogleLogin } from "@react-oauth/google";
+
+/**
+ * Custom hook for handling user registration logic.
+ *
+ * Manages:
+ * - Form state for inputs: name, email, phone, password, confirmation password
+ * - Validation logic for all inputs including password strength and phone format
+ * - Dispatching registration action to Redux store
+ * - Handling async loading state
+ * - Showing localized notification messages for validation, errors, and success
+ * - Navigating to login on successful registration
+ *
+ * @returns {Array} An array containing all form states, handlers, and status:
+ * [
+ *   name, email, phone, password, confirmationPassword,
+ *   onChangeInput (handler),
+ *   handleSubmit (handler),
+ *   loading (boolean),
+ *   onChangePhone (phone input handler),
+ *   passwordRules (object of password strength booleans)
+ * ]
+ */
 const RegisterHook = () => {
-  // Use Dispatch to handle actions from redux
+  // Redux dispatch for actions and navigation hook
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  /* States to store form data */
-  const [name, setName] = useState(""); // Name input state
-  const [email, setEmail] = useState(""); // Email input state
-  const [phone, setPhone] = useState(""); // Phone input state
-  const [password, setPassword] = useState(""); // Password input state
-  const [confirmationPassword, setConfirmationPassword] = useState(""); // Confirmation password input state
-  const [loading, setLoading] = useState(true); // Loading state to handle async operations
+  // i18n translation function scoped to notification messages
+  const { t } = useTranslation("notification_messages");
 
-  // Function to handle the change of input fields
-  const onChangeInput = (e, type) => {
-    switch (type) {
-      case NAME_TYPE:
-        setName(e.target.value); // Update name state
+  /* States to store form data */
+  const [name, setName] = useState(EMPTY.TEXT);
+  const [email, setEmail] = useState(EMPTY.TEXT);
+  const [phone, setPhone] = useState(EMPTY.TEXT);
+  const [password, setPassword] = useState(EMPTY.TEXT);
+  const [confirmationPassword, setConfirmationPassword] = useState(EMPTY.TEXT);
+
+  // Loading state to handle async registration process
+  const [isPress, setIsPress] = useState(false);
+  const [isGoogleLogin, setIsGoogleLogin] = useState(false);
+
+  // Password rules state to track strength requirements dynamically
+  const [passwordRules, setPasswordRules] = useState({
+    minLength: false,
+    hasUpperCase: false,
+    hasLowerCase: false,
+    hasNumber: false,
+    hasSpecialChar: false,
+  });
+
+  // Redux selectors
+  const result = useSelector((state) => state.authReducer.createUser);
+  const loading = useSelector((state) => state.authReducer.loading.register);
+  const errors = useSelector((state) => state.authReducer.errors?.register);
+
+  /**
+   * Checks password against strength rules using regex patterns,
+   * updates passwordRules state accordingly.
+   *
+   * @param {string} pwd - Password string to validate
+   */
+  const checkPasswordRules = (pwd) => {
+    setPasswordRules({
+      minLength: pwd.length >= CONSTRAINTS.PASSWORD_MIN_LENGTH,
+      hasUpperCase: REGEX_PATTERNS.PASSWORD.RULES.UPPERCASE.test(pwd),
+      hasLowerCase: REGEX_PATTERNS.PASSWORD.RULES.LOWERCASE.test(pwd),
+      hasNumber: REGEX_PATTERNS.PASSWORD.RULES.NUMBER.test(pwd),
+      hasSpecialChar: REGEX_PATTERNS.PASSWORD.RULES.SPECIAL_CHAR.test(pwd),
+    });
+  };
+
+  /**
+   * General handler for all input changes based on input name.
+   * Updates the corresponding state variable.
+   * For password, it also triggers password strength validation.
+   *
+   * @param {Object} e - Input change event
+   * @param {string} name - Input field name to determine state update
+   */
+  const onChangeInput = (e, name) => {
+    switch (name) {
+      case INPUT_NAMES.NAME:
+        setName(e.target.value);
         break;
-      case EMAIL_TYPE:
-        setEmail(e.target.value); // Update email state
+      case INPUT_NAMES.EMAIL:
+        setEmail(e.target.value);
         break;
-      case PHONE_TYPE:
-        setPhone(e.target.value); // Update phone state
+      case INPUT_NAMES.PHONE:
+        setPhone(e.target.value);
         break;
-      case PASSWORD_TYPE:
-        setPassword(e.target.value); // Update password state
+      case INPUT_NAMES.PASSWORD:
+        setPassword(e.target.value);
+        checkPasswordRules(e.target.value);
         break;
-      case CONFIRMATION_PASSWORD_TYPE:
-        setConfirmationPassword(e.target.value); // Update confirmation password state
+      case INPUT_NAMES.CONFIRM_PASSWORD:
+        setConfirmationPassword(e.target.value);
         break;
       default:
+        break;
     }
   };
 
-  // Function to validate inputs before submitting the form
+  /**
+   * Specialized handler for phone input changes that normalizes
+   * the phone number with country dial code and enforces length limits.
+   * Utilizes libphonenumber-js for example number length per country.
+   *
+   * @param {string} value - The current phone input value
+   * @param {Object} countryData - Country info including iso2 and dialCode
+   */
+  const onChangePhone = (value, countryData) => {
+    if (!countryData || !value) {
+      setPhone(value);
+      return;
+    }
+
+    const iso2 = countryData.iso2?.toUpperCase(); // e.g., 'EG'
+    const dialCode = countryData.dialCode || EMPTY.TEXT;
+
+    // Normalize input by removing '+' symbol
+    const normalizedValue = value.replace(
+      OPERATORS.ARITHMETIC.PLUS,
+      EMPTY.TEXT
+    );
+    const dialCodeLength = dialCode.length;
+
+    // Extract national number part by removing dial code prefix if present
+    let nationalNumber = normalizedValue.startsWith(dialCode)
+      ? normalizedValue.slice(dialCodeLength)
+      : normalizedValue;
+
+    // Default max national number length
+    let maxNationalLength = 15;
+
+    // Attempt to get example number length for the country to set max length
+    try {
+      const example = getExampleNumber(iso2, "mobile");
+      if (example) {
+        maxNationalLength = example.nationalNumber.length;
+      }
+    } catch (e) {
+      console.warn("Example number not found for", iso2 + " " + e);
+    }
+
+    // Enforce max national number length limit
+    if (nationalNumber.length > maxNationalLength) {
+      nationalNumber = nationalNumber.slice(ZERO, maxNationalLength);
+    }
+
+    // Construct full phone number including '+' and dial code
+    const newPhone = OPERATORS.ARITHMETIC.PLUS + dialCode + nationalNumber;
+
+    setPhone(newPhone);
+  };
+
+  /**
+   * Validates all form inputs before submitting registration.
+   * Displays warnings for invalid or missing inputs.
+   *
+   * @returns {boolean} - true if all inputs are valid, false otherwise
+   */
   const validateInputs = () => {
-    // Validate Username
-    if (name === "") {
-      notify(USERNAME_REQUIRED_MESSAGE, WARNING); // Notify if name is empty
-      return false; // Stop the form submission
+    // Username required validation
+    if (name === EMPTY.TEXT) {
+      notify(t("validation.usernameRequired"), NOTIFICATION_TYPES.WARNING);
+      return false;
     }
 
-    // Validate Email Address
-    if (email === "") {
-      notify(EMAIL_REQUIRED_MESSAGE, WARNING); // Notify if email is empty
-      return false; // Stop the form submission
-    } else {
-      // Check if the email is in a valid format
-      if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
-        notify(EMAIL_INVALID_MESSAGE, WARNING); // Notify if email format is invalid
-        return false; // Stop the form submission
-      }
+    // Email required and format validation
+    if (email === EMPTY.TEXT) {
+      notify(t("validation.emailRequired"), NOTIFICATION_TYPES.WARNING);
+      return false;
+    } else if (!REGEX_PATTERNS.EMAIL.test(email)) {
+      notify(t("validation.emailInvalid"), NOTIFICATION_TYPES.WARNING);
+      return false;
     }
 
-    // Validate Phone Number
-    if (phone.length <= 10) {
-      notify(PHONE_INVALID_MESSAGE, WARNING); // Notify if phone number is invalid
-      return false; // Stop the form submission
+    // Phone required and format validation
+    if (!phone) {
+      notify(t("validation.phoneRequired"), NOTIFICATION_TYPES.WARNING);
+      return false;
+    }
+    const phoneNumber = parsePhoneNumberFromString(phone);
+    if (!phoneNumber || !phoneNumber.isValid()) {
+      notify(t("validation.phoneInvalid"), NOTIFICATION_TYPES.WARNING);
+      return false;
     }
 
-    // Validate Password
-    if (password === "") {
-      notify(PASSWORD_REQUIRED_MESSAGE, WARNING); // Notify if password is empty
-      return false; // Stop the form submission
-    } else {
-      // Check if password is strong enough
-      if (password.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-        notify(PASSWORD_WEAK_MESSAGE, WARNING); // Notify if password is weak
-        return false; // Stop the form submission
-      }
+    // Password required and strength validation
+    if (password === EMPTY.TEXT) {
+      notify(t("validation.passwordRequired"), NOTIFICATION_TYPES.WARNING);
+      return false;
+    } else if (!REGEX_PATTERNS.PASSWORD.FULL.test(password)) {
+      notify(t("validation.passwordWeak"), NOTIFICATION_TYPES.WARNING);
+      return false;
     }
 
-    // Validate Password Confirmation
+    // Password confirmation match validation
     if (confirmationPassword !== password) {
-      notify(PASSWORD_CONFIRMATION_MISMATCH_MESSAGE, WARNING); // Notify if passwords don't match
-      return false; // Stop the form submission
+      notify(t("validation.passwordMismatch"), NOTIFICATION_TYPES.WARNING);
+      return false;
     }
 
-    return true; // All validations passed, proceed with submission
+    // All validations passed
+    return true;
   };
 
-  // Selector to get registration result, errors if there from redux store
-  const result = useSelector((state) => state.authReducer.createUser);
-  const errors = useSelector((state) => state.authReducer.errors);
+  /**
+   * Handles form submission for registration.
+   * Performs validation and dispatches createNewUser action if valid.
+   * Manages loading state to disable UI and show notifications.
+   *
+   * @param {Object} e - Form submit event
+   */
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
 
-  // Function to submit the form and register a new user
-  const handleSubmit = async () => {
-    // Validate Inputs Before Submit
-    if (!validateInputs()) return; // Stop if validation fails
+    // Validate inputs before submission
+    if (!validateInputs()) return;
 
-    // Start the registration process (Loading ON) and dispatch the action to create a new user
-    setLoading(true);
+    // Dispatch registration and update loading state
+    setIsPress(true);
     await dispatch(
       createNewUser({
         name,
@@ -130,46 +260,85 @@ const RegisterHook = () => {
         phone,
       })
     );
-    setLoading(false);
-    // End the registration process (Loading OFF)
+    setIsPress(false);
   };
 
-  // Run when the loading state changes
-  useEffect(() => {
-    if (!loading) {
-      if (errors) {
-        if (errors.errors && Array.isArray(errors.errors)) {
-          if (errors.errors.length === 1) {
-            switch (errors.errors[0].msg) {
-              case BACKEND_ERROR_MESSAGES.EMAIL_ALREADY_USED:
-                notify(BACKEND_ERROR_MESSAGES.EMAIL_ALREADY_USED, ERROR);
-                break;
-              case BACKEND_ERROR_MESSAGES.EGYPT_NUMBERS_ONLY:
-                notify(BACKEND_ERROR_MESSAGES.EGYPT_NUMBERS_ONLY, ERROR);
-                break;
-              case BACKEND_ERROR_MESSAGES.PASSWORD_VALIDATION:
-                notify(BACKEND_ERROR_MESSAGES.PASSWORD_VALIDATION, ERROR);
-                break;
-              default:
-                notify(errors.errors[0].msg, ERROR);
-            }
-          } else {
-            notify(MULTIPLE_ERRORS_MESSAGE, ERROR);
+  // Google login handler
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      setIsGoogleLogin(true);
+      try {
+        const res = await fetch(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${tokenResponse.access_token}`,
+            },
           }
-        } else notify(REGISTRATION_FAILURE_MESSAGE, ERROR);
+        );
 
-        return;
-      }
+        const data = await res.json();
+        // Register logic with data.email and data.sub as fallback password
+        await dispatch(
+          createNewUser({
+            name: data.name || "Google User",
+            email: data.email,
+            password: data.sub,
+            passwordConfirm: data.sub,
+            phone: "+201000000000", // Optional: Google doesn’t provide phone, so use default
+          })
+        );
 
-      if (result && result.data && result.data.token) {
-        localStorage.setItem("token", result.data.token);
-        notify("تم تسجيل الحساب بنجاح", SUCCESS);
-        setTimeout(() => navigate("/login"), 2000);
+        notify(t("success.register"), NOTIFICATION_TYPES.SUCCESS);
+        setTimeout(() => navigate(ROUTES.AUTH.LOGIN), DELAYS.NAVIGATION_DELAY);
+      } catch (error) {
+        notify("Google registration failed" + error, NOTIFICATION_TYPES.ERROR);
+      } finally {
+        setIsGoogleLogin(false);
       }
+    },
+    onError: () => {
+      notify("Google login failed", NOTIFICATION_TYPES.ERROR);
+      setIsGoogleLogin(false);
+    },
+  });
+
+  /**
+   * Effect hook to monitor loading, result, and errors.
+   * Displays notifications for errors or success.
+   * On success, stores token and navigates to login page.
+   */
+  useEffect(() => {
+    if (!loading && isPress) {
+      if (!errors && isApiStatus(result?.status, STATUS_TYPES.SUCCESS)) {
+        notify(t("success.register"), NOTIFICATION_TYPES.SUCCESS);
+        setTimeout(() => navigate(ROUTES.AUTH.LOGIN), DELAYS.NAVIGATION_DELAY);
+      } else if (isApiStatus(errors?.status, STATUS_TYPES.FAILURE)) {
+        const message = errors?.data?.errors[0]?.msg;
+        console.log("message");
+        if (message === API_STATUS.KNOWN_MESSAGES.EMAIL_ALREADY_USED)
+          notify(t("backendErrors.emailAlreadyUsed"), NOTIFICATION_TYPES.ERROR);
+        else if (message === API_STATUS.KNOWN_MESSAGES.EGYPT_NUMBERS_ONLY)
+          notify(t("backendErrors.egyptNumbersOnly"), NOTIFICATION_TYPES.ERROR);
+        else if (message === API_STATUS.KNOWN_MESSAGES.PASSWORD_VALIDATION)
+          notify(
+            t("backendErrors.passwordValidation"),
+            NOTIFICATION_TYPES.ERROR
+          );
+      } else if (isApiStatus(errors?.status, STATUS_TYPES.UNAUTHORIZED))
+        notify(t("backendErrors.unauthorized"), NOTIFICATION_TYPES.ERROR);
+      else if (isApiStatus(errors?.status, STATUS_TYPES.FORBIDDEN))
+        notify(t("backendErrors.forbidden"), NOTIFICATION_TYPES.ERROR);
+      else if (isApiStatus(errors?.status, STATUS_TYPES.NOT_FOUND))
+        notify(t("backendErrors.notFound"), NOTIFICATION_TYPES.ERROR);
+      else if (isApiStatus(errors?.status, STATUS_TYPES.SERVER_ERROR))
+        notify(t("backendErrors.server"), NOTIFICATION_TYPES.ERROR);
+      else if (isApiStatus(errors?.status, STATUS_TYPES.NETWORK_ERROR))
+        notify(t("backendErrors.network"), NOTIFICATION_TYPES.ERROR);
     }
-  }, [loading, navigate, result, errors]);
+  }, [loading, isPress, errors, result, navigate, t]);
 
-  // Return all necessary values and functions for the component
+  // Return all state variables and handlers for component use
   return [
     name,
     email,
@@ -178,7 +347,12 @@ const RegisterHook = () => {
     confirmationPassword,
     onChangeInput,
     handleSubmit,
+    loading,
+    onChangePhone,
+    passwordRules,
+    googleLogin, // Add googleLogin handler to return array
+    isGoogleLogin, // Add isGoogleLogin state to return array
   ];
 };
 
-export default RegisterHook; // Export the hook for use in the component
+export default RegisterHook; // Export the custom hook

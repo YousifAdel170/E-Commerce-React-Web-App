@@ -1,0 +1,32 @@
+{
+  "shopMainRegionLabel": "منطقة عرض المنتجات",
+  "shopSearchResultsHeading": "نتائج البحث",
+  "shopSearchCount": "هناك {{count}} نتيجة بحث",
+  "shopSideFilter": "تصفية المنتجات",
+  "shopProductGrid": "شبكة المنتجات",
+  "shopPagination": "صفحات المنتجات",
+
+  "sortBy": "ترتيب حسب",
+  "homeCategoriesTitle": "الفئات",
+  "homeLoadingCategoriesAriaLabel": "جارٍ تحميل الفئات",
+  "homeMoreButton": "المزيد",
+  "navigateToButton": "الانتقال إلى {{button}}",
+  "sortOptionsLabel": "خيارات الترتيب",
+  "sortOptions": {
+    "none": "بدون ترتيب",
+    "bestSelling": "الأكثر مبيعًا",
+    "topRated": "الأعلى تقييمًا",
+    "priceLowToHigh": "السعر من الأقل للأعلى",
+    "priceHighToLow": "السعر من الأعلى للأقل"
+  },
+
+  "filters": "خيارات التصفية",
+  "category": "الفئة",
+  "brand": "الماركة",
+  "price": "السعر",
+  "from": "من",
+  "to": "إلى",
+  "all": "الكل",
+  "noCategories": "لا توجد فئات متاحة",
+  "noBrands": "لا توجد ماركات متاحة"
+}

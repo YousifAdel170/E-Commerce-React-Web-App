@@ -1,17 +1,20 @@
 /* eslint-disable react/prop-types */
 
 // Import Components from React bootstrap
-import { Container, Row, Spinner } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
 
 // Import Custom Components
 import SubTitle from "../Utility/SubTitle";
 import ProductCard from "./ProductCard";
+import ItemsNotFound from "../Utility/ItemsNotFound";
+import SpinnerComponent from "../Utility/SpinnerComponent";
+
+// Import Hooks
+import { useTranslation } from "react-i18next";
 
 // Import Custom Hook to get the favorite products
 import ViewAllWishListHook from "../../hooks/products/wishList/ViewAllWishListHook";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 
 // Component responsible for displaying the product cards in a container
 const ProductCardContainer = ({
@@ -30,9 +33,6 @@ const ProductCardContainer = ({
   const sectionId = `product-section-title-${title
     ?.replace(/\s+/g, "-")
     .toLowerCase()}`;
-
-  const isDark = useSelector((state) => state.ui.isDark);
-  const spinnerVariant = isDark ? "light" : "dark";
 
   return (
     //  Main Container of the Product Card
@@ -54,26 +54,18 @@ const ProductCardContainer = ({
               />
             ))
           ) : (
-            <h4
-              className="text-center w-100"
-              role="note"
-              aria-live="polite"
-              style={{
-                fontSize: "1.1rem",
-                padding: "1rem",
-              }}
-            >
-              {t("homeThereIsNoMostSold")}
-            </h4>
+            // If no products found, display ItemsNotFound component
+            <ItemsNotFound
+              msg={
+                title === t("homeMostSoldTitle")
+                  ? t("homeThereIsNoMostSold")
+                  : t("homeThereIsNoNewest")
+              }
+            />
           )
         ) : (
-          <Spinner
-            className="mx-auto"
-            animation="border"
-            variant={spinnerVariant}
-            role="status"
-            aria-label={t("homeLoadingProductsAriaLabel")}
-          />
+          // If loading, display SpinnerComponent
+          <SpinnerComponent msg={t("homeLoadingProductsAriaLabel")} />
         )}
       </Row>
       <ToastContainer />

@@ -82,6 +82,14 @@ body.dark-theme {
 
   --badge-bg: #dc2626;
   --badge-text: #ffffff;
+
+  --auth-text: var(--main-color);
+  --auth-border: var(--main-color);
+  --auth-input-bg: #fff;
+  --auth-accent: #dc3545;
+  --auth-icon: var(--main-color);
+
+  --auth-box-shadow: var(--main-color);
 }
 
 /* ===== Dark Theme ===== */
@@ -117,6 +125,13 @@ body.dark-theme {
 
   --badge-bg: #f59e0b;
   --badge-text: #111827;
+
+  --auth-text: var(--main-text-color);
+  --auth-border: var(--main-text-color);
+  --auth-box-shadow: var(--main-text-color);
+  --auth-input-bg: #222;
+  --auth-accent: #dc3545;
+  --auth-icon: var(--main-text-color);
 }
 
 /* ===== Scrollbar (Properly Scoped) ===== */
@@ -219,6 +234,19 @@ h6 {
 }
 .flex-grow-2 {
   flex-grow: 2 !important;
+}
+
+.icon {
+  color: var(--auth-icon) !important;
+  transition: color var(--main-duration) ease-in-out !important;
+}
+
+.icon:hover {
+  color: var(--hover-main-color) !important;
+}
+
+.dark-theme .icon:hover {
+  color: var(--main-text-hover-color) !important;
 }
 
 /* ===== Responsive Utilities ===== */

@@ -25,6 +25,7 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
     animateFav,
     onFavClick,
     handleAnimationEnd,
+    isFavLoading,
   ] = ProductCardHook(item, favoriteProducts);
 
   const [sectionRef, isVisible] = useInviewAnimation();
@@ -91,17 +92,24 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
                   aria-pressed={favIcon}
                   onClick={(e) => {
                     e.preventDefault();
-                    onFavClick();
+                    if (!isFavLoading) {
+                      onFavClick();
+                    }
                   }}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
+                    if ((e.key === "Enter" || e.key === " ") && !isFavLoading) {
                       e.preventDefault();
                       onFavClick();
                     }
                   }}
                   className={`fav-icon ${animateFav ? "animate" : ""}`}
                   onAnimationEnd={handleAnimationEnd}
-                  style={{ cursor: "pointer", marginLeft: 8 }}
+                  style={{
+                    cursor: isFavLoading ? "not-allowed" : "pointer",
+                    pointerEvents: isFavLoading ? "none" : "auto",
+                    opacity: isFavLoading ? 0.5 : 1,
+                    marginLeft: 8,
+                  }}
                   title={
                     favIcon
                       ? t("removeFromFavorites", { title: item?.title })

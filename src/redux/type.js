@@ -1,5 +1,6 @@
-// Error
+// Error + Loading
 export const GET_ERROR = "GET_ERROR";
+export const SET_LOADING = "SET_LOADING";
 
 // Category
 export const GET_ALL_CATEGORY = "GET_ALL_CATEGORY";

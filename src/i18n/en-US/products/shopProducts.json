@@ -1,0 +1,32 @@
+{
+  "shopMainRegionLabel": "Product Shopping Area",
+  "shopSearchResultsHeading": "Search Results",
+  "shopSearchCount": "There are {{count}} search results",
+  "shopSideFilter": "Filter Products",
+  "shopProductGrid": "Products Grid",
+  "shopPagination": "Product Pagination",
+
+  "sortBy": "Sort by",
+  "homeCategoriesTitle": "Categories",
+  "homeLoadingCategoriesAriaLabel": "Loading categories",
+  "homeMoreButton": "More",
+  "navigateToButton": "Navigate to {{button}}",
+  "sortOptionsLabel": "Sorting options",
+  "sortOptions": {
+    "none": "No sorting",
+    "bestSelling": "Best Selling",
+    "topRated": "Top Rated",
+    "priceLowToHigh": "Price: Low to High",
+    "priceHighToLow": "Price: High to Low"
+  },
+
+  "filters": "Filter Options",
+  "category": "Category",
+  "brand": "Brand",
+  "price": "Price",
+  "from": "From",
+  "to": "To",
+  "all": "All",
+  "noCategories": "No categories available",
+  "noBrands": "No brands available"
+}

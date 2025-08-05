@@ -1,23 +1,21 @@
 /* eslint-disable react/prop-types */
 
 // Import Components from React Bootstrap
-import { Row, Spinner } from "react-bootstrap";
+import { Row } from "react-bootstrap";
+
+// Import Custom Components
+import SpinnerComponent from "../Utility/SpinnerComponent";
+import ItemsNotFound from "../Utility/ItemsNotFound";
 
 // Import Custom Components
 import BrandCard from "./BrandCard";
 
-// i18n
+// Import Hooks from react-i18next for translations
 import { useTranslation } from "react-i18next";
-
-// Redux
-import { useSelector } from "react-redux";
 
 // Component responsible for displaying the brand cards in a row
 const BrandContainer = ({ brands = [], loading }) => {
   const { t } = useTranslation("home");
-
-  const isDark = useSelector((state) => state.ui.isDark);
-  const spinnerVariant = isDark ? "light" : "dark";
 
   return (
     <Row
@@ -26,13 +24,7 @@ const BrandContainer = ({ brands = [], loading }) => {
       aria-label={t("homeMostCommonBrandsTitle")}
     >
       {loading ? (
-        <Spinner
-          className="mx-auto"
-          animation="border"
-          variant={spinnerVariant}
-          role="status"
-          aria-label={t("homeLoadingCategoriesAriaLabel")}
-        />
+        <SpinnerComponent msg={t("homeLoadingBrandsAriaLabel")} />
       ) : brands.length > 0 ? (
         brands.map((item, index) => (
           <BrandCard
@@ -43,24 +35,7 @@ const BrandContainer = ({ brands = [], loading }) => {
           />
         ))
       ) : (
-        <div
-          className="text-center w-100 py-4"
-          role="alert"
-          aria-live="polite"
-          style={{ color: "var(--focus-color)" }}
-        >
-          <h4
-            className="text-center w-100"
-            role="note"
-            aria-live="polite"
-            style={{
-              fontSize: "1.1rem",
-              padding: "1rem",
-            }}
-          >
-            {t("homeThereIsNoMostCommonBrands")}
-          </h4>
-        </div>
+        <ItemsNotFound msg={t("homeThereIsNoMostCommonBrands")} />
       )}
     </Row>
   );

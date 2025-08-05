@@ -13,27 +13,28 @@ import {
 } from "../../../redux/actions/wishListAction";
 
 // Import Used Constants
-import { ERROR, SUCCESS } from "../../../constants/notificationTypes";
-import { STATUS, USER_ROLES } from "../../../constants/general";
-import {
-  GENERAL_MESSAGES,
-  WISHLIST_MESSAGES,
-} from "../../../constants/messagesConstants";
+import { NUMBERS, STATUS, USER_ROLES } from "../../../constants/general";
+import { NOTIFICATION_TYPES } from "../../../constants/notificationTypes";
+import { useTranslation } from "react-i18next";
 
 // Hook responsible for handling the product card
 const ProductCardHook = (item, favoriteProducts) => {
   // Dispatch
   const dispatch = useDispatch();
 
+  const { t } = useTranslation("notification_messages");
+
   // Check if the product is in the favorite list
   let favorite = favoriteProducts.some((fav) => fav === item?._id);
 
   // States
-  const [favIcon, setFavIcon] = useState(0);
+  const [favIcon, setFavIcon] = useState(NUMBERS.ZERO);
   const [isFav, setIsFav] = useState(favorite);
   const [loadingAdd, setLoadingAdd] = useState(true);
   const [loadingRemove, setLoadingRemove] = useState(true);
   const [animateFav, setAnimateFav] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   // UseEffect to check if the product is in the favorite list
   useEffect(() => {
@@ -48,8 +49,8 @@ const ProductCardHook = (item, favoriteProducts) => {
 
   // UseEffect to change favorite button image
   useEffect(() => {
-    if (isFav) setFavIcon(1);
-    else setFavIcon(0);
+    if (isFav) setFavIcon(NUMBERS.ONE);
+    else setFavIcon(NUMBERS.ZERO);
   }, [isFav]);
 
   // select the response of addToWishList from the store
@@ -67,7 +68,7 @@ const ProductCardHook = (item, favoriteProducts) => {
   const addToWishListData = async () => {
     // Check if the current user is admin then prevent him from adding to the cart
     if (user?.role === USER_ROLES.ADMIN) {
-      notify(WISHLIST_MESSAGES.ADMIN_RESTRICTED, ERROR);
+      notify(t("wishlist.adminRestricted"), NOTIFICATION_TYPES.ERROR);
       return;
     }
 
@@ -76,8 +77,10 @@ const ProductCardHook = (item, favoriteProducts) => {
 
     // Start Loading
     setLoadingAdd(true);
+    setLoading(true);
     await dispatch(addToWishList({ productId: item?._id }));
     setLoadingAdd(false);
+    setLoading(false);
     // End Loading
   };
 
@@ -85,7 +88,7 @@ const ProductCardHook = (item, favoriteProducts) => {
   const removeFromWishListData = async () => {
     // Check if the current user is admin then prevent him from adding to the cart
     if (user?.role === USER_ROLES.ADMIN) {
-      notify(WISHLIST_MESSAGES.ADMIN_RESTRICTED, ERROR);
+      notify(t("wishlist.adminRestricted"), NOTIFICATION_TYPES.ERROR);
       return;
     }
 
@@ -94,8 +97,10 @@ const ProductCardHook = (item, favoriteProducts) => {
 
     // Start Loading of Remove favorite product
     setLoadingRemove(true);
+    setLoading(true);
     await dispatch(removeFromWishList(item?._id));
     setLoadingRemove(false);
+    setLoading(false);
     // End Loading of Remove favorite product
   };
 
@@ -104,28 +109,28 @@ const ProductCardHook = (item, favoriteProducts) => {
     if (!loadingAdd) {
       try {
         if (resultAdd?.status === STATUS.SUCCESS_OK)
-          notify(GENERAL_MESSAGES.ADD_SUCCESSFULLY, SUCCESS);
+          notify(t("wishlist.added"), NOTIFICATION_TYPES.SUCCESS);
         else if (resultAdd?.status === STATUS.UNAUTHORIZED)
-          notify(WISHLIST_MESSAGES.LOGIN_REQUIRED, ERROR);
+          notify(t("wishlist.loginRequired"), NOTIFICATION_TYPES.ERROR);
       } catch (error) {
         console.error(error);
       }
     }
-  }, [loadingAdd, resultAdd]);
+  }, [loadingAdd, resultAdd, t]);
 
   // UseEffect to handle the response of removeFromWishList
   useEffect(() => {
     if (!loadingRemove) {
       try {
-        if (resultRemove?.status === SUCCESS)
-          notify(GENERAL_MESSAGES.DELETE_SUCCESSFULLY, SUCCESS);
+        if (resultRemove?.status === NOTIFICATION_TYPES.SUCCESS)
+          notify(t("wishlist.removed"), NOTIFICATION_TYPES.SUCCESS);
         else if (resultRemove?.status === STATUS.UNAUTHORIZED)
-          notify(WISHLIST_MESSAGES.LOGIN_REQUIRED, ERROR);
+          notify(t("wishlist.loginRequired"), NOTIFICATION_TYPES.ERROR);
       } catch (error) {
         console.error(error);
       }
     }
-  }, [loadingRemove, resultRemove]);
+  }, [loadingRemove, resultRemove, t]);
 
   // Calculate discount amount and percentage for display badge
   const { discountAmount, discountPercent } = calculateDiscounts(item);
@@ -144,6 +149,7 @@ const ProductCardHook = (item, favoriteProducts) => {
     animateFav,
     onFavClick,
     handleAnimationEnd,
+    loading,
   ];
 };
 

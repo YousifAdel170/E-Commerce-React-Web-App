@@ -1,41 +1,87 @@
-// Import Components from React Bootstrap
-import { Col, Container, Row } from "react-bootstrap";
+// Import Bootstrap Components
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 
-// Import Link from React Router DOM
-import { Link } from "react-router-dom";
+// Import Routing Utilities
+import { Link, useLocation } from "react-router-dom";
 
-// Import custom hook to fetch categories
+// Import Custom Hook to fetch all categories
 import AllCategoryPageHook from "../../hooks/category/AllCategoryPageHook";
 
-// Import CSS styles
+// Import Styling
 import "./CategoryHeader.css";
 
-// Component Responsible for displaying the header of categories
+// Import Internationalization
+import { useTranslation } from "react-i18next";
+
+// Import Global State (for theme detection)
+import { useSelector } from "react-redux";
+
+// Component Responsible for Displaying the Top Category Navigation Bar
 const CategoryHeader = () => {
-  // Fetch categories using custom hook
-  const [categories] = AllCategoryPageHook();
+  // Fetch categories and loading state from the custom hook
+  const [categories, loading] = AllCategoryPageHook();
+
+  // Translation function from i18n
+  const { t } = useTranslation("home");
+
+  // Get current route to apply active styles
+  const location = useLocation();
+
+  // Determine current theme (light or dark) to style spinner
+  const isDark = useSelector((state) => state.ui.isDark);
+  const spinnerVariant = isDark ? "light" : "dark";
 
   return (
-    <div className="cat-header">
+    // Semantic nav with appropriate aria-label
+    <nav className="cat-header" aria-label={t("homeCategoriesTitle")}>
       <Container>
         <Row>
-          <Col className="d-flex justify-content-start py-2 flex-wrap">
-            {categories?.slice(0, 5).map((category) => (
-              <Link
-                key={category._id}
-                to={`/products/category/${category._id}`}
-                style={{ textDecoration: "none" }}
-              >
-                <div className="cat-text-header">{category.name}</div>
-              </Link>
-            ))}
-            <Link to="/all-categories" style={{ textDecoration: "none" }}>
-              <div className="cat-text-header">المزيد</div>
+          {/* Container for category buttons */}
+          <Col
+            className="d-flex justify-content-start py-2 flex-wrap"
+            role="list"
+          >
+            {/* Show loading spinner while fetching categories */}
+            {loading ? (
+              <Spinner
+                className="mx-auto"
+                animation="border"
+                variant={spinnerVariant}
+                role="status"
+                aria-label={t("homeLoadingCategoriesAriaLabel")}
+              />
+            ) : (
+              // Render first 5 categories with routing and ARIA support
+              categories?.slice(0, 5).map((category) => (
+                <Link
+                  key={category._id}
+                  to={`/products/category/${category._id}`}
+                  className={`cat-text-header ${
+                    location.pathname.includes(category._id) ? "active" : ""
+                  }`}
+                  aria-label={t("navigateToButton", {
+                    button: category.name,
+                  })}
+                >
+                  {category.name}
+                </Link>
+              ))
+            )}
+
+            {/* Render "More" button linking to all categories */}
+            <Link
+              to="/all-categories"
+              className={`cat-text-header ${
+                location.pathname === "/all-categories" ? "active" : ""
+              }`}
+              aria-label={t("homeMoreButton")}
+            >
+              {t("homeMoreButton")}
             </Link>
           </Col>
         </Row>
       </Container>
-    </div>
+    </nav>
   );
 };
 

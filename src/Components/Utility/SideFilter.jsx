@@ -1,15 +1,11 @@
-// Import Components from react-bootstrap
 import { Row } from "react-bootstrap";
-
-// Import Custom Hooks
 import SidebarSearchHook from "../../hooks/search/SidebarSearchHook";
-
-// Import CSS Styles
+import { useTranslation } from "react-i18next";
 import "./SideFilter.css";
 
-// Component Responsible for rendering the sidebar filter options for categories, brands, and price range
 const SideFilter = () => {
-  // Get The Category and Brand Data From Hooks
+  const { t } = useTranslation("shopProducts");
+
   const [
     categoriesData,
     brandsData,
@@ -19,89 +15,182 @@ const SideFilter = () => {
     priceToUpdate,
   ] = SidebarSearchHook();
 
-  // Get Price from local storage and set it to the local variables
-  let localFrom = localStorage.getItem("priceFrom");
-  let localTo = localStorage.getItem("priceTo");
+  const localFrom = localStorage.getItem("priceFrom");
+  const localTo = localStorage.getItem("priceTo");
+
   return (
-    <div className="mt-3">
+    <div
+      className="side-filter-container"
+      role="region"
+      aria-labelledby="filter-heading"
+    >
+      <h2 id="filter-heading" className="visually-hidden">
+        {t("filters")}
+      </h2>
+
       <Row>
-        <div className="d-flex flex-column mt-2">
-          <div className="filter-title">الفئة</div>
-          <div className="d-flex mt-3">
-            <input onChange={clickCategory} type="checkbox" value={"0"} />
-            <div className="filter-sub me-2">الكل</div>
+        {/* Categories */}
+        <section aria-labelledby="category-filter">
+          <div className="filter-section mt-3">
+            <div className="filter-title" id="category-filter">
+              {t("category")}
+            </div>
+
+            <div className="filter-option">
+              <input
+                id="all-categories"
+                type="checkbox"
+                value="0"
+                onChange={clickCategory}
+              />
+              <label htmlFor="all-categories">{t("all")}</label>
+            </div>
+
+            {categoriesData?.length > 0 ? (
+              categoriesData.map((item) => (
+                <div key={item._id} className="filter-option">
+                  <input
+                    id={`category-${item._id}`}
+                    type="checkbox"
+                    value={item._id}
+                    onChange={clickCategory}
+                  />
+                  <label htmlFor={`category-${item._id}`}>{item.name}</label>
+                </div>
+              ))
+            ) : (
+              <p className="filter-sub">{t("noCategories")}</p>
+            )}
           </div>
+        </section>
 
-          {/* Check if categoriesData is available and map through it */}
-          {categoriesData ? (
-            categoriesData.map((item, index) => (
-              <div key={index} className="d-flex mt-2">
-                <input
-                  onChange={clickCategory}
-                  type="checkbox"
-                  value={item?._id}
-                />
-                <div className="filter-sub me-2">{item?.name}</div>
-              </div>
-            ))
-          ) : (
-            <h6>لا يوجد تصنيفات</h6>
-          )}
-        </div>
+        {/* Brands */}
+        <section aria-labelledby="brand-filter">
+          <div className="filter-section mt-3">
+            <div className="filter-title" id="brand-filter">
+              {t("brand")}
+            </div>
 
-        <div className="d-flex flex-column mt-2">
-          <div className="filter-title">الماركة</div>
-          <div className="d-flex mt-3">
-            <input onChange={clickBrand} type="checkbox" value="0" />
-            <div className="filter-sub me-2">الكل</div>
+            <div className="filter-option">
+              <input
+                id="all-brands"
+                type="checkbox"
+                value="0"
+                onChange={clickBrand}
+              />
+              <label htmlFor="all-brands">{t("all")}</label>
+            </div>
+
+            {brandsData?.length > 0 ? (
+              brandsData.map((item) => (
+                <div key={item._id} className="filter-option">
+                  <input
+                    id={`brand-${item._id}`}
+                    type="checkbox"
+                    value={item._id}
+                    onChange={clickBrand}
+                  />
+                  <label htmlFor={`brand-${item._id}`}>{item.name}</label>
+                </div>
+              ))
+            ) : (
+              <p className="filter-sub">{t("noBrands")}</p>
+            )}
           </div>
+        </section>
 
-          {/* Check if brandsData is available and map through it */}
-          {brandsData ? (
-            brandsData.map((item, index) => (
-              <div key={index} className="d-flex mt-3">
+        {/* Price Filter */}
+        {/* Price Filter */}
+        <section aria-labelledby="price-filter">
+          <div className="filter-section mt-3">
+            <div className="filter-title" id="price-filter">
+              {t("price")}
+            </div>
+
+            {/* Price From */}
+            <div className="filter-price">
+              <label htmlFor="price-from">{t("from")}</label>
+              <div className="number-wrapper">
                 <input
-                  onChange={clickBrand}
-                  type="checkbox"
-                  value={item?._id}
+                  id="price-from"
+                  value={localFrom || ""}
+                  onChange={priceFromUpdate}
+                  className="text-center"
+                  type="number"
+                  inputMode="numeric"
+                  aria-label={t("from")}
                 />
-                <div className="filter-sub me-2 ">{item?.name}</div>
+                <button
+                  type="button"
+                  className="arrow up"
+                  aria-label={t("increase")}
+                  onClick={() =>
+                    priceFromUpdate({
+                      target: {
+                        value: parseInt(localFrom || 0) + 1,
+                      },
+                    })
+                  }
+                />
+                <button
+                  type="button"
+                  className="arrow down"
+                  aria-label={t("decrease")}
+                  onClick={() =>
+                    priceFromUpdate({
+                      target: {
+                        value: Math.max(0, parseInt(localFrom || 0) - 1),
+                      },
+                    })
+                  }
+                />
               </div>
-            ))
-          ) : (
-            <h6>لا يوجد ماركات</h6>
-          )}
-        </div>
+            </div>
 
-        {/* Price From & Price To */}
-        <div className="filter-title my-3">السعر</div>
-        <div className="d-flex">
-          {/* Price From */}
-          <p className="filter-sub my-2">من:</p>
-          <input
-            value={localFrom || ""}
-            onChange={priceFromUpdate}
-            className="m-2 text-center"
-            type="number"
-            style={{ width: "50px", height: "25px" }}
-          />
-        </div>
-
-        {/* Price To */}
-        <div className="d-flex">
-          <p className="filter-sub my-2">الي:</p>
-          <input
-            value={localTo || ""}
-            onChange={priceToUpdate}
-            className="m-2 text-center"
-            type="number"
-            style={{ width: "50px", height: "25px" }}
-          />
-        </div>
+            {/* Price To */}
+            <div className="filter-price">
+              <label htmlFor="price-to">{t("to")}</label>
+              <div className="number-wrapper">
+                <input
+                  id="price-to"
+                  value={localTo || ""}
+                  onChange={priceToUpdate}
+                  className="text-center"
+                  type="number"
+                  inputMode="numeric"
+                  aria-label={t("to")}
+                />
+                <button
+                  type="button"
+                  className="arrow up"
+                  aria-label={t("increase")}
+                  onClick={() =>
+                    priceToUpdate({
+                      target: {
+                        value: parseInt(localTo || 0) + 1,
+                      },
+                    })
+                  }
+                />
+                <button
+                  type="button"
+                  className="arrow down"
+                  aria-label={t("decrease")}
+                  onClick={() =>
+                    priceToUpdate({
+                      target: {
+                        value: Math.max(0, parseInt(localTo || 0) - 1),
+                      },
+                    })
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        </section>
       </Row>
     </div>
   );
 };
 
-// Export the SideFilter component as default
 export default SideFilter;
