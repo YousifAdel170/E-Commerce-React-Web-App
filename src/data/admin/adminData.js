@@ -1,6 +1,6 @@
 export const adminData = {
   allProducts: {
-    title: "ادارة جميع المنتجات",
+    title: "title",
     notFound: "لا يوجد منتجات الان",
   },
 

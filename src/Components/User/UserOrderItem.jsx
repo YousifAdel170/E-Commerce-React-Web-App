@@ -14,11 +14,30 @@ import {
 // Import Custom Components
 import UserOrderCard from "./UserOrderCard";
 
+import "../Admin/Admin.css"; // Importing CSS for styling
+
 // Import Custom Hooks
 import formatDate, { formatDateTime } from "../../hooks/Utility/formatDate";
+import { useTranslation } from "react-i18next";
+import ItemsNotFound from "../Utility/ItemsNotFound";
+
+import { PAYMENT_METHODS } from "../../constants/general";
+
+import "../Admin/Admin.css"; // Importing CSS for styling
+import { useSelector } from "react-redux";
+import { CURRENCY_LANGUAGES, LANGUAGES } from "../../constants/settings";
 
 // Component responsible for rendering user order items
 const UserOrderItem = ({ order }) => {
+  const { t } = useTranslation("admin"); // Translation function for user namespace
+
+  const { lang } = useSelector((state) => state.ui);
+
+  const userLang =
+    lang === LANGUAGES.ARABIC
+      ? CURRENCY_LANGUAGES.EGYPT_AR
+      : CURRENCY_LANGUAGES.US_EN;
+
   // Function to render status badges with tooltips
   const renderStatusBadge = (
     status,
@@ -46,19 +65,22 @@ const UserOrderItem = ({ order }) => {
   // If no order is found, display a not found message
   return (
     <Col sm="12">
-      <div className="cart-item-body mb-3 border rounded bg-white shadow-sm card-animate">
+      <div className="user-order order-item-body mb-3 rounded shadow-sm card-animate">
         {/* Order Header without border-bottom */}
         <Row>
           {/* Title and Date inline */}
           <div
-            className="cat-title fs-5 fw-bold d-flex align-items-center justify-content-between"
-            title={`تفاصيل الطلب رقم ${order?.id}`}
+            className="order-item-title fs-5 fw-bold d-flex align-items-center justify-content-between"
+            title={` ${t("order-details.title")} ${order?.id}`}
           >
-            <span>طلب رقم #{order?.id || ""}</span>
+            <span>
+              {t("order-details.orderId")}
+              {order?.id || ""}
+            </span>
 
             {/* Date next to title */}
             <div
-              className="my-0 cat-text d-flex align-items-center gap-1"
+              className="my-0 order-item-text d-flex align-items-center gap-1"
               style={{ fontSize: "0.9rem" }}
               title={order?.createdAt ? formatDateTime(order?.createdAt) : ""}
             >
@@ -76,9 +98,7 @@ const UserOrderItem = ({ order }) => {
                 <UserOrderCard key={item?._id} item={item} />
               ))
             ) : (
-              <div className="text-center text-muted py-3">
-                لا توجد عناصر في الطلب.
-              </div>
+              <ItemsNotFound msg={t("order-details.items.noItems")} />
             )}
           </Col>
         </Row>
@@ -88,8 +108,8 @@ const UserOrderItem = ({ order }) => {
           <Col className="gap-3 status-container">
             {renderStatusBadge(
               order?.isDelivered,
-              "تم التوصيل",
-              "لم يتم التوصيل",
+              t("order-details.status.delivery.delivered"),
+              t("order-details.status.delivery.pending"),
               "success",
               "danger",
               <FaCheckCircle />,
@@ -98,8 +118,8 @@ const UserOrderItem = ({ order }) => {
 
             {renderStatusBadge(
               order?.isPaid,
-              "تم الدفع",
-              "لم يتم الدفع",
+              t("order-details.status.payment.paid"),
+              t("order-details.status.payment.unpaid"),
               "success",
               "danger",
               <FaCheckCircle />,
@@ -110,9 +130,11 @@ const UserOrderItem = ({ order }) => {
               placement="top"
               overlay={
                 <Tooltip>
-                  {order?.paymentMethodType === "cash"
-                    ? "الدفع نقداً عند الاستلام"
-                    : "الدفع بواسطة بطاقة ائتمان"}
+                  {order?.paymentMethodType === PAYMENT_METHODS.CASH
+                    ? t("order-details.status.paymentMethod.cashAriaLabel")
+                    : t(
+                        "order-details.status.paymentMethod.creditCardAriaLabel"
+                      )}
                 </Tooltip>
               }
             >
@@ -121,34 +143,38 @@ const UserOrderItem = ({ order }) => {
                 className="d-flex align-items-center gap-1 px-3 py-2"
                 style={{ fontSize: "0.85rem" }}
               >
-                {order?.paymentMethodType === "cash" ? (
+                {order?.paymentMethodType === PAYMENT_METHODS.CASH ? (
                   <FaMoneyBillWave />
                 ) : (
                   <FaCreditCard />
                 )}{" "}
-                {order?.paymentMethodType === "cash" ? "كاش" : "بطاقة ائتمانية"}
+                {order?.paymentMethodType === PAYMENT_METHODS.CASH
+                  ? t("order-details.status.paymentMethod.cash")
+                  : t("order-details.status.paymentMethod.creditCard")}
               </Badge>
             </OverlayTrigger>
           </Col>
 
-          <Col className="mt-2 payment-container">
+          <Col className="mt-2 payment-container order-item-text">
             <FaMoneyBill size={22} />
             <OverlayTrigger
               placement="top"
               overlay={
                 <Tooltip>
-                  السعر الإجمالي بدقة:{" "}
+                  {t("order-details.status.totalAmount.labelAriaLabel")}:{" "}
                   {(order?.totalOrderPrice ?? 0)
                     .toFixed(2)
-                    .toLocaleString("ar-EG")}{" "}
-                  جنيه مصري
+                    .toLocaleString(userLang)}{" "}
+                  {t("order-details.status.totalAmount.currency")}
                 </Tooltip>
               }
             >
-              <div className="cat-text fs-5 mb-0 fw-semibold text-dark">
-                <strong className="me-3">السعر الإجمالي:</strong>{" "}
-                {(order?.totalOrderPrice ?? 0).toLocaleString("ar-EG")} جنيه
-                مصري
+              <div className="fs-5 mb-0 order-item-text-answer">
+                <strong className="mx-3 order-item-text fs-5 fw-bold">
+                  {t("order-details.status.totalAmount.label")}:
+                </strong>{" "}
+                {(order?.totalOrderPrice ?? 0).toLocaleString(userLang)}
+                {t("order-details.status.totalAmount.currency")}
               </div>
             </OverlayTrigger>
           </Col>

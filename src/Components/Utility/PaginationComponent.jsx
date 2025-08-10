@@ -3,6 +3,9 @@
 // Import Pagintaion from React-Paginate
 import ReactPaginate from "react-paginate";
 
+// Import useTranslation from react-i18next for internationalization
+import { useTranslation } from "react-i18next";
+
 // Import Custom CSS for the Pagination Component
 import "./PaginationComponent.css";
 
@@ -11,20 +14,22 @@ const PaginationComponent = ({ pageCount, onPress }) => {
   // Function to handle the page click event
   const handlePageClick = (data) => onPress(data.selected + 1);
 
+  const { t } = useTranslation("utilities");
+
   // Return the Pagination Component
   return (
     <ReactPaginate
       breakLabel="..."
       breakClassName="page-item"
       breakLinkClassName={`page-link`}
-      nextLabel="التالي"
+      nextLabel={t("pagination.next")}
       nextClassName="page-item"
       nextLinkClassName={`page-link`}
       onPageChange={handlePageClick}
       marginPagesDisplayed={2}
       pageRangeDisplayed={2}
       pageCount={pageCount}
-      previousLabel="السابق"
+      previousLabel={t("pagination.previous")}
       previousClassName="page-item"
       previousLinkClassName="page-link"
       renderOnZeroPageCount={null}

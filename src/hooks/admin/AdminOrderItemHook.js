@@ -3,36 +3,36 @@ import { adminOrderItemData } from "../../data/admin/adminOrderItem";
 
 // This function returns an array of objects containing user information fields
 export const getUserInfoFields = (order) => [
-  { label: adminOrderItemData.user.name, value: order?.user?.name || "" },
-  { label: adminOrderItemData.user.email, value: order?.user?.email || "" },
+  { label: "all-orders.customer.username", value: order?.user?.name || "" },
+  { label: "all-orders.customer.email", value: order?.user?.email || "" },
 ];
 
 // This function returns an array of objects containing order status fields
 export const getOrderStatusFields = (order) => [
   {
-    label: adminOrderItemData.delivery.title,
+    label: "all-orders.deliveryStatus.label",
     value: order?.isDelivered
-      ? adminOrderItemData.delivery.delivered
-      : adminOrderItemData.delivery.notDelivered,
+      ? "all-orders.deliveryStatus.delivered"
+      : "all-orders.deliveryStatus.pending",
     color: order?.isDelivered
       ? adminOrderItemData.badgeColors.delivered
       : adminOrderItemData.badgeColors.notDelivered,
   },
   {
-    label: adminOrderItemData.payment.title,
+    label: "all-orders.paymentStatus.label",
     value: order?.isPaid
-      ? adminOrderItemData.payment.paid
-      : adminOrderItemData.payment.notPaid,
+      ? "all-orders.paymentStatus.paid"
+      : "all-orders.paymentStatus.unpaid",
     color: order?.isPaid
       ? adminOrderItemData.badgeColors.paid
       : adminOrderItemData.badgeColors.notPaid,
   },
   {
-    label: adminOrderItemData.paymentMethod.title,
+    label: "all-orders.paymentMethod.label",
     value:
       order?.paymentMethodType === "cash"
-        ? adminOrderItemData.paymentMethod.cash
-        : adminOrderItemData.paymentMethod.card,
+        ? "all-orders.paymentMethod.cash"
+        : "all-orders.paymentMethod.creditCard",
     color: adminOrderItemData.badgeColors.paymentMethod,
   },
 ];

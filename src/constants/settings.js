@@ -50,6 +50,24 @@ export const DIRECTIONS = {
 };
 
 /**
+ * Supported languages/locales for date formatting
+ */
+export const DATE_LANGUAGES = {
+  EGYPT_AR: "ar-EG",
+  US_EN: "en-US",
+  FR_FR: "fr-FR",
+};
+
+/**
+ * Supported languages/locales for date formatting
+ */
+export const CURRENCY_LANGUAGES = {
+  EGYPT_AR: "ar-EG",
+  US_EN: "en-US",
+  FR_FR: "fr-FR",
+};
+
+/**
  * Supported Languages - List of languages for dropdowns or UI selectors
  * Includes language code, display label, and text direction
  */
@@ -65,6 +83,7 @@ export const DEFAULTS = {
   LANGUAGE: LANGUAGES.ENGLISH,
   THEME: THEMES.LIGHT,
   DIRECTION: DIRECTIONS.LTR,
+  DATE_LANGUAGE: DATE_LANGUAGES.EGYPT_AR,
 };
 
 /**

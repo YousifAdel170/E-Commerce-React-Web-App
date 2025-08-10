@@ -13,13 +13,18 @@ import {
 } from "../../redux/actions/ordersAction";
 
 // Import Constants for Admin Order Details
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 
 // Import Constant Data
 import { adminOrderDetailsData } from "../../data/admin/adminOrderDetails";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+import { useTranslation } from "react-i18next";
+import { STATUS } from "../../constants/general";
+import { DELAYS } from "../../constants/delays";
 
 // Hook Responsible for managing the change order status functionality
 const ChangeOrderHook = (id, orderDetails) => {
+  const { t } = useTranslation("admin"); // Translation function for admin namespace
+
   // Initialize Redux dispatch and navigate
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -46,13 +51,13 @@ const ChangeOrderHook = (id, orderDetails) => {
   const changeOrderStatus = async () => {
     // Check if the user has selected a payment and delivery status
     if (pay === "0") {
-      notify("من فضلك اختر اذا تم البيع ام لا", WARNING);
+      notify(t("order.checkPaymentStatus"), NOTIFICATION_TYPES.WARNING);
       return;
     }
 
     // Check if the user has selected a delivery status
     else if (deliver === "0") {
-      notify("من فضلك اختر اذا تم التوصيل ام لا", WARNING);
+      notify(t("order.checkDeliveryStatus"), NOTIFICATION_TYPES.WARNING);
       return;
     }
 
@@ -89,19 +94,19 @@ const ChangeOrderHook = (id, orderDetails) => {
 
       //   If the user tries to change the status to false, show a warning
       else if (pay === "false" && deliver === "false") {
-        notify("لا يمكن ان تكون حالة الدفع و التوصيل لا", WARNING);
+        notify(t("order.invalidBothNo"), NOTIFICATION_TYPES.WARNING);
         return;
       }
 
       //   If the user tries to change the status to false, show a warning
       else if (deliver === "false" && orderDetails?.isPaid) {
-        notify("حالة التوصيل بالفعل لم تتم", WARNING);
+        notify(t("order.alreadyUndelivered"), NOTIFICATION_TYPES.WARNING);
         return;
       }
 
       //   If the user tries to change the status to false, show a warning
       else if (pay === "false" && orderDetails?.isDelivered) {
-        notify("حالة الدفع بالفعل لم تتم", WARNING);
+        notify(t("order.alreadyUnpaid"), NOTIFICATION_TYPES.WARNING);
         return;
       }
     }
@@ -120,27 +125,40 @@ const ChangeOrderHook = (id, orderDetails) => {
     // Check if the payment and delivery status is loading
     if (!loadingPay || !loadingDeliver) {
       // Check if the payment status is updated
-      if (resultPay?.status === 200 && resultDeliver?.status === 200) {
-        notify("تم تغير حالة الدفع و التوصيل بنجاح", SUCCESS);
-        setTimeout(() => navigate("/admin/all-orders"), 1000);
+      if (
+        resultPay?.status === STATUS.SUCCESS_OK &&
+        resultDeliver?.status === STATUS.SUCCESS_OK
+      ) {
+        notify(t("order.statusUpdatedBoth"), NOTIFICATION_TYPES.SUCCESS);
+
+        setTimeout(
+          () => navigate("/admin/all-orders"),
+          DELAYS.NAVIGATION_DELAY
+        );
       }
 
       //   Check if the payment status is updated
-      else if (resultPay?.status === 200) {
-        notify("تم تغير حالة الدفع بنجاح", SUCCESS);
-        setTimeout(() => navigate("/admin/all-orders"), 1000);
+      else if (resultPay?.status === STATUS.SUCCESS_OK) {
+        notify(t("order.statusUpdatedPayment"), NOTIFICATION_TYPES.SUCCESS);
+        setTimeout(
+          () => navigate("/admin/all-orders"),
+          DELAYS.NAVIGATION_DELAY
+        );
       }
 
       //   Check if the delivery status is updated
-      else if (resultDeliver?.status === 200) {
-        notify("تم تغير حالة التوصيل بنجاح", SUCCESS);
-        setTimeout(() => navigate("/admin/all-orders"), 1000);
+      else if (resultDeliver?.status === STATUS.SUCCESS_OK) {
+        notify(t("order.statusUpdatedDelivery"), NOTIFICATION_TYPES.SUCCESS);
+        setTimeout(
+          () => navigate("/admin/all-orders"),
+          DELAYS.NAVIGATION_DELAY
+        );
       }
 
       //   If the payment and delivery status is not updated, show an error message
-      else notify("هناك مشكله فى عملية التغير", ERROR);
+      else notify(t("order.updateFailed"), NOTIFICATION_TYPES.ERROR);
     }
-  }, [loadingPay, loadingDeliver, resultPay, resultDeliver, navigate]);
+  }, [loadingPay, loadingDeliver, resultPay, resultDeliver, navigate, t]);
 
   const orderStatus = adminOrderDetailsData.orderStatus;
 

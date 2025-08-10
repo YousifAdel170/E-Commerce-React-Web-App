@@ -10,12 +10,12 @@ import { footerData } from "../../data/utilities/footer";
 import "./Footer.css";
 
 const Footer = () => {
-  const { t } = useTranslation("footer");
+  const { t } = useTranslation("utilities");
 
   const [textRef, textVisible] = useInviewAnimation();
   const [iconsRef, iconsVisible] = useInviewAnimation();
 
-  const terms = t("terms", { returnObjects: true });
+  const terms = t("footer.terms", { returnObjects: true });
 
   return (
     <footer role="contentinfo">
@@ -46,7 +46,7 @@ const Footer = () => {
                 iconsVisible ? "fade-in" : ""
               }`}
               ref={iconsRef}
-              aria-label={t("phoneLabel")}
+              aria-label={t("footer.phoneLabel")}
             >
               <FontAwesomeIcon
                 icon={footerData.phone.icon}

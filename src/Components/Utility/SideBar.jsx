@@ -8,12 +8,16 @@ import SideBarHook from "../../hooks/Utility/SideBarHook";
 
 // Import Custom CSS
 import "./SideBar.css";
+import { useTranslation } from "react-i18next";
+import { USER_ROLES } from "../../constants/general";
 
 // Component responsible for rendering the sidebar navigation
 const SideBar = ({ role }) => {
   // Use the custom hook to manage sidebar state and behavior
   const [showBurger, menuOpen, setMenuOpen, toggleMenu, handleKeyDown, links] =
     SideBarHook(role);
+
+  const { t } = useTranslation("utilities");
   return (
     // Sidebar Navigation
     <nav
@@ -46,15 +50,15 @@ const SideBar = ({ role }) => {
               to={item.path}
               key={index}
               className={({ isActive }) =>
-                `sidebar-text border-bottom animate ${item.className} ${
-                  isActive ? "active" : ""
-                }`
+                `sidebar-text border-bottom animate ${
+                  role === USER_ROLES.USER ? "mt-3" : "my-1"
+                } ${isActive ? "active" : ""}`
               }
               style={{ animationDelay: `${index * 100}ms` }}
               aria-current={({ isActive }) => (isActive ? "page" : undefined)}
               onClick={() => setMenuOpen(false)}
             >
-              {item.name}
+              {t("sidebar." + item.nameKey)}
             </NavLink>
           ))}
         </div>
@@ -72,7 +76,7 @@ const SideBar = ({ role }) => {
               }
               aria-current={({ isActive }) => (isActive ? "page" : undefined)}
             >
-              {item.name}
+              {t("sidebar." + item.nameKey)}
             </NavLink>
           ))}
         </div>

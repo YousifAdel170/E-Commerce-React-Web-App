@@ -7,18 +7,25 @@ import UserOrderItem from "../User/UserOrderItem";
 
 // Import Hooks from React Router Dom
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 // Import Custom Hooks
 import AdminOrderDetailsHook from "../../hooks/admin/AdminOrderDetailsHook";
 import ChangeOrderHook from "../../hooks/admin/ChangeOrderHook";
 
 // Import Constants for Admin Order Details
-import { adminOrderDetailsData } from "../../data/admin/adminOrderDetails";
 import StatusSelector from "../Utility/StatusSelector";
+
+// Importing CSS for styling
+import "./Admin.css";
 
 // Component responsible for rendering order details in the admin panel
 const AdminOrderDetails = () => {
   // Extracting the order ID from the URL parameters
   const { id } = useParams();
+
+  // Translation function for admin namespace
+  const { t } = useTranslation("admin"); // Translation function for admin namespace
 
   // Custom hook to fetch order details based on the order ID
   const [orderDetails] = AdminOrderDetailsHook(id);
@@ -34,11 +41,16 @@ const AdminOrderDetails = () => {
         sm="12"
         className="d-flex justify-content-center h-100 align-items-center"
       >
-        <div className="cart-item-body text-center p-4 text-muted border rounded bg-white shadow-sm card-animate w-100">
-          <div style={{ fontSize: "48px", marginBottom: "12px" }}>
-            {adminOrderDetailsData?.iconNotFound}
+        <div className="order-item-details text-center p-5 rounded shadow-sm card-animate w-100">
+          <div
+            style={{
+              fontSize: "48px",
+              marginBottom: "12px",
+            }}
+          >
+            🔍
           </div>
-          <p className="mb-0 fs-5">{adminOrderDetailsData?.notFound}</p>
+          <p className="mb-0 fs-5">{t("order-details.notFound")}</p>
         </div>
       </Col>
     );
@@ -50,12 +62,12 @@ const AdminOrderDetails = () => {
       {orderDetails && <UserOrderItem order={orderDetails} />}
 
       {/* Order Details Section */}
-      <div className="cart-item-body mb-3 border rounded bg-white shadow-sm card-animate">
+      <div className="order-item-details text-center px-5 py-3 rounded shadow-sm card-animate w-100">
         <Row>
           {/* Title of the Order Details Section */}
           <Col xs="12">
-            <div className="cat-title fs-5 fw-bold">
-              {adminOrderDetailsData?.title}
+            <div className="order-item-text fs-5 fw-bold">
+              {t("order-details.title")} {orderDetails?.id}
             </div>
           </Col>
 
@@ -68,15 +80,17 @@ const AdminOrderDetails = () => {
                 index === userInfoFields.length - 1 ? "mb-2" : ""
               }`}
             >
-              <div className="cat-title ms-2">{field?.label}:</div>
-              <div className="cat-text mb-0">{field?.value || ""}</div>
+              <div className="order-item-text mx-2">{t(field?.label)}:</div>
+              <div className="order-item-text-answer mb-0">
+                {field?.value || ""}
+              </div>
             </Col>
           ))}
 
           {/* Order Status Section */}
-          <Col xs="12" className="border-top">
-            <div className="cat-title fs-6 mt-3 d-flex justify-content-center">
-              {adminOrderDetailsData?.orderStatus?.title}
+          <Col xs="12" className="">
+            <div className="order-item-text fs-5 mt-3 d-flex justify-content-center align-items-center">
+              {t("order-details.actions.updateStatus")}
             </div>
           </Col>
 
@@ -96,11 +110,11 @@ const AdminOrderDetails = () => {
           <Col xs="12" className="text-center mt-3">
             <button
               onClick={changeOrderStatus}
-              className="btn-a px-4"
-              aria-label={adminOrderDetailsData?.orderStatus?.save}
+              className="btn-a save px-4 py-2"
+              aria-label={t("order-details.status.save")}
               disabled={orderDetails?.isPaid && orderDetails?.isDelivered}
             >
-              {adminOrderDetailsData?.orderStatus?.save}
+              {t("order-details.actions.save")}
             </button>
           </Col>
         </Row>

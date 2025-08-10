@@ -1,0 +1,102 @@
+{
+  "all-orders": {
+    "title": "Manage All Orders",
+    "orderLabel": "Order Number #",
+    "customer": {
+      "username": "Customer Username",
+      "email": "Customer Email"
+    },
+    "deliveryStatus": {
+      "label": "Delivery Status",
+      "delivered": "Delivered",
+      "pending": "Pending",
+      "cancelled": "Cancelled"
+    },
+    "paymentStatus": {
+      "label": "Payment Status",
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "refunded": "Refunded"
+    },
+    "paymentMethod": {
+      "label": "Payment Method",
+      "cash": "Cash",
+      "creditCard": "Credit Card",
+      "paypal": "PayPal",
+      "bankTransfer": "Bank Transfer"
+    },
+    "totalAmount": {
+      "label": "Total Amount",
+      "currency": "EGP"
+    },
+    "notFound": "No orders found"
+  },
+
+  "order-details": {
+    "title": "Order Details for Order Number",
+    "orderId": "Order ID #",
+    "orderIdAlias": "Order ID Alias",
+
+    "customerInfo": "Customer Information",
+    "deliveryInfo": "Delivery Information",
+    "paymentInfo": "Payment Information",
+
+    "customer": {
+      "username": "Username",
+      "email": "Email",
+      "phone": "Phone Number"
+    },
+
+    "items": {
+      "title": "Items",
+      "noItems": "No items in this order",
+      "item": {
+        "title": "Product",
+        "quantity": "Quantity",
+        "price": "Price",
+        "rate": "Rating",
+        "rates": "Ratings",
+        "colors": "Colors"
+      }
+    },
+    "status": {
+      "delivery": {
+        "label": "Delivery Status",
+        "delivered": "Delivered",
+        "pending": "Pending",
+        "cancelled": "Cancelled",
+        "changeStatus": "Change Delivery Status"
+      },
+      "payment": {
+        "label": "Payment Status",
+        "paid": "Paid",
+        "unpaid": "Unpaid",
+        "refunded": "Refunded",
+        "changeStatus": "Change Payment Status"
+      },
+      "paymentMethod": {
+        "label": "Payment Method",
+        "cash": "Cash",
+        "cashAriaLabel": "Pay with cash upon delivery",
+        "creditCard": "Credit Card",
+        "creditCardAriaLabel": "Pay using a credit card",
+        "paypal": "PayPal",
+        "paypalAriaLabel": "Pay via PayPal",
+        "bankTransfer": "Bank Transfer",
+        "bankTransferAriaLabel": "Pay via bank transfer"
+      },
+      "totalAmount": {
+        "label": "Total Amount",
+        "labelAriaLabel": "Exact total order amount",
+        "currency": "EGP"
+      }
+    },
+    "actions": {
+      "updateStatus": "Update Order Status",
+      "cancelOrder": "Cancel Order",
+      "save": "Save Changes"
+    },
+
+    "notFound": "Order details not found"
+  }
+}

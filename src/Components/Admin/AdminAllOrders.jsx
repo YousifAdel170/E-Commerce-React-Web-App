@@ -1,3 +1,6 @@
+// Import Translation Hook
+import { useTranslation } from "react-i18next";
+
 // Import Components from React Bootstrap
 import { Row } from "react-bootstrap";
 
@@ -8,18 +11,21 @@ import PaginationComponent from "../Utility/PaginationComponent";
 // Import Custom Hooks
 import ViewAllOrdersHook from "../../hooks/Utility/ViewAllOrdersHook";
 
-// Import Constant Data
-import { adminData } from "../../data/admin/adminData";
+// Import CSS for Admin Component
+import "./Admin.css";
+import ItemsNotFound from "../Utility/ItemsNotFound";
 
 // Component responsible for rendering all orders in the admin panel
 const AdminAllOrders = () => {
   // Custom hook to manage state and logic for the component
   const [allOrders, , pageCount, onPress, userName] = ViewAllOrdersHook();
 
+  const { t } = useTranslation("admin"); // Translation function for admin namespace
+
   return (
     <div>
       {/* Title of the section */}
-      <div className="title-text">{adminData?.allOrders?.title}</div>
+      <div className="title-text">{t("all-orders.title")}</div>
 
       <Row>
         {/* Map through the allOrders and render AdminOrderItem for each order */}
@@ -33,8 +39,8 @@ const AdminAllOrders = () => {
             />
           ))
         ) : (
-          // If no orders found, display a message
-          <h6>{adminData.allOrders.notFound}</h6>
+          // If no orders are found, display a message
+          <ItemsNotFound msg={t("all-orders.notFound")} />
         )}
 
         {pageCount > 1 ? (

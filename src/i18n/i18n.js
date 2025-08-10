@@ -5,24 +5,26 @@ import LanguageDetector from "i18next-browser-languagedetector";
 // Import namespaces English
 import enAuth from "./en-US/auth/auth.json";
 
-import enNavbar from "./en-US/utilities/navbar.json";
-import enFooter from "./en-US/utilities/footer.json";
+import enUtilities from "./en-US/utilities.json";
 
 import enHomeContent from "./en-US/utilities/homeContent.json";
 import enShopProducts from "./en-US/products/shopProducts.json";
 
 import enNotificationMessages from "./en-US/utilities/notifcation_messages.json";
 
+import enAdmin from "./en-US/admin.json";
+
 // Import namespaces Arabic
 import arAuth from "./ar/auth/auth.json";
 
-import arNavbar from "./ar/utilities/navbar.json";
-import arFooter from "./ar/utilities/footer.json";
+import arUtilities from "./ar/utilities.json";
 
 import arHomeContent from "./ar/utilities/homeContent.json";
 import arShopProducts from "./ar/products/shopProducts.json";
 
 import arNotificationMessages from "./ar/utilities/notifcation_messages.json";
+
+import arAdmin from "./ar/admin.json";
 
 import { DEFAULT_DIRECTION, DEFAULT_LANGUAGE } from "../constants/settings";
 
@@ -32,33 +34,33 @@ i18n
   .init({
     resources: {
       en: {
+        utilities: enUtilities,
         auth: enAuth,
-        navbar: enNavbar,
         home: enHomeContent,
-        footer: enFooter,
         shopProducts: enShopProducts,
         notification_messages: enNotificationMessages,
+        admin: enAdmin,
       },
       ar: {
+        utilities: arUtilities,
         auth: arAuth,
-        navbar: arNavbar,
         home: arHomeContent,
-        footer: arFooter,
         shopProducts: arShopProducts,
         notification_messages: arNotificationMessages,
+        admin: arAdmin,
       },
     },
     fallbackLng: DEFAULT_LANGUAGE,
     // ns: ["auth", "dashboard"], // list all namespaces here
     ns: [
+      "utilities",
       "auth",
-      "navbar",
       "home",
-      "footer",
       "shopProducts",
       "notification_messages",
+      "admin",
     ], // include all namespaces
-    defaultNS: "auth", // default namespace when calling t()
+    defaultNS: "auth", // default namespace used if not passed to useTranslation
     interpolation: {
       escapeValue: false, // react already safe from xss
     },

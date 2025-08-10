@@ -1,49 +1,43 @@
 export const adminOrderDetailsData = {
-  iconNotFound: "🔍",
-  notFound: "لا يوجد تفاصيل للطلب",
-  title: "تفاصيل العميل الخاصة بالطلب",
-
   user: {
-    name: "الاسم",
-    email: "البريد الإلكتروني",
-    phone: "رقم الهاتف",
+    name: "order-details.customer.username",
+    email: "order-details.customer.email",
+    phone: "order-details.customer.phone",
   },
 
   orderStatus: {
-    title: "تحديث حالة الطلب",
-
     payment: {
-      title: "حالة الدفع",
-      label: "paid",
-      ariaLabel: "تغيير حالة الدفع",
+      title: "order-details.status.payment.label",
+      label: "order-details.status.payment.paid",
+      ariaLabel: "order-details.status.payment.changeStatus",
       status: [
         {
-          title: "تم",
+          title: "order-details.status.payment.paid",
           value: "true",
         },
         {
-          title: "لم يتم",
+          title: "order-details.status.payment.unpaid",
           value: "false",
         },
       ],
     },
 
     delivery: {
-      title: "حالة التوصيل",
-      label: "deliver",
-      ariaLabel: "تغيير حالة التوصيل",
+      title: "order-details.status.delivery.label",
+      label: "order-details.status.delivery.delivered",
+      ariaLabel: "order-details.status.delivery.changeStatus",
       status: [
         {
-          title: "تم",
+          title: "order-details.status.delivery.delivered",
           value: "true",
         },
         {
-          title: "لم يتم",
+          title: "order-details.status.delivery.pending",
           value: "false",
         },
       ],
     },
 
-    save: "حفظ التغييرات",
+    save: "order-details.actions.saveChanges",
   },
 };

@@ -236,8 +236,8 @@
   top: 12px;
   right: -36px;
   width: 120px;
-  background-color: var(--discount-badge);
-  color: white;
+  background-color: var(--badge-success-bg);
+  color: var(--badge-success-text);
   font-weight: 700;
   font-size: 0.85rem;
   text-align: center;

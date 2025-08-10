@@ -15,6 +15,10 @@
 .cart-item-body:hover {
   box-shadow: var(--hover-box-shadow) !important;
   transform: translateY(-2px) !important;
+  -webkit-transform: translateY(-2px) !important;
+  -moz-transform: translateY(-2px) !important;
+  -ms-transform: translateY(-2px) !important;
+  -o-transform: translateY(-2px) !important;
 }
 
 /* Title (e.g. category or label) */

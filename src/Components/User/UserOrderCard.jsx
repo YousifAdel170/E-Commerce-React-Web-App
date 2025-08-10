@@ -6,63 +6,71 @@ import { Col, Row } from "react-bootstrap";
 // Import base URL for product images
 import { PRODUCTS_BASE_URL } from "../../config";
 
+// Importing CSS for styling
+import "../Admin/Admin.css";
+import { useTranslation } from "react-i18next";
+
 // Component to display a single item in a user's order
 const UserOrderCard = ({ item }) => {
+  const { t } = useTranslation("admin"); // Translation function for user namespace
   return (
     <Row className="d-flex my-2 justify-content-start">
       {/* Product Image */}
-      <Col xs="3" md="2" className="d-flex border me-3">
+      <Col xs="3" md="2" className="d-flex mx-3 align-items-center">
         <img
-          width="93px"
-          height="120px"
+          className="order-item-image"
           src={
-            item && item.product
-              ? PRODUCTS_BASE_URL + item.product.imageCover
-              : ""
+            item?.product ? PRODUCTS_BASE_URL + item?.product?.imageCover : ""
           }
-          alt=""
+          alt={item?.product?.title}
         />
       </Col>
 
       {/* Product Details: Name, Rating, Quantity, Color */}
       <Col xs="8" md="6" className="d-flex flex-column">
         {/* Product Title */}
-        <div className="cat-title w-100 mb-1">
-          {item && item.product ? item.product.title : ""}
+        <div className="d-flex align-items-center w-100 justify-content-start mb-1">
+          <div className="order-item-text d-flex align-items-center mb-0">
+            {t("order-details.items.item.title")}:
+          </div>
+          <div className="order-item-text-answer mx-2 mb-0">
+            {item?.product?.title || 0}
+          </div>
         </div>
 
         {/* Product Rating */}
-        <div className="cat-rate d-flex align-items-center w-100 justify-content-start mb-1">
-          {item && item.product && item.product.ratingsQuantity
-            ? item.product.ratingsQuantity
-            : 0}
-
-          <div className="rate-count me-2">
-            (
-            {item && item.product && item.product.ratingsQuantity
-              ? item.product.ratingsQuantity
-              : 0}{" "}
-            تقييم)
+        <div className="order-item-text-answer d-flex align-items-center w-100 justify-content-start mb-1">
+          <div className="order-item-text d-flex align-items-center mb-0">
+            {t("order-details.items.item.rate")}:{" "}
+          </div>
+          <div className="order-item-text-answer mx-2 mb-0">
+            {item?.product?.ratingsQuantity || 0} (
+            {t("order-details.items.item.rates")})
           </div>
         </div>
 
         {/* Quantity Ordered */}
         <div className="d-flex w-100 justify-content-start align-items-center mb-1">
-          <div className="cat-text d-flex align-items-center mb-0">
-            الكمية:{" "}
+          <div className="order-item-text d-flex align-items-center mb-0">
+            {t("order-details.items.item.quantity")}:{" "}
           </div>
-          <div className="mx-2 mb-0">
-            {item && item.product ? item.count : 0}
+          <div className="order-item-text-answer mx-2 mb-0">
+            {item?.count || 0}
           </div>
         </div>
 
         {/* Product Color */}
-        <div className="d-flex justify-content-start w-100">
+        <div className="d-flex w-100 justify-content-start align-items-center mb-1">
+          <div className="order-item-text d-flex align-items-center mb-0">
+            {t("order-details.items.item.colors")}:{" "}
+          </div>
           <div
-            className="color border"
+            className="color border mx-2"
             style={{
               backgroundColor: item ? item.color : "",
               cursor: "auto",
+              width: "25px",
+              height: "25px",
             }}
           ></div>
         </div>

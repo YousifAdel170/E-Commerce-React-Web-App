@@ -1,32 +1,59 @@
 /* Pagination Component - Clean, User-Friendly UX */
 
+.page-item.disabled .page-link {
+  color: var(--disabled-text) !important;
+  border-color: var(--disabled-bg) !important;
+  opacity: 0.8;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+}
+
 .page-link {
-  background-color: #f9f9f9 !important;
-  color: #272727 !important;
-  border: 1px solid #272727 !important;
+  background-color: var(--main-color) !important;
+  color: var(--main-text-color) !important;
+  border: 1px solid var(--main-text-color) !important;
   margin: 0 5px;
   border-radius: 4px !important;
-  transition: background-color 0.25s ease, color 0.25s ease, transform 0.2s ease;
+  transition: background-color var(--main-duration) ease,
+    color var(--main-duration) ease, transform var(--main-duration) ease;
   cursor: pointer;
-  user-select: none;
+}
+
+.light-theme .page-link {
+  background-color: var(--main-hover-text-color) !important;
+  border-color: var(--main-color) !important;
+  color: var(--main-color) !important;
 }
 
 .page-link:hover {
-  background-color: #272727 !important;
-  color: white !important;
+  background-color: var(--main-text-color) !important;
+  color: var(--main-color) !important;
   transform: scale(1.1);
-  border-color: #272727 !important;
+  border-color: var(--main-hover-text-color) !important;
+}
+
+.light-theme .page-link:hover {
+  background-color: var(--main-color) !important;
+  color: var(--main-text-hover-color) !important;
 }
 
 .page-item.active > .page-link,
 .page-link.active,
 .page-link:focus {
-  background-color: #272727 !important;
-  color: white !important;
-  border-color: #272727 !important;
-  box-shadow: 0 0 8px rgba(39, 39, 39, 0.6);
+  background-color: var(--main-text-color) !important;
+  color: var(--main-color) !important;
+  border-color: var(--main-hover-text-color) !important;
+  box-shadow: var(--auth-box-shadow) !important;
   transform: scale(1.05);
   outline: none;
+}
+
+.light-theme .page-item.active > .page-link,
+.light-theme .page-link.active,
+.light-theme .page-link:focus {
+  background-color: var(--main-color) !important;
+  color: var(--main-text-hover-color) !important;
+  border-color: var(--main-text-color) !important;
 }
 
 .page-link:focus-visible {

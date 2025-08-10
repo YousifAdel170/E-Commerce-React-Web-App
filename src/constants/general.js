@@ -44,3 +44,12 @@ export const NUMBERS = {
   ONE: ONE,
   HUNDRED: HUNDRED,
 };
+
+// ================================
+// Payment Methods
+// ================================
+export const PAYMENT_METHODS = {
+  CASH: "cash",
+  CREDIT_CARD: "creditCard",
+  PAYPAL: "paypal",
+};

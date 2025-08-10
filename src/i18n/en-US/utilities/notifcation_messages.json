@@ -74,5 +74,19 @@
     "success": "Verification successful!",
     "failure": "Invalid or expired verification code",
     "required": "Please enter the verification code"
+  },
+  "order": {
+    "checkPaymentStatus": "Please select the payment status (Paid or Unpaid).",
+    "checkDeliveryStatus": "Please select the delivery status (Delivered or Not Delivered).",
+    "invalidBothNo": "Payment status and delivery status cannot both be 'No'.",
+
+    "alreadyUndelivered": "Delivery status is already marked as 'Not Delivered'.",
+    "alreadyUnpaid": "Payment status is already marked as 'Unpaid'.",
+
+    "statusUpdatedBoth": "Payment status and delivery status updated successfully.",
+    "statusUpdatedPayment": "Payment status updated successfully.",
+    "statusUpdatedDelivery": "Delivery status updated successfully.",
+
+    "updateFailed": "An error occurred while updating the status. Please try again."
   }
 }

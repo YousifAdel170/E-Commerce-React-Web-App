@@ -15,7 +15,9 @@ import {
 import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
 
 // Importing CSS for styling
-import "../Cart/CartItem.css"; // Importing CSS for styling
+import "./Admin.css";
+
+import { useTranslation } from "react-i18next";
 // Component responsible for rendering individual order items in the admin panel
 const AdminOrderItem = ({ order, index }) => {
   // Array for user info fields to loop over
@@ -26,6 +28,8 @@ const AdminOrderItem = ({ order, index }) => {
 
   const [sectionRef, isVisible] = useInviewAnimation();
 
+  const { t } = useTranslation("admin"); // Translation function for admin namespace
+
   return (
     <Col
       sm="12"
@@ -35,25 +39,25 @@ const AdminOrderItem = ({ order, index }) => {
       }}
       ref={sectionRef}
     >
-      <div className="cart-item-body my-3 p-3 border rounded bg-white card-animate">
+      <div className="order-item-body my-3 p-3 rounded card-animate">
         {/* Order ID and Details */}
-        <Row className="justify-content-between align-items-center border-bottom pb-2">
+        <Row className="order-item-number-row pb-2">
           <Link
             to={`${adminOrderItemData.link}${order?._id}`}
-            className="cat-title"
-            title={adminOrderItemData.linkTitle}
+            className="order-item-title"
+            title={t("all-orders.orderLabel") + (order?.id || "")}
           >
-            {adminOrderItemData.title}
-            {order?.id || ""}
+            {t("all-orders.orderLabel") + (order?.id || "")}
           </Link>
         </Row>
 
         {/* User Information */}
-        <Row className="mt-3 border-bottom pb-2">
+        <Row className="mt-3 order-item-customer pb-2">
           <Col sm="12">
             {userInfoFields.map(({ label, value }, idx) => (
               <div key={idx} className={`cat-text${idx === 0 ? " mb-1" : ""}`}>
-                <strong className="cat-title ms-1">{label}:</strong> {value}
+                <strong className="order-item-text mx-1">{t(label)}:</strong>{" "}
+                <span className="order-item-text-answer">{value}</span>
               </div>
             ))}
           </Col>
@@ -63,20 +67,23 @@ const AdminOrderItem = ({ order, index }) => {
         <Row className="mt-3">
           <Col sm="6">
             {orderStatusFields.map(({ label, value, color }, idx) => (
-              <div key={idx} className={`cat-title mb-2${idx === 2 ? "" : ""}`}>
-                <strong className="ms-1">{label}:</strong>{" "}
-                <Badge bg={color}>{value}</Badge>
+              <div key={idx} className={`mb-2 cat-text${idx === 2 ? "" : ""}`}>
+                <strong className="order-item-text mx-1">{t(label)}: </strong>
+                <Badge bg={color}>{t(value)}</Badge>
               </div>
             ))}
           </Col>
 
           {/* Order Total Price */}
           <Col sm="6" className="d-flex justify-content-end align-items-end">
-            <div className="cat-text">
-              <strong className="cat-title ms-1">
-                {adminOrderItemData.totalPrice}:
+            <div>
+              <strong className="order-item-text mx-1">
+                {t("all-orders.totalAmount.label")}:
               </strong>{" "}
-              {order?.totalOrderPrice || 0} {adminOrderItemData.currency}
+              <span className="order-item-text-answer">
+                {order?.totalOrderPrice || 0}{" "}
+                {t("all-orders.totalAmount.currency")}
+              </span>
             </div>
           </Col>
         </Row>

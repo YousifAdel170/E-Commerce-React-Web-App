@@ -7,6 +7,9 @@ import SideBar from "../../Components/Utility/SideBar";
 // Import Outlet to render nested routes from react-router
 import { Outlet } from "react-router-dom";
 
+// Import USER_ROLES constant to determine user role
+import { USER_ROLES } from "../../constants/general";
+
 // Page responsible for rendering the Admin Page layout
 const AdminPage = () => {
   return (
@@ -16,11 +19,11 @@ const AdminPage = () => {
       <Row className="py-3">
         {/* Left Column - Sidebar (Admin Navigation) */}
         <Col md={2} xs={12}>
-          <SideBar role={"admin"} />
+          <SideBar role={USER_ROLES.ADMIN} />
         </Col>
 
         {/* Right Column - Page Content (changes dynamically using Outlet) */}
-        <Col md={10} xs={12} className="">
+        <Col md={10} xs={12}>
           <Outlet />
         </Col>
       </Row>

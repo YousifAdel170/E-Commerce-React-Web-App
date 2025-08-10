@@ -1,86 +1,74 @@
+import { ROUTES } from "../../constants/routes";
+
 export const sidebarData = {
   user: [
     {
-      name: "ادارة الطلبات",
-      path: "/user/all-orders",
-      className: " mt-3",
+      nameKey: "user.all-orders",
+      path: ROUTES.USER.ORDERS,
     },
     {
-      name: "المنتجات المفضلة",
-      path: "/user/favorite-products",
-      className: " mt-3",
+      nameKey: "user.favorite-products",
+      path: ROUTES.USER.FAVORITES,
     },
     {
-      name: "العنوانين الشخصية",
-      path: "/user/addresses",
-      className: "mt-3",
+      nameKey: "user.addresses",
+      path: ROUTES.USER.ADDRESSES.ALL,
     },
     {
-      name: "الملف الشخصي",
-      path: "/user/profile",
-      className: "mt-3",
+      nameKey: "user.profile",
+      path: ROUTES.USER.PROFILE,
     },
   ],
 
   admin: [
     {
-      name: "ادارة الطلبات",
-      path: "/admin/all-orders",
-      className: "my-1",
+      nameKey: "admin.all-orders",
+      path: ROUTES.ADMIN.ORDERS.ALL,
     },
 
     {
-      name: "ادارة المنتجات",
-      path: "/admin/all-products",
-      className: "my-1",
+      nameKey: "admin.all-products",
+      path: ROUTES.ADMIN.PRODUCTS.ALL,
     },
 
     {
-      name: "ادارة الكوبونات",
-      path: "/admin/all-coupons",
-      className: "my-1",
+      nameKey: "admin.all-coupons",
+      path: ROUTES.ADMIN.COUPONS.ALL,
     },
 
     {
-      name: "ادارة الماركات",
-      path: "/admin/all-brands",
-      className: "my-1",
+      nameKey: "admin.all-brands",
+      path: ROUTES.ADMIN.BRANDS.ALL,
     },
 
     {
-      name: "ادارة التصنيفات",
-      path: "/admin/all-categories",
-      className: "my-1",
+      nameKey: "admin.all-categories",
+      path: ROUTES.ADMIN.CATEGORIES.ALL,
     },
 
     {
-      name: "اضف ماركه",
-      path: "/admin/add-brand",
-      className: "my-1",
+      nameKey: "admin.add-brand",
+      path: ROUTES.ADMIN.BRANDS.ADD,
     },
 
     {
-      name: "اضف تصنيف",
-      path: "/admin/add-category",
-      className: "my-1",
+      nameKey: "admin.add-category",
+      path: ROUTES.ADMIN.CATEGORIES.ADD,
     },
 
     {
-      name: "اضف تصنيف فرعي",
-      path: "/admin/add-subcategory",
-      className: "my-1",
+      nameKey: "admin.add-subcategory",
+      path: ROUTES.ADMIN.CATEGORIES.SUBCATEGORIES.ADD,
     },
 
     {
-      name: "اضف منتج",
-      path: "/admin/add-product",
-      className: "my-1",
+      nameKey: "admin.add-product",
+      path: ROUTES.ADMIN.PRODUCTS.ADD,
     },
 
     {
-      name: "اضف كوبون",
-      path: "/admin/add-coupon",
-      className: "my-1",
+      nameKey: "admin.add-product",
+      path: ROUTES.ADMIN.COUPONS.ADD,
     },
   ],
 };

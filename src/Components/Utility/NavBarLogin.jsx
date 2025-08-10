@@ -44,7 +44,7 @@ import { INPUT_NAMES, INPUT_TYPES } from "../../constants/inputs";
 import { ROUTES } from "../../constants/routes";
 
 const NavBarLogin = () => {
-  const { t } = useTranslation("navbar");
+  const { t } = useTranslation("utilities");
 
   const [searchWord, onChangeSearch] = NavbarSearchHook();
   const [user, logOut, loggingOut] = NavBarLoginHook();
@@ -66,12 +66,12 @@ const NavBarLogin = () => {
           <Navbar.Brand
             as={Link}
             to={ROUTES.GENERAL.HOME}
-            title={t("homeAriaLabel")}
+            title={t("navbar.homeAriaLabel")}
             className="d-flex align-items-center fw-bold fs-4"
           >
             <FontAwesomeIcon icon={faStore} className="me-2 fs-2" />
             <span className="d-flex align-items-center fw-bold">
-              {t("title")}
+              {t("navbar.title")}
             </span>
           </Navbar.Brand>
 
@@ -89,9 +89,9 @@ const NavBarLogin = () => {
                 onChange={onChangeSearch}
                 type={INPUT_TYPES.SEARCH_TYPE}
                 name={INPUT_NAMES.SEARCH}
-                placeholder={t("searchPlaceholder")}
-                aria-label={t("searchAriaLabel")}
-                title={t("searchAriaLabel")}
+                placeholder={t("navbar.searchPlaceholder")}
+                aria-label={t("navbar.searchAriaLabel")}
+                title={t("navbar.searchAriaLabel")}
                 autoComplete="off"
                 spellCheck="false"
               />
@@ -109,7 +109,7 @@ const NavBarLogin = () => {
                   }
                   id="user-dropdown"
                   align="end"
-                  aria-label={t("userDropdownLabel")}
+                  aria-label={t("navbar.userDropdownLabel")}
                 >
                   <NavDropdown.Item
                     as={Link}
@@ -120,13 +120,13 @@ const NavBarLogin = () => {
                     }
                     title={
                       user?.role === USER_ROLES.ADMIN
-                        ? t("adminControlPanel")
-                        : t("userProfile")
+                        ? t("navbar.adminControlPanel")
+                        : t("navbar.userProfile")
                     }
                   >
                     {user?.role === USER_ROLES.ADMIN
-                      ? t("adminControlPanel")
-                      : t("userProfile")}
+                      ? t("navbar.adminControlPanel")
+                      : t("navbar.userProfile")}
                   </NavDropdown.Item>
 
                   <NavDropdown.Item
@@ -134,7 +134,7 @@ const NavBarLogin = () => {
                     disabled={loggingOut}
                     aria-disabled={loggingOut}
                     aria-busy={loggingOut}
-                    title={t("logout")}
+                    title={t("navbar.logout")}
                   >
                     {loggingOut ? (
                       <>
@@ -145,10 +145,10 @@ const NavBarLogin = () => {
                           aria-live="polite"
                           className="mx-2"
                         />
-                        {t("loggingOut")}
+                        {t("navbar.loggingOut")}
                       </>
                     ) : (
-                      t("logout")
+                      t("navbar.logout")
                     )}
                   </NavDropdown.Item>
                 </NavDropdown>
@@ -156,10 +156,10 @@ const NavBarLogin = () => {
                 <Link
                   to={ROUTES.AUTH.LOGIN}
                   className="nav-link d-flex align-items-center"
-                  title={t("login")}
+                  title={t("navbar.login")}
                 >
                   <FontAwesomeIcon icon={faSignInAlt} className="mx-1" />
-                  {t("login")}
+                  {t("navbar.login")}
                 </Link>
               )}
 
@@ -168,13 +168,15 @@ const NavBarLogin = () => {
                 <Link
                   to={ROUTES.GENERAL.CART}
                   className="cart nav-link position-relative d-flex align-items-center"
-                  aria-label={`${t("cartContains")} ${numberOfItems} ${t(
-                    "cartItems"
+                  aria-label={`${t("navbar.cartContains")} ${numberOfItems} ${t(
+                    "navbar.cartItems"
                   )}`}
-                  title={`${t("cart")} (${numberOfItems} ${t("cartItems")})`}
+                  title={`${t("navbar.cart")} (${numberOfItems} ${t(
+                    "navbar.cartItems"
+                  )})`}
                 >
                   <FontAwesomeIcon icon={faShoppingCart} className="mx-1" />
-                  {t("cart")}
+                  {t("navbar.cart")}
                   {numberOfItems > 0 && (
                     <span
                       className={`badge rounded-pill bg-danger position-absolute translate-middle ${
@@ -182,7 +184,7 @@ const NavBarLogin = () => {
                       }`}
                       aria-live="polite"
                       aria-atomic="true"
-                      title={`${numberOfItems} ${t("cartItems")}`}
+                      title={`${numberOfItems} ${t("navbar.cartItems")}`}
                     >
                       {numberOfItems}
                     </span>
@@ -194,8 +196,8 @@ const NavBarLogin = () => {
               <button
                 className="nav-theme-btn"
                 onClick={onChangeTheme}
-                aria-label={t("toggleTheme")}
-                title={t("themeToggleLabel")}
+                aria-label={t("navbar.toggleTheme")}
+                title={t("navbar.themeToggleLabel")}
                 disabled={isThemeLoading}
                 aria-busy={isThemeLoading}
               >
@@ -206,8 +208,8 @@ const NavBarLogin = () => {
               <button
                 className="nav-lang-btn"
                 onClick={onChangeLanguage}
-                aria-label={t("toggleLanguage")}
-                title={t("languageToggleLabel")}
+                aria-label={t("navbar.toggleLanguage")}
+                title={t("navbar.languageToggleLabel")}
                 disabled={isLanguageLoading}
                 aria-busy={isLanguageLoading}
               >

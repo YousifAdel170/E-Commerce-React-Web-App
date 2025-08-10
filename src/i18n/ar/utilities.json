@@ -1,0 +1,68 @@
+{
+  "navbar": {
+    "title": "متجري",
+    "loggingOut": "جارٍ تسجيل الخروج...",
+    "logout": "تسجيل الخروج",
+    "loggingIn": "جارٍ تسجيل الدخول...",
+    "login": "تسجيل الدخول",
+
+    "search": "بحث",
+    "searchPlaceholder": "ابحث عن المنتجات",
+    "searchAriaLabel": "ابحث عن المنتجات في المتجر",
+    "searchRole": "بحث",
+
+    "cart": "العربة",
+    "cartContains": "عربة التسوق تحتوي على",
+    "cartItems": "عناصر",
+    "cartAriaLabel": "عربة التسوق تحتوي على {{count}} عناصر",
+
+    "adminControlPanel": "لوحة التحكم",
+    "userProfile": "الملف الشخصي",
+    "userDropdownLabel": "خيارات حساب المستخدم",
+
+    "homeAriaLabel": "الصفحة الرئيسية",
+
+    "toggleTheme": "تبديل الوضع الداكن/الفاتح",
+    "toggleLanguage": "تبديل اللغة",
+
+    "themeToggleLabel": "التبديل بين الوضع الداكن والوضع الفاتح",
+    "languageToggleLabel": "تبديل اللغة"
+  },
+
+  "footer": {
+    "terms": ["الشروط و الاحكام", "سياسة الخصوصية", "اتصل بنا"],
+    "phoneLabel": "رقم الهاتف",
+    "facebookAlt": "أيقونة فيسبوك",
+    "twitterAlt": "أيقونة تويتر",
+    "instagramAlt": "أيقونة انستجرام",
+    "emailAlt": "أيقونة البريد الإلكتروني"
+  },
+
+  "pagination": {
+    "next": "التالي",
+    "nextAriaLabel": "الصفحة التالية",
+    "previous": "السابق",
+    "previousAriaLabel": "الصفحة السابقة"
+  },
+
+  "sidebar": {
+    "user": {
+      "all-orders": "طلباتي",
+      "favorite-products": "قائمتي المفضلة",
+      "addresses": "عناويني",
+      "profile": "إعدادات الحساب"
+    },
+    "admin": {
+      "all-orders": "إدارة الطلبات",
+      "all-products": "إدارة المنتجات",
+      "all-brands": "إدارة الماركات",
+      "all-categories": "إدارة التصنيفات",
+      "all-coupons": "إدارة الكوبونات",
+      "add-category": "إضافة تصنيف جديد",
+      "add-coupon": "إضافة كوبون جديد",
+      "add-brand": "إضافة ماركة جديدة",
+      "add-product": "إضافة منتج جديد",
+      "add-subcategory": "إضافة تصنيف فرعي جديد"
+    }
+  }
+}

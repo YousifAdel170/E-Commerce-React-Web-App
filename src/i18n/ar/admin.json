@@ -1,0 +1,102 @@
+{
+  "all-orders": {
+    "title": "إدارة جميع الطلبات",
+    "orderLabel": "رقم الطلب #",
+    "customer": {
+      "username": "اسم مستخدم العميل",
+      "email": "البريد الإلكتروني للعميل"
+    },
+    "deliveryStatus": {
+      "label": "حالة التوصيل",
+      "delivered": "تم التوصيل",
+      "pending": "قيد الانتظار",
+      "cancelled": "ملغي"
+    },
+    "paymentStatus": {
+      "label": "حالة الدفع",
+      "paid": "تم الدفع",
+      "unpaid": "غير مدفوع",
+      "refunded": "مسترد"
+    },
+    "paymentMethod": {
+      "label": "طريقة الدفع",
+      "cash": "نقداً",
+      "creditCard": "بطاقة ائتمان",
+      "paypal": "باي بال",
+      "bankTransfer": "تحويل بنكي"
+    },
+    "totalAmount": {
+      "label": "المبلغ الإجمالي",
+      "currency": "جنيه مصري"
+    },
+    "notFound": "لا توجد طلبات حالياً"
+  },
+
+  "order-details": {
+    "title": "تفاصيل الطلب لرقم الطلب",
+    "orderId": "رقم الطلب #",
+    "orderIdAlias": "اسم مستعار لرقم الطلب",
+
+    "customerInfo": "معلومات العميل",
+    "deliveryInfo": "معلومات التوصيل",
+    "paymentInfo": "معلومات الدفع",
+
+    "customer": {
+      "username": "اسم المستخدم",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف"
+    },
+
+    "items": {
+      "title": "العناصر",
+      "noItems": "لا توجد عناصر في هذا الطلب",
+      "item": {
+        "title": "المنتج",
+        "quantity": "الكمية",
+        "price": "السعر",
+        "rate": "التقييم",
+        "rates": "تقييمات",
+        "colors": "الألوان"
+      }
+    },
+    "status": {
+      "delivery": {
+        "label": "حالة التوصيل",
+        "delivered": "تم التوصيل",
+        "pending": "قيد الانتظار",
+        "cancelled": "ملغي",
+        "changeStatus": "تغيير حالة التوصيل"
+      },
+      "payment": {
+        "label": "حالة الدفع",
+        "paid": "تم الدفع",
+        "unpaid": "غير مدفوع",
+        "refunded": "مسترد",
+        "changeStatus": "تغيير حالة الدفع"
+      },
+      "paymentMethod": {
+        "label": "طريقة الدفع",
+        "cash": "نقداً",
+        "cashAriaLabel": "الدفع نقداً عند الاستلام",
+        "creditCard": "بطاقة ائتمان",
+        "creditCardAriaLabel": "الدفع ببطاقة ائتمان",
+        "paypal": "باي بال",
+        "paypalAriaLabel": "الدفع عبر باي بال",
+        "bankTransfer": "تحويل بنكي",
+        "bankTransferAriaLabel": "الدفع عن طريق التحويل البنكي"
+      },
+      "totalAmount": {
+        "label": "المبلغ الإجمالي",
+        "labelAriaLabel": "المبلغ الإجمالي للطلب بدقة",
+        "currency": "جنيه مصري"
+      }
+    },
+    "actions": {
+      "updateStatus": "تحديث حالة الطلب",
+      "cancelOrder": "إلغاء الطلب",
+      "save": "حفظ التغييرات"
+    },
+
+    "notFound": "لم يتم العثور على تفاصيل الطلب"
+  }
+}

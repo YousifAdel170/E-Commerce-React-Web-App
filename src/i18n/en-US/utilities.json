@@ -1,0 +1,68 @@
+{
+  "navbar": {
+    "title": "My Store",
+    "loggingOut": "Logging out...",
+    "logout": "Logout",
+    "loggingIn": "Logging in...",
+    "login": "Login",
+
+    "search": "Search",
+    "searchPlaceholder": "Search for products",
+    "searchAriaLabel": "Search for products in the store",
+    "searchRole": "search",
+
+    "cart": "Cart",
+    "cartContains": "Your cart contains",
+    "cartItems": "items",
+    "cartAriaLabel": "Shopping cart, contains {{count}} items",
+
+    "adminControlPanel": "Control Panel",
+    "userProfile": "User Profile",
+    "userDropdownLabel": "User account options",
+
+    "homeAriaLabel": "Home Page",
+
+    "toggleTheme": "Toggle dark/light theme",
+    "toggleLanguage": "Toggle language",
+
+    "themeToggleLabel": "Toggle between dark and light theme",
+    "languageToggleLabel": "Toggle language"
+  },
+
+  "footer": {
+    "terms": ["Terms and Conditions", "Privacy Policy", "Contact Us"],
+    "phoneLabel": "Phone Number",
+    "facebookAlt": "Facebook Icon",
+    "twitterAlt": "Twitter Icon",
+    "instagramAlt": "Instagram Icon",
+    "emailAlt": "Email Icon"
+  },
+
+  "pagination": {
+    "next": "Next",
+    "nextAriaLabel": "Next page",
+    "previous": "Previous",
+    "previousAriaLabel": "Previous page"
+  },
+
+  "sidebar": {
+    "user": {
+      "all-orders": "My Orders",
+      "favorite-products": "Wishlist",
+      "addresses": "My Addresses",
+      "profile": "Account Settings"
+    },
+    "admin": {
+      "all-orders": "Manage Orders",
+      "all-products": "Manage Products",
+      "all-brands": "Manage Brands",
+      "all-categories": "Manage Categories",
+      "all-coupons": "Manage Coupons",
+      "add-category": "Add New Category",
+      "add-coupon": "Add New Coupon",
+      "add-brand": "Add New Brand",
+      "add-product": "Add New Product",
+      "add-subcategory": "Add New Subcategory"
+    }
+  }
+}
