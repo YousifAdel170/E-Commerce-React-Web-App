@@ -30,8 +30,10 @@ export const StarRating = ({ rating, maxRating = 5 }) => {
           <title>Full star</title>
           <polygon
             points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"
-            fill={isDark ? "var(--main-text-hover-color)" : "white"}
-            stroke={isDark ? "var(--main-text-hover-color)" : "white"}
+            fill={isDark ? "var(--main-text-hover-color)" : "var(--main-color)"}
+            stroke={
+              isDark ? "var(--main-text-hover-color)" : "var(--main-color)"
+            }
           />
         </svg>
       );
@@ -60,7 +62,9 @@ export const StarRating = ({ rating, maxRating = 5 }) => {
             >
               <stop
                 offset="50%"
-                stopColor={isDark ? "var(--main-text-hover-color)" : "white"}
+                stopColor={
+                  isDark ? "var(--main-text-hover-color)" : "var(--main-color)"
+                }
               />
               <stop offset="50%" stopColor="transparent" />
             </linearGradient>
@@ -68,7 +72,9 @@ export const StarRating = ({ rating, maxRating = 5 }) => {
           <polygon
             points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"
             fill={`url(#${gradientId})`}
-            stroke={isDark ? "var(--main-text-hover-color)" : "white"}
+            stroke={
+              isDark ? "var(--main-text-hover-color)" : "var(--main-color)"
+            }
             transform={
               direction === DIRECTION_RTL
                 ? "scale(-1,1) translate(-24,0)"
@@ -94,7 +100,9 @@ export const StarRating = ({ rating, maxRating = 5 }) => {
           <polygon
             points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"
             fill="none"
-            stroke={isDark ? "var(--main-text-hover-color)" : "white"}
+            stroke={
+              isDark ? "var(--main-text-hover-color)" : "var(--main-color)"
+            }
           />
         </svg>
       );

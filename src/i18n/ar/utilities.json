@@ -64,5 +64,26 @@
       "add-product": "إضافة منتج جديد",
       "add-subcategory": "إضافة تصنيف فرعي جديد"
     }
+  },
+
+  "modal": {
+    "cancel": "إلغاء",
+    "cancelAriaLabel": "إلغاء الإجراء الحالي",
+    "confirm": "تأكيد",
+    "confirmAriaLabel": "تأكيد الإجراء الحالي",
+    "delete": "حذف",
+    "deleteAriaLabel": "حذف العنصر الحالي",
+    "deleteTitle": "تأكيد الحذف",
+    "deleteMessage": "هل أنت متأكد من أنك تريد حذف هذا العنصر؟",
+    "edit": "تعديل",
+    "editAriaLabel": "تعديل العنصر الحالي",
+    "editTitle": "تأكيد التعديل",
+    "editMessage": "هل أنت متأكد من أنك تريد تعديل هذا العنصر؟",
+    "save": "حفظ",
+    "saveAriaLabel": "حفظ التغييرات الحالية",
+    "update": "تحديث",
+    "updateAriaLabel": "تحديث العنصر الحالي",
+    "add": "إضافة",
+    "addAriaLabel": "إضافة عنصر جديد"
   }
 }

@@ -57,6 +57,45 @@
   border-color: var(--focus-color);
 }
 
+.product-card.admin .image-container {
+  border-bottom: 1px solid rgba(151, 151, 151, 0.5);
+  border-top: 1px solid rgba(151, 151, 151, 0.5);
+  border-radius: 0px;
+  transition: all var(--main-duration) ease;
+}
+
+.product-card.admin:hover .image-container {
+  border-color: var(--main-color) !important;
+}
+
+.dark-theme .product-card.admin:hover .image-container {
+  border-color: var(--main-text-color) !important;
+}
+
+.product-card.admin button {
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font-size: inherit;
+  background-color: transparent;
+  padding: 0;
+}
+
+.light-theme .product-card.admin button {
+  color: var(--main-color);
+}
+
+.product-card.admin button:hover,
+.product-card.admin button:focus {
+  color: var(--main-text-hover-color);
+  text-decoration: underline;
+}
+
+.light-theme .product-card button:hover,
+.light-theme .product-card button:focus {
+  color: var(--hover-main-color);
+}
+
 /* Remove product-card-description margin/padding because info is on overlay now */
 .product-card-description {
   display: none;
@@ -71,14 +110,13 @@
   color: #fff;
 }
 
-.product-card .favorite-icon.favorited {
-  color: var(--focus-color);
+.product-card.admin .favorite-icon {
+  color: var(--main-color) !important;
 }
 
 .light-theme .product-card .favorite-icon.favorited {
   color: #fff;
 }
-
 /* Title styling will be inside overlay */
 
 /*================== DARK THEME ==================*/
@@ -188,17 +226,25 @@
   align-items: center;
 }
 
+.light-theme .product-card.admin .product-title {
+  color: var(--main-color) !important;
+}
+
 .image-overlay .fav-icon {
   height: 24px;
   width: 24px;
   cursor: pointer;
-  transition: transform 0.3s ease;
   margin-left: 8px;
+  transition: transform var(--main-duration) ease;
+  -webkit-transition: transform var(--main-duration) ease;
+  -moz-transition: transform var(--main-duration) ease;
+  -ms-transition: transform var(--main-duration) ease;
+  -o-transition: transform var(--main-duration) ease;
 }
 
 .image-overlay .fav-icon.animate {
-  animation: pop-scale 0.3s ease forwards;
-  -webkit-animation: pop-scale 0.3s ease forwards;
+  animation: pop-scale var(--main-duration) ease forwards;
+  -webkit-animation: pop-scale var(--main-duration) ease forwards;
 }
 
 .image-overlay .rating-price {
@@ -219,14 +265,26 @@
   font-size: 0.9rem;
 }
 
+.light-theme .product-card.admin .price-container {
+  color: var(--main-color) !important;
+}
+
 .image-overlay .price-discounted {
-  color: #28a745;
+  color: var(--badge-success-bg) !important;
   font-weight: bold;
+}
+
+.light-theme .product-card.admin .price-discounted {
+  color: var(--badge-success-bg) !important;
 }
 
 .dark-theme .image-overlay {
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
+}
+
+.light-theme .product-card.admin {
+  color: var(--main-color) !important;
 }
 
 /*================== DISCOUNT BADGE ==================*/

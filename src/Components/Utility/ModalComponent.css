@@ -1,0 +1,61 @@
+/* Start of styling Modal Component */
+
+.modal-content {
+  color: var(--main-color) !important;
+  border-color: var(--main-color) !important;
+}
+
+.dark-theme .modal-content {
+  background-color: var(--main-color);
+  color: var(--main-text-color) !important;
+  border-color: var(--main-text-color) !important;
+}
+
+.modal-header {
+  border-color: var(--main-color) !important;
+}
+
+.dark-theme .modal-header {
+  border-color: var(--main-text-color) !important;
+}
+
+.modal-footer {
+  border-color: var(--main-color) !important;
+}
+
+.dark-theme .modal-footer {
+  border-color: var(--main-text-color) !important;
+}
+
+.dark-theme .modal-container .btn {
+  color: var(--main-text-color) !important;
+
+  background-color: var(--main-color) !important;
+  border-color: var(--main-text-color) !important;
+}
+
+.dark-theme .modal-container .btn:hover {
+  background-color: var(--hover-main-color) !important;
+}
+
+.dark-theme .modal-container .btn-primary {
+  background-color: var(--main-text-color) !important;
+  color: var(--main-color) !important;
+  border-color: var(--main-text-color) !important;
+}
+
+.dark-theme .modal-container .btn-primary:hover {
+  background-color: var(--main-text-hover-color) !important;
+}
+
+.dark-theme .modal-container .btn-danger {
+  background-color: var(--button-danger-bg) !important;
+  color: var(--button-danger-text) !important;
+  border-color: var(--button-danger-bg) !important;
+}
+
+.dark-theme .modal-container .btn-danger:hover {
+  background-color: var(--hover-button-danger-bg) !important;
+}
+
+/* End of styling Modal Component */

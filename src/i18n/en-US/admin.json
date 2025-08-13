@@ -98,5 +98,26 @@
     },
 
     "notFound": "Order details not found"
+  },
+
+  "all-products": {
+    "title": "Manage All Products",
+    "productLabel": "Product Name",
+    "actions": {
+      "addProduct": "Add New Product",
+      "editProduct": "Edit Product",
+      "deleteProduct": "Delete Product"
+    },
+    "notFound": "No products found"
+  },
+
+  "product-card": {
+    "discount": {
+      "label": "Discount",
+      "amount": "Amount",
+      "percentage": "%",
+      "currency": "EGP"
+    },
+    "originalPrice": "Original Price: "
   }
 }

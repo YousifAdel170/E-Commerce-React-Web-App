@@ -10,14 +10,17 @@ import notify from "../Utility/useNotifyHook";
 import { deleteProduct } from "../../redux/actions/productsAction";
 
 // Import notification types constants and custom notification hook
-import { ERROR, SUCCESS } from "../../constants/notificationTypes";
 import { EMPTY } from "../../constants/general";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+import { useTranslation } from "react-i18next";
 
 // Custom hook for managing admin product card logic (modals, actions, discount calculation)
 const AdminProductCardHook = (item, onDelete) => {
   // Redux dispatch function to dispatch actions + React router navigate function for redirection on edit
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { t } = useTranslation(["notification_messages", "utilities"]);
 
   // Modal visibility state for Delete and Edit modals
   const [showDelete, setShowDelete] = useState(false);
@@ -52,10 +55,17 @@ const AdminProductCardHook = (item, onDelete) => {
   useEffect(() => {
     if (!loading) {
       if (result === EMPTY.TEXT)
-        notify("تم حذف المنتج بنجاح", SUCCESS); // Notify success
-      else notify("حدث خطأ ما اثناء عملية الحذف", ERROR); // Notify error
+        notify(
+          t("notification_messages:general.deleteSuccess"),
+          NOTIFICATION_TYPES.SUCCESS
+        );
+      else
+        notify(
+          t("notification_messages:general.deleteFail"),
+          NOTIFICATION_TYPES.ERROR
+        );
     }
-  }, [loading, result]);
+  }, [loading, result, t]);
 
   // Handler to redirect to Edit product page and close Edit modal
   const handleEdit = async () => {
@@ -65,8 +75,16 @@ const AdminProductCardHook = (item, onDelete) => {
 
   // Array of action button data for rendering Edit and Delete buttons
   const actions = [
-    { label: "حذف", onClick: handleShowDelete },
-    { label: "تعديل", onClick: handleShowEdit },
+    {
+      label: t("utilities:modal.delete"),
+      onClick: handleShowDelete,
+      ariaLabel: `${t("utilities:modal.deleteAriaLabel")}: ${item?.title}`,
+    },
+    {
+      label: t("utilities:modal.edit"),
+      onClick: handleShowEdit,
+      ariaLabel: `${t("utilities:modal.editAriaLabel")}: ${item?.title}`,
+    },
   ];
 
   // Calculate discount amount and percentage for display badge

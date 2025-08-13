@@ -13,10 +13,15 @@ import AdminProductCardHook from "../../hooks/admin/AdminProductCardHook";
 import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
 
 // Import modal message data for delete and edit operations
-import { deleteModal, editModal } from "../../data/utilities/modalMessages";
+import { useTranslation } from "react-i18next";
+import { INPUT_TYPES } from "../../constants/inputs";
+
+import "../Products/ProductCard.css";
 
 // Component responsible for rendering individual product cards in admin panel
 const AdminProductCard = ({ item, onDelete, index }) => {
+  const { t } = useTranslation(["utilities", "admin"]);
+
   // Destructure modal visibility and handlers from custom hook
   const [
     showDelete,
@@ -39,11 +44,11 @@ const AdminProductCard = ({ item, onDelete, index }) => {
         show={showDelete}
         handleClose={handleCloseDelete}
         handleOperation={handleDelete}
-        modalTitle={deleteModal.modalTitle}
-        modalBody={deleteModal.modalBody}
-        modalFooter={deleteModal.modalFooter}
-        className={deleteModal.className}
-        ariaLabel={`Delete product ${item?.title}`}
+        modalTitle={t("utilities:modal.deleteTitle")}
+        modalBody={t("utilities:modal.deleteMessage")}
+        modalFooter={t("utilities:modal.delete")}
+        className={`btn-danger`}
+        ariaLabel={`${t("utilities:modal.deleteAriaLabel")}: ${item?.title}`}
       />
 
       {/* Edit Product Modal */}
@@ -51,16 +56,16 @@ const AdminProductCard = ({ item, onDelete, index }) => {
         show={showEdit}
         handleClose={handleCloseEdit}
         handleOperation={handleEdit}
-        modalTitle={editModal.modalTitle}
-        modalBody={editModal.modalBody}
-        modalFooter={editModal.modalFooter}
-        className={editModal.className}
-        ariaLabel={`Edit product ${item?.title}`}
+        modalTitle={t("utilities:modal.editTitle")}
+        modalBody={t("utilities:modal.editMessage")}
+        modalFooter={t("utilities:modal.edit")}
+        className={`btn-primary`}
+        ariaLabel={`${t("utilities:modal.editAriaLabel")}: ${item?.title}`}
       />
 
       {/* Main Product Card */}
       <Card
-        className={`my-2 product-card ${isVisible ? "fade-in" : ""}`}
+        className={`my-2 product-card admin ${isVisible ? "fade-in" : ""}`}
         tabIndex={0}
         aria-labelledby={`product-title-${item?._id}`}
         role="group"
@@ -75,10 +80,11 @@ const AdminProductCard = ({ item, onDelete, index }) => {
           {actions.map((action, index) => (
             <button
               key={index}
-              type="button"
+              type={INPUT_TYPES.BUTTON}
               onClick={action.onClick}
-              aria-label={action.label}
-              className="action-btn"
+              aria-label={action.ariaLabel}
+              title={action.ariaLabel}
+              className="mb-2"
             >
               {action?.label}
             </button>
@@ -96,17 +102,22 @@ const AdminProductCard = ({ item, onDelete, index }) => {
             {(discountPercent > 0 || discountAmount > 0) && (
               <span
                 className="discount-badge"
-                aria-label={`خصم ${
+                aria-label={`${t("admin:product-card.discount.label")} ${
                   discountPercent
-                    ? discountPercent + "%"
-                    : discountAmount + " جنيه"
+                    ? discountPercent +
+                      t("admin:product-card.discount.percentage")
+                    : discountAmount + t("admin:product-card.discount.currency")
                 }`}
                 role="note"
                 tabIndex={-1}
               >
                 {discountPercent
                   ? ` ${discountPercent}%`
-                  : `خصم ${discountAmount} جنيه`}
+                  : ` ${t(
+                      "admin:product-card.discount.label"
+                    )} ${discountAmount} ${t(
+                      "admin:product-card.discount.currency"
+                    )}`}
               </span>
             )}
 
@@ -142,15 +153,23 @@ const AdminProductCard = ({ item, onDelete, index }) => {
               <div className="price-container">
                 {item?.priceAfterDiscount ? (
                   <>
-                    <span className="price-discounted">
-                      {item?.priceAfterDiscount} جنيه
+                    <span className="price-discounted mx-2">
+                      {item?.priceAfterDiscount}
                     </span>
-                    <del aria-label={`Original price ${item?.price} جنيه`}>
-                      {item?.price} جنيه
+                    <del
+                      className="mx-1"
+                      aria-label={`${t("admin:product-card.originalPrice")}  ${
+                        item?.price
+                      } ${t("admin:product-card.discount.currency")}`}
+                    >
+                      {item?.price}
                     </del>
+                    {t("admin:product-card.discount.currency")}
                   </>
                 ) : (
-                  <span>{item?.price} جنيه</span>
+                  <span>
+                    {item?.price} {t("admin:product-card.discount.currency")}
+                  </span>
                 )}
               </div>
             </div>

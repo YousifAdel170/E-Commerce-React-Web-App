@@ -1,5 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Modal } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+
+import "./ModalComponent.css";
 
 const ModalComponent = ({
   show,
@@ -11,20 +14,21 @@ const ModalComponent = ({
   className,
   children,
 }) => {
+  const { t } = useTranslation("utilities");
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header>
-        <Modal.Title className="font">{modalTitle}</Modal.Title>
+    <Modal className="modal-container" show={show} onHide={handleClose}>
+      <Modal.Header className="modal-header">
+        <Modal.Title className="modal-title">{modalTitle}</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="font">
+      <Modal.Body className="modal-body">
         {modalBody}
         {children}
       </Modal.Body>
-      <Modal.Footer>
-        <button onClick={handleClose} className="font btn btn-secondary">
-          اغلاق
+      <Modal.Footer className="modal-footer">
+        <button onClick={handleClose} className="btn btn-secondary">
+          {t("modal.cancel")}
         </button>
-        <button onClick={handleOperation} className={`font btn ${className}`}>
+        <button onClick={handleOperation} className={`btn ${className}`}>
           {modalFooter}
         </button>
       </Modal.Footer>

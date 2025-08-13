@@ -64,5 +64,26 @@
       "add-product": "Add New Product",
       "add-subcategory": "Add New Subcategory"
     }
+  },
+
+  "modal": {
+    "cancel": "Cancel",
+    "cancelAriaLabel": "Cancel the current action",
+    "confirm": "Confirm",
+    "confirmAriaLabel": "Confirm the current action",
+    "delete": "Delete",
+    "deleteAriaLabel": "Delete the current item",
+    "deleteTitle": "Confirm Deletion",
+    "deleteMessage": "Are you sure you want to delete this item?",
+    "edit": "Edit",
+    "editAriaLabel": "Edit the current item",
+    "editTitle": "Confirm Edit",
+    "editMessage": "Are you sure you want to edit this item?",
+    "save": "Save",
+    "saveAriaLabel": "Save changes to the current item",
+    "update": "Update",
+    "updateAriaLabel": "Update the current item",
+    "add": "Add",
+    "addAriaLabel": "Add a new item"
   }
 }

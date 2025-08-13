@@ -98,5 +98,28 @@
     },
 
     "notFound": "لم يتم العثور على تفاصيل الطلب"
+  },
+
+  "all-products": {
+    "title": "إدارة جميع المنتجات",
+    "productLabel": "اسم المنتج",
+    "category": "الفئة",
+    "price": "السعر",
+    "stock": "المخزون",
+    "actions": {
+      "edit": "تعديل المنتج",
+      "delete": "حذف المنتج"
+    },
+    "notFound": "لا توجد منتجات حالياً"
+  },
+
+  "product-card": {
+    "discount": {
+      "label": "خصم",
+      "amount": "المبلغ",
+      "percentage": "%",
+      "currency": "جنيه "
+    },
+    "originalPrice": "السعر الأصلي: "
   }
 }

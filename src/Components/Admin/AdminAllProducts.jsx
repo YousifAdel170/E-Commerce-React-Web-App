@@ -8,18 +8,20 @@ import PaginationComponent from "../Utility/PaginationComponent";
 // Import custom hooks
 import AdminAllProductsPageHook from "../../hooks/admin/AdminAllProductsPageHook";
 
-// Import Constant data
-import { adminData } from "../../data/admin/adminData";
+import { useTranslation } from "react-i18next";
+import ItemsNotFound from "../Utility/ItemsNotFound";
 
 // Component responsible for rendering all products in the admin panel
 const AdminAllProducts = () => {
   // Custom hook to manage state and logic for the component
   const [items, pageCount, onPress, onDelete] = AdminAllProductsPageHook();
 
+  const { t } = useTranslation("admin");
+
   return (
     <div>
       {/* Title of the section */}
-      <div className="title-text">{adminData.allProducts.title}</div>
+      <div className="title-text">{t("all-products.title")}</div>
 
       <Row>
         {/* Map through the items and render AdminProductCard for each item */}
@@ -33,7 +35,7 @@ const AdminAllProducts = () => {
             />
           ))
         ) : (
-          <h4>{adminData.allProducts.notFound}</h4>
+          <ItemsNotFound msg={t("all-products.notFound")} />
         )}
       </Row>
 

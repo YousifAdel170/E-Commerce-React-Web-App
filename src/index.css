@@ -172,6 +172,10 @@ body.dark-theme {
 
   --badge-secondary-bg: #9ca3af;
   --badge-secondary-text: var(--main-color);
+
+  --button-danger-bg: #dc2626;
+  --hover-button-danger-bg: #b91c1c;
+  --button-danger-text: #ffffff;
 }
 
 /* ===== Scrollbar (Properly Scoped) ===== */

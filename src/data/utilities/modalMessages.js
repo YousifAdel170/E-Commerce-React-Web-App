@@ -1,13 +1,13 @@
 export const deleteModal = {
-  modalTitle: "تأكيد الحذف",
-  modalBody: "هل انت متأكد من عملية الحذف",
-  modalFooter: "حذف",
+  modalTitle: "modal.delete.Title",
+  modalBody: "modal.deleteMessage",
+  modalFooter: "modal.delete",
   className: "btn-danger",
 };
 
 export const editModal = {
-  modalTitle: "تأكيد التعديل",
-  modalBody: "هل انت متأكد من عملية التعديل",
-  modalFooter: " تعديل",
+  modalTitle: "modal.edit.Title",
+  modalBody: "modal.editMessage",
+  modalFooter: "modal.edit",
   className: "btn-primary",
 };
