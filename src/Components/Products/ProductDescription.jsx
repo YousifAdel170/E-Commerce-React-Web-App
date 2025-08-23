@@ -1,14 +1,7 @@
 /* eslint-disable react/prop-types */
 
-// Import Component from react-bootstrap
-import {
-  Col,
-  Row,
-  Button,
-  OverlayTrigger,
-  Tooltip,
-  Spinner,
-} from "react-bootstrap";
+// Import Components from react-bootstrap
+import { Col, Row, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 
 // Custom Components
 import { StarRating } from "../Utility/StartRating";
@@ -19,9 +12,13 @@ import ProductDescriptionHook from "../../hooks/products/ProductDescriptionHook"
 
 // Custom CSS
 import "./ProductModule.css";
+import { useTranslation } from "react-i18next";
+import SpinnerComponent from "../Utility/SpinnerComponent";
+import { useCurrencyFormatter } from "../../hooks/Utility/format";
 
-// Component responsible to display the description details of the product
 const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
+  const { t } = useTranslation("product");
+
   // Handle color selection and add-to-cart logic
   const [colorClicked, indexColorClicked, handleAddToCart] =
     AddToCartHook(itemProduct);
@@ -30,61 +27,83 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
   const [discountPercent, isAddDisabled, isAdding, onAddToCart] =
     ProductDescriptionHook(itemProduct, indexColorClicked, handleAddToCart);
 
+  const { formatCurrency } = useCurrencyFormatter(
+    itemProduct?.currencyCode || "EGP"
+  );
+
   return (
-    <div className="product-description-container justify-content-around">
+    <div className="product-description-container justify-content-around card-container box-shadow-lift">
       {/* Title and Star Rating */}
-      <Row className="mb-2">
-        <Col
-          xs={12}
-          md={8}
-          className="d-flex flex-wrap align-items-center justify-content-start"
-        >
-          <h1 className="product-details-title ms-2">{itemProduct?.title}</h1>
-          <StarRating
-            rating={itemProduct?.ratingsAverage || 0}
-            direction="rtl"
-          />
-          <span className="d-flex">
-            <div className="rate mx-2">{itemProduct?.ratingsAverage}</div>
-            <div className="rate-count">
-              ({itemProduct?.ratingsQuantity} تقييم)
+      <Row className="mb-1">
+        <Col xs={12} md={8} className="d-flex align-items-center">
+          <h1 className="title-text mb-0">{itemProduct?.title}</h1>
+          <StarRating rating={itemProduct?.ratingsAverage || 0} />
+        </Col>
+      </Row>
+
+      <Row>
+        <Col xs={12} md={8} className="d-flex flex-wrap align-items-center">
+          {/* Rate */}
+          <div className="d-flex flex-column">
+            {/* Rate Average */}
+            <div className="d-flex">
+              <div className="card-item-text">
+                {t("productDetails.productDescription.rate")}:
+              </div>
+
+              <div className="card-item-text-answer d-flex align-items-center">
+                {itemProduct?.ratingsAverage}
+              </div>
+
+              {/* Rate Counts */}
+              <div className="rate-count d-flex align-items-center mx-2">
+                ({itemProduct?.ratingsQuantity}{" "}
+                {t("productDetails.productDescription.reviewsCount")})
+              </div>
             </div>
-          </span>
+          </div>
         </Col>
       </Row>
 
-      {/* Category Information */}
+      {/* Category */}
       <Row className="mb-2">
-        <Col md="8" className="d-flex align-items-center justify-content-start">
-          <span className="product-details-sub-title">التصنيف:</span>
-          <span className="product-details-sub-text mx-1">
-            {itemCategory?.name}
+        <Col md="8" className="d-flex align-items-center">
+          <span className="card-item-text">
+            {t("productDetails.productDescription.category")}:
           </span>
+          <span className="card-item-text-answer">{itemCategory?.name}</span>
         </Col>
       </Row>
 
-      {/* Brand Information */}
+      {/* Brand */}
       <Row className="mb-2">
-        <Col md="8" className="d-flex align-items-center justify-content-start">
-          <span className="product-details-sub-title">الماركة :</span>
-          <span className="product-details-sub-text mx-1">
-            {itemBrand?.name}
+        <Col md="8" className="d-flex align-items-center">
+          <span className="card-item-text">
+            {t("productDetails.productDescription.brand")}:
           </span>
+          <span className="card-item-text-answer mx-1">{itemBrand?.name}</span>
         </Col>
       </Row>
 
-      {/* Available Colors with Selectable Buttons */}
+      {/* Colors */}
       <Row className="mb-2">
         <Col
           md="8"
-          className="d-flex flex-wrap align-items-center justify-content-start"
+          className="d-flex flex-wrap align-items-center"
           role="list"
-          aria-label="Available colors"
+          aria-label={t("productDetails.productDescription.currentColors")}
         >
+          <span className="card-item-text">
+            {t("productDetails.productDescription.currentColors")}:
+          </span>
           {itemProduct?.availableColors?.map((color, index) => (
             <OverlayTrigger
               key={color + index}
-              overlay={<Tooltip>{color}</Tooltip>}
+              overlay={
+                <Tooltip>
+                  {t("productDetails.productDescription.selectColor")} {color}
+                </Tooltip>
+              }
               placement="top"
             >
               <button
@@ -95,7 +114,7 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
                   border:
                     indexColorClicked === index
                       ? "3px solid black"
-                      : "1px solid #ccc",
+                      : "1px solid var(--focus-color)",
                   cursor: "pointer",
                   width: 30,
                   height: 30,
@@ -103,12 +122,13 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
                   position: "relative",
                   margin: 5,
                 }}
-                aria-label={`Select color ${color}`}
+                aria-label={`${t(
+                  "productDetails.productDescription.selectColor"
+                )} ${color}`}
                 aria-pressed={indexColorClicked === index}
                 type="button"
                 role="listitem"
               >
-                {/* Selected checkmark */}
                 {indexColorClicked === index && (
                   <span
                     aria-hidden="true"
@@ -130,104 +150,80 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
               </button>
             </OverlayTrigger>
           ))}
+        </Col>
+      </Row>
 
-          {/* Quantity and Stock Alert Messages */}
-          <div
-            className="mb-0 d-flex align-items-center me-3"
-            style={{ color: "#555550", fontWeight: 600, fontSize: "1rem" }}
-            aria-live="polite"
-          >
-            <span>الكمية المتاحة : {itemProduct?.quantity}</span>
+      {/* Quantity */}
+      <Row className="mb-2">
+        <Col md="8" className="d-flex align-items-center">
+          {/* Quantity and Stock Messages */}
+          <div className="mb-0 d-flex align-items-center" aria-live="polite">
+            <div className="card-item-text">
+              {t("productDetails.productDescription.availableQuantity")}:{" "}
+            </div>
+            <span className="card-item-text-answer  d-flex align-items-center mb-0">
+              {itemProduct?.quantity}
+            </span>
 
-            {/* Out of Stock */}
             {itemProduct?.quantity === 0 && (
               <span
-                style={{
-                  marginTop: 5,
-                  color: "#b71c1c",
-                  fontWeight: "bold",
-                  fontSize: "0.95em",
-                  marginLeft: 10,
-                }}
+                style={{ color: "#b71c1c", fontWeight: "bold" }}
                 role="alert"
+                className="mx-2"
               >
-                ❌ غير متوفر حالياً
+                {t("productDetails.productDescription.outOfStock")}
               </span>
             )}
-
-            {/* Low Stock */}
             {itemProduct?.quantity > 0 && itemProduct?.quantity <= 5 && (
               <span
-                style={{
-                  marginTop: 5,
-                  color: "#e65100",
-                  fontWeight: "bold",
-                  fontSize: "0.95em",
-                  marginLeft: 10,
-                }}
+                style={{ color: "#e65100", fontWeight: "bold" }}
                 role="alert"
+                className="mx-2"
               >
-                ⚠️ الكمية محدودة، أسرع قبل النفاد!
+                {t("productDetails.productDescription.limitedStock")}
               </span>
             )}
           </div>
         </Col>
       </Row>
 
-      {/* Description and Specifications */}
+      {/* Specifications */}
       <Row className="mb-2">
         <Col md="10">
-          <h2 className="product-details-sub-title">المواصفات :</h2>
+          <h2 className="card-item-text">
+            {t("productDetails.productDescription.specifications")}:
+          </h2>
         </Col>
         <Col md="10">
-          <p className="product-description">{itemProduct?.description}</p>
+          <p className="card-item-text-answer">{itemProduct?.description}</p>
         </Col>
       </Row>
 
-      {/* Price Display with Discount Handling */}
-      <Row className="align-items-center d-flex flex-wrap">
+      {/* Price + Discount */}
+      <Row>
         <Col xs={12} md="auto" className="mb-2 mb-md-0">
-          <div
-            className="product-price px-3 py-2 border"
-            aria-label={
-              itemProduct?.priceAfterDiscount
-                ? `Discounted price ${itemProduct.priceAfterDiscount} جنيه, original price ${itemProduct.price} جنيه, save ${discountPercent} percent`
-                : `Price ${itemProduct?.price} جنيه`
-            }
-          >
+          <div className="product-price">
             {itemProduct?.priceAfterDiscount ? (
               <>
-                <span style={{ color: "green", fontWeight: "bold" }}>
-                  {itemProduct.priceAfterDiscount} جنيه
+                <span>{t("productDetails.productDescription.price")}:</span>
+                <del>{formatCurrency(itemProduct.price)}</del>
+                <span className="new-price">
+                  {formatCurrency(itemProduct.priceAfterDiscount)}
                 </span>
-
-                <del
-                  className="mx-2"
-                  style={{
-                    color: "#888",
-                    fontSize: "0.9rem",
-                    fontWeight: "normal",
-                  }}
-                >
-                  {itemProduct.price} جنيه
-                </del>
-
-                <span
-                  style={{
-                    color: "crimson",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  (وفر {discountPercent}%)
-                </span>
+                <span className="discount-price">-{discountPercent}%</span>
               </>
             ) : (
-              <span>{itemProduct?.price} جنيه</span>
+              <>
+                <span>{t("productDetails.productDescription.price")}:</span>
+                <span className="card-item-text-answer">
+                  {formatCurrency(itemProduct.price)}
+                </span>
+              </>
             )}
           </div>
         </Col>
 
-        {/* Add to Cart Button with Spinner and Tooltip */}
+        {/* Add to Cart */}
         <Col xs={12} md className="mt-2 mt-md-0">
           <OverlayTrigger
             placement="top"
@@ -235,8 +231,8 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
               isAddDisabled ? (
                 <Tooltip id="tooltip-disabled">
                   {itemProduct?.quantity === 0
-                    ? "المنتج غير متوفر حالياً"
-                    : "اختر لوناً لإضافة المنتج للعربة"}
+                    ? t("productDetails.cart.tooltipOutOfStock")
+                    : t("productDetails.cart.tooltipSelectColor")}
                 </Tooltip>
               ) : (
                 <></>
@@ -246,25 +242,23 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
             <span>
               <Button
                 className="px-3 py-2 w-sm-100"
-                variant="dark"
                 disabled={isAddDisabled || isAdding}
                 onClick={onAddToCart}
+                variant="primary"
                 aria-disabled={isAddDisabled || isAdding}
               >
                 {isAdding ? (
                   <>
-                    <Spinner
-                      as="span"
-                      animation="border"
+                    <SpinnerComponent
+                      msg={t("productDetails.cart.addingToCart")}
                       size="sm"
-                      role="status"
-                      aria-hidden="true"
-                      className="me-2"
+                      className="mx-2"
+                      as="span"
                     />
-                    جار الإضافة...
+                    {t("productDetails.cart.addingToCart")}
                   </>
                 ) : (
-                  "اضف للعربة"
+                  t("productDetails.cart.addToCart")
                 )}
               </Button>
             </span>

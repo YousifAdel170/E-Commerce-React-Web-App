@@ -1,0 +1,17 @@
+{
+  "title": "Ratings",
+  "reviews_count": "Reviews",
+  "no_reviews": "No reviews yet",
+  "write_review_placeholder": "Write your review here...",
+  "write_comment_placeholder": "Write your comment...",
+  "add_comment": "Add Comment",
+  "delete_review": "Delete Review",
+  "edit_review": "Edit Review",
+
+  "aria_write_review": "Write your review text",
+  "aria_write_comment": "Write your comment about the product",
+  "aria_add_comment": "Press to add a new comment",
+  "aria_delete_review": "Press to delete this review",
+  "aria_edit_review": "Press to edit this review",
+  "aria_star_rating": "Rate the product using stars"
+}

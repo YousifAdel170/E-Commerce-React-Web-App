@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import SliderButton from "./SliderButton";
 import "./ProductGallery.css";
 import ProductGalleryHook from "../../hooks/products/ProductGalleryHook";
+import { useTranslation } from "react-i18next";
+import { SLIDER_DIRECTIONS } from "../../constants/general";
 
 const ProductGallery = ({ images }) => {
   const [
@@ -17,6 +19,8 @@ const ProductGallery = ({ images }) => {
     onImageClick,
     currentIndex,
   ] = ProductGalleryHook(images);
+
+  const { t } = useTranslation("product");
 
   return (
     <>
@@ -59,7 +63,7 @@ const ProductGallery = ({ images }) => {
                     onClick={onClick}
                     direction="right"
                     disabled={disabled}
-                    ariaLabel="التالي"
+                    ariaLabel={t("productGallery.nextBtnAriaLabel")}
                     tabIndex={0}
                   />
                 )}
@@ -68,7 +72,7 @@ const ProductGallery = ({ images }) => {
                     onClick={onClick}
                     direction="left"
                     disabled={disabled}
-                    ariaLabel="السابق"
+                    ariaLabel={t("productGallery.prevBtnAriaLabel")}
                     tabIndex={0}
                   />
                 )}
@@ -80,12 +84,12 @@ const ProductGallery = ({ images }) => {
       </AnimatePresence>
 
       <motion.section
-        className="product-gallery-card"
+        className="product-gallery-card box-shadow-lift card-container"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         role="region"
-        aria-label="معرض صور المنتج"
+        aria-label={t("productGallery.ariaLabelImaageContainer")}
         tabIndex={-1}
         aria-live="polite"
         style={{ maxWidth: "100%", margin: "0 auto" }}
@@ -104,18 +108,18 @@ const ProductGallery = ({ images }) => {
               renderRightNav={(onClick, disabled) => (
                 <SliderButton
                   onClick={onClick}
-                  direction="right"
+                  direction={SLIDER_DIRECTIONS.RIGHT}
                   disabled={disabled}
-                  ariaLabel="التالي"
+                  ariaLabel={t("productGallery.nextBtnAriaLabel")}
                   tabIndex={0}
                 />
               )}
               renderLeftNav={(onClick, disabled) => (
                 <SliderButton
                   onClick={onClick}
-                  direction="left"
+                  direction={SLIDER_DIRECTIONS.LEFT}
                   disabled={disabled}
-                  ariaLabel="السابق"
+                  ariaLabel={t("productGallery.PrevBtnAriaLabel")}
                   tabIndex={0}
                 />
               )}

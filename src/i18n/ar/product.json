@@ -1,0 +1,39 @@
+{
+  "productDetails": {
+    "loading": "جارٍ تحميل تفاصيل المنتج...",
+
+    "productGallery": {
+      "ariaLabelImageContainer": "معرض صور المنتج",
+      "nextBtnAriaLabel": "الصورة التالية",
+      "prevBtnAriaLabel": "الصورة السابقة"
+    },
+
+    "productDescription": {
+      "title": "تفاصيل المنتج",
+      "category": "التصنيف",
+      "brand": "الماركة",
+      "specifications": "المواصفات",
+      "price": "السعر",
+      "availableQuantity": "الكمية المتاحة",
+      "inStock": "متوفر",
+      "outOfStock": "❌ غير متوفر حالياً",
+      "limitedStock": "⚠️ الكمية محدودة، أسرع قبل النفاد!",
+      "currentColors": "الألوان المتاحة",
+      "selectColor": "اختر اللون",
+      "rate": "التقييم",
+      "reviewsCount": "عدد التقييمات",
+      "discountMessage": "(وفر {{percent}}%)",
+      "priceAria": {
+        "withDiscount": "السعر بعد الخصم {{discounted}} جنيه، السعر الأصلي {{original}} جنيه، وفر {{percent}} بالمئة",
+        "withoutDiscount": "السعر {{price}} جنيه"
+      }
+    },
+
+    "cart": {
+      "addToCart": "أضف للعربة",
+      "addingToCart": "جارٍ الإضافة...",
+      "tooltipOutOfStock": "المنتج غير متوفر حالياً",
+      "tooltipSelectColor": "اختر لوناً لإضافة المنتج للعربة"
+    }
+  }
+}

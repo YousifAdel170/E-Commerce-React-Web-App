@@ -133,7 +133,6 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
                       <span className="price-discounted">
                         {t("discountedPrice", {
                           price: item?.priceAfterDiscount,
-                          currency: t("currency"),
                         })}
                       </span>
                       <del
@@ -142,15 +141,16 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
                           currency: t("currency"),
                         })}
                       >
-                        {item?.price} {t("currency")}
+                        {item?.price}
                       </del>
+                      <span> {t("currency")}</span>
                     </>
                   ) : (
                     <span>
                       {t("normalPrice", {
                         price: item?.price,
-                        currency: t("currency"),
                       })}
+                      {t("currency")}
                     </span>
                   )}
                 </div>

@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 
 // Import Components from React Bootstrap
-import { Col, Row, Container, Spinner } from "react-bootstrap";
+import { Col, Row, Container } from "react-bootstrap";
 import { motion } from "framer-motion";
 
 // Import Custom Components
 import ProductGallery from "./ProductGallery";
 import ProductDescription from "./ProductDescription";
+import SpinnerComponent from "../Utility/SpinnerComponent";
 
 // Component responsible for displaying full product details layout
 const ProductDetails = ({ itemProduct, itemCategory, itemBrand, images }) => {
@@ -14,14 +15,7 @@ const ProductDetails = ({ itemProduct, itemCategory, itemBrand, images }) => {
   if (!itemProduct || !images)
     return (
       <Container className="py-5 text-center">
-        <Spinner
-          className="mx-auto"
-          animation="border"
-          variant="dark"
-          role="status"
-          aria-label="Loading categories"
-        />
-        <p>جاري التحميل...</p>
+        <SpinnerComponent />
       </Container>
     );
 
@@ -38,13 +32,9 @@ const ProductDetails = ({ itemProduct, itemCategory, itemBrand, images }) => {
           >
             <div className="w-100 h-100">
               {!images ? (
-                <Spinner
-                  className="mx-auto"
-                  animation="border"
-                  variant="dark"
-                  role="status"
-                  aria-label="Loading categories"
-                />
+                <Container className="d-flex align-items-center justifiy-content-center h-100 ">
+                  <SpinnerComponent />
+                </Container>
               ) : (
                 <ProductGallery images={images} />
               )}

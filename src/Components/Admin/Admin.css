@@ -1,15 +1,5 @@
 /* Start of Styling Admin */
 
-.title-text {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--main-color);
-}
-
-.dark-theme .title-text {
-  color: var(--main-text-color);
-}
-
 .order-item-body,
 .order-item-details {
   transition: all var(--main-duration) ease !important;

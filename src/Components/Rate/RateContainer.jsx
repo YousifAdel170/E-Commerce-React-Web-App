@@ -6,49 +6,58 @@ import PaginationComponent from "../Utility/PaginationComponent";
 import "./RateModule.css";
 import RateContainerHook from "../../hooks/review/RateContainerHook";
 import { StarRating } from "../Utility/StartRating";
+import { useTranslation } from "react-i18next";
 
 const RateContainer = ({ itemRatingAverage, itemRatingQty }) => {
   const [reviews, addReview, updateReviews, removeReview, allRates, onPress] =
     RateContainerHook();
 
+  const { t } = useTranslation("rate");
+
   return (
-    <Container className="rate-container">
-      {/* Ratings summary */}
-      <Col className="rating-summary d-flex align-items-center justify-content-start">
-        <div className="rating-title ms-2">التقيمات</div>
-        <StarRating rating={itemRatingAverage} direction="rtl" />
-        <div className="rate mx-2">{itemRatingAverage}</div>
-        <div className="rate-count">({itemRatingQty} تقييم)</div>
-      </Col>
+    <Container className=" flex-column my-3">
+      <div className="box-shadow-lift card-container flex-column">
+        {/* Ratings summary */}
+        <Col className="d-flex align-items-center">
+          <div className="fw-bold mx-2">{t("title")}</div>
+          <StarRating rating={itemRatingAverage} />
+          <div className="mx-2 rate-date fst-normal d-flex align-items-center">
+            {itemRatingAverage}
+          </div>
+          <div className="rate-count fst-italic">
+            ({itemRatingQty} {t("reviews_count")})
+          </div>
+        </Col>
 
-      {/* Add new review */}
-      <RatePost addReview={addReview} />
+        {/* Add new review */}
+        <RatePost addReview={addReview} />
 
-      {/* Reviews list */}
-      {reviews?.length ? (
-        reviews.map((rate) => (
-          <RateItem
-            key={rate?._id}
-            review={rate}
-            updateReviews={updateReviews}
-            removeReview={removeReview}
-          />
-        ))
-      ) : (
-        <div className="empty-state">
-          <p>لا يوجد تقييمات الان</p>
-        </div>
-      )}
+        {/* Reviews list */}
+        {reviews?.length ? (
+          reviews.map((rate) => (
+            <RateItem
+              key={rate?._id}
+              review={rate}
+              updateReviews={updateReviews}
+              removeReview={removeReview}
+            />
+          ))
+        ) : (
+          <div className="empty-state">
+            <p>{t("no_reviews")}</p>
+          </div>
+        )}
 
-      {/* Pagination */}
-      {allRates?.paginationResult?.numberOfPages > 1 && (
-        <div className="pagination-wrapper">
-          <PaginationComponent
-            pageCount={allRates.paginationResult.numberOfPages}
-            onPress={onPress}
-          />
-        </div>
-      )}
+        {/* Pagination */}
+        {allRates?.paginationResult?.numberOfPages > 1 && (
+          <div className="pagination-wrapper">
+            <PaginationComponent
+              pageCount={allRates.paginationResult.numberOfPages}
+              onPress={onPress}
+            />
+          </div>
+        )}
+      </div>
     </Container>
   );
 };

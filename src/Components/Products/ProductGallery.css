@@ -1,16 +1,11 @@
 /* ----------------------------
    Product Gallery Card Styles
------------------------------ */
+----------------------------- *
 
 /* Card container styling */
 .product-gallery-card {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
   overflow: hidden;
-  transition: all 0.3s ease;
-  border-radius: 30px;
   height: 400px;
-  display: flex;
 }
 
 /* Show overflow content on hover */
@@ -21,7 +16,6 @@
 /* Add lift and shadow effect on hover */
 .product-gallery-card:hover {
   transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
   cursor: pointer;
   -webkit-transform: translateY(-6px) scale(1.03);
   -moz-transform: translateY(-6px) scale(1.03);

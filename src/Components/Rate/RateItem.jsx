@@ -12,8 +12,8 @@ import formatDate from "../../hooks/Utility/formatDate";
 // Import Custom Styling
 import "./RateModule.css";
 import ModalComponent from "../Utility/ModalComponent";
-import { deleteModal, editModal } from "../../data/utilities/modalMessages";
 import { StarRating } from "../Utility/StartRating";
+import { useTranslation } from "react-i18next";
 
 // RateItem component for displaying individual review details
 export const RateItem = ({ review, updateReviews, removeReview }) => {
@@ -43,7 +43,7 @@ export const RateItem = ({ review, updateReviews, removeReview }) => {
     size: 20,
     count: 5,
     color: "#979797",
-    activeColor: "#ffc107",
+    activeColor: "var(--focus-color)",
     value: newRateValue,
     a11y: true,
     isHalf: true,
@@ -55,20 +55,20 @@ export const RateItem = ({ review, updateReviews, removeReview }) => {
     },
   };
 
+  const { t } = useTranslation(["rate", "utilties"]);
+
   return (
     <div>
-      {/* Delete Modal for confirming review deletion */}
-
       {/* Delete Confirmation Modal */}
       <ModalComponent
         show={showDelete}
         handleClose={handleDeleteClose}
         handleOperation={handleDelete}
-        modalTitle={deleteModal.modalTitle}
-        modalBody={deleteModal.modalBody}
-        modalFooter={deleteModal.modalFooter}
-        className={deleteModal.className}
-        ariaLabel={`Delete review of user: ${review?.user?.name}`}
+        modalTitle={t("utilities:modal.deleteTitle")}
+        modalBody={t("utilities:modal.deleteMessage")}
+        modalFooter={t("utilities:modal.delete")}
+        className={`btn-danger`}
+        ariaLabel={`${t("utilities:modal.deleteAriaLabel")}`}
       />
 
       {/* Edit Modal */}
@@ -76,11 +76,11 @@ export const RateItem = ({ review, updateReviews, removeReview }) => {
         show={showEdit}
         handleClose={handleCloseEdit}
         handleOperation={handleUpdate}
-        modalTitle={editModal.modalTitle}
-        modalBody={editModal.modalBody}
-        modalFooter={editModal.modalFooter}
-        className={editModal.className}
-        ariaLabel={`Edit review of user: ${review?.user?.name}`}
+        modalTitle={t("utilities:modal.editTitle")}
+        modalBody={t("utilities:modal.editMessage")}
+        modalFooter={t("utilities:modal.edit")}
+        className={`btn-primary`}
+        ariaLabel={`${t("utilities:modal.editAriaLabel")}`}
       >
         {/* Star rating component to update the review rating */}
         <ReactStars {...setting} />
@@ -89,56 +89,60 @@ export const RateItem = ({ review, updateReviews, removeReview }) => {
           onChange={onChangeNewRateText}
           value={newRateText}
           type="text"
-          className="font w-100 mt-2"
+          className="w-100 mt-2"
           style={{
-            borderRadius: "4px",
+            borderRadius: "var(--border-radius-xs)",
             padding: "8px",
             outline: "none",
             border: "none",
           }}
-          placeholder="اكتب التقييم هنا..."
-          aria-label="Edit Review Text"
+          placeholder={t("write_review_placeholder")}
+          aria-label={t("aria_write_comment")}
         />
       </ModalComponent>
 
       {/* Display the reviewer's name and rating */}
-      <Row className="mt-2 px-3 border-top pt-3">
+      <Row className="mt-2 px-3 pt-3 rate-border">
         <Col className="d-flex">
           <div className="d-flex">
             <div className="rate-name">{review?.user?.name || null}</div>
 
-            <div className="d-flex">
-              <StarRating rating={review?.rating} direction="rtl" />
+            <div className="d-flex mx-2">
+              <StarRating rating={review?.rating} />
               <div className="rate mx-2">{review?.rating}</div>
             </div>
           </div>
-          <div className="rate-date">{formatDate(review?.createdAt)}</div>
+          <div className="rate-date d-flex align-items-center">
+            ({formatDate(review?.createdAt)})
+          </div>
         </Col>
       </Row>
 
       {/* Display the review description and action buttons (edit/delete) if the user is the author */}
       <Row>
-        <Col className="d-flex me-4 justify-content-between">
-          <div className="rate-description ms-2">{review?.review || null}</div>
+        <Col className="d-flex mx-3 justify-content-between">
+          <div className="rate-description mx-2">{review?.review || null}</div>
 
           {/* Only show edit and delete options if the logged-in user is the author */}
           {isUser && (
-            <div className="d-inline d-flex gap-2">
+            <div className="d-flex align-items-center gap-2">
               <i
-                className="fas fa-trash text-danger"
+                className="fas fa-trash text-danger d-flex align-items-center"
                 style={{ cursor: "pointer" }}
                 onClick={handleShowDelete}
-                title="حذف التقييم"
+                title={t("delete_review")}
                 role="button"
                 tabIndex={0}
+                aria-label={t("aria_delete_review")}
               />
               <i
-                className="fas fa-edit text-warning"
+                className="fas fa-edit "
                 style={{ cursor: "pointer" }}
                 onClick={handleShowEdit}
-                title="تعديل التقييم"
+                title={t("edit_review")}
                 role="button"
                 tabIndex={0}
+                aria-label={t("aria_edit_review")}
               />
             </div>
           )}

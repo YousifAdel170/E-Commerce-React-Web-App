@@ -1,0 +1,17 @@
+{
+  "title": "التقيمات",
+  "reviews_count": "تقييم",
+  "no_reviews": "لا يوجد تقييمات الان",
+  "write_review_placeholder": "اكتب التقييم هنا...",
+  "write_comment_placeholder": "اكتب تعليقك....",
+  "add_comment": "اضف تعليق",
+  "delete_review": "حذف التقييم",
+  "edit_review": "تعديل التقييم",
+
+  "aria_write_review": "اكتب نص التقييم الخاص بك",
+  "aria_write_comment": "اكتب تعليقك على المنتج",
+  "aria_add_comment": "اضغط لإضافة تعليق جديد",
+  "aria_delete_review": "اضغط لحذف التقييم",
+  "aria_edit_review": "اضغط لتعديل التقييم",
+  "aria_star_rating": "تقييم المنتج بالنجوم"
+}

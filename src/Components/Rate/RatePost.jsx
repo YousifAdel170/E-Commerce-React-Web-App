@@ -13,11 +13,14 @@ import AddRateHook from "../../hooks/review/AddRateHook";
 
 // Import Custom Styling
 import "./RateModule.css";
+import { useTranslation } from "react-i18next";
 
 // Container for displaying product ratings and reviews
 const RatePost = ({ addReview = () => {} }) => {
   // Get The ID from the URL
   const { id } = useParams();
+
+  const { t } = useTranslation("rate");
 
   // Get The Data from the Hook
   const [
@@ -33,7 +36,7 @@ const RatePost = ({ addReview = () => {} }) => {
     size: 20,
     count: 5,
     color: "#979797",
-    activeColor: "#ffc107",
+    activeColor: "var(--focus-color)",
     value: 0,
     a11y: true,
     isHalf: true,
@@ -45,29 +48,35 @@ const RatePost = ({ addReview = () => {} }) => {
 
   return (
     <div>
-      <Row>
-        <Col sm="12" className="d-flex align-items-center">
-          <div className="rate-name">{userName}</div>
+      <Row className="mt-2">
+        <Col
+          sm="12"
+          className="d-flex align-items-center"
+          aria-label={t("aria_star_rating")}
+        >
+          <div className="rate-user mx-2">{userName}</div>
           <ReactStars {...settingRatingStarsInput} />
         </Col>
       </Row>
 
-      <Row className="mx-2">
-        <Col className="d-flex flex-column me-4 pb-2">
+      <Row className="">
+        <Col className="d-flex flex-column mx-3 pb-2">
           <textarea
             value={rateText}
             onChange={onChangeRateText}
-            className="input-form-area p-2 mt-3"
+            className="input-form-area py-2 px-3 mt-3"
             rows="2"
             cols="20"
-            placeholder="اكتب تعليقك...."
+            placeholder={t("write_comment_placeholder")}
+            aria-label={t("aria_write_review")}
           />
           <div className="d-flex justify-content-end mt-2">
             <button
               onClick={handleSubmit}
-              className="btn btn-dark d-flex align-items-center"
+              className="btn btn-primary d-flex align-items-center"
+              aria-label={t("aria_add_comment")}
             >
-              اضف تعليق
+              {t("add_comment")}
             </button>
           </div>
         </Col>

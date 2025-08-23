@@ -36,6 +36,6 @@
   "addToFavorites": "أضف {{title}} إلى المفضلة",
   "removeFromFavorites": "إزالة {{title}} من المفضلة",
   "originalPrice": "السعر الأصلي: {{price}} {{currency}}",
-  "discountedPrice": "{{price}} {{currency}}",
-  "normalPrice": "{{price}} {{currency}}"
+  "discountedPrice": "{{price}} ",
+  "normalPrice": "{{price}} "
 }

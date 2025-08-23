@@ -1,0 +1,39 @@
+{
+  "productDetails": {
+    "loading": "Loading Product Details...",
+
+    "productGallery": {
+      "ariaLabelImageContainer": "Product image gallery",
+      "nextBtnAriaLabel": "Next image",
+      "prevBtnAriaLabel": "Previous image"
+    },
+
+    "productDescription": {
+      "title": "Product Details",
+      "category": "Category",
+      "brand": "Brand",
+      "specifications": "Specifications",
+      "price": "Price",
+      "availableQuantity": "Available Quantity",
+      "inStock": "In Stock",
+      "outOfStock": "❌ Currently unavailable",
+      "limitedStock": "⚠️ Limited stock, hurry before it runs out!",
+      "currentColors": "Available Colors",
+      "selectColor": "Select color",
+      "rate": "Rating",
+      "reviewsCount": "Reviews",
+      "discountMessage": "(Save {{percent}}%)",
+      "priceAria": {
+        "withDiscount": "Discounted price {{discounted}} EGP, original price {{original}} EGP, save {{percent}} percent",
+        "withoutDiscount": "Price {{price}} EGP"
+      }
+    },
+
+    "cart": {
+      "addToCart": "Add to Cart",
+      "addingToCart": "Adding...",
+      "tooltipOutOfStock": "Product is currently out of stock",
+      "tooltipSelectColor": "Select a color to add the product to the cart"
+    }
+  }
+}

@@ -53,3 +53,11 @@ export const PAYMENT_METHODS = {
   CREDIT_CARD: "creditCard",
   PAYPAL: "paypal",
 };
+
+// ================================
+// Slider Direction
+// ================================
+export const SLIDER_DIRECTIONS = {
+  RIGHT: "right",
+  LEFT: "left",
+};

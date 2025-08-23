@@ -14,6 +14,10 @@ import enNotificationMessages from "./en-US/utilities/notifcation_messages.json"
 
 import enAdmin from "./en-US/admin.json";
 
+import enProduct from "./en-US/product.json";
+
+import enRate from "./en-US/rate.json";
+
 // Import namespaces Arabic
 import arAuth from "./ar/auth/auth.json";
 
@@ -25,6 +29,10 @@ import arShopProducts from "./ar/products/shopProducts.json";
 import arNotificationMessages from "./ar/utilities/notifcation_messages.json";
 
 import arAdmin from "./ar/admin.json";
+
+import arProduct from "./ar/product.json";
+
+import arRate from "./ar/rate.json";
 
 import { DEFAULT_DIRECTION, DEFAULT_LANGUAGE } from "../constants/settings";
 
@@ -40,6 +48,8 @@ i18n
         shopProducts: enShopProducts,
         notification_messages: enNotificationMessages,
         admin: enAdmin,
+        product: enProduct,
+        rate: enRate,
       },
       ar: {
         utilities: arUtilities,
@@ -48,6 +58,8 @@ i18n
         shopProducts: arShopProducts,
         notification_messages: arNotificationMessages,
         admin: arAdmin,
+        product: arProduct,
+        rate: arRate,
       },
     },
     fallbackLng: DEFAULT_LANGUAGE,
@@ -59,6 +71,8 @@ i18n
       "shopProducts",
       "notification_messages",
       "admin",
+      "product",
+      "rate",
     ], // include all namespaces
     defaultNS: "auth", // default namespace used if not passed to useTranslation
     interpolation: {
