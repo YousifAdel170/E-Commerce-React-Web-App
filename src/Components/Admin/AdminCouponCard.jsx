@@ -1,110 +1,97 @@
 /* eslint-disable react/prop-types */
-import { Button, Col, Modal, Row } from "react-bootstrap";
-import AdminCouponCardHook from "../../hooks/coupon/AdminCouponCardHook";
 import { Link } from "react-router-dom";
 
-import editIcon from "../../assets/Imgs/edit.png";
-import deleteIcon from "../../assets/Imgs/delete.png";
+import { useTranslation } from "react-i18next";
+import ModalComponent from "../Utility/ModalComponent";
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
+import AdminDeleteCouponHook from "../../hooks/coupon/AdminDeleteCouponHook";
+import AdminExtractCouponDateHook from "../../hooks/coupon/AdminExtractCouponDateHook";
 
-const AdminCouponCard = ({ coupon }) => {
-  const [formatDate, dateString, show, handleClose, handleShow, handelDelete] =
-    AdminCouponCardHook(coupon);
+const AdminCouponCard = ({ coupon, index }) => {
+  const [show, handleClose, handleShow, handelDelete, isPress] =
+    AdminDeleteCouponHook(coupon);
+
+  const [date] = AdminExtractCouponDateHook(coupon);
+
+  const [sectionRef, isVisible] = useInviewAnimation();
+
+  const { t } = useTranslation(["coupons", "utilities"]);
+
   return (
-    <div className="user-address-card my-3 px-2">
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header>
-          <Modal.Title>
-            <div className="font">تاكيد الحذف</div>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="font">هل انتا متاكد من عملية الحذف للكوبون</div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button className="font" variant="success" onClick={handleClose}>
-            تراجع
-          </Button>
-          <Button className="font" variant="dark" onClick={handelDelete}>
-            حذف
-          </Button>
-        </Modal.Footer>
-      </Modal>
+    <div
+      className={`card-container card-animate card-description-container  box-shadow-lift flex-column my-3 justify-content-around  ${
+        isVisible ? "fade-in" : ""
+      }`}
+      ref={sectionRef}
+      style={{
+        animationDelay: `${index * 0.1}s`,
+      }}
+    >
+      {/* Delete Confirmation Modal */}
+      <ModalComponent
+        show={show}
+        handleClose={handleClose}
+        handleOperation={handelDelete}
+        modalTitle={t("utilities:modal.deleteTitle")}
+        modalBody={t("utilities:modal.deleteMessage")}
+        modalFooter={t("utilities:modal.delete")}
+        className={`btn-danger`}
+        ariaLabel={`${t("utilities:modal.deleteAriaLabel")}`}
+        isPress={isPress}
+      />
 
-      <Row className="d-flex justify-content-between">
-        <Col xs="6">
-          <div className="p-2">اسم الكوبون: {coupon.name}</div>
-        </Col>
+      <div className={`d-flex justify-content-between px-2 w-100`}>
+        <div className="d-flex">
+          <div className="card-item-text">{t("couponName.text")}:</div>
+          <div className="card-item-text-answer d-flex align-items-center">
+            {coupon?.name}
+          </div>
+        </div>
 
-        <Col xs="6" className="d-flex d-flex justify-content-end">
-          <div className="d-flex p-2">
-            <Link
-              to={`/admin/edit-coupon/${coupon._id}`}
-              style={{ textDecoration: "none" }}
-            >
-              <div className="d-flex mx-2">
-                <img
-                  alt=""
-                  className="ms-1 mt-2"
-                  src={editIcon}
-                  height="17px"
-                  width="15px"
-                />
-                <p className="item-delete-edit"> تعديل</p>
-              </div>
+        <div className="d-flex align-items-center ">
+          <div className="d-flex gap-2 align-items-center">
+            <Link to={`/admin/edit-coupon/${coupon?._id}`}>
+              <i
+                className="fas fa-edit"
+                style={{ cursor: "pointer" }}
+                title={t("edit.text")}
+                role="button"
+                tabIndex={0}
+                aria-label={t("edit.aria")}
+              />
             </Link>
 
-            <div onClick={handleShow} className="d-flex ">
-              <img
-                alt=""
-                className="ms-1 mt-2"
-                src={deleteIcon}
-                height="17px"
-                width="15px"
-              />
-              <p className="item-delete-edit"> ازاله</p>
-            </div>
+            <i
+              className="fas fa-trash text-danger mt-0"
+              style={{ cursor: "pointer" }}
+              onClick={handleShow}
+              title={t("delete.text")}
+              role="button"
+              tabIndex={0}
+              aria-label={t("delete.aria")}
+            />
           </div>
-        </Col>
-      </Row>
+        </div>
+      </div>
 
-      <Row>
-        <Col xs="12">
-          <div
-            style={{
-              color: "#555550",
-              fontFamily: "Almarai",
-              fontSize: "16px",
-            }}
-          >
-            تاريخ الانتهاء: {formatDate(dateString)}
+      <div className={`d-flex justify-content-between px-2 w-100`}>
+        <div className="d-flex">
+          <div className="card-item-text">{t("couponDate.text")}:</div>
+          <div className="card-item-text-answer d-flex align-items-center">
+            {coupon?.expire ? date : "-"}
           </div>
-        </Col>
-      </Row>
+        </div>
+      </div>
 
-      <Row className="mt-3">
-        <Col xs="12" className="d-flex">
-          <div
-            style={{
-              color: "#555550",
-              fontFamily: "Almarai",
-              fontSize: "16px",
-            }}
-          >
-            : نسبه الخصم
+      <div className={`d-flex justify-content-between px-2 w-100`}>
+        <div className="d-flex">
+          <div className="card-item-text">{t("couponValue.text")}:</div>
+          <div className="card-item-text-answer d-flex align-items-center">
+            {coupon?.discount}
+            {" % "}
           </div>
-
-          <div
-            style={{
-              color: "#979797",
-              fontFamily: "Almarai",
-              fontSize: "16px",
-            }}
-            className="mx-2"
-          >
-            {coupon.discount} %
-          </div>
-        </Col>
-      </Row>
+        </div>
+      </div>
     </div>
   );
 };

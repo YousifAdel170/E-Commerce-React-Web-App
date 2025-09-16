@@ -1,0 +1,48 @@
+{
+  "availableCategories": "التصنيفات المتاحة",
+  "noCategories": "لا يوجد تصنيفات حتى الان",
+
+  "categoryName": "اسم التصنيف",
+  "categoryImage": "صورة التصنيف",
+  "viewSubcategories": "عرض التصنيفات الفرعية",
+  "edit": "تعديل",
+  "remove": "إزالة",
+
+  "aria": {
+    "categoryCard": "بطاقة التصنيف {{categoryName}}",
+    "editButton": "تعديل {{categoryName}}",
+    "removeButton": "إزالة {{categoryName}}",
+    "categoryImageAlt": "صورة التصنيف {{categoryName}}",
+    "pagination": "ترقيم الصفحات للتصنيفات",
+    "noCategoriesLive": "لا يوجد تصنيفات",
+    "viewSubcategories": "عرض التصنيفات الفرعية {{categoryName}}"
+  },
+
+  "adminEditCategory": {
+    "title": "تعديل التصنيف",
+    "imageLabel": "صوره التصنيف",
+    "nameLabel": "اسم التصنيف",
+    "namePlaceholder": "من فضلك ادخل اسم التصنيف",
+    "saveButton": "حفظ التعديل",
+    "uploadAlt": "تحميل صورة"
+  },
+
+  "addCategory": {
+    "title": "اضافة تصنيف جديد",
+    "saveButton": "اضافة"
+  },
+
+  "subcategory": {
+    "title": "عدد التصنيفات الفرعية في هذا التصنيف #{{count}}",
+    "name": "اسم التصنيف الفرعي",
+    "noSubcategories": "لا يوجد تصنيفات فرعية حتى الان",
+    "editTitle": "تعديل التصنيف الفرعي",
+    "namePlaceholder": "من فضلك ادخل اسم التصنيف الفرعي ",
+    "saveButton": "حفظ التعديل",
+    "edit": "تعديل",
+    "delete": "ازاله",
+    "addNew": "اضافة تصنيف فرعي جديد",
+    "save": "اضافة",
+    "selectMainCategory": "اختر تصنيف رئيسي"
+  }
+}

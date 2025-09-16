@@ -1,5 +1,6 @@
 // Import the base URL for API calls
 import baseUrl from "../../Api/baseURL";
+import { STORAGE_KEYS } from "../../constants/storage";
 
 // Custom Hook to update data with an image (multipart form data)
 const useUpdateDataWithImage = async (url, params) => {
@@ -7,7 +8,9 @@ const useUpdateDataWithImage = async (url, params) => {
   const config = {
     headers: {
       "Content-Type": "multipart/form-data", // Content type for file uploads
-      Authorization: `Bearer ${localStorage.getItem("token")}`, // Authorization token from localStorage
+      Authorization: `Bearer ${localStorage.getItem(
+        STORAGE_KEYS.LOCAL.AUTH.TOKEN
+      )}`, // Authorization token from localStorage
     },
   };
 
@@ -22,7 +25,11 @@ const useUpdateDataWithImage = async (url, params) => {
 const useUpdateData = async (url, params) => {
   // 1. Set up the configuration for Authorization token
   const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }, // Authorization token from localStorage
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem(
+        STORAGE_KEYS.LOCAL.AUTH.TOKEN
+      )}`,
+    }, // Authorization token from localStorage
   };
 
   // 2. Perform a PUT request to update data with the provided parameters and configuration

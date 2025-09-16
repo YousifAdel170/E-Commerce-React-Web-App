@@ -47,7 +47,7 @@ const SideBar = ({ role }) => {
         <div className={`sidebar-menu${menuOpen ? " open" : ""}`}>
           {links.map((item, index) => (
             <NavLink
-              to={item.path}
+              to={item?.path}
               key={index}
               className={({ isActive }) =>
                 `sidebar-text border-bottom animate ${
@@ -58,7 +58,7 @@ const SideBar = ({ role }) => {
               aria-current={({ isActive }) => (isActive ? "page" : undefined)}
               onClick={() => setMenuOpen(false)}
             >
-              {t("sidebar." + item.nameKey)}
+              {t("sidebar." + item?.nameKey)}
             </NavLink>
           ))}
         </div>
@@ -67,16 +67,16 @@ const SideBar = ({ role }) => {
         <div className="mobile-row">
           {links.map((item, index) => (
             <NavLink
-              to={item.path}
+              to={item?.path}
               key={index}
               className={({ isActive }) =>
-                `sidebar-text border-bottom ${item.className} ${
+                `sidebar-text border-bottom ${item?.className} ${
                   isActive ? "active" : ""
                 }`
               }
               aria-current={({ isActive }) => (isActive ? "page" : undefined)}
             >
-              {t("sidebar." + item.nameKey)}
+              {t("sidebar." + item?.nameKey)}
             </NavLink>
           ))}
         </div>

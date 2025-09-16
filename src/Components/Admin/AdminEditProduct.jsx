@@ -1,16 +1,20 @@
-import { Col, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 
 import Multiselect from "multiselect-react-dropdown";
 
 import { CompactPicker } from "react-color";
-
-import add from "../../assets/Imgs/add.png";
 
 import { ToastContainer } from "react-toastify";
 
 import AdminEditProductHook from "../../hooks/products/AdminEditProductHook";
 import { useParams } from "react-router-dom";
 import MultipleImageInput from "react-multiple-image-input";
+import { useTranslation } from "react-i18next";
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
+import { useSelector } from "react-redux";
+import { INPUT_TYPES } from "../../constants/inputs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const AdminEditProduct = () => {
   const { id } = useParams();
@@ -45,161 +49,259 @@ const AdminEditProduct = () => {
     productName,
   ] = AdminEditProductHook(id);
 
+  const { t } = useTranslation("product");
+  const [sectionRef, isVisible] = useInviewAnimation();
+
+  const { isDark } = useSelector((state) => state.ui);
+
   return (
     <div>
-      <Row className="justify-content-start ">
-        {/* Title to add new product */}
-        <div className="title-text pb-4">تعديل المنتج - {productName}</div>
-
-        <Col sm="8">
-          {/* Title of product */}
-          <div className="text-form pb-2"> صور للمنتج</div>
-
-          {/* Image of Product */}
-          <MultipleImageInput
-            images={images}
-            setImages={setImages}
-            theme={"light"}
-            allowCrop={false}
-            max={4}
-          />
-
-          {/* Input Name product */}
-          <input
-            type="text"
-            className="input-form d-block mt-3 px-3"
-            placeholder="اسم المنتج"
-            onChange={onChangeProdName}
-            value={productName}
-          />
-
-          {/* Input Description product */}
-          <textarea
-            className="input-form-area p-2 mt-3"
-            rows="4"
-            cols="50"
-            placeholder="وصف المنتج"
-            onChange={onChangeDesName}
-            value={productDescription}
-          />
-
-          {/* Salary before coupon */}
-          <input
-            type="number"
-            className="input-form d-block mt-3 px-3"
-            placeholder="السعر قبل الخصم"
-            onChange={onChangePriceBefor}
-            value={priceBefore}
-          />
-
-          {/* Price of product */}
-          <input
-            type="number"
-            className="input-form d-block mt-3 px-3"
-            placeholder="السعر بعد الخصم"
-            onChange={onChangePriceAfter}
-            value={priceAfter}
-          />
-
-          {/* Quantity of product */}
-          <input
-            type="number"
-            className="input-form d-block mt-3 px-3"
-            placeholder="الكمية المتاحة "
-            onChange={onChangeQty}
-            value={qty}
-          />
-
-          {/* Select Main Category */}
-          <select
-            name="category"
-            id="category"
-            className="select input-form-area mt-3 px-2 "
-            onChange={onSelectCategory}
-            value={categoryID}
-          >
-            <option value="0">اختر التصنيف الرئيسي</option>
-            {category?.data
-              ? category.data.map((item) => {
-                  return (
-                    <option key={item?._id} value={item?._id}>
-                      {item?.name}
-                    </option>
-                  );
-                })
-              : null}
-          </select>
-
-          {/* Multiselect (Subcategory) */}
-          <Multiselect
-            className="mt-2 text-end"
-            placeholder="التصنيف الفرعي"
-            options={options}
-            onSelect={onSelect}
-            onRemove={onRemove}
-            displayValue="name"
-            style={{ color: "red" }}
-          />
-
-          {/* Select Brand */}
-          <select
-            name="brand"
-            id="brand"
-            className="select input-form-area mt-3 px-2 "
-            onChange={onSelectBrand}
-            value={brandID}
-          >
-            <option value="0">اختر الماركة</option>
-            {brand?.data
-              ? brand.data.map((item) => {
-                  return (
-                    <option key={item?._id} value={item?._id}>
-                      {item?.name}
-                    </option>
-                  );
-                })
-              : null}
-          </select>
-
-          {/* available colors for the product */}
-          <div className="text-form mt-3 "> الالوان المتاحه للمنتج</div>
-
-          <div className="mt-1 d-flex">
-            {colors?.length
-              ? colors.map((color, index) => (
-                  <div
-                    onClick={() => removeColor(color)}
-                    key={index}
-                    className="color ms-2 border  mt-1"
-                    style={{ backgroundColor: `${color}` }}
-                  ></div>
-                ))
-              : null}
-            {/* Image display Add more color  */}
-            <img
-              src={add}
-              alt=""
-              width="30px"
-              height="35px"
-              className="ms-2"
-              style={{ cursor: "pointer" }}
-              onClick={onChangeColor}
-            />
-            {showColor ? (
-              <CompactPicker onChangeComplete={handleChangeComplete} />
-            ) : null}
-          </div>
-        </Col>
-      </Row>
-
-      {/* Button to save the modification */}
+      <div className="title-text">
+        {t("editProduct.editTitle", { name: productName })}
+      </div>
       <Row>
-        <Col sm="8" className="d-flex justify-content-end ">
-          <button className="btn-save d-inline mt-2" onClick={handleSubmit}>
-            حفظ التعديلات
-          </button>
-        </Col>
+        <div
+          className={`card-container card-animate card-description-container  box-shadow-lift my-3   ${
+            isVisible ? "fade-in" : ""
+          }`}
+          ref={sectionRef}
+          style={{
+            animationDelay: `${0.1}s`,
+          }}
+        >
+          <form onSubmit={handleSubmit} className="p-3">
+            {/* Product Name */}
+            <div className="mb-3">
+              <label
+                htmlFor="product-name"
+                className="form-label card-item-text"
+              >
+                {t("editProduct.nameTitle")}
+              </label>
+              <input
+                id="product-name"
+                type={INPUT_TYPES.TEXT}
+                onChange={onChangeProdName}
+                value={productName}
+                className="form-control"
+                placeholder={t("editProduct.namePlaceholder")}
+                aria-label={t("editProduct.namePlaceholder")}
+              />
+            </div>
+
+            {/* Product Images */}
+            <div className="mb-3">
+              <label
+                htmlFor="product-images"
+                className="form-label card-item-text"
+              >
+                {t("editProduct.imagesLabel")}
+              </label>
+              <MultipleImageInput
+                images={images}
+                setImages={setImages}
+                theme={`${isDark ? "dark" : "light"}`}
+                id={"product-images"}
+                allowCrop={false}
+                max={4}
+              />
+            </div>
+
+            {/* Product Description */}
+            <div className="mb-3">
+              <label
+                htmlFor="product-description"
+                className="form-label card-item-text"
+              >
+                {t("editProduct.descriptionTitle")}
+              </label>
+              <textarea
+                className="input-form-area p-2"
+                rows="4"
+                cols="50"
+                placeholder={t("editProduct.descriptionPlaceholder")}
+                onChange={onChangeDesName}
+                value={productDescription}
+              />
+            </div>
+
+            {/* Product Price before discount */}
+            <div className="mb-3">
+              <label
+                htmlFor="brand-product-before"
+                className="form-label card-item-text"
+              >
+                {t("editProduct.priceBeforeTitle")}
+              </label>
+              <input
+                id="brand-product-before"
+                type={INPUT_TYPES.NUMBER}
+                onChange={onChangePriceBefor}
+                value={priceBefore}
+                className="form-control"
+                placeholder={t("editProduct.priceBeforePlaceholder")}
+                aria-label={t("editProduct.priceBeforePlaceholder")}
+              />
+            </div>
+
+            {/* Product Price after discount */}
+            <div className="mb-3">
+              <label
+                htmlFor="brand-product-after"
+                className="form-label card-item-text"
+              >
+                {t("editProduct.priceAfterTitle")}
+              </label>
+
+              {/* Price of product */}
+              <input
+                type={INPUT_TYPES.NUMBER}
+                className="form-control"
+                placeholder={t("editProduct.priceAfterPlaceholder")}
+                aria-label={t("editProduct.priceAfterPlaceholder")}
+                id="brand-product-after"
+                onChange={onChangePriceAfter}
+                value={priceAfter}
+              />
+            </div>
+
+            {/* Quantity of product */}
+            <div className="mb-3">
+              <label
+                htmlFor="product-quantity"
+                className="form-label card-item-text"
+              >
+                {t("editProduct.quantityTitle")}
+              </label>
+              <input
+                type={INPUT_TYPES.NUMBER}
+                className="form-control"
+                min={0}
+                placeholder={t("editProduct.quantityPlaceholder")}
+                aria-label={t("editProduct.quantityPlaceholder")}
+                id="product-quantity"
+                onChange={onChangeQty}
+                value={qty}
+              />
+            </div>
+
+            {/* Main Category of the product */}
+            <div className="mb-3">
+              <label
+                htmlFor="product-category"
+                className="form-label card-item-text"
+              >
+                {t("editProduct.categoryTitle")}
+              </label>
+              <select
+                name="categories"
+                id="category"
+                className="select input-form-area"
+                onChange={onSelectCategory}
+                value={categoryID}
+              >
+                <option value="0">{t("editProduct.selectCategory")}</option>
+                {category.data
+                  ? category.data.map((item) => {
+                      return (
+                        <option key={item?._id} value={item?._id}>
+                          {item?.name}
+                        </option>
+                      );
+                    })
+                  : null}
+              </select>
+            </div>
+
+            {/* Subcategory of the product */}
+            <div className="mb-3">
+              <label
+                htmlFor="product-subcategory"
+                className="form-label card-item-text"
+              >
+                {t("editProduct.subcategoryTitle")}
+              </label>
+
+              {/* Multiselect (Subcategory) */}
+              <Multiselect
+                placeholder={t("editProduct.subcategoryPlaceholder")}
+                options={options}
+                onSelect={onSelect}
+                onRemove={onRemove}
+                displayValue="name"
+              />
+            </div>
+
+            {/* Product brand */}
+            <div className="mb-3">
+              <label htmlFor="brand-name" className="form-label card-item-text">
+                {t("editProduct.brandTitle")}
+              </label>
+
+              {/* Select Brand */}
+              <select
+                name="brand"
+                id="brand-name"
+                className="select input-form-area"
+                onChange={onSelectBrand}
+                value={brandID}
+              >
+                <option value="0">{t("editProduct.selectBrand")}</option>
+                {brand.data
+                  ? brand.data.map((item) => {
+                      return (
+                        <option key={item?._id} value={item?._id}>
+                          {item?.name}
+                        </option>
+                      );
+                    })
+                  : null}
+              </select>
+            </div>
+
+            {/* Product Colors */}
+            <div className="mb-3">
+              <label className="form-label card-item-text">
+                {t("editProduct.colorsLabel")}
+              </label>
+
+              <div className="d-flex">
+                {colors.length > 0
+                  ? colors.map((color, index) => (
+                      <div
+                        onClick={() => removeColor(color)}
+                        key={index}
+                        className="color mx-2 border"
+                        style={{ backgroundColor: `${color}` }}
+                      ></div>
+                    ))
+                  : null}
+
+                {/* FontAwesome Add Color Icon */}
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  size="2x"
+                  className="mx-2 cursor-pointer"
+                  onClick={onChangeColor}
+                  title={t("editProduct.colorAlt")}
+                />
+
+                {showColor ? (
+                  <CompactPicker onChangeComplete={handleChangeComplete} />
+                ) : null}
+              </div>
+            </div>
+
+            {/* Submit */}
+            <div className="text-center">
+              <button className="btn btn-primary" onClick={handleSubmit}>
+                {t("editProduct.saveButton")}
+              </button>
+            </div>
+          </form>
+        </div>
       </Row>
+
       <ToastContainer />
     </div>
   );

@@ -1,78 +1,76 @@
 /* eslint-disable react/prop-types */
-import { Button, Col, Modal, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import editIcon from "../../assets/Imgs/edit.png";
-import deleteIcon from "../../assets/Imgs/delete.png";
 import AdminDeleteSubcategoryHook from "../../hooks/subCategory/AdminDeleteSubcategoryHook";
+import { useTranslation } from "react-i18next";
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
+import ModalComponent from "../Utility/ModalComponent";
 
-const AdminSubcategoryCard = ({ subcategory, categoryID }) => {
+const AdminSubcategoryCard = ({ subcategory, categoryID, index }) => {
   const [show, handleClose, handleShow, handelDelete] =
     AdminDeleteSubcategoryHook(subcategory);
 
+  const [sectionRef, isVisible] = useInviewAnimation();
+  const { t } = useTranslation(["categories", "utilities"]);
+
   return (
-    <div className="user-address-card my-3 px-2">
-      {/* Handle Delete, Update The Category */}
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header>
-          <Modal.Title>
-            <div className="font">تاكيد الحذف</div>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="font">
-            هل انت متاكد من عملية الحذف للتصنيف الفرعي؟
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button className="font" variant="success" onClick={handleClose}>
-            تراجع
-          </Button>
-          <Button className="font" variant="dark" onClick={handelDelete}>
-            حذف
-          </Button>
-        </Modal.Footer>
-      </Modal>
+    <div
+      className={`card-container card-animate card-description-container box-shadow-lift flex-column my-3 justify-content-around ${
+        isVisible ? "fade-in" : ""
+      }`}
+      ref={sectionRef}
+      style={{ animationDelay: `${index * 0.1}s` }}
+      role="region"
+      aria-label={t("subcategory.title", {
+        categoryName: subcategory?.name,
+      })}
+    >
+      {/* Delete Confirmation Modal */}
+      <ModalComponent
+        show={show}
+        handleClose={handleClose}
+        handleOperation={handelDelete}
+        modalTitle={t("utilities:modal.deleteTitle")}
+        modalBody={t("utilities:modal.deleteMessage")}
+        modalFooter={t("utilities:modal.delete")}
+        className="btn-danger"
+        ariaLabel={t("utilities:modal.deleteAriaLabel")}
+      />
 
-      <Row className="d-flex justify-content-between pt-2">
-        <Col xs="6">
-          <div className="p-2 fw-bold">
-            اسم التصنيف الفرعي:{" "}
-            <span className="fw-normal me-2">{subcategory?.name}</span>
+      {/* Sub Category Name & Actions */}
+      <div className="d-flex justify-content-between px-2 w-100">
+        <div className="d-flex">
+          <div className="card-item-text">{t("subcategory.name")}:</div>
+          <div className="card-item-text-answer d-flex align-items-center">
+            {subcategory?.name}
           </div>
-        </Col>
+        </div>
 
-        <Col xs="6" className="d-flex d-flex justify-content-end">
-          <div className="d-flex p-2">
+        <div className="d-flex align-items-center">
+          <div className="d-flex gap-2 align-items-center">
             <Link
               to={`/admin/all-categories/${categoryID}/all-subcategories/edit-subcategory/${subcategory?._id}`}
-              style={{ textDecoration: "none" }}
             >
-              <div className="d-flex mx-2">
-                <img
-                  alt=""
-                  className="ms-1 mt-2"
-                  src={editIcon}
-                  height="17px"
-                  width="15px"
-                />
-                <p className="item-delete-edit"> تعديل</p>
-              </div>
+              <i
+                className="fas fa-edit"
+                title={t("subcategory.edit")}
+                role="button"
+                tabIndex={0}
+                aria-label={t("subcategory.edit")}
+              />
             </Link>
 
-            <div onClick={handleShow} className="d-flex ">
-              <img
-                alt=""
-                className="ms-1 mt-2"
-                src={deleteIcon}
-                height="17px"
-                width="15px"
-              />
-              <p className="item-delete-edit"> ازاله</p>
-            </div>
+            <i
+              className="fas fa-trash text-danger mt-0"
+              onClick={handleShow}
+              title={t("subcategory.delete")}
+              role="button"
+              tabIndex={0}
+              aria-label={t("subcategory.delete")}
+            />
           </div>
-        </Col>
-      </Row>
+        </div>
+      </div>
     </div>
   );
 };

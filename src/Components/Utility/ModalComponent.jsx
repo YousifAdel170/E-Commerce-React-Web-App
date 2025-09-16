@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
 import "./ModalComponent.css";
+import SpinnerComponent from "./SpinnerComponent";
 
 const ModalComponent = ({
   show,
@@ -12,6 +13,7 @@ const ModalComponent = ({
   modalBody,
   modalFooter,
   className,
+  isPress,
   children,
 }) => {
   const { t } = useTranslation("utilities");
@@ -28,7 +30,12 @@ const ModalComponent = ({
         <button onClick={handleClose} className="btn btn-secondary">
           {t("modal.cancel")}
         </button>
-        <button onClick={handleOperation} className={`btn ${className}`}>
+        <button
+          onClick={handleOperation}
+          disabled={isPress}
+          className={`btn ${className}`}
+        >
+          {isPress ? <SpinnerComponent className={"mx-2"} size={"sm"} /> : ""}
           {modalFooter}
         </button>
       </Modal.Footer>

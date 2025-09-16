@@ -82,10 +82,12 @@ const UserOrderItem = ({ order }) => {
             <div
               className="my-0 order-item-text d-flex align-items-center gap-1"
               style={{ fontSize: "0.9rem" }}
-              title={order?.createdAt ? formatDateTime(order?.createdAt) : ""}
+              title={
+                order?.createdAt ? formatDateTime(order?.createdAt, lang) : ""
+              }
             >
               <FaCalendarAlt />
-              <span>{formatDate(order?.createdAt)}</span>
+              <span>{formatDate(order?.createdAt, lang)}</span>
             </div>
           </div>
         </Row>

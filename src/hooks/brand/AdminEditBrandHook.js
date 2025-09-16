@@ -3,10 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import notify from "../Utility/useNotifyHook";
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
 
 import uploadImage from "../../assets/Imgs/avatar.png";
 import { editBrand, getSpecificBrand } from "../../redux/actions/brandAction";
+import { useTranslation } from "react-i18next";
+import { EMPTY, STATUS } from "../../constants/general";
+// import { BACKEND_VARIABLES } from "../../constants/backendConstants";
+import { ROUTES } from "../../constants/routes";
+import { DELAYS } from "../../constants/delays";
 
 // Hook for editing a brand in the admin panel
 const AdminEditBrandHook = (id) => {
@@ -14,37 +19,36 @@ const AdminEditBrandHook = (id) => {
   const dispatch = useDispatch(); // Hook to dispatch actions
 
   // State variables for brand details
-  const [brandName, setBrandName] = useState("");
+  const [brandName, setBrandName] = useState(EMPTY.TEXT);
   const [brandImage, setBrandImage] = useState(uploadImage);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [loading, setLoading] = useState(true); // State for loading status
-  const [loadingData, setLoadingData] = useState(true); // State for data loading status
+
+  const [isPress, setIsPress] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+
+  const { t } = useTranslation("notification_messages");
 
   // Fetch specific brand data when component mounts or id changes
   useEffect(() => {
-    const getData = async () => {
-      setLoadingData(true);
-      await dispatch(getSpecificBrand(id));
-      setLoadingData(false);
-    };
+    const getData = async () => await dispatch(getSpecificBrand(id));
 
     getData();
   }, [id, dispatch]);
 
-  // Selector to get the specific Brand from the Redux store
-  const specificBrand = useSelector(
-    (state) => state.allBrand.viewSpecificBrand
+  const { viewSpecificBrand, loading, updatedBrand } = useSelector(
+    (state) => state.allBrand
   );
 
   // Update state variables when specific brand data is loaded
   useEffect(() => {
-    if (!loadingData) {
-      if (specificBrand && specificBrand.data) {
-        setBrandName(specificBrand.data.name);
-        setBrandImage(specificBrand.data.image); // Set the corrected image URL
+    if (!loading?.fetchSpecific) {
+      if (viewSpecificBrand?.data) {
+        setBrandName(viewSpecificBrand?.data?.name);
+        setBrandImage(viewSpecificBrand?.data?.image); // Set the corrected image URL
       }
     }
-  }, [loadingData, specificBrand]);
+  }, [loading, viewSpecificBrand]);
 
   // Handlers for input changes
   const onChangeName = (event) => {
@@ -60,22 +64,23 @@ const AdminEditBrandHook = (id) => {
   };
 
   // Handle form submission
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (
-      brandName === "" ||
+      brandName === EMPTY.TEXT ||
       (selectedFile === null && brandImage === uploadImage)
     ) {
-      notify("من فضلك اكمل البيانات", WARNING);
+      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
       return;
     }
 
-    setLoading(true);
+    // // Create FormData to send to the backend
+    // const formData = new FormData();
+    // formData.append(BACKEND_VARIABLES.BRAND.ADD.NAME, brandName); // The name of the brand
+    // formData.append(BACKEND_VARIABLES.BRAND.ADD.IMAGE, selectedFile);
 
-    // Create FormData to send to the backend
-    const formData = new FormData();
-    formData.append("name", brandName); // The name of the brand
-    formData.append("image", selectedFile);
-
+    setIsPress(true); // Start loading state
+    setIsLoading(true);
     // Dispatch the action to update the brand
     await dispatch(
       editBrand(id, {
@@ -83,28 +88,32 @@ const AdminEditBrandHook = (id) => {
         image: selectedFile, // Use the selected file or the existing image
       })
     ); // Dispatch the edit action with formData
-    setLoading(false);
+    setIsLoading(false);
   };
-
-  // Selector to get the result of the edit brand action
-  const result = useSelector((state) => state.allBrand.updatedBrand);
 
   // Notify user of the result of the edit action
   useEffect(() => {
-    if (!loading) {
-      if (result && result.status === 200) {
-        notify("تمت عملية التعديل بنجاح", SUCCESS);
-        setTimeout(() => {
-          navigate("/admin/all-brands"); // Navigate to the all brands page
-        }, 1000);
-      } else {
-        notify("فشل في عملية التعديل", ERROR);
-      }
+    if (!isLoading && !loading?.update) {
+      setIsPress(false); // Stop loading state
+      if (updatedBrand?.status === STATUS.SUCCESS_OK) {
+        notify(t("general.updateSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        setTimeout(
+          () => navigate(ROUTES.ADMIN.BRANDS.ALL),
+          DELAYS.NAVIGATION_DELAY
+        );
+      } else notify(t("general.updateFail"), NOTIFICATION_TYPES.ERROR);
     }
-  }, [loading, result, navigate]);
+  }, [loading, updatedBrand, navigate, t, isLoading]);
 
   // Return state variables and handlers
-  return [brandName, brandImage, onChangeName, onChangeImage, handleSubmit];
+  return [
+    brandName,
+    brandImage,
+    onChangeName,
+    onChangeImage,
+    handleSubmit,
+    isPress,
+  ];
 };
 
 export default AdminEditBrandHook;

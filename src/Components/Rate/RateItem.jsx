@@ -136,7 +136,7 @@ export const RateItem = ({ review, updateReviews, removeReview }) => {
                 aria-label={t("aria_delete_review")}
               />
               <i
-                className="fas fa-edit "
+                className="fas fa-edit"
                 style={{ cursor: "pointer" }}
                 onClick={handleShowEdit}
                 title={t("edit_review")}

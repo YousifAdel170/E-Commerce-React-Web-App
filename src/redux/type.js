@@ -94,3 +94,6 @@ export const UPDATE_ORDER_DELIVER_STATUS = "UPDATE_ORDER_DELIVER_STATUS";
 // Settings (switch Buttons)
 export const TOGGLE_THEME = "TOGGLE_THEME";
 export const TOGGLE_LANGUAGE = "TOGGLE_LANGUAGE";
+
+// Rest state after specific action
+export const RESET_STATE = "RESET_STATE";

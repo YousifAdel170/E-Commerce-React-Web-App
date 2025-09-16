@@ -35,5 +35,66 @@
       "tooltipOutOfStock": "Product is currently out of stock",
       "tooltipSelectColor": "Select a color to add the product to the cart"
     }
+  },
+
+  "addProducts": {
+    "addNewTitle": "Add New Product",
+    "imagesLabel": "Product Images",
+
+    "nameTitle": "Product Name",
+    "namePlaceholder": "Please enter the product name",
+
+    "descriptionTitle": "Product Description",
+    "descriptionPlaceholder": "Please enter the product description",
+
+    "priceBeforeTitle": "Price Before Discount",
+    "priceBeforePlaceholder": "Please enter the price before discount",
+
+    "priceAfterTitle": "Price After Discount",
+    "priceAfterPlaceholder": "Please enter the price after discount",
+
+    "quantityTitle": "Available Quantity",
+    "quantityPlaceholder": "Please enter the available quantity",
+
+    "categoryTitle": "Main Category",
+    "selectCategory": "Please select the main category",
+
+    "subcategoryTitle": "Subcategory",
+    "subcategoryPlaceholder": "Please select a subcategory",
+
+    "brandTitle": "Brand",
+    "selectBrand": "Please select a brand",
+
+    "colorsLabel": "Available Product Colors",
+
+    "addButton": "Add Product",
+
+    "colorAlt": "Add new color",
+    "imageAlt": "Product image"
+  },
+
+  "editProduct": {
+    "editTitle": "Edit Product: {{name}}",
+    "imagesLabel": "Product Images",
+    "nameTitle": "Product Name",
+    "namePlaceholder": "Please enter the product name",
+    "descriptionTitle": "Product Description",
+    "descriptionPlaceholder": "Please enter the product description",
+    "priceBeforeTitle": "Price Before Discount",
+    "priceBeforePlaceholder": "Please enter the price before discount",
+    "priceAfterTitle": "Price After Discount",
+    "priceAfterPlaceholder": "Please enter the price after discount",
+    "quantityTitle": "Available Quantity",
+    "quantityPlaceholder": "Please enter the available quantity",
+    "categoryTitle": "Main Category",
+    "selectCategory": "Please select a main category",
+    "subcategoryTitle": "Subcategory",
+    "subcategoryPlaceholder": "Please select a subcategory",
+    "brandTitle": "Brand",
+    "selectBrand": "Please select a brand",
+    "colorsLabel": "Available Colors",
+    "saveButton": "Save Changes",
+    "colorAlt": "Add a new color",
+    "imageAlt": "Product image"
   }
 }

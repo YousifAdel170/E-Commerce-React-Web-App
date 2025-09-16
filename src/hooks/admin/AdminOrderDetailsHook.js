@@ -23,8 +23,7 @@ const AdminOrderDetailsHook = (id) => {
 
   // useMemo to memoize the orderDetails data from the result to avoid unnecessary recalculations
   const orderDetails = useMemo(() => {
-    if (result) return result.data;
-    else return []; // Return empty array if no result
+    return result?.data || [];
   }, [result]);
 
   // Return the orderDetails data as an array (for consistent hook return style)

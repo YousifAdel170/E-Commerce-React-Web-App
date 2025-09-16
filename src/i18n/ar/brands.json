@@ -1,0 +1,43 @@
+{
+  "brandCard": {
+    "availableBrands": "الماركات المتاحة",
+    "noBrands": "لا يوجد تصنيفات حتى الان",
+    "brandName": "اسم الماركة",
+    "edit": "تعديل",
+    "remove": "ازاله",
+    "brandLogo": "شعار الماركة",
+
+    "aria": {
+      "brandCard": "بطاقة الماركة {{brandName}}",
+      "editButton": "تعديل {{brandName}}",
+      "removeButton": "ازاله {{brandName}}",
+      "brandLogoAlt": "شعار الماركة {{brandName}}",
+      "pagination": "ترقيم الصفحات للماركات",
+      "noBrandsLive": "لا يوجد تصنيفات"
+    }
+  },
+
+  "editBrand": {
+    "editBrandTitle": "تعديل الماركة",
+    "brandLogoLabel": "صورة الماركة",
+    "brandLogoAlt": "معاينة صورة الماركة",
+    "brandLogoAria": "رفع صورة جديدة للماركة",
+    "brandNameLabel": "اسم الماركة",
+    "brandNamePlaceholder": "من فضلك ادخل اسم الماركة",
+    "brandNameAria": "إدخال اسم الماركة",
+    "chooseFileText": "اضغط لرفع الصورة",
+    "saveChanges": {
+      "text": "حفظ التعديل",
+      "aria": "حفظ التغييرات على الماركة"
+    }
+  },
+
+  "addBrand": {
+    "title": "اضافه ماركة جديدة",
+    "imageLabel": "صوره الماركة",
+    "imageAlt": "تحميل صورة الماركة",
+    "namePlaceholder": "من فضلك ادخل اسم الماركة",
+    "saveButton": "اضافة",
+    "completed": "تم الانتهاء"
+  }
+}

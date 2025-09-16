@@ -1,10 +1,17 @@
 // This file contains the constants for the admin order item page.
+import { EMPTY, PAYMENT_METHODS } from "../../constants/general";
 import { adminOrderItemData } from "../../data/admin/adminOrderItem";
 
 // This function returns an array of objects containing user information fields
 export const getUserInfoFields = (order) => [
-  { label: "all-orders.customer.username", value: order?.user?.name || "" },
-  { label: "all-orders.customer.email", value: order?.user?.email || "" },
+  {
+    label: "all-orders.customer.username",
+    value: order?.user?.name || EMPTY.TEXT,
+  },
+  {
+    label: "all-orders.customer.email",
+    value: order?.user?.email || EMPTY.TEXT,
+  },
 ];
 
 // This function returns an array of objects containing order status fields
@@ -30,7 +37,7 @@ export const getOrderStatusFields = (order) => [
   {
     label: "all-orders.paymentMethod.label",
     value:
-      order?.paymentMethodType === "cash"
+      order?.paymentMethodType === PAYMENT_METHODS.CASH
         ? "all-orders.paymentMethod.cash"
         : "all-orders.paymentMethod.creditCard",
     color: adminOrderItemData.badgeColors.paymentMethod,

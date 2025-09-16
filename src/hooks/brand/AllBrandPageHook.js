@@ -33,9 +33,7 @@ const AllBrandPageHook = () => {
 
   // 4. Memoize the brands data to avoid unnecessary re-renders
   const pageCount = useMemo(() => {
-    if (brand && brand.paginationResult)
-      return brand.paginationResult.numberOfPages;
-    else return 0;
+    return brand?.paginationResult?.numberOfPages || 0;
   }, [brand]);
 
   // 5. update the loading state based on the loading state from redux
@@ -45,14 +43,12 @@ const AllBrandPageHook = () => {
   }, [loading]);
 
   // 6. Function to fetch brands data in the selected page
-  const getSelectedPageNumber = (selectedPage) => {
-    dispatch(getAllBrandInSelectedPage(2, selectedPage));
-  };
+  const getSelectedPageNumber = async (selectedPage) =>
+    await dispatch(getAllBrandInSelectedPage(PAGE_BRANDS_LIMIT, selectedPage));
 
   // 7. Memoize the brands data to avoid unnecessary re-renders
   const brandsData = useMemo(() => {
-    if (brand) return brand.data;
-    else return [];
+    return brand?.data || [];
   }, [brand]);
 
   // 8. Fetch brands data only once when the component mounts

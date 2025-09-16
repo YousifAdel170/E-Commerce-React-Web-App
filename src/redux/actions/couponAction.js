@@ -5,6 +5,7 @@ import {
   GET_SPECIFIC_COUPON,
   GET_ERROR,
   UPDATE_COUPON,
+  RESET_STATE,
 } from "../type";
 
 import { useInsertData } from "../../hooks/axios/useInsertData";
@@ -23,7 +24,8 @@ export const addCoupon = (body) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e.response,
+      payload: e?.response,
+      meta: "create",
     });
   }
 };
@@ -69,12 +71,13 @@ export const deleteCoupon = (id) => async (dispatch) => {
     const response = await useDeleteData(`api/v1/coupons/${id}`);
     dispatch({
       type: DELETE_COUPON,
-      payload: response,
+      payload: { id, response },
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
       payload: e.response,
+      meta: "delete",
     });
   }
 };
@@ -106,7 +109,15 @@ export const editCoupon = (id, body) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: e.response,
+      payload: e,
+      meta: "update",
     });
   }
+};
+
+// Action To Reset State After Specific Action
+export const resetState = () => (dispatch) => {
+  dispatch({
+    type: RESET_STATE,
+  });
 };

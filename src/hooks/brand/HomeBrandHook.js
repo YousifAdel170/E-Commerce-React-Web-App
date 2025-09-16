@@ -31,8 +31,7 @@ const HomeBrandHook = () => {
   useEffect(() => {
     if (!loading?.fetchAll) {
       // Check if brand is a valid object and not an instance of Error
-      if (brand) setBrands(brand.data);
-      else setBrands([]);
+      setBrands(brand?.data || []);
 
       // Set loading state to false after data is fetched
       setIsLoading(false);

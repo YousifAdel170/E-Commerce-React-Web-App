@@ -14,20 +14,12 @@
 /* ========== INPUT + Logo ========== */
 /* General input styling for better padding, font size, and transition effects */
 input.form-control {
-  padding: 0.45rem 0.75rem;
-  font-size: 0.9rem;
   max-width: 100% !important;
-  transition: all var(--main-duration) ease-in-out;
-  -webkit-transition: all var(--main-duration) ease-in-out;
-  -moz-transition: all var(--main-duration) ease-in-out;
-  -ms-transition: all var(--main-duration) ease-in-out;
-  -o-transition: all var(--main-duration) ease-in-out;
-  overflow-x: auto;
-  color: var(--focus-color) !important;
 }
 
-.light-theme input.form-control {
+.light-theme .form-search input.form-control {
   color: var(--main-text-hover-color) !important;
+  border-color: var(--main-text-hover-color) !important;
 }
 
 /* ========== BADGE ========== */

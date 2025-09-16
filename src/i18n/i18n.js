@@ -18,6 +18,10 @@ import enProduct from "./en-US/product.json";
 
 import enRate from "./en-US/rate.json";
 
+import enCoupon from "./en-US/coupons.json";
+import enBrands from "./en-US/brands.json";
+import enCategories from "./en-US/categories.json";
+
 // Import namespaces Arabic
 import arAuth from "./ar/auth/auth.json";
 
@@ -33,6 +37,10 @@ import arAdmin from "./ar/admin.json";
 import arProduct from "./ar/product.json";
 
 import arRate from "./ar/rate.json";
+
+import arCoupon from "./ar/coupons.json";
+import arBrands from "./ar/brands.json";
+import arCategories from "./ar/categories.json";
 
 import { DEFAULT_DIRECTION, DEFAULT_LANGUAGE } from "../constants/settings";
 
@@ -50,6 +58,9 @@ i18n
         admin: enAdmin,
         product: enProduct,
         rate: enRate,
+        coupons: enCoupon,
+        brands: enBrands,
+        categories: enCategories,
       },
       ar: {
         utilities: arUtilities,
@@ -60,6 +71,9 @@ i18n
         admin: arAdmin,
         product: arProduct,
         rate: arRate,
+        coupons: arCoupon,
+        brands: arBrands,
+        categories: arCategories,
       },
     },
     fallbackLng: DEFAULT_LANGUAGE,
@@ -73,6 +87,9 @@ i18n
       "admin",
       "product",
       "rate",
+      "coupons",
+      "brands",
+      "categories",
     ], // include all namespaces
     defaultNS: "auth", // default namespace used if not passed to useTranslation
     interpolation: {

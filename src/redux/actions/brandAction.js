@@ -90,7 +90,7 @@ export const deleteBrand = (id) => async (dispatch) => {
     const response = await useDeleteData(`api/v1/brands/${id}`);
     dispatch({
       type: DELETE_BRAND,
-      payload: response,
+      payload: { response, id },
     });
   } catch (e) {
     dispatch({

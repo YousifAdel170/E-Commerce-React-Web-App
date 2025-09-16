@@ -126,4 +126,105 @@
   box-shadow: 0 0 5px var(--auth-box-shadow);
 }
 
+.input-number {
+  position: relative;
+}
+
+[dir="rtl"] .input-number {
+  padding-left: 50px !important;
+  padding-right: 50px !important;
+}
+
+.input-group-text {
+  background-color: transparent !important;
+  color: var(--main-color) !important;
+  display: flex !important;
+  align-items: center !important;
+  position: absolute;
+  right: 0;
+
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-radius: var(--border-radius-sm) 0px 0px var(--border-radius-sm) !important;
+}
+
+.input-group-text {
+  border-radius: 0px var(--border-radius-sm) var(--border-radius-sm) 0px !important ;
+  -webkit-border-radius: 0px var(--border-radius-sm) var(--border-radius-sm) 0px !important ;
+  -moz-border-radius: 0px var(--border-radius-sm) var(--border-radius-sm) 0px !important ;
+  -ms-border-radius: 0px var(--border-radius-sm) var(--border-radius-sm) 0px !important ;
+  -o-border-radius: 0px var(--border-radius-sm) var(--border-radius-sm) 0px !important ;
+}
+
+input[type="number"] {
+  border-radius: var(--border-radius-sm) !important;
+  -webkit-border-radius: var(--border-radius-sm) !important;
+  -moz-border-radius: var(--border-radius-sm) !important;
+  -ms-border-radius: var(--border-radius-sm) !important;
+  -o-border-radius: var(--border-radius-sm) !important;
+}
+
+@media (max-width: 768px) {
+  .input-group {
+    width: 80% !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.input-group-text {
+  color: var(--main-color);
+  border-color: var(--main-color) !important;
+}
+
+.dark-theme .input-group-text {
+  color: var(--main-text-color) !important;
+  border-color: var(--main-text-color) !important;
+}
+
+/* For RTL: flip and style the spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: 100%;
+}
+
+/* Optional: flip arrows so they match RTL direction */
+input[type="number"]::-webkit-inner-spin-button {
+  transform: scaleX(-1);
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+  background-color: transparent !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(45%) sepia(90%) saturate(500%) hue-rotate(200deg)
+    brightness(95%) contrast(100%);
+  cursor: pointer;
+}
+
+/* Force the indicator to take our CSS variable */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  color: var(--date-icon-color);
+}
+
+/* Firefox */
+input[type="date"]::-moz-calendar-picker-indicator {
+  color: var(--date-icon-color);
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+.dark-theme [type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(70%) sepia(80%) saturate(500%) hue-rotate(360deg)
+    brightness(105%) contrast(100%);
+  -webkit-filter: invert(70%) sepia(80%) saturate(500%) hue-rotate(360deg)
+    brightness(105%) contrast(100%);
+}
+
+/* Firefox */
+.dark-theme input[type="date"]::-moz-calendar-picker-indicator {
+  filter: invert(70%) sepia(80%) saturate(500%) hue-rotate(360deg)
+    brightness(105%) contrast(100%);
+}
+
 /* End of Styling Admin */

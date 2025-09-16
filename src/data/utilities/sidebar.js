@@ -67,7 +67,7 @@ export const sidebarData = {
     },
 
     {
-      nameKey: "admin.add-product",
+      nameKey: "admin.add-coupon",
       path: ROUTES.ADMIN.COUPONS.ADD,
     },
   ],

@@ -1,0 +1,48 @@
+{
+  "availableCategories": "Available Categories",
+  "noCategories": "No categories yet",
+
+  "categoryName": "Category Name",
+  "categoryImage": "Category Image",
+  "viewSubcategories": "View Subcategories",
+  "edit": "Edit",
+  "remove": "Remove",
+
+  "aria": {
+    "categoryCard": "Category Card {{categoryName}}",
+    "editButton": "Edit {{categoryName}}",
+    "removeButton": "Remove {{categoryName}}",
+    "categoryImageAlt": "Category Image {{categoryName}}",
+    "pagination": "Category Pagination",
+    "noCategoriesLive": "No categories",
+    "viewSubcategories": "View Subcategories of {{categoryName}}"
+  },
+
+  "adminEditCategory": {
+    "title": "Edit Category",
+    "imageLabel": "Category Image",
+    "nameLabel": "Category Name",
+    "namePlaceholder": "Please enter category name",
+    "saveButton": "Save Changes",
+    "uploadAlt": "Upload Image"
+  },
+
+  "addCategory": {
+    "title": "Add New Category",
+    "saveButton": "Add"
+  },
+
+  "subcategory": {
+    "title": "Number of subcategories in this category #{{count}}",
+    "name": "Subcategory Name",
+    "noSubcategories": "No subcategories yet",
+    "editTitle": "Edit Subcategory",
+    "namePlaceholder": "Please enter the subcategory name",
+    "saveButton": "Save Changes",
+    "edit": "Edit",
+    "delete": "Delete",
+    "addNew": "Add New Subcategory",
+    "selectMainCategory": "Select Main Category",
+    "save": "Add"
+  }
+}

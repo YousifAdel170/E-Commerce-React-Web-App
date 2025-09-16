@@ -1,24 +1,29 @@
-import { Col, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import PaginationComponent from "../Utility/PaginationComponent";
 import AllBrandPageHook from "../../hooks/brand/AllBrandPageHook";
 import AdminBrandCard from "./AdminBrandCard";
+import { useTranslation } from "react-i18next";
+import ItemsNotFound from "../Utility/ItemsNotFound";
+import { ToastContainer } from "react-toastify";
 
 const AdminAllBrands = () => {
   const [brands, , pageCount, getSelectedPageNumber] = AllBrandPageHook();
-  console.log(brands, "Brands in admin all brands");
+
+  const { t } = useTranslation("brands");
+
   return (
-    <Row>
-      <Col>
+    <div>
+      <Row>
         {/* Available Coupons */}
-        <div className="title-text">الماركات المتاحة</div>
+        <div className="title-text">{t("brandCard.availableBrands")}</div>
         {brands ? (
           brands.map((item, index) => {
-            return <AdminBrandCard key={index} brand={item} />;
+            return <AdminBrandCard key={index} brand={item} index={index} />;
           })
         ) : (
-          <h6>لا يوجد تصنيفات حتى الان</h6>
+          <ItemsNotFound msg={t("brandCard.noBrands")} />
         )}
-      </Col>
+      </Row>
 
       {/* Handle The Pagination */}
       {pageCount > 1 ? (
@@ -27,7 +32,9 @@ const AdminAllBrands = () => {
           onPress={getSelectedPageNumber}
         />
       ) : null}
-    </Row>
+
+      <ToastContainer />
+    </div>
   );
 };
 

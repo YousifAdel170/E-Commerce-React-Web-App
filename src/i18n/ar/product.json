@@ -35,5 +35,55 @@
       "tooltipOutOfStock": "المنتج غير متوفر حالياً",
       "tooltipSelectColor": "اختر لوناً لإضافة المنتج للعربة"
     }
+  },
+
+  "addProducts": {
+    "addNewTitle": "اضافة منتج جديد",
+    "imagesLabel": "صور المنتج",
+    "nameTitle": "اسم المنتج",
+    "namePlaceholder": "من فضلك ادخل اسم المنتج",
+    "descriptionTitle": "وصف المنتج",
+    "descriptionPlaceholder": "من فضلك ادخل وصف المنتج",
+    "priceBeforeTitle": "السعر قبل الخصم",
+    "priceBeforePlaceholder": "من فضلك ادخل السعر قبل الخصم",
+    "priceAfterTitle": "السعر بعد الخصم",
+    "priceAfterPlaceholder": "من فضلك ادخل السعر بعد الخصم",
+    "quantityTitle": "الكمية المتاحة",
+    "quantityPlaceholder": "من فضلك ادخل الكمية المتاحة",
+    "categoryTitle": "التصنيف الرئيسي",
+    "selectCategory": "من فضلك اختر التصنيف الرئيسي",
+    "subcategoryTitle": "التصنيف الفرعي",
+    "subcategoryPlaceholder": "من فضلك اختر التصنيف الفرعي",
+    "brandTitle": "الماركة",
+    "selectBrand": "من فضلك اختر الماركة",
+    "colorsLabel": "الألوان المتاحة للمنتج",
+    "addButton": "اضافة المنتج",
+    "colorAlt": "اضافة لون جديد",
+    "imageAlt": "صورة المنتج"
+  },
+
+  "editProduct": {
+    "editTitle": "تعديل المنتج: {{name}}",
+    "imagesLabel": "صور المنتج",
+    "nameTitle": "اسم المنتج",
+    "namePlaceholder": "من فضلك ادخل اسم المنتج",
+    "descriptionTitle": "وصف المنتج",
+    "descriptionPlaceholder": "من فضلك ادخل وصف المنتج",
+    "priceBeforeTitle": "السعر قبل الخصم",
+    "priceBeforePlaceholder": "من فضلك ادخل السعر قبل الخصم",
+    "priceAfterTitle": "السعر بعد الخصم",
+    "priceAfterPlaceholder": "من فضلك ادخل السعر بعد الخصم",
+    "quantityTitle": "الكمية المتاحة",
+    "quantityPlaceholder": "من فضلك ادخل الكمية المتاحة",
+    "categoryTitle": "التصنيف الرئيسي",
+    "selectCategory": "من فضلك اختر التصنيف الرئيسي",
+    "subcategoryTitle": "التصنيف الفرعي",
+    "subcategoryPlaceholder": "من فضلك اختر التصنيف الفرعي",
+    "brandTitle": "الماركة",
+    "selectBrand": "من فضلك اختر الماركة",
+    "colorsLabel": "الألوان المتاحة للمنتج",
+    "saveButton": "حفظ التعديلات",
+    "colorAlt": "اضافة لون جديد",
+    "imageAlt": "صورة المنتج"
   }
 }

@@ -1,7 +1,11 @@
 import { useRef } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
 import AdminAddCouponHook from "../../hooks/coupon/AdminAddCouponHook";
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
+import { useTranslation } from "react-i18next";
+import { INPUT_TYPES } from "../../constants/inputs";
+import SpinnerComponent from "../Utility/SpinnerComponent";
 
 const AdminAddCoupon = () => {
   const dateRef = useRef();
@@ -13,51 +17,96 @@ const AdminAddCoupon = () => {
     onChangeDate,
     onChangeValue,
     handleSubmit,
+    isPress,
   ] = AdminAddCouponHook();
+  const [sectionRef, isVisible] = useInviewAnimation();
 
+  const { t } = useTranslation("coupons");
   return (
     <div>
-      <Row className="justify-content-start">
-        <div className="title-text pb-4">اضف كوبون جديد</div>
-        <Col>
-          {/* Coupon Name */}
-          <input
-            value={couponName}
-            onChange={onChangeName}
-            type="text"
-            className="input-form d-block mt-3 px-3"
-            placeholder="اسم الكوبون"
-          />
+      <div className="title-text">{t("addCoupon.text")}</div>
 
-          {/* Date */}
-          <input
-            ref={dateRef}
-            type="text"
-            className="input-form d-block mt-3 px-3"
-            placeholder="تاريخ الانتهاء"
-            onChange={onChangeDate}
-            value={couponDate}
-            onFocus={() => (dateRef.current.type = "date")}
-            onBlur={() => (dateRef.current.type = "text")}
-          />
+      <Row>
+        <div
+          className={`card-container card-animate card-description-container  box-shadow-lift my-3   ${
+            isVisible ? "fade-in" : ""
+          }`}
+          ref={sectionRef}
+          style={{
+            animationDelay: `${0.1}s`,
+          }}
+        >
+          <form onSubmit={handleSubmit} className="p-3">
+            {/* Coupon Name */}
+            <div className="mb-3">
+              <label className="form-label card-item-text">
+                {t("couponName.text")}
+              </label>
+              <input
+                type={INPUT_TYPES.TEXT}
+                value={couponName}
+                onChange={onChangeName}
+                className="form-control"
+                placeholder={t("couponName.aria")}
+              />
+            </div>
 
-          {/* Percentage of Coupon */}
-          <input
-            value={couponValue}
-            onChange={onChangeValue}
-            type="number"
-            className="input-form d-block mt-3 px-3"
-            placeholder="نسبة خصم الكوبون"
-          />
-        </Col>
-      </Row>
+            {/* Coupon Date */}
+            <div className="mb-3">
+              <label className="form-label card-item-text">
+                {t("couponDate.text")}
+              </label>
+              <input
+                type={INPUT_TYPES.DATE}
+                ref={dateRef}
+                value={couponDate}
+                onChange={onChangeDate}
+                onFocus={() => (dateRef.current.type = "date")}
+                onBlur={() => (dateRef.current.type = "text")}
+                className="form-control"
+                placeholder={t("couponDate.aria")}
+              />
+            </div>
 
-      <Row className="justify-content-end">
-        <Col sm="8" className="d-flex justify-content-end ">
-          <button onClick={handleSubmit} className="btn-save d-inline mt-2 ">
-            حفظ الكوبون
-          </button>
-        </Col>
+            {/* Coupon Value */}
+            <div className="mb-3 ">
+              <label className="form-label card-item-text">
+                {t("couponValue.text")}
+              </label>
+              <div className="input-group d-flex align-items-center">
+                <input
+                  type={INPUT_TYPES.NUMBER}
+                  min="0"
+                  max="100"
+                  value={couponValue}
+                  onChange={onChangeValue}
+                  className="form-control input-number"
+                  placeholder={t("couponValue.aria")}
+                />
+
+                <span className="input-group-text">%</span>
+              </div>
+            </div>
+
+            {/* Submit */}
+            <div className="text-center">
+              <button
+                type={INPUT_TYPES.SUBMIT}
+                className="btn btn-primary"
+                aria-label={t("saveChanges.aria")}
+                disabled={isPress}
+              >
+                {" "}
+                {isPress ? (
+                  <SpinnerComponent className={"mx-2"} size={"sm"} />
+                ) : (
+                  ""
+                )}
+                {t("saveCoupon.text")}
+              </button>
+            </div>
+          </form>
+        </div>
       </Row>
 
       <ToastContainer />

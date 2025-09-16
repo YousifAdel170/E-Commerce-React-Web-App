@@ -83,7 +83,7 @@ const NavBarLogin = () => {
 
           <Navbar.Collapse id="basic-navbar-nav">
             {/* Search */}
-            <Form className="d-flex mx-2 w-100 justify-content-center">
+            <Form className="d-flex mx-2 w-100 justify-content-center form-search form-navbar">
               <FormControl
                 value={searchWord}
                 onChange={onChangeSearch}

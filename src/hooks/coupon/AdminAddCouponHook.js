@@ -1,46 +1,57 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import notify from "../Utility/useNotifyHook";
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
-import { addCoupon } from "../../redux/actions/couponAction";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+import { addCoupon, resetState } from "../../redux/actions/couponAction";
+import { EMPTY, STATUS } from "../../constants/general";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/routes";
+import { DELAYS } from "../../constants/delays";
 
 // Hook for adding a coupon in the admin panel
 const AdminAddCouponHook = () => {
   const dispatch = useDispatch(); // Hook to dispatch actions
+  const navigate = useNavigate();
 
   // State variables for coupon details
-  const [couponName, setCouponName] = useState("");
-  const [couponDate, setCouponDate] = useState("");
-  const [couponValue, setCouponValue] = useState("");
-  const [loading, setLoading] = useState(true); // State for loading status
+  const [couponName, setCouponName] = useState(EMPTY.TEXT);
+  const [couponDate, setCouponDate] = useState(EMPTY.TEXT);
+  const [couponValue, setCouponValue] = useState(EMPTY.TEXT);
+  const [isPress, setIsPress] = useState(false);
+
+  const { t } = useTranslation("notification_messages");
+
+  // Selectors
+  const loadingCreate = useSelector(
+    (state) => state.couponReducer.loading.create
+  );
+  const createError = useSelector((state) => state.couponReducer.error.create);
 
   // Handler for coupon name input change
-  const onChangeName = (e) => {
-    e.persist();
-    setCouponName(e.target.value);
-  };
+  const onChangeName = (e) => setCouponName(e.target.value);
 
   // Handler for coupon date input change
-  const onChangeDate = (e) => {
-    e.persist();
-    setCouponDate(e.target.value);
-  };
+  const onChangeDate = (e) => setCouponDate(e.target.value);
 
   // Handler for coupon value input change
-  const onChangeValue = (e) => {
-    e.persist();
-    setCouponValue(e.target.value);
-  };
+  const onChangeValue = (e) => setCouponValue(e.target.value);
 
   // Handle form submission
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     // Validate input fields
-    if (couponName === "" || couponDate === "" || couponValue <= 0) {
-      notify("من فضلك اكمل البيانات", WARNING);
+    if (
+      couponName === EMPTY.TEXT ||
+      couponDate === EMPTY.TEXT ||
+      couponValue === EMPTY.TEXT
+    ) {
+      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
       return;
     }
 
-    setLoading(true); // Set loading state to true
+    setIsPress(true); // Set loading state to true
     await dispatch(
       addCoupon({
         name: couponName,
@@ -48,24 +59,31 @@ const AdminAddCouponHook = () => {
         discount: couponValue,
       })
     );
-    setLoading(false); // Set loading state to false
   };
-
-  // Selector to get the result of the add coupon action
-  const result = useSelector((state) => state.couponReducer.addCoupon);
 
   // Notify user of the result of the add action
   useEffect(() => {
-    if (!loading) {
-      if (result && result.status === 201) {
-        notify("تمت اضافة الكوبون بنجاح", SUCCESS);
-        window.location.reload(false); // Reload the page to reflect changes
-      } else if (result && result.status === 400)
-        notify("هذا الكوبون موجود من قبل ", ERROR);
-      else if (result && result.status === 403)
-        notify("انتا غير مسموح لك بالاضافة", ERROR);
+    if (!loadingCreate && isPress) {
+      // Reset loading state
+      setIsPress(false);
+      if (!createError) {
+        setCouponName(EMPTY.TEXT);
+        setCouponDate(EMPTY.TEXT);
+        setCouponValue(EMPTY.TEXT);
+        notify(t("coupon.addSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        setTimeout(
+          () => navigate(ROUTES.ADMIN.COUPONS.ALL),
+          DELAYS.NAVIGATION_DELAY
+        );
+      } else if (createError?.status === STATUS.BAD_REQUEST)
+        notify(t("coupon.alreadyUsed"), NOTIFICATION_TYPES.ERROR);
+      else if (createError?.status === STATUS.FORBIDDEN)
+        notify(t("backendErrors.forbidden"), NOTIFICATION_TYPES.ERROR);
+      else notify(t("coupon.addFail"), NOTIFICATION_TYPES.ERROR);
+
+      dispatch(resetState());
     }
-  }, [loading, result]);
+  }, [loadingCreate, t, isPress, navigate, createError, dispatch]);
 
   // Return state variables and handlers
   return [
@@ -76,6 +94,7 @@ const AdminAddCouponHook = () => {
     onChangeDate,
     onChangeValue,
     handleSubmit,
+    isPress,
   ];
 };
 

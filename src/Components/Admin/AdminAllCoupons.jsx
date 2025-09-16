@@ -1,29 +1,38 @@
-import { Col, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import AdminCouponCard from "./AdminCouponCard";
 import PaginationComponent from "../Utility/PaginationComponent";
 import AdminViewAllCouponsHook from "../../hooks/coupon/AdminViewAllCouponsHook";
+import { useTranslation } from "react-i18next";
+import ItemsNotFound from "../Utility/ItemsNotFound";
+import { ToastContainer } from "react-toastify";
 
 const AdminAllCoupons = () => {
   const [coupons, couponsPageCount, onPress] = AdminViewAllCouponsHook();
+
+  const { t } = useTranslation("coupons");
   return (
-    <Row>
-      <Col>
+    <div>
+      {/* Title of the section */}
+      <div className="title-text">{t("availableCoupons")}</div>
+
+      <Row>
         {/* Available Coupons */}
-        <div className="title-text">الكوبونات المتاحة</div>
         {coupons ? (
           coupons.map((item, index) => {
-            return <AdminCouponCard key={index} coupon={item} />;
+            return <AdminCouponCard key={index} coupon={item} index={index} />;
           })
         ) : (
-          <h6>لا يوجد كوبونات حتى الان</h6>
+          <ItemsNotFound msg={t("noCoupons")} />
         )}
-      </Col>
+      </Row>
 
       {/* Handle The Pagination */}
       {couponsPageCount > 1 ? (
         <PaginationComponent pageCount={couponsPageCount} onPress={onPress} />
       ) : null}
-    </Row>
+
+      <ToastContainer />
+    </div>
   );
 };
 

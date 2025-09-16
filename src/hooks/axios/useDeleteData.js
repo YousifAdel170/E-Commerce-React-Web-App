@@ -1,12 +1,15 @@
 // Import the base URL for API calls
 import baseUrl from "../../Api/baseURL";
+import { STORAGE_KEYS } from "../../constants/storage";
 
 // Custom Hook to delete data from a given URL with parameters
 const useDeleteData = async (url, params) => {
   // 1. Define the config object for the API request
   const config = {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`, // Get the token from localStorage for authorization
+      Authorization: `Bearer ${localStorage.getItem(
+        STORAGE_KEYS.LOCAL.AUTH.TOKEN
+      )}`, // Get the token from localStorage for authorization
     },
     data: params, // Add the provided params as the data for the request
   };

@@ -12,6 +12,7 @@ const initialState = {
   viewSpecificCategory: [],
   deletedCategory: [],
   updatedCategory: [],
+
   loading: {
     fetchAll: true,
     fetchSpecific: true,
@@ -19,6 +20,7 @@ const initialState = {
     delete: true,
     update: true,
   },
+
   error: {
     fetchAll: null,
     fetchSpecific: null,
@@ -48,7 +50,11 @@ const categoryReducer = (state = initialState, action) => {
     case CREATE_NEW_CATEGORY:
       return {
         ...state,
-        category: [...state.category, action.payload],
+        category: {
+          ...state.category,
+          data: [...(state.category.data || []), action.payload],
+          paginationResult: state.category.paginationResult,
+        },
         loading: { ...state.loading, create: false },
         error: { ...state.error, create: null },
       };
@@ -56,14 +62,18 @@ const categoryReducer = (state = initialState, action) => {
     case DELETE_CATEGORY:
       return {
         ...state,
-        deletedCategory: action.payload,
+        category: {
+          ...state.category,
+          data: state.category.data.filter((b) => b._id !== action.payload.id),
+        },
+        deletedCategory: action.payload.response,
+
         loading: { ...state.loading, delete: false },
         error: { ...state.error, delete: null },
       };
 
     case UPDATE_CATEGORY:
       return {
-        ...state,
         updatedCategory: action.payload,
         loading: { ...state.loading, update: false },
         error: { ...state.error, update: null },

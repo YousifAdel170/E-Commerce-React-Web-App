@@ -1,36 +1,60 @@
 import { useParams } from "react-router-dom";
-import { Col, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
 import AdminEditSubCategoryHook from "../../hooks/subCategory/AdminEditSubCategoryHook";
+import { useTranslation } from "react-i18next";
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
+import { INPUT_TYPES } from "../../constants/inputs";
 
 const AdminEditSubCategory = () => {
   const { id } = useParams();
   const [subcategoryName, onChangeName, handleSubmit] =
     AdminEditSubCategoryHook(id);
 
+  const [sectionRef, isVisible] = useInviewAnimation();
+
+  const { t } = useTranslation("categories");
+
   return (
     <div>
-      <Row className="justify-content-start">
-        <div className="title-text pb-4">تعديل التصنيف الفرعي</div>
-        <Col sm="8">
-          <div>
-            <input
-              type="text"
-              onChange={onChangeName}
-              value={subcategoryName}
-              className="input-form d-block mt-3 px-3"
-              placeholder="اسم التصنيف الفرعي"
-            />
-          </div>
-        </Col>
-      </Row>
-
+      <div className="title-text">{t("subcategory.editTitle")}</div>
       <Row>
-        <Col sm="8" className="d-flex justify-content-end">
-          <button onClick={handleSubmit} className="btn-save d-inline mt-2">
-            حفظ التعديل
-          </button>
-        </Col>
+        <div
+          className={`card-container card-animate card-description-container  box-shadow-lift my-3   ${
+            isVisible ? "fade-in" : ""
+          }`}
+          ref={sectionRef}
+          style={{
+            animationDelay: `${0.1}s`,
+          }}
+        >
+          <form onSubmit={handleSubmit} className="p-3">
+            {/* sub category Name */}
+            <div className="mb-3">
+              <label className="form-label card-item-text">
+                {t("subcategory.name")}
+              </label>
+              <input
+                type={INPUT_TYPES.TEXT}
+                value={subcategoryName}
+                onChange={onChangeName}
+                className="form-control"
+                placeholder={t("subcategory.namePlaceholder")}
+              />
+            </div>
+
+            {/* Submit */}
+            <div className="text-center">
+              <button
+                type={INPUT_TYPES.SUBMIT}
+                className="btn btn-primary"
+                aria-label={t("subcategory.saveButton")}
+              >
+                {t("subcategory.saveButton")}
+              </button>
+            </div>
+          </form>
+        </div>
       </Row>
 
       <ToastContainer />

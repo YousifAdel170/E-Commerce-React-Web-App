@@ -76,7 +76,7 @@ const AdminOrderDetails = () => {
             <Col
               key={index}
               xs="12"
-              className={`d-flex align-items-center justify-content-start ${
+              className={`d-flex align-items-center ${
                 index === userInfoFields.length - 1 ? "mb-2" : ""
               }`}
             >

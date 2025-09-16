@@ -91,7 +91,7 @@ export const deleteCategory = (id) => async (dispatch) => {
     const response = await useDeleteData(`/api/v1/categories/${id}`);
     dispatch({
       type: DELETE_CATEGORY,
-      payload: response,
+      payload: { response, id },
     });
   } catch (e) {
     dispatch({

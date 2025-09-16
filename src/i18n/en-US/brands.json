@@ -1,0 +1,47 @@
+{
+  "brandCard": {
+    "availableBrands": "Available Brands",
+    "noBrands": "No brands available yet",
+    "deleteConfirmationTitle": "Delete Confirmation",
+    "deleteConfirmationBody": "Are you sure you want to delete this brand?",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "brandName": "Brand Name",
+    "edit": "Edit",
+    "remove": "Remove",
+    "brandLogo": "Brand Logo",
+
+    "aria": {
+      "brandCard": "Brand card for {{brandName}}",
+      "editButton": "Edit {{brandName}}",
+      "removeButton": "Remove {{brandName}}",
+      "brandLogoAlt": "{{brandName}} Brand Logo",
+      "pagination": "Brand pagination",
+      "noBrandsLive": "No brands available"
+    }
+  },
+
+  "editBrand": {
+    "editBrandTitle": "Edit Brand",
+    "brandLogoLabel": "Brand Logo",
+    "brandLogoAlt": "Brand Logo Preview",
+    "brandLogoAria": "Upload a new brand logo",
+    "brandNameLabel": "Brand Name",
+    "brandNamePlaceholder": "Enter brand name",
+    "brandNameAria": "Input brand name",
+    "chooseFileText": "Click to upload logo",
+    "saveChanges": {
+      "text": "Save Changes",
+      "aria": "Save changes to brand"
+    }
+  },
+
+  "addBrand": {
+    "title": "Add New Brand",
+    "imageLabel": "Brand Image",
+    "imageAlt": "Upload Brand Image",
+    "namePlaceholder": "Brand Name",
+    "saveButton": "Add",
+    "completed": "Completed"
+  }
+}

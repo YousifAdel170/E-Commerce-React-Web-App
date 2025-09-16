@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCategory } from "../../redux/actions/categoryAction";
+import { deleteCoupon, resetState } from "../../redux/actions/couponAction";
 import { useTranslation } from "react-i18next";
 import { EMPTY } from "../../constants/general";
-import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
 import notify from "../Utility/useNotifyHook";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
 
-const AdminDeleteCategoryHook = (category) => {
+// Hook for handling coupon card actions in the admin panel
+const AdminDeleteCouponHook = (coupon) => {
   const dispatch = useDispatch(); // Hook to dispatch actions
 
   // State for modal visibility
@@ -14,38 +15,38 @@ const AdminDeleteCategoryHook = (category) => {
   const handleClose = () => setShow(false); // Handler to close the modal
   const handleShow = () => setShow(true); // Handler to show the modal
 
-  // Local loading state
-  const [isPress, setIsPress] = useState(false);
+  const [isPress, setIsPress] = useState(false); // Local loading state
 
-  const { deletedCategory, loading } = useSelector(
-    (state) => state.allCategory
+  const { deletedCoupon, loading } = useSelector(
+    (state) => state.couponReducer
   );
-
   const { t } = useTranslation("notification_messages");
 
   // Handler to delete the coupon
   const handelDelete = async (e) => {
     e.preventDefault();
-    if (!category?._id) return;
+
+    if (!coupon?._id) return;
 
     setIsPress(true);
-    await dispatch(deleteCategory(category?._id)); // Dispatch delete action
+
+    await dispatch(deleteCoupon(coupon?._id)); // Dispatch delete action
   };
 
   useEffect(() => {
     if (!loading?.delete && isPress) {
       setIsPress(false);
-
-      if (deletedCategory === EMPTY.TEXT) {
+      if (deletedCoupon === EMPTY.TEXT) {
         notify(t("general.deleteSuccess"), NOTIFICATION_TYPES.SUCCESS);
-
-        setShow(false);
+        setShow(false); // Close modal
       } else notify(t("general.deleteFail"), NOTIFICATION_TYPES.ERROR);
+
+      dispatch(resetState());
     }
-  }, [loading, deletedCategory, t, isPress]);
+  }, [loading, deletedCoupon, t, isPress, dispatch]);
 
   // Return state variables and handlers
   return [show, handleClose, handleShow, handelDelete, isPress];
 };
 
-export default AdminDeleteCategoryHook;
+export default AdminDeleteCouponHook;

@@ -22,7 +22,8 @@
     "phoneInvalid": "Please enter a valid Egyptian phone number.",
     "passwordRequired": "Password is required.",
     "passwordWeak": "Choose a stronger password with symbols and numbers.",
-    "passwordMismatch": "Passwords do not match."
+    "passwordMismatch": "Passwords do not match.",
+    "pleaseCompleteData": "Please complete all required fields."
   },
   "success": {
     "register": "Your account has been created successfully!",
@@ -88,5 +89,22 @@
     "statusUpdatedDelivery": "Delivery status updated successfully.",
 
     "updateFailed": "An error occurred while updating the status. Please try again."
+  },
+  "coupon": {
+    "codeRequired": "Coupon code is required.",
+    "discountRequired": "Discount value is required.",
+    "discountInvalid": "Discount must be a number between 1 and 100.",
+    "expiryRequired": "Expiry date is required.",
+    "expiryInvalid": "Expiry date must be in the future.",
+    "addSuccess": "Coupon added successfully!",
+    "addFail": "Could not add coupon. Please try again.",
+    "deleteSuccess": "Coupon deleted successfully!",
+    "deleteFail": "Could not delete coupon. Please try again.",
+    "updateSuccess": "Coupon updated successfully!",
+    "updateFail": "Could not update coupon. Please try again.",
+    "applySuccess": "Coupon applied successfully!",
+    "applyFail": "Could not apply coupon. Please check the code and try again.",
+    "alreadyUsed": "This coupon has already been used.",
+    "expired": "This coupon has expired."
   }
 }

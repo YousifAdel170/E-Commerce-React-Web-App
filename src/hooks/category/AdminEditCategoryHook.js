@@ -3,13 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import notify from "../Utility/useNotifyHook";
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
 import {
   editCategory,
   getSpecificCategory,
 } from "../../redux/actions/categoryAction";
 
 import uploadImage from "../../assets/Imgs/avatar.png";
+import { EMPTY, STATUS } from "../../constants/general";
+import { useTranslation } from "react-i18next";
+// import { BACKEND_VARIABLES } from "../../constants/backendConstants";
+import { ROUTES } from "../../constants/routes";
+import { DELAYS } from "../../constants/delays";
 
 // Hook for editing a category in the admin panel
 const AdminEditCategoryHook = (id) => {
@@ -17,37 +22,36 @@ const AdminEditCategoryHook = (id) => {
   const dispatch = useDispatch(); // Hook to dispatch actions
 
   // State variables for category details
-  const [categoryName, setCategoryName] = useState("");
+  const [categoryName, setCategoryName] = useState(EMPTY.TEXT);
   const [categoryImage, setCategoryImage] = useState(uploadImage);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [loading, setLoading] = useState(true); // State for loading status
-  const [loadingData, setLoadingData] = useState(true); // State for data loading status
+
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [isPress, setIsPress] = useState(false);
+
+  const { t } = useTranslation("notification_messages");
 
   // Fetch specific category data when component mounts or id changes
   useEffect(() => {
-    const getData = async () => {
-      setLoadingData(true);
-      await dispatch(getSpecificCategory(id));
-      setLoadingData(false);
-    };
+    const getData = async () => await dispatch(getSpecificCategory(id));
 
     getData();
   }, [id, dispatch]);
 
   // Selector to get the specific category from the Redux store
-  const specificCategory = useSelector(
-    (state) => state.allCategory.viewSpecificCategory
+  const { viewSpecificCategory, loading, updatedCategory } = useSelector(
+    (state) => state.allCategory
   );
 
   // Update state variables when specific category data is loaded
   useEffect(() => {
-    if (!loadingData) {
-      if (specificCategory && specificCategory.data) {
-        setCategoryName(specificCategory.data.name);
-        setCategoryImage(specificCategory.data.image); // Set the corrected image URL
+    if (!loading?.fetchSpecific) {
+      if (viewSpecificCategory?.data) {
+        setCategoryName(viewSpecificCategory?.data?.name);
+        setCategoryImage(viewSpecificCategory?.data?.image); // Set the corrected image URL
       }
     }
-  }, [loadingData, specificCategory]);
+  }, [loading, viewSpecificCategory]);
 
   // Handlers for input changes
   const onChangeName = (event) => {
@@ -63,45 +67,44 @@ const AdminEditCategoryHook = (id) => {
   };
 
   // Handle form submission
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     if (
-      categoryName === "" ||
+      categoryName === EMPTY.TEXT ||
       (selectedFile === null && categoryImage === uploadImage)
     ) {
-      notify("من فضلك اكمل البيانات", WARNING);
+      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
       return;
     }
 
-    setLoading(true);
-
-    // Create FormData to send to the backend
-    const formData = new FormData();
-    formData.append("name", categoryName);
-    if (selectedFile) {
-      formData.append("image", selectedFile); // The selected file for the image
-    }
+    setIsLoading(true);
+    setIsPress(true); // Stop loading state
 
     // Dispatch the action to update the category
-    await dispatch(editCategory(id, formData)); // Dispatch the edit action with formData
-    setLoading(false);
+    await dispatch(
+      editCategory(id, {
+        name: categoryName,
+        image: selectedFile, // Use the selected file or the existing image
+      })
+    ); // Dispatch the edit action with formData
+    setIsLoading(false);
   };
-
-  // Selector to get the result of the edit category action
-  const result = useSelector((state) => state.allCategory.updatedCategory);
 
   // Notify user of the result of the edit action
   useEffect(() => {
-    if (!loading) {
-      if (result && result.status === 200) {
-        notify("تمت عملية التعديل بنجاح", SUCCESS);
-        setTimeout(() => {
-          navigate("/admin/all-categories"); // Navigate to the all categories page
-        }, 1000);
-      } else {
-        notify("فشل في عملية التعديل", ERROR);
-      }
+    if (!isLoading && !loading?.update) {
+      setIsPress(false); // Stop loading state
+
+      if (updatedCategory?.status === STATUS.SUCCESS_OK) {
+        notify(t("general.updateSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        setTimeout(
+          () => navigate(ROUTES.ADMIN.CATEGORIES.ALL),
+          DELAYS.NAVIGATION_DELAY
+        );
+      } else notify(t("general.updateFail"), NOTIFICATION_TYPES.ERROR);
     }
-  }, [loading, result, navigate]);
+  }, [loading, updatedCategory, navigate, isLoading, t]);
 
   // Return state variables and handlers
   return [
@@ -110,6 +113,7 @@ const AdminEditCategoryHook = (id) => {
     onChangeName,
     onChangeImage,
     handleSubmit,
+    isPress,
   ];
 };
 

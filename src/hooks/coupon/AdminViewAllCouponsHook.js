@@ -10,9 +10,7 @@ const AdminViewAllCouponsHook = () => {
 
   // Fetch all coupons when component mounts
   useEffect(() => {
-    const getCoupons = async () => {
-      await dispatch(getAllCoupons(1));
-    };
+    const getCoupons = async () => await dispatch(getAllCoupons(5));
 
     getCoupons();
   }, [dispatch]);
@@ -22,21 +20,17 @@ const AdminViewAllCouponsHook = () => {
 
   // Memoize the coupons data
   const coupons = useMemo(() => {
-    if (allCoupons && allCoupons.data) return allCoupons.data;
-    else return [];
+    return allCoupons?.data || [];
   }, [allCoupons]);
 
   // Memoize the coupons data
   const couponsPageCount = useMemo(() => {
-    if (allCoupons && allCoupons.paginationResult)
-      return allCoupons.paginationResult.numberOfPages;
-    else return 0;
+    return allCoupons?.paginationResult?.numberOfPages || 0;
   }, [allCoupons]);
 
   // Handler for pagination button press
-  const onPress = async (page) => {
+  const onPress = async (page) =>
     await dispatch(getAllCouponsInSelectedPage(1, page));
-  };
 
   return [coupons, couponsPageCount, onPress]; // Return the coupons data and pagination handler
 };

@@ -1,0 +1,57 @@
+{
+  "availableCoupons": "Available Coupons",
+  "noCoupons": "No coupons available yet",
+
+  "addCoupon": {
+    "text": "Add New Coupon",
+    "aria": "Button to add a new coupon"
+  },
+  "editCoupon": {
+    "text": "Edit Coupon Details",
+    "aria": "Form to edit coupon details"
+  },
+  "couponName": {
+    "text": "Coupon Name",
+    "aria": "Enter the coupon name"
+  },
+  "couponDate": {
+    "text": "Expiry Date",
+    "aria": "Select the expiry date of the coupon"
+  },
+  "couponValue": {
+    "text": "Discount Percentage",
+    "aria": "Enter the discount percentage"
+  },
+
+  "saveCoupon": {
+    "text": "Save Coupon",
+    "aria": "Button to save the coupon"
+  },
+  "saveChanges": {
+    "text": "Save Changes",
+    "aria": "Button to save changes"
+  },
+
+  "deleteConfirmTitle": "Delete Confirmation",
+  "deleteConfirmMessage": "Are you sure you want to delete this coupon?",
+
+  "cancel": {
+    "text": "Cancel",
+    "aria": "Cancel the action"
+  },
+  "delete": {
+    "text": "Delete",
+    "aria": "Delete the coupon"
+  },
+  "edit": {
+    "text": "Edit",
+    "aria": "Edit the coupon"
+  },
+  "remove": {
+    "text": "Remove",
+    "aria": "Remove the coupon"
+  },
+
+  "expiryDate": "Expiry Date",
+  "discount": "Discount"
+}

@@ -34,8 +34,7 @@ const HomeCategoryHook = () => {
   useEffect(() => {
     if (!loading?.fetchAll) {
       // Check if category is a valid object and not an instance of Error
-      if (category) setCategories(category?.data);
-      else setCategories([]);
+      setCategories(category?.data || []);
 
       // Set loading state to false after data is fetched
       setIsLoading(false);

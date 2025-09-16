@@ -12,6 +12,7 @@ const initialState = {
   viewSpecificBrand: [],
   deletedBrand: [],
   updatedBrand: [],
+
   loading: {
     fetchAll: true,
     fetchSpecific: true,
@@ -47,14 +48,24 @@ const brandReducer = (state = initialState, action) => {
 
     case CREATE_NEW_BRAND:
       return {
-        brand: action.payload,
+        ...state,
+        brand: {
+          ...state.brand,
+          data: [...(state.brand.data || []), action.payload], // ✅ append new brand
+          paginationResult: state.brand.paginationResult,
+        },
         loading: { ...state.loading, create: false },
         error: { ...state.error, create: null },
       };
 
     case DELETE_BRAND:
       return {
-        deletedBrand: action.payload,
+        ...state,
+        brand: {
+          ...state.brand,
+          data: state.brand.data.filter((b) => b._id !== action.payload.id),
+        },
+        deletedBrand: action.payload.response,
         loading: { ...state.loading, delete: false },
         error: { ...state.error, delete: null },
       };

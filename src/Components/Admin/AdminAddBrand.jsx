@@ -1,69 +1,108 @@
-import { Col, Row, Spinner } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 
 import { ToastContainer } from "react-toastify";
 import AdminAddBrandHook from "../../hooks/brand/AdminAddBrandHook";
+import { useTranslation } from "react-i18next";
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
+import { INPUT_TYPES } from "../../constants/inputs";
+import SpinnerComponent from "../Utility/SpinnerComponent";
 
 const AdminAddBrand = () => {
-  const [
-    image,
-    name,
-    loading,
-    isPress,
-    handleSubmit,
-    onImageChange,
-    onChangeName,
-  ] = AdminAddBrandHook();
+  const [image, name, isPress, handleSubmit, onImageChange, onChangeName] =
+    AdminAddBrandHook();
+
+  const { t } = useTranslation("brands");
+  const [sectionRef, isVisible] = useInviewAnimation();
 
   return (
     <div>
-      <Row className="justify-content-start ">
-        <div className="title-text pb-4">اضافه ماركة جديد</div>
-        <Col sm="8">
-          <div className="text-form pb-2">صوره الماركة</div>
-
-          <div>
-            <label htmlFor="upload-photo">
-              <img
-                src={image}
-                alt="Upload Image"
-                height="100px"
-                width="120px"
-                style={{ cursor: "pointer" }}
-              />
-            </label>
-
-            <input
-              type="file"
-              name="photo"
-              onChange={onImageChange}
-              id="upload-photo"
-            />
-          </div>
-
-          <input
-            type="text"
-            onChange={onChangeName}
-            value={name}
-            className="input-form d-block mt-3 px-3"
-            placeholder="اسم التصنيف"
-          />
-        </Col>
-      </Row>
+      <div className="title-text">{t("addBrand.title")}</div>
       <Row>
-        <Col sm="8" className="d-flex justify-content-end ">
-          <button onClick={handleSubmit} className="btn-save d-inline mt-2 ">
-            حفظ التعديلات
-          </button>
-        </Col>
+        <div
+          className={`card-container card-animate card-description-container  box-shadow-lift my-3   ${
+            isVisible ? "fade-in" : ""
+          }`}
+          ref={sectionRef}
+          style={{
+            animationDelay: `${0.1}s`,
+          }}
+        >
+          <form onSubmit={handleSubmit} className="p-3">
+            {/* Brand Name */}
+            <div className="mb-3">
+              <label htmlFor="brand-name" className="form-label card-item-text">
+                {t("editBrand.brandNameLabel")}
+              </label>
+              <input
+                id="brand-name"
+                type={INPUT_TYPES.TEXT}
+                onChange={onChangeName}
+                value={name}
+                className="form-control"
+                placeholder={t("editBrand.brandNamePlaceholder")}
+                aria-label={t("editBrand.brandNameAria")}
+              />
+            </div>
+
+            {/* Brand Logo */}
+            <div className="mb-3">
+              <label
+                htmlFor="upload-photo"
+                className="form-label card-item-text d-flex"
+              >
+                {t("editBrand.brandLogoLabel")}
+              </label>
+
+              <div className="custom-file-wrapper">
+                <label
+                  htmlFor="upload-photo"
+                  className="custom-file-label"
+                  aria-label={t("editBrand.brandLogoAria")}
+                >
+                  <img
+                    src={image}
+                    alt={t("editBrand.brandLogoAlt")}
+                    height="100px"
+                    width="120px"
+                    className="file-preview"
+                  />
+                  <span className="file-text">
+                    {t("editBrand.chooseFileText")}
+                  </span>
+                </label>
+
+                {/* Hidden Native Input */}
+                <input
+                  type={INPUT_TYPES.FILE}
+                  name="photo"
+                  onChange={onImageChange}
+                  id="upload-photo"
+                  aria-label={t("editBrand.brandLogoAria")}
+                  className="file-input"
+                />
+              </div>
+            </div>
+
+            {/* Submit */}
+            <div className="text-center">
+              <button
+                type={INPUT_TYPES.SUBMIT}
+                className="btn btn-primary"
+                aria-label={t("editBrand.saveChanges.aria")}
+                disabled={isPress}
+              >
+                {isPress ? (
+                  <SpinnerComponent className={"mx-2"} size={"sm"} />
+                ) : (
+                  ""
+                )}
+                {t("addBrand.saveButton")}
+              </button>
+            </div>
+          </form>
+        </div>
       </Row>
 
-      {isPress ? (
-        loading ? (
-          <Spinner animation="border" variant="primary" />
-        ) : (
-          <h4>تم الانتهاء</h4>
-        )
-      ) : null}
       <ToastContainer />
     </div>
   );

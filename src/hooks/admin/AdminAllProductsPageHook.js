@@ -36,9 +36,7 @@ const AdminAllProductsPageHook = () => {
 
   // Memoized page count from pagination result
   const pageCount = useMemo(() => {
-    if (products?.paginationResult)
-      return products.paginationResult.numberOfPages;
-    else return 0;
+    products?.paginationResult?.numberOfPages || 0;
   }, [products]);
 
   // Function to get data for a selected page
@@ -47,12 +45,12 @@ const AdminAllProductsPageHook = () => {
 
   // Function to delete an item from the list
   const onDelete = (id) =>
-    setItems((prev) => prev.filter((item) => item._id !== id));
+    setItems((prev) => prev.filter((item) => item?._id !== id));
 
   // Function to update an item in the list
   const onEdit = (updatedItem) =>
     setItems((prev) =>
-      prev.map((item) => (item._id === updatedItem._id ? updatedItem : item))
+      prev.map((item) => (item?._id === updatedItem?._id ? updatedItem : item))
     );
 
   // Return values and handlers

@@ -87,7 +87,7 @@ const LoginHook = () => {
         );
 
         const data = await res.json();
-        await dispatch(loginUser({ email: data.email, password: data.sub }));
+        await dispatch(loginUser({ email: data?.email, password: data?.sub }));
         dispatch(getAllCartItems());
 
         // Safe call to close the popup only if this window was opened by another

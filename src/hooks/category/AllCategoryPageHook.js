@@ -1,5 +1,5 @@
 // Import Hooks, Dispatch and Selector from React and Redux
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Import Actions from Redux to Fetch Data, Get All Categories and Get All Categories in Selected Page
@@ -18,9 +18,7 @@ const AllCategoryPageHook = () => {
   const { category, loading } = useSelector((state) => state.allCategory);
 
   // 3. Local state to manage the loading state of the component
-  const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [pageCount, setPageCount] = useState(0);
 
   // 4. Fetch categories data when the component mounts
   useEffect(() => {
@@ -32,23 +30,29 @@ const AllCategoryPageHook = () => {
     getData();
   }, [dispatch]);
 
+  // 4. Memoize the brands data to avoid unnecessary re-renders
+  const pageCount = useMemo(() => {
+    return category?.paginationResult?.numberOfPages || 0;
+  }, [category]);
+
   // 5. Effect to set the loading state based on the loading state from redux
   useEffect(() => {
-    if (!loading?.fetchAll && category) {
-      setCategories(category?.data || []);
-      setPageCount(category?.paginationResult?.numberOfPages || 0);
-      setIsLoading(false);
-    }
+    if (!loading?.fetchAll) setIsLoading(false);
+    else setIsLoading(true);
   }, [loading, category]);
 
   // 6. Function to fetch categories data in the selected page
-  const getSelectedPageNumber = async (selectedPage) => {
+  const getSelectedPageNumber = async (selectedPage) =>
     await dispatch(
       getAllCategoryInSelectedPage(PAGE_CATEGORIES_LIMIT, selectedPage)
     );
-  };
 
-  return [categories, isLoading, pageCount, getSelectedPageNumber];
+  // 7. Memoize the brands data to avoid unnecessary re-renders
+  const categoriesData = useMemo(() => {
+    return category?.data || [];
+  }, [category]);
+
+  return [categoriesData, isLoading, pageCount, getSelectedPageNumber];
 };
 
 // Exporting the AllCategoryPageHook

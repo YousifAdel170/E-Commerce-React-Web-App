@@ -1,24 +1,48 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteBrand } from "../../redux/actions/brandAction";
+import notify from "../Utility/useNotifyHook";
+import { useTranslation } from "react-i18next";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+import { EMPTY } from "../../constants/general";
 
 const AdminDeleteBrandHook = (brand) => {
-  const dispatch = useDispatch(); // Hook to dispatch actions
+  const dispatch = useDispatch();
 
-  // State for modal visibility
+  // Modal state
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false); // Handler to close the modal
-  const handleShow = () => setShow(true); // Handler to show the modal
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
-  // Handler to delete the coupon
-  const handelDelete = async () => {
-    await dispatch(deleteBrand(brand._id)); // Dispatch delete action
-    setShow(false); // Close the modal
-    window.location.reload(false); // Reload the page to reflect changes
+  // Local loading state
+  const [isPress, setIsPress] = useState(false);
+
+  const { deletedBrand, loading } = useSelector((state) => state.allBrand);
+
+  const { t } = useTranslation("notification_messages");
+
+  // Delete handler
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    if (!brand?._id) return;
+
+    setIsPress(true);
+
+    await dispatch(deleteBrand(brand?._id)); // Dispatch delete action
   };
 
-  // Return state variables and handlers
-  return [show, handleClose, handleShow, handelDelete];
+  useEffect(() => {
+    if (!loading?.delete && isPress) {
+      setIsPress(false);
+
+      if (deletedBrand === EMPTY.TEXT) {
+        notify(t("general.deleteSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        setShow(false); // Close modal
+      } else notify(t("general.deleteFail"), NOTIFICATION_TYPES.ERROR);
+    }
+  }, [loading, deletedBrand, t, isPress]);
+
+  return [show, handleClose, handleShow, handleDelete, isPress];
 };
 
 export default AdminDeleteBrandHook;

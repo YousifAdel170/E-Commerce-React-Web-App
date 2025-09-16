@@ -5,10 +5,14 @@ import { useNavigate } from "react-router-dom";
 import {
   editCoupon,
   getSpecificCoupon,
+  resetState,
 } from "../../redux/actions/couponAction";
 import notify from "../Utility/useNotifyHook";
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
-import formatDate from "../Utility/formatDate";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+import { EMPTY, STATUS } from "../../constants/general";
+import { useTranslation } from "react-i18next";
+import { ROUTES } from "../../constants/routes";
+import { DELAYS } from "../../constants/delays";
 
 // Hook for editing a coupon in the admin panel
 const AdminEditCouponHook = (id) => {
@@ -16,60 +20,60 @@ const AdminEditCouponHook = (id) => {
   const dispatch = useDispatch(); // Hook to dispatch actions
 
   // State variables for coupon details
-  const [couponName, setCouponName] = useState("");
-  const [couponDate, setCouponDate] = useState("");
-  const [couponValue, setCouponValue] = useState("");
-  const [loading, setLoading] = useState(true); // State for loading status
-  const [loadingData, setLoadingData] = useState(true); // State for data loading status
+  const [couponName, setCouponName] = useState(EMPTY.TEXT);
+  const [couponDate, setCouponDate] = useState(EMPTY.TEXT);
+  const [couponValue, setCouponValue] = useState(EMPTY.TEXT);
+  // const [loading, setLoading] = useState(true); // State for loading status
+  // const [loadingData, setLoadingData] = useState(true); // State for data loading status
+
+  const { t } = useTranslation("notification_messages");
+  const [isPress, setIsPress] = useState(false);
+
+  const { specificCoupon, updatedCoupon, loading, error } = useSelector(
+    (state) => state.couponReducer
+  );
+
   // Fetch specific coupon data when component mounts or id changes
   useEffect(() => {
-    const getCouponData = async () => {
-      setLoadingData(true);
-      await dispatch(getSpecificCoupon(id));
-      setLoadingData(false);
-    };
+    const getCouponData = async () => await dispatch(getSpecificCoupon(id));
 
     getCouponData();
   }, [id, dispatch]);
 
-  // Selector to get the specific coupon from the Redux store
-  const specificCoupon = useSelector(
-    (state) => state.couponReducer.specificCoupon
-  );
-
   // Update state variables when specific coupon data is loaded
   useEffect(() => {
-    if (!loadingData) {
-      if (specificCoupon && specificCoupon.data) {
-        setCouponName(specificCoupon.data.name);
-        setCouponDate(formatDate(specificCoupon.data.expire));
-        setCouponValue(specificCoupon.data.discount);
+    if (!loading?.fetchSpecific) {
+      if (specificCoupon?.data) {
+        setCouponName(specificCoupon?.data?.name);
+        setCouponDate(
+          new Date(specificCoupon?.data?.expire).toISOString().split("T")[0]
+        );
+
+        setCouponValue(specificCoupon?.data?.discount);
+        dispatch(resetState());
       }
     }
-  }, [loadingData, specificCoupon]);
+  }, [loading, specificCoupon]);
 
   // Handlers for input changes
-  const onChangeName = (event) => {
-    event.persist();
-    setCouponName(event.target.value);
-  };
-  const onChangeDate = (event) => {
-    event.persist();
-    setCouponDate(event.target.value);
-  };
-  const onChangeValue = (event) => {
-    event.persist();
-    setCouponValue(event.target.value);
-  };
+  const onChangeName = (e) => setCouponName(e.target.value);
+  const onChangeDate = (e) => setCouponDate(e.target.value);
+  const onChangeValue = (e) => setCouponValue(e.target.value);
 
   // Handle form submission
-  const handleSubmit = async () => {
-    if (couponName === "" || couponDate === "" || couponValue <= 0) {
-      notify("من فضلك اكمل البيانات", WARNING);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (
+      couponName === EMPTY.TEXT ||
+      couponDate === EMPTY.TEXT ||
+      couponValue === EMPTY.TEXT
+    ) {
+      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
       return;
     }
 
-    setLoading(true);
+    setIsPress(true); // Set loading state to true
     await dispatch(
       editCoupon(id, {
         name: couponName,
@@ -77,23 +81,27 @@ const AdminEditCouponHook = (id) => {
         discount: couponValue,
       })
     );
-    setLoading(false);
   };
-
-  // Selector to get the result of the edit coupon action
-  const result = useSelector((state) => state.couponReducer.editCoupon);
 
   // Notify user of the result of the edit action
   useEffect(() => {
-    if (!loading) {
-      if (result && result.status === 200) {
-        notify("تمت عملية التعديل بنجاح", SUCCESS);
-        setTimeout(() => {
-          navigate("/admin/add-coupon");
-        }, 1000);
-      } else {
-        notify("فشل في عملية التعديل ", ERROR);
-      }
+    if (!loading?.update && isPress) {
+      setIsPress(false); // Reset loading state
+      console.log("error", error);
+      console.log("updatedCoupon", updatedCoupon);
+      if (!error?.update && updatedCoupon?.status === STATUS.SUCCESS_OK) {
+        setCouponDate(EMPTY.TEXT);
+        setCouponName(EMPTY.TEXT);
+        setCouponValue(EMPTY.TEXT);
+
+        notify(t("coupon.updateSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        setTimeout(
+          () => navigate(ROUTES.ADMIN.COUPONS.ALL),
+          DELAYS.NAVIGATION_DELAY
+        );
+      } else notify(t("coupon.updateFail"), NOTIFICATION_TYPES.ERROR);
+
+      dispatch(resetState());
     }
   }, [loading]);
 
@@ -106,6 +114,7 @@ const AdminEditCouponHook = (id) => {
     onChangeDate,
     onChangeValue,
     handleSubmit,
+    isPress,
   ];
 };
 

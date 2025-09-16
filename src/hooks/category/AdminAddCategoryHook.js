@@ -4,15 +4,32 @@ import notify from "../Utility/useNotifyHook";
 import { createNewCategory } from "../../redux/actions/categoryAction";
 
 import uploadImage from "../../assets/Imgs/avatar.png";
-import { ERROR } from "../../constants/notificationTypes";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+
+import { EMPTY } from "../../constants/general";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+
+import { ROUTES } from "../../constants/routes";
+import { DELAYS } from "../../constants/delays";
+
+import { BACKEND_VARIABLES } from "../../constants/backendConstants";
 
 const AdminAddCategoryHook = () => {
   // 0. States [image: new uploaded item  | name: Item name]
   const [image, setImage] = useState(uploadImage);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(EMPTY.TEXT);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [isPress, setIsPress] = useState(false);
+
+  const { t } = useTranslation("notification_messages");
+
+  // Selectors
+  const loadingCreate = useSelector(
+    (state) => state.allCategory.loading.create
+  );
+  const createError = useSelector((state) => state.allCategory.error.create);
+
   // 1. Display choosed Image from the Local PC
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -22,16 +39,11 @@ const AdminAddCategoryHook = () => {
   };
 
   // 2. Save The Name
-  const onChangeName = (e) => {
-    e.persist(); // prevents React from clearing the event, allowing you to use it later if needed.
-    setName(e.target.value);
-  };
-
-  //  3. Select All Categories Data
-  const result = useSelector((state) => state.allCategory.category);
+  const onChangeName = (e) => setName(e.target.value);
 
   // 4. Use Dispatch to tell that u will use actions from redux
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // 5. Save The Data into the DB
   const handleSubmit = async (e) => {
@@ -39,62 +51,48 @@ const AdminAddCategoryHook = () => {
     e.preventDefault();
 
     // b. Validate the inputs [image + text]
-    if (name != "" && selectedFile != null) {
+    if (name !== EMPTY.TEXT && selectedFile != null) {
       // i. Create formData to store the name and the selected file
       const formData = new FormData();
-      formData.append("name", name);
-      formData.append("image", selectedFile);
+      formData.append(BACKEND_VARIABLES.CATEGORY.ADD.NAME, name);
+      formData.append(BACKEND_VARIABLES.CATEGORY.ADD.IMAGE, selectedFile);
 
       // ii. Since the operation are working the loading is ON and the submit button is Pressed
-      setLoading(true);
       setIsPress(true);
 
       // iii. check if the response if success or failed
       try {
         //   Get the Response from the createNewCategory action by dispatching
-        const response = await dispatch(createNewCategory(formData));
-        console.log("Response: " + response);
+        await dispatch(createNewCategory(formData));
       } catch (error) {
         console.error("Error creating category:", error);
-        notify("حدثت مشكلة أثناء الإضافة", ERROR);
-      } finally {
-        // Since the result received (Turn the Loading OFF)
-        setLoading(false);
+        notify(t("general.addFail"), NOTIFICATION_TYPES.ERROR);
+        setIsPress(false);
       }
-
       //   The User Entered Empty Data
-    } else notify("من فضلك اكمل البيانات", "warn");
+    } else
+      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
   };
 
   useEffect(() => {
-    if (loading === false) {
-      setImage(uploadImage);
-      setName("");
-      setSelectedFile(null);
-
-      setLoading(true);
-
-      setTimeout(() => {
-        setIsPress(false);
-      }, 1000);
-
-      //   Check if the response status is OK
-      if (result.status === 201) {
-        notify("تمت عملية الاضافة بنجاح", "success");
-      } else notify("هناك مشكلة في عملية الاضافة", "error");
+    if (!loadingCreate && isPress) {
+      setIsPress(false);
+      if (!createError) {
+        // Reset form only if success
+        setImage(uploadImage);
+        setName(EMPTY.TEXT);
+        setSelectedFile(null);
+        notify(t("general.addSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        setTimeout(
+          () => navigate(ROUTES.ADMIN.CATEGORIES.ALL),
+          DELAYS.NAVIGATION_DELAY
+        );
+      } else notify(t("general.addFail"), NOTIFICATION_TYPES.ERROR);
     }
-  }, [loading, result]);
+  }, [loadingCreate, createError, t, isPress, navigate]);
 
   //   Return the Data To The JSX code
-  return [
-    image,
-    name,
-    loading,
-    isPress,
-    handleSubmit,
-    onImageChange,
-    onChangeName,
-  ];
+  return [image, name, isPress, handleSubmit, onImageChange, onChangeName];
 };
 
 export default AdminAddCategoryHook;
