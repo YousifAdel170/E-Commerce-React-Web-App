@@ -11,33 +11,26 @@ const AdminAllSubcategoriesHook = (id) => {
 
   // 2. Fetch The Data From the First Page When the Page Loaded
   useEffect(() => {
-    const getData = async () => {
-      await dispatch(getAllSubCategory(id, 7));
-    };
+    const getData = async () => await dispatch(getAllSubCategory(id, 7));
 
     getData();
   }, [dispatch, id]);
 
   const pageCount = useMemo(() => {
-    if (result && result.paginationResult)
-      return result.paginationResult.numberOfPages;
-    else return 0;
+    return result?.paginationResult?.numberOfPages || 0;
   }, [result]);
 
   const subcategories = useMemo(() => {
-    if (result && result.data) return result.data;
-    else return [];
+    return result?.data || [];
   }, [result]);
 
   const numberOfSubcategories = useMemo(() => {
-    if (result && result.results) return result.results;
-    else return 0;
+    return result?.results || 0;
   }, [result]);
 
   // 5. Fetch the Data from the Api That in the Selected Page
-  const getSelectedPageNumber = async (selectedPage) => {
+  const getSelectedPageNumber = async (selectedPage) =>
     await dispatch(getAllSubCategory(id, 7, selectedPage));
-  };
 
   // 6. Return the Data To The JSX code
   return [

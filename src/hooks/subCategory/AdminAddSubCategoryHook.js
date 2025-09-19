@@ -2,38 +2,58 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import notify from "../Utility/useNotifyHook";
 import { getAllCategory } from "../../redux/actions/categoryAction";
-import { createNewSubCategory } from "../../redux/actions/subCategoryAction";
-import internetDetect from "../Utility/useInternetConnectionHook";
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
 import {
-  BACKEND_ERROR_MESSAGES,
-  GENERAL_MESSAGES,
-  SUBCATEGORY_MESSAGES,
-} from "../../constants/messagesConstants";
+  createNewSubCategory,
+  resetState,
+} from "../../redux/actions/subCategoryAction";
+import internetDetect from "../Utility/useInternetConnectionHook";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+
+import { EMPTY, STATUS, STATUS_MESSAGES } from "../../constants/general";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/routes";
+import { DELAYS } from "../../constants/delays";
 
 const AdminAddSubCategoryHook = () => {
   // Use Dispatch to tell that u will use actions from redux
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isPress, setIsPress] = useState(false);
+
+  const { t } = useTranslation("notification_messages");
 
   // Fetch categories only once when the component mounts
   useEffect(() => {
     internetDetect();
-    dispatch(getAllCategory());
+
+    const getCategories = async () => await dispatch(getAllCategory());
+    getCategories();
   }, [dispatch]);
 
   // get the categories from the reducer to display it into the selection to be selected
   const category = useSelector((state) => state.allCategory.category);
 
   // get the sub category response to check if the status ok or not
-  const subCategory = useSelector((state) => state.allSubCategory.subCategory);
+  const createdSubCategory = useSelector(
+    (state) => state.allSubCategory.createdSubCategory
+  );
+
+  const subCategory = useSelector((state) => state.allSubCategory);
+
+  // Selectors
+  const loadingCreate = useSelector(
+    (state) => state.allSubCategory.loading.create
+  );
+  const createError = useSelector((state) => state.allSubCategory.error.create);
 
   // 0. States
-  const [id, setID] = useState("0");
-  const [name, setName] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [id, setID] = useState(EMPTY.ZERO);
+  const [name, setName] = useState(EMPTY.TEXT);
 
   // Save selected category ID
   const handleChange = (e) => setID(e.target.value);
+
   // Save subcategory name
   const onChangeName = (e) => {
     e.persist();
@@ -45,23 +65,17 @@ const AdminAddSubCategoryHook = () => {
     // a. Prevent The Default Action of submit
     e.preventDefault();
 
-    // Check Internet Connection
-    internetDetect();
-
-    // Validate the name of the subcategory
-    if (name === "") {
-      notify(SUBCATEGORY_MESSAGES.NAME_REQUIRED, WARNING);
-      return;
-    }
-
-    // Validate the Seletion of the main category
-    if (id === "0") {
-      notify(SUBCATEGORY_MESSAGES.MAIN_CATEGORY_REQUIRED, WARNING);
+    // The Operation has been Started [Start Loading]
+    setIsPress(true);
+    // Validate the name and the selection of the main category of the subcategory
+    if (name === EMPTY.TEXT || id === EMPTY.ZERO) {
+      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
+      setIsPress(false);
       return;
     }
 
     // The Operation has been Started [Start Loading]
-    setLoading(true);
+    setIsPress(true);
     await dispatch(
       createNewSubCategory({
         name,
@@ -69,30 +83,50 @@ const AdminAddSubCategoryHook = () => {
       })
     );
     // The Operation has been Ended [End Loading]
-    setLoading(false);
   };
 
   // Handle success/failure messages after submission
   useEffect(() => {
-    if (!loading) {
+    if (!loadingCreate && isPress) {
       // Reset inputs
-      setName("");
-      setID("0");
+      setName(EMPTY.TEXT);
+      setID(EMPTY.ZERO);
+      setIsPress(false);
+      if (
+        !createError &&
+        createdSubCategory?.status === STATUS.SUCCESS_CREATED
+      ) {
+        notify(t("general.addSuccess"), NOTIFICATION_TYPES.SUCCESS);
 
-      if (subCategory?.status === 201)
-        notify(GENERAL_MESSAGES.ADD_SUCCESSFULLY, SUCCESS);
-      else if (subCategory === BACKEND_ERROR_MESSAGES.ERROR_400)
-        notify(SUBCATEGORY_MESSAGES.DUPLICATE_NAME, ERROR);
-      else {
-        notify(GENERAL_MESSAGES.ADD_FAILED, ERROR);
-        dispatch(getAllCategory()); // ✅ Re-fetch categories on success
-      }
+        setTimeout(
+          () =>
+            navigate(
+              ROUTES.ADMIN.CATEGORIES.SUBCATEGORIES.ALL.replace(":id", id)
+            ),
+          DELAYS.NAVIGATION_DELAY
+        );
+      } else if (
+        createError?.status === STATUS.BAD_REQUEST &&
+        createError?.response?.data?.message.includes(STATUS_MESSAGES.DUPLICATE)
+      )
+        notify(t("error.duplicateSubCategory"), NOTIFICATION_TYPES.ERROR);
+      else notify(t("general.addFail"), NOTIFICATION_TYPES.ERROR);
 
-      setLoading(true);
+      dispatch(resetState());
     }
-  }, [loading, subCategory, dispatch]);
+  }, [
+    loadingCreate,
+    isPress,
+    createError,
+    createdSubCategory,
+    navigate,
+    id,
+    t,
+    dispatch,
+    subCategory,
+  ]);
 
-  return [name, category, handleChange, handleSubmit, onChangeName];
+  return [name, category, handleChange, handleSubmit, onChangeName, isPress];
 };
 
 export default AdminAddSubCategoryHook;

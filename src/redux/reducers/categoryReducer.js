@@ -5,6 +5,7 @@ import {
   DELETE_CATEGORY,
   UPDATE_CATEGORY,
   GET_ERROR,
+  RESET_STATE,
 } from "../type";
 
 const initialState = {
@@ -77,6 +78,25 @@ const categoryReducer = (state = initialState, action) => {
         updatedCategory: action.payload,
         loading: { ...state.loading, update: false },
         error: { ...state.error, update: null },
+      };
+
+    case RESET_STATE:
+      return {
+        ...state,
+        loading: {
+          fetchAll: true,
+          fetchSpecific: true,
+          create: true,
+          delete: true,
+          update: true,
+        },
+        error: {
+          fetchAll: null,
+          fetchSpecific: null,
+          create: null,
+          delete: null,
+          update: null,
+        },
       };
 
     case GET_ERROR:

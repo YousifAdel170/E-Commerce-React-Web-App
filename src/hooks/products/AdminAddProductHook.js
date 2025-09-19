@@ -7,16 +7,27 @@ import { getAllSubCategory } from "../../redux/actions/subCategoryAction";
 import { createNewProduct } from "../../redux/actions/productsAction";
 import notify from "../Utility/useNotifyHook";
 import { ERROR, SUCCESS } from "../../constants/notificationTypes";
+import { EMPTY } from "../../constants/general";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const AdminAddProductHook = () => {
   // Use Dispatch to tell that u will use actions from redux
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { t } = useTranslation("notification_messages");
 
   // Fetch categories only once when the component mounts
   useEffect(() => {
     internetDetect();
-    dispatch(getAllCategory());
-    dispatch(getAllBrand());
+
+    const getData = async () => {
+      await dispatch(getAllCategory());
+      await dispatch(getAllBrand());
+    };
+
+    getData();
   }, [dispatch]);
 
   // get the categories from the reducer to display it into the selection to be selected
@@ -32,10 +43,10 @@ const AdminAddProductHook = () => {
   const [showColor, setShowColor] = useState(false);
 
   // State [Array] to store the Selected Colors
-  const [colors, setColors] = useState([]);
+  const [colors, setColors] = useState(EMPTY.ARRAY);
 
   // State [Array] to store the Options of the Sub categories
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(EMPTY.ARRAY);
 
   const handleChangeComplete = (color) => {
     setColors([...colors, color.hex]);
@@ -48,17 +59,17 @@ const AdminAddProductHook = () => {
   };
 
   const [loading, setLoading] = useState(true);
-  const [productName, setProductName] = useState("");
-  const [productDescription, setProductDescription] = useState("");
-  const [priceBefore, setPriceBefore] = useState("");
-  const [priceAfter, setPriceAfter] = useState("");
-  const [qty, setQTY] = useState("");
-  const [categoryID, setCategoryID] = useState("0");
-  const [brandID, setBrandID] = useState("0");
-  const [selectedSubID, setSelectedSubID] = useState([]);
+  const [productName, setProductName] = useState(EMPTY.TEXT);
+  const [productDescription, setProductDescription] = useState(EMPTY.TEXT);
+  const [priceBefore, setPriceBefore] = useState(EMPTY.TEXT);
+  const [priceAfter, setPriceAfter] = useState(EMPTY.TEXT);
+  const [qty, setQTY] = useState(EMPTY.TEXT);
+  const [categoryID, setCategoryID] = useState(EMPTY.ZERO);
+  const [brandID, setBrandID] = useState(EMPTY.ZERO);
+  const [selectedSubID, setSelectedSubID] = useState(EMPTY.ARRAY);
 
   // State To Save Array Of Selected Images
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(EMPTY.ARRAY);
 
   //to change name state
   const onChangeProdName = (e) => {
@@ -92,13 +103,13 @@ const AdminAddProductHook = () => {
   // Store The selected CategoryID
   const onSelectCategory = async (e) => {
     const selectedCategory = e.target.value;
-    if (selectedCategory !== "0") {
+    if (selectedCategory !== EMPTY.ZERO) {
       await dispatch(getAllSubCategory(selectedCategory));
     }
     setCategoryID(selectedCategory);
   };
   useEffect(() => {
-    if (categoryID != 0) {
+    if (categoryID != EMPTY.ZERO) {
       if (subCategory) {
         setOptions(subCategory?.data);
       }
@@ -141,11 +152,11 @@ const AdminAddProductHook = () => {
     e.preventDefault();
 
     if (
-      categoryID === 0 ||
-      productName === "" ||
-      productDescription === "" ||
-      images?.length <= 0 ||
-      priceBefore <= 0
+      categoryID === EMPTY.ZERO ||
+      productName === EMPTY.TEXT ||
+      productDescription === EMPTY.TEXT ||
+      images?.length <= EMPTY.ZERO ||
+      priceBefore <= EMPTY.ZERO
     ) {
       notify("من فضلك اكمل البيانات", "warn");
       return;
@@ -188,17 +199,17 @@ const AdminAddProductHook = () => {
   // Reset The Values of the Product
   useEffect(() => {
     if (loading === false) {
-      setColors([]);
-      setImages([]);
-      setOptions([]);
-      setProductName("");
-      setProductDescription("");
-      setPriceBefore("");
-      setPriceAfter("");
-      setQTY("");
-      setBrandID(0);
-      setSelectedSubID([]);
-      setCategoryID(0);
+      setColors(EMPTY.ARRAY);
+      setImages(EMPTY.ARRAY);
+      setOptions(EMPTY.ARRAY);
+      setProductName(EMPTY.TEXT);
+      setProductDescription(EMPTY.TEXT);
+      setPriceBefore(EMPTY.TEXT);
+      setPriceAfter(EMPTY.TEXT);
+      setQTY(EMPTY.TEXT);
+      setBrandID(EMPTY.ZERO);
+      setSelectedSubID(EMPTY.ARRAY);
+      setCategoryID(EMPTY.ZERO);
 
       setTimeout(() => setLoading(true), 300);
 

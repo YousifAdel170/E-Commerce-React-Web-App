@@ -41,8 +41,9 @@
     "saveButton": "Save Changes",
     "edit": "Edit",
     "delete": "Delete",
+    "add": "Add",
     "addNew": "Add New Subcategory",
     "selectMainCategory": "Select Main Category",
-    "save": "Add"
+    "save": "Save"
   }
 }

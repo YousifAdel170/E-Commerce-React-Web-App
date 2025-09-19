@@ -13,6 +13,7 @@ import { INPUT_TYPES } from "../../constants/inputs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
+import SpinnerComponent from "../Utility/SpinnerComponent";
 
 const AdminAddProduct = () => {
   const [
@@ -43,6 +44,7 @@ const AdminAddProduct = () => {
     qty,
     productDescription,
     productName,
+    isPress,
   ] = AdminAddProductHook();
 
   const { t } = useTranslation("product");
@@ -279,6 +281,7 @@ const AdminAddProduct = () => {
                   className="mx-2 cursor-pointer"
                   onClick={onChangeColor}
                   title={t("addProducts.colorAlt")}
+                  style={{ cursor: "pointer" }}
                 />
 
                 {showColor ? (
@@ -289,7 +292,18 @@ const AdminAddProduct = () => {
 
             {/* Submit */}
             <div className="text-center">
-              <button className="btn btn-primary" onClick={handleSubmit}>
+              <button
+                className="btn btn-primary"
+                type={INPUT_TYPES.SUBMIT}
+                aria-label={t("addProducts.addButton")}
+                disabled={isPress}
+              >
+                {" "}
+                {isPress ? (
+                  <SpinnerComponent className={"mx-2"} size={"sm"} />
+                ) : (
+                  ""
+                )}
                 {t("addProducts.addButton")}
               </button>
             </div>

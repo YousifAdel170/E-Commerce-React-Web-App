@@ -23,6 +23,10 @@
     "passwordRequired": "Password is required.",
     "passwordWeak": "Choose a stronger password with symbols and numbers.",
     "passwordMismatch": "Passwords do not match.",
+
+    "nameSubCategoryRequired": "Subcategory name is required.",
+    "mainCategoryRequired": "Main category must be selected.",
+
     "pleaseCompleteData": "Please complete all required fields."
   },
   "success": {
@@ -35,7 +39,8 @@
     "multiple": "Please review the form. Multiple errors found.",
     "loginFailed": "An error occurred during login. Please try again.",
     "accountNotFoundError": "We couldn't find an account with that email.",
-    "resetPassword": "Please request a new code"
+    "resetPassword": "Please request a new code",
+    "duplicateSubCategory": "This name is already taken. Try a different one."
   },
   "general": {
     "addSuccess": "Item added successfully!",
@@ -45,11 +50,7 @@
     "deleteFail": "Could not delete item. Please try again.",
     "updateFail": "Could not update item. Please try again."
   },
-  "subcategory": {
-    "nameRequired": "Subcategory name is required.",
-    "mainCategoryRequired": "Main category must be selected.",
-    "duplicate": "This name is already taken. Try a different one."
-  },
+
   "cart": {
     "adminRestricted": "Admins cannot add items to the cart.",
     "outOfStock": "This item is currently out of stock.",

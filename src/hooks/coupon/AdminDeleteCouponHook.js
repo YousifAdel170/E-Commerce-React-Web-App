@@ -36,10 +36,10 @@ const AdminDeleteCouponHook = (coupon) => {
   useEffect(() => {
     if (!loading?.delete && isPress) {
       setIsPress(false);
-      if (deletedCoupon === EMPTY.TEXT) {
+      if (deletedCoupon === EMPTY.TEXT)
         notify(t("general.deleteSuccess"), NOTIFICATION_TYPES.SUCCESS);
-        setShow(false); // Close modal
-      } else notify(t("general.deleteFail"), NOTIFICATION_TYPES.ERROR);
+      else notify(t("general.deleteFail"), NOTIFICATION_TYPES.ERROR);
+      setShow(false); // Close modal
 
       dispatch(resetState());
     }

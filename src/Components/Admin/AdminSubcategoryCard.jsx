@@ -7,7 +7,7 @@ import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
 import ModalComponent from "../Utility/ModalComponent";
 
 const AdminSubcategoryCard = ({ subcategory, categoryID, index }) => {
-  const [show, handleClose, handleShow, handelDelete] =
+  const [show, handleClose, handleShow, handelDelete, isPress] =
     AdminDeleteSubcategoryHook(subcategory);
 
   const [sectionRef, isVisible] = useInviewAnimation();
@@ -35,6 +35,7 @@ const AdminSubcategoryCard = ({ subcategory, categoryID, index }) => {
         modalFooter={t("utilities:modal.delete")}
         className="btn-danger"
         ariaLabel={t("utilities:modal.deleteAriaLabel")}
+        isPress={isPress}
       />
 
       {/* Sub Category Name & Actions */}

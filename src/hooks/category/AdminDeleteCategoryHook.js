@@ -36,11 +36,11 @@ const AdminDeleteCategoryHook = (category) => {
     if (!loading?.delete && isPress) {
       setIsPress(false);
 
-      if (deletedCategory === EMPTY.TEXT) {
+      if (deletedCategory === EMPTY.TEXT)
         notify(t("general.deleteSuccess"), NOTIFICATION_TYPES.SUCCESS);
+      else notify(t("general.deleteFail"), NOTIFICATION_TYPES.ERROR);
 
-        setShow(false);
-      } else notify(t("general.deleteFail"), NOTIFICATION_TYPES.ERROR);
+      setShow(false);
     }
   }, [loading, deletedCategory, t, isPress]);
 

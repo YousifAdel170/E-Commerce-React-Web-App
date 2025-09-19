@@ -5,6 +5,7 @@ import {
   DELETE_CATEGORY,
   UPDATE_CATEGORY,
   GET_ERROR,
+  RESET_STATE,
 } from "../type";
 
 import { useGetData } from "../../hooks/axios/useGetData";
@@ -120,4 +121,11 @@ export const editCategory = (id, formatData) => async (dispatch) => {
       meta: "update",
     });
   }
+};
+
+// Action To Reset State After Specific Action
+export const resetState = () => (dispatch) => {
+  dispatch({
+    type: RESET_STATE,
+  });
 };

@@ -5,6 +5,7 @@ import {
   DELETE_BRAND,
   UPDATE_BRAND,
   GET_ERROR,
+  RESET_STATE,
 } from "../type";
 
 import { useInsertDataWithImage } from "../../hooks/axios/useInsertData";
@@ -119,4 +120,11 @@ export const editBrand = (id, formatData) => async (dispatch) => {
       meta: "update",
     });
   }
+};
+
+// Action To Reset State After Specific Action
+export const resetState = () => (dispatch) => {
+  dispatch({
+    type: RESET_STATE,
+  });
 };

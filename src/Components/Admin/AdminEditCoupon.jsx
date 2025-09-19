@@ -94,7 +94,6 @@ const AdminEditCoupon = () => {
                 aria-label={t("saveChanges.aria")}
                 disabled={isPress}
               >
-                {" "}
                 {isPress ? (
                   <SpinnerComponent className={"mx-2"} size={"sm"} />
                 ) : (

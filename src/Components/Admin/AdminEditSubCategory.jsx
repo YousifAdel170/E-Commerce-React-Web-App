@@ -5,10 +5,11 @@ import AdminEditSubCategoryHook from "../../hooks/subCategory/AdminEditSubCatego
 import { useTranslation } from "react-i18next";
 import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
 import { INPUT_TYPES } from "../../constants/inputs";
+import SpinnerComponent from "../Utility/SpinnerComponent";
 
 const AdminEditSubCategory = () => {
   const { id } = useParams();
-  const [subcategoryName, onChangeName, handleSubmit] =
+  const [subcategoryName, onChangeName, handleSubmit, isPress] =
     AdminEditSubCategoryHook(id);
 
   const [sectionRef, isVisible] = useInviewAnimation();
@@ -49,7 +50,14 @@ const AdminEditSubCategory = () => {
                 type={INPUT_TYPES.SUBMIT}
                 className="btn btn-primary"
                 aria-label={t("subcategory.saveButton")}
+                disabled={isPress}
               >
+                {" "}
+                {isPress ? (
+                  <SpinnerComponent className={"mx-2"} size={"sm"} />
+                ) : (
+                  ""
+                )}
                 {t("subcategory.saveButton")}
               </button>
             </div>

@@ -87,8 +87,7 @@ const AdminEditCouponHook = (id) => {
   useEffect(() => {
     if (!loading?.update && isPress) {
       setIsPress(false); // Reset loading state
-      console.log("error", error);
-      console.log("updatedCoupon", updatedCoupon);
+
       if (!error?.update && updatedCoupon?.status === STATUS.SUCCESS_OK) {
         setCouponDate(EMPTY.TEXT);
         setCouponName(EMPTY.TEXT);

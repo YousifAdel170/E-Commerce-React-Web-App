@@ -13,6 +13,7 @@ export const EMPTY = {
   TEXT: "",
   ARRAY: [],
   OBJECT: {},
+  ZERO: "0",
 };
 
 // ================================
@@ -28,6 +29,12 @@ export const STATUS = {
   CONFLICT: 409,
   UNPROCESSABLE_ENTITY: 422,
   SERVER_ERROR: 500,
+};
+
+export const STATUS_MESSAGES = {
+  FAILED: "fail",
+  DUPLICATE: "Duplicate",
+  SUCCESS: "success",
 };
 
 // ================================

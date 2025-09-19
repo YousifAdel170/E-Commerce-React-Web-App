@@ -4,9 +4,10 @@ import AdminAddSubCategoryHook from "../../hooks/subCategory/AdminAddSubCategory
 import { useTranslation } from "react-i18next";
 import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
 import { INPUT_TYPES } from "../../constants/inputs";
+import SpinnerComponent from "../Utility/SpinnerComponent";
 
 const AdminAddSubCategory = () => {
-  const [name, category, handleChange, handleSubmit, onChangeName] =
+  const [name, category, handleChange, handleSubmit, onChangeName, isPress] =
     AdminAddSubCategoryHook();
 
   const { t } = useTranslation("categories");
@@ -72,7 +73,14 @@ const AdminAddSubCategory = () => {
                 type={INPUT_TYPES.SUBMIT}
                 className="btn btn-primary"
                 aria-label={t("subcategory.save")}
+                disabled={isPress}
               >
+                {" "}
+                {isPress ? (
+                  <SpinnerComponent className={"mx-2"} size={"sm"} />
+                ) : (
+                  ""
+                )}
                 {t("subcategory.save")}
               </button>
             </div>

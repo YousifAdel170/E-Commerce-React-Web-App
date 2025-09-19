@@ -42,7 +42,8 @@
     "edit": "تعديل",
     "delete": "ازاله",
     "addNew": "اضافة تصنيف فرعي جديد",
-    "save": "اضافة",
-    "selectMainCategory": "اختر تصنيف رئيسي"
+    "add": "اضافة",
+    "selectMainCategory": "اختر تصنيف رئيسي",
+    "save": "حفظ"
   }
 }

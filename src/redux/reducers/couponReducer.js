@@ -67,7 +67,6 @@ const couponReducer = (state = initialState, action) => {
       };
 
     case DELETE_COUPON:
-      console.log(state.viewAllCoupons);
       return {
         ...state,
         viewAllCoupons: {

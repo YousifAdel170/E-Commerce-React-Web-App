@@ -3,31 +3,35 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import notify from "../Utility/useNotifyHook";
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
 
 import {
   editSubcategory,
   getSpecificSubCategory,
 } from "../../redux/actions/subCategoryAction";
+import { EMPTY, STATUS } from "../../constants/general";
+import { useTranslation } from "react-i18next";
+import { resetState } from "../../redux/actions/categoryAction";
+import { DELAYS } from "../../constants/delays";
+import { ROUTES } from "../../constants/routes";
 
 // Hook for editing a category in the admin panel
 const AdminEditSubCategoryHook = (id) => {
   const navigate = useNavigate(); // Hook for navigation
   const dispatch = useDispatch(); // Hook to dispatch actions
+  const { t } = useTranslation("notification_messages");
 
   // State variables for category details
-  const [subcategoryName, setSubcategoryName] = useState("");
+  const [subcategoryName, setSubcategoryName] = useState(EMPTY.TEXT);
 
-  const [loading, setLoading] = useState(true); // State for loading status
-  const [loadingData, setLoadingData] = useState(true); // State for data loading status
+  const { loading, error } = useSelector((state) => state.allSubCategory);
+  const [isPress, setIsPress] = useState(false);
+
+  const [categoryID, setCategoryID] = useState(EMPTY.ZERO);
 
   // Fetch specific category data when component mounts or id changes
   useEffect(() => {
-    const getData = async () => {
-      setLoadingData(true);
-      await dispatch(getSpecificSubCategory(id));
-      setLoadingData(false);
-    };
+    const getData = async () => await dispatch(getSpecificSubCategory(id));
 
     getData();
   }, [id, dispatch]);
@@ -39,33 +43,31 @@ const AdminEditSubCategoryHook = (id) => {
 
   // Update state variables when specific category data is loaded
   useEffect(() => {
-    if (!loadingData) {
-      if (specificSubCategory && specificSubCategory.data)
-        setSubcategoryName(specificSubCategory.data.name);
+    if (!loading?.fetchSpecific) {
+      setSubcategoryName(specificSubCategory?.data?.name);
+      setCategoryID(specificSubCategory?.data?.category);
     }
-  }, [loadingData, specificSubCategory]);
+  }, [loading, specificSubCategory]);
 
   // Handlers for input changes
-  const onChangeName = (event) => {
-    event.persist();
-    setSubcategoryName(event.target.value);
-  };
+  const onChangeName = (e) => setSubcategoryName(e.target.value);
 
   // Handle form submission
-  const handleSubmit = async () => {
-    if (subcategoryName === "") {
-      notify("من فضلك اكمل البيانات", WARNING);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (subcategoryName === EMPTY.TEXT) {
+      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
       return;
     }
 
-    setLoading(true);
-    // Dispatch the action to update the category
+    setIsPress(true);
+
+    // Dispatch the action to update the subcategory
     await dispatch(
       editSubcategory(id, {
         name: subcategoryName,
       })
-    ); // Dispatch the edit action with formData
-    setLoading(false);
+    );
   };
 
   // Selector to get the result of the edit category action
@@ -75,18 +77,28 @@ const AdminEditSubCategoryHook = (id) => {
 
   // Notify user of the result of the edit action
   useEffect(() => {
-    if (!loading) {
-      if (result && result.status === 200) {
-        notify("تمت عملية التعديل بنجاح", SUCCESS);
-        setTimeout(() => {
-          navigate("/admin/all-categories");
-        }, 1000);
-      } else notify("فشل في عملية التعديل", ERROR);
+    if (!loading?.update && isPress) {
+      setIsPress(false); // Reset loading state
+      if (!error?.update && result?.status === STATUS.SUCCESS_OK) {
+        notify(t("general.updateSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        setTimeout(
+          () =>
+            navigate(
+              ROUTES.ADMIN.CATEGORIES.SUBCATEGORIES.ALL.replace(
+                ":id",
+                categoryID
+              )
+            ),
+          DELAYS.NAVIGATION_DELAY
+        );
+      } else notify(t("general.updateFail"), NOTIFICATION_TYPES.ERROR);
+
+      dispatch(resetState());
     }
-  }, [loading, result, navigate]);
+  }, [loading, result, navigate, isPress, error, t, dispatch, categoryID]);
 
   // Return state variables and handlers
-  return [subcategoryName, onChangeName, handleSubmit];
+  return [subcategoryName, onChangeName, handleSubmit, isPress];
 };
 
 export default AdminEditSubCategoryHook;

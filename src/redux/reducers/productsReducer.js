@@ -11,7 +11,7 @@ import {
 } from "../type";
 
 const initialState = {
-  products: [],
+  addedProduct: [],
   viewProducts: [],
   viewProductsByCategory: [],
   viewProductsByBrand: [],
@@ -78,9 +78,16 @@ const productsReducer = (state = initialState, action) => {
       };
 
     case CREATE_NEW_PRODUCT:
+      console.log("action.payload", action.payload);
+      console.log("viewProducts", state.viewProducts);
       return {
         ...state,
-        products: action.payload,
+        viewProducts: {
+          ...state.viewProducts,
+          data: [...(state.viewProducts.data || []), action.payload.data.data],
+          paginationResult: state.viewProducts.paginationResult,
+        },
+        addedProduct: action.payload,
         loading: { ...state.loading, create: false },
         error: { ...state.error, create: null },
       };

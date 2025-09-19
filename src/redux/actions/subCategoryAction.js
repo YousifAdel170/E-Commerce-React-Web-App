@@ -5,29 +5,13 @@ import {
   UPDATED_SUB_CATEGORY,
   GET_SPECIFIC_SUB_CATEGORY,
   GET_ERROR,
+  RESET_STATE,
 } from "../type";
 
 import { useInsertData } from "../../hooks/axios/useInsertData";
 import { useGetData } from "../../hooks/axios/useGetData";
 import useDeleteData from "../../hooks/axios/useDeleteData";
 import { useUpdateData } from "../../hooks/axios/useUpdateData";
-
-// Add new sub category To The API
-export const createNewSubCategory = (data) => async (dispatch) => {
-  try {
-    const response = await useInsertData("/api/v1/subcategories", data);
-    dispatch({
-      type: CREATE_NEW_SUB_CATEGORY,
-      payload: response,
-      loading: true,
-    });
-  } catch (e) {
-    dispatch({
-      type: GET_ERROR,
-      payload: "Error " + e,
-    });
-  }
-};
 
 // Add Get All sub categories based on The Category ID To The API
 export const getAllSubCategory =
@@ -40,12 +24,12 @@ export const getAllSubCategory =
       dispatch({
         type: GET_ALL_SUB_CATEGORY,
         payload: response,
-        loading: true,
       });
     } catch (e) {
       dispatch({
         type: GET_ERROR,
-        payload: "Error " + e,
+        payload: e,
+        meta: "fetchAll",
       });
     }
   };
@@ -57,12 +41,29 @@ export const getSpecificSubCategory = (id) => async (dispatch) => {
     dispatch({
       type: GET_SPECIFIC_SUB_CATEGORY,
       payload: result,
-      loading: true,
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e,
+      payload: e,
+      meta: "fetchSpecific",
+    });
+  }
+};
+
+// Add new sub category To The API
+export const createNewSubCategory = (data) => async (dispatch) => {
+  try {
+    const response = await useInsertData("/api/v1/subcategories", data);
+    dispatch({
+      type: CREATE_NEW_SUB_CATEGORY,
+      payload: response,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: e,
+      meta: "create",
     });
   }
 };
@@ -73,12 +74,13 @@ export const deleteSubcategory = (id) => async (dispatch) => {
     const response = await useDeleteData(`api/v1/subcategories/${id}`);
     dispatch({
       type: DELETED_SUB_CATEGORY,
-      payload: response,
+      payload: { response, id },
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
       payload: e.response,
+      meta: "delete",
     });
   }
 };
@@ -98,6 +100,14 @@ export const editSubcategory = (id, formatData) => async (dispatch) => {
     dispatch({
       type: GET_ERROR,
       payload: e.response,
+      meta: "update",
     });
   }
+};
+
+// Action To Reset State After Specific Action
+export const resetState = () => (dispatch) => {
+  dispatch({
+    type: RESET_STATE,
+  });
 };
