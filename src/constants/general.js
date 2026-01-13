@@ -68,3 +68,29 @@ export const SLIDER_DIRECTIONS = {
   RIGHT: "right",
   LEFT: "left",
 };
+
+// ================================
+// Sort Types
+// ================================
+export const SORT_TYPES = {
+  LOW_TO_HIGH: {
+    METHOD: "السعر من الاقل للاعلي",
+    VALUE: "+price",
+  },
+  HIGH_TO_LOW: {
+    METHOD: "السعر من الاعلي للاقل",
+    VALUE: "-price",
+  },
+  MOST_SOLD: {
+    METHOD: "الاكثر مبيعا",
+    VALUE: "-sold",
+  },
+  TOP_RATED: {
+    METHOD: "الاعلي تقييما",
+    VALUE: "-quantity", // adjust if you use rating instead of quantity
+  },
+  NONE: {
+    METHOD: "",
+    VALUE: "",
+  },
+};

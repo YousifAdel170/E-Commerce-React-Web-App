@@ -4,12 +4,18 @@ import internetDetect from "../Utility/useInternetConnectionHook";
 import { getAllCategory } from "../../redux/actions/categoryAction";
 import { getAllBrand } from "../../redux/actions/brandAction";
 import { getAllSubCategory } from "../../redux/actions/subCategoryAction";
-import { createNewProduct } from "../../redux/actions/productsAction";
+import {
+  createNewProduct,
+  resetState,
+} from "../../redux/actions/productsAction";
 import notify from "../Utility/useNotifyHook";
-import { ERROR, SUCCESS } from "../../constants/notificationTypes";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
 import { EMPTY } from "../../constants/general";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { ROUTES } from "../../constants/routes";
+import { DELAYS } from "../../constants/delays";
+import { BACKEND_VARIABLES } from "../../constants/backendConstants";
 
 const AdminAddProductHook = () => {
   // Use Dispatch to tell that u will use actions from redux
@@ -17,6 +23,11 @@ const AdminAddProductHook = () => {
   const navigate = useNavigate();
 
   const { t } = useTranslation("notification_messages");
+
+  const loadingCreate = useSelector((state) => state.allProduct.loading.create);
+  const createError = useSelector((state) => state.allProduct.error.create);
+
+  const [isPress, setIsPress] = useState(false);
 
   // Fetch categories only once when the component mounts
   useEffect(() => {
@@ -58,7 +69,6 @@ const AdminAddProductHook = () => {
     setColors(newColors);
   };
 
-  const [loading, setLoading] = useState(true);
   const [productName, setProductName] = useState(EMPTY.TEXT);
   const [productDescription, setProductDescription] = useState(EMPTY.TEXT);
   const [priceBefore, setPriceBefore] = useState(EMPTY.TEXT);
@@ -110,16 +120,12 @@ const AdminAddProductHook = () => {
   };
   useEffect(() => {
     if (categoryID != EMPTY.ZERO) {
-      if (subCategory) {
-        setOptions(subCategory?.data);
-      }
+      if (subCategory) setOptions(subCategory?.data);
     }
   }, [categoryID, subCategory]);
 
   // Store The selected brandID
-  const onSelectBrand = (e) => {
-    setBrandID(e.target.value);
-  };
+  const onSelectBrand = (e) => setBrandID(e.target.value);
 
   // Store the selected Sub categories list after being added
   const onSelect = (selectedList) => setSelectedSubID(selectedList);
@@ -158,7 +164,7 @@ const AdminAddProductHook = () => {
       images?.length <= EMPTY.ZERO ||
       priceBefore <= EMPTY.ZERO
     ) {
-      notify("من فضلك اكمل البيانات", "warn");
+      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
       return;
     }
 
@@ -173,54 +179,84 @@ const AdminAddProductHook = () => {
     });
 
     const formData = new FormData();
-    formData.append("title", productName);
-    formData.append("description", productDescription);
-    formData.append("quantity", qty);
-    formData.append("price", priceBefore);
-    formData.append("priceAfterDiscount", priceAfter);
-    formData.append("imageCover", imgCover);
-    formData.append("category", categoryID);
-    formData.append("brand", brandID);
+    formData.append(BACKEND_VARIABLES.PRDOUCT.TITLE, productName);
+    formData.append(BACKEND_VARIABLES.PRDOUCT.DESCRIPTION, productDescription);
+    formData.append(BACKEND_VARIABLES.PRDOUCT.QUANTITY, qty);
+    formData.append(
+      BACKEND_VARIABLES.PRDOUCT.PRICE_BEFORE_DISCOUNT,
+      priceBefore
+    );
+    formData.append(BACKEND_VARIABLES.PRDOUCT.PRICE_AFTER_DISCOUNT, priceAfter);
+    formData.append(BACKEND_VARIABLES.PRDOUCT.IMAGE_COVER, imgCover);
+    formData.append(BACKEND_VARIABLES.PRDOUCT.CATEGORY, categoryID);
+    formData.append(BACKEND_VARIABLES.PRDOUCT.BRAND, brandID);
 
-    colors.map((color) => formData.append("availableColors", color));
-    selectedSubID.map((item) => formData.append("subcategory", item?._id));
-    itemImages.map((item) => formData.append("images", item));
+    colors.map((color) =>
+      formData.append(BACKEND_VARIABLES.PRDOUCT.AVAILABLE_COLORS, color)
+    );
+    selectedSubID.map((item) =>
+      formData.append(BACKEND_VARIABLES.PRDOUCT.SUBCATEGORY, item?._id)
+    );
+    itemImages.map((item) =>
+      formData.append(BACKEND_VARIABLES.PRDOUCT.IMAGES, item)
+    );
 
     // Start The Adding Operation
-    setLoading(true);
-    await dispatch(createNewProduct(formData));
-    setLoading(false);
+    setIsPress(true);
+
+    try {
+      //   Get the Response from the createNewProduct action by dispatching
+      await dispatch(createNewProduct(formData));
+    } catch (error) {
+      console.error("Error creating product:", error);
+      notify(t("general.addFail"), NOTIFICATION_TYPES.ERROR);
+      setIsPress(false);
+    }
+
     // End The Adding Operation
   };
 
   // Get the Product Data [Product Response of creation]
-  const product = useSelector((state) => state.allProduct.products);
+  const { createdProduct } = useSelector((state) => state.allProduct);
 
   // Reset The Values of the Product
   useEffect(() => {
-    if (loading === false) {
-      setColors(EMPTY.ARRAY);
-      setImages(EMPTY.ARRAY);
-      setOptions(EMPTY.ARRAY);
-      setProductName(EMPTY.TEXT);
-      setProductDescription(EMPTY.TEXT);
-      setPriceBefore(EMPTY.TEXT);
-      setPriceAfter(EMPTY.TEXT);
-      setQTY(EMPTY.TEXT);
-      setBrandID(EMPTY.ZERO);
-      setSelectedSubID(EMPTY.ARRAY);
-      setCategoryID(EMPTY.ZERO);
+    console.log("loadingCreate:", loadingCreate, "isPress:", isPress);
+    console.log("createdProduct:", createdProduct, "createError:", createError);
+    if (!loadingCreate && isPress) {
+      setIsPress(false);
 
-      setTimeout(() => setLoading(true), 300);
+      if (!createError) {
+        setColors(EMPTY.ARRAY);
+        setImages(EMPTY.ARRAY);
+        setOptions(EMPTY.ARRAY);
+        setProductName(EMPTY.TEXT);
+        setProductDescription(EMPTY.TEXT);
+        setPriceBefore(EMPTY.TEXT);
+        setPriceAfter(EMPTY.TEXT);
+        setQTY(EMPTY.TEXT);
+        setBrandID(EMPTY.ZERO);
+        setSelectedSubID(EMPTY.ARRAY);
+        setCategoryID(EMPTY.ZERO);
 
-      if (product) {
-        //   Check if the response status is OK
-        if (product?.status === 201 || product?.status === 200)
-          notify("تمت عملية الاضافة بنجاح", SUCCESS);
-        else notify("هناك مشكلة في عملية الاضافة", ERROR);
+        notify(t("general.addSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        setTimeout(
+          () => navigate(ROUTES.ADMIN.PRODUCTS.ALL),
+          DELAYS.NAVIGATION_DELAY
+        );
       }
+
+      dispatch(resetState());
     }
-  }, [loading, product]);
+  }, [
+    loadingCreate,
+    createdProduct,
+    createError,
+    isPress,
+    t,
+    dispatch,
+    navigate,
+  ]);
 
   return [
     categoryID,
@@ -250,6 +286,7 @@ const AdminAddProductHook = () => {
     qty,
     productDescription,
     productName,
+    isPress,
   ];
 };
 

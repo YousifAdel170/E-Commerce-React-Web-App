@@ -16,7 +16,8 @@ import { useUpdateDataWithImage } from "../../hooks/axios/useUpdateData";
 // Get All Items From the Brands with Specified Limit [First Page]
 export const getAllBrand = (limit) => async (dispatch) => {
   try {
-    const result = await useGetData(`/api/v1/brands?limit=${limit}`);
+    const query = limit ? `?limit=${limit}` : "";
+    const result = await useGetData(`/api/v1/brands${query}`);
     dispatch({
       type: GET_ALL_BRAND,
       payload: result,
@@ -33,9 +34,15 @@ export const getAllBrand = (limit) => async (dispatch) => {
 // Get All Items From the Brands with Specified Limit [Specified Page]
 export const getAllBrandInSelectedPage = (limit, page) => async (dispatch) => {
   try {
-    const result = await useGetData(
-      `/api/v1/brands?limit=${limit}&page=${page}`
-    );
+    let query = "?";
+
+    if (limit) query += `limit=${limit}&`;
+    if (page) query += `page=${page}&`;
+
+    query = query === "?" ? "" : query.slice(0, -1);
+
+    const result = await useGetData(`/api/v1/brands${query}`);
+
     dispatch({
       type: GET_ALL_BRAND,
       payload: result,

@@ -11,6 +11,7 @@ import { getSpecificBrand } from "../../redux/actions/brandAction";
 
 // Import constants
 import { PAGE_PRODUCTS_LIMIT } from "../../constants/pageLimits";
+import { EMPTY } from "../../constants/general";
 
 // Custom hook to fetch products by a specific brand
 const ViewProductsByBrandHook = (brandID) => {
@@ -21,9 +22,10 @@ const ViewProductsByBrandHook = (brandID) => {
     internetDetect();
 
     // Fetch products for the selected brand
-    const getData = async () => {
-      await dispatch(getAllProductsByBrand(PAGE_PRODUCTS_LIMIT, "", brandID));
-    };
+    const getData = async () =>
+      await dispatch(
+        getAllProductsByBrand(PAGE_PRODUCTS_LIMIT, EMPTY.TEXT, brandID)
+      );
 
     getData();
   }, [dispatch, brandID]);
@@ -44,27 +46,23 @@ const ViewProductsByBrandHook = (brandID) => {
   useEffect(() => {
     // Fetch the specific brand details
     const getBrand = async () => await dispatch(getSpecificBrand(brandID));
+
     getBrand();
   }, [dispatch, brandID]);
 
   // Memoize the fetched items (products)
   const items = useMemo(() => {
-    if (allProductsByBrand && allProductsByBrand.data)
-      return allProductsByBrand.data;
-    else return [];
+    return allProductsByBrand?.data || EMPTY.ARRAY;
   }, [allProductsByBrand]);
 
   // Memoize the number of pages for pagination
   const pageCount = useMemo(() => {
-    if (allProductsByBrand && allProductsByBrand.paginationResult)
-      return allProductsByBrand.paginationResult.numberOfPages;
-    else return 0;
+    return allProductsByBrand?.paginationResult?.numberOfPages || 0;
   }, [allProductsByBrand]);
 
   // Memoize the brand name
   const brandName = useMemo(() => {
-    if (brand && brand.data) return brand.data.name;
-    else return "";
+    return brand?.data?.name || EMPTY.TEXT;
   }, [brand]);
 
   // Return hook values to the component

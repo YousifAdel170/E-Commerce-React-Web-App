@@ -53,7 +53,6 @@ const couponReducer = (state = initialState, action) => {
 
     case ADD_COUPON:
       // // Handle adding a coupon
-      // return { ...state, addCoupon: action.payload, loading: false };
       return {
         ...state,
         addCoupon: action.payload,

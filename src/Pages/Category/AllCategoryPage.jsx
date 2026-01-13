@@ -1,18 +1,18 @@
-// Import Components from React-Bootstrap
+// Import Components from react-bootstrap
 import { Container } from "react-bootstrap";
 
 // Import Custom Components
 import SubTitle from "../../Components/Utility/SubTitle";
-import CategoryContainer from "../../Components/Category/CategoryContainer";
 import PaginationComponent from "../../Components/Utility/PaginationComponent";
+import CategoryContainer from "../../Components/Category/CategoryContainer";
 
 // Import Custom Hooks
 import AllCategoryPageHook from "../../hooks/category/AllCategoryPageHook";
 
-// Translation
+// i18n
 import { useTranslation } from "react-i18next";
 
-// Page Responsible for displaying all categories
+// Page responsible to display all brands
 const AllCategoryPage = () => {
   const [categories, loading, pageCount, getSelectedPageNumber] =
     AllCategoryPageHook();
@@ -23,32 +23,23 @@ const AllCategoryPage = () => {
     <Container
       style={{ flex: "1" }}
       role="region"
-      aria-label={t("homeCategoriesTitle")}
+      aria-labelledby="categories-section-title"
     >
-      {/* Accessible Page Heading */}
-      <header>
-        <SubTitle title={t("homeCategoriesTitle")} as="h1" />
-      </header>
+      {/* Title of the page */}
+      <SubTitle
+        title={t("homeCategoriesTitle")}
+        id="categories-section-title"
+      />
 
-      {/* Main Content */}
-      <section aria-live="polite" aria-busy={loading}>
-        <CategoryContainer categories={categories} loading={loading} />
-      </section>
+      {/* Container of Category Items */}
+      <CategoryContainer categories={categories} loading={loading} />
 
-      {/* Pagination */}
+      {/* Pagination only if more than 1 page */}
       {pageCount > 1 && (
-        <nav
-          className="mt-4"
-          role="navigation"
-          aria-label={t("navigateToButton", {
-            button: t("homeCategoriesTitle"),
-          })}
-        >
-          <PaginationComponent
-            pageCount={pageCount}
-            onPress={getSelectedPageNumber}
-          />
-        </nav>
+        <PaginationComponent
+          pageCount={pageCount}
+          onPress={getSelectedPageNumber}
+        />
       )}
     </Container>
   );

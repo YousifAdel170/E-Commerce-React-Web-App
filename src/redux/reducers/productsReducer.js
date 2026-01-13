@@ -8,10 +8,11 @@ import {
   GET_ERROR,
   DELETE_PRODUCT,
   UPDATE_PRODUCT,
+  RESET_STATE,
 } from "../type";
 
 const initialState = {
-  addedProduct: [],
+  createdProduct: [],
   viewProducts: [],
   viewProductsByCategory: [],
   viewProductsByBrand: [],
@@ -78,35 +79,72 @@ const productsReducer = (state = initialState, action) => {
       };
 
     case CREATE_NEW_PRODUCT:
-      console.log("action.payload", action.payload);
-      console.log("viewProducts", state.viewProducts);
       return {
         ...state,
+        createdProduct: action.payload,
+
         viewProducts: {
           ...state.viewProducts,
           data: [...(state.viewProducts.data || []), action.payload.data.data],
           paginationResult: state.viewProducts.paginationResult,
         },
-        addedProduct: action.payload,
         loading: { ...state.loading, create: false },
         error: { ...state.error, create: null },
       };
 
-    case UPDATE_PRODUCT:
-      return {
-        ...state,
-        updatedProduct: action.payload,
-
-        loading: { ...state.loading, update: false },
-        error: { ...state.error, update: null },
-      };
-
     case DELETE_PRODUCT:
+      console.log("DELETE_PRODUCT action.payload:", action.payload);
       return {
         ...state,
-        deletedProduct: action.payload,
+        deletedProduct: action.payload.response,
+
+        viewProducts: {
+          ...state.viewProducts,
+          data: state.viewProducts.data.filter(
+            (b) => b._id !== action.payload.id
+          ),
+          paginationResult: state.viewProducts.paginationResult,
+        },
         loading: { ...state.loading, delete: false },
         error: { ...state.error, delete: null },
+      };
+
+    case UPDATE_PRODUCT:
+      return {
+        updatedProduct: action.payload,
+        loading: { ...state.loading, update: false },
+        error: { ...state.error, update: null },
+        viewProducts: {
+          ...state.viewProducts,
+          data: state.viewProducts.data.map((product) =>
+            product._id === action.payload.data._id
+              ? action.payload.data
+              : product
+          ),
+          paginationResult: state.viewProducts.paginationResult,
+        },
+      };
+
+    case RESET_STATE:
+      return {
+        ...state,
+        loading: {
+          fetchAll: true,
+          fetchSpecific: true,
+          create: true,
+          delete: true,
+          update: true,
+        },
+        error: {
+          fetchAll: null,
+          fetchSpecific: null,
+          create: null,
+          delete: null,
+          update: null,
+        },
+        updatedProduct: [],
+        createdProduct: [],
+        deletedProduct: [],
       };
 
     case GET_ERROR:

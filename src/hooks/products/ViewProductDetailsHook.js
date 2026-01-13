@@ -93,8 +93,7 @@ const ViewProductDetailsHook = (productID) => {
 
   // Memoize the brand details of the product
   const itemBrand = useMemo(() => {
-    if (brand) return brand?.data;
-    else return EMPTY.ARRAY;
+    return brand?.data || EMPTY.ARRAY;
   }, [brand]);
 
   // Memoize the related products in the same category, limiting the number of displayed items

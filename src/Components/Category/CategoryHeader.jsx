@@ -19,7 +19,7 @@ import { useSelector } from "react-redux";
 // Component Responsible for Displaying the Top Category Navigation Bar
 const CategoryHeader = () => {
   // Fetch categories and loading state from the custom hook
-  const [categories, loading] = AllCategoryPageHook();
+  const [categoriesData, isLoading] = AllCategoryPageHook();
 
   // Translation function from i18n
   const { t } = useTranslation("home");
@@ -42,7 +42,7 @@ const CategoryHeader = () => {
             role="list"
           >
             {/* Show loading spinner while fetching categories */}
-            {loading ? (
+            {isLoading ? (
               <Spinner
                 className="mx-auto"
                 animation="border"
@@ -52,18 +52,18 @@ const CategoryHeader = () => {
               />
             ) : (
               // Render first 5 categories with routing and ARIA support
-              categories?.slice(0, 5).map((category) => (
+              categoriesData?.slice(0, 5).map((category) => (
                 <Link
-                  key={category._id}
-                  to={`/products/category/${category._id}`}
+                  key={category?._id}
+                  to={`/products/category/${category?._id}`}
                   className={`cat-text-header ${
-                    location.pathname.includes(category._id) ? "active" : ""
+                    location.pathname.includes(category?._id) ? "active" : ""
                   }`}
                   aria-label={t("navigateToButton", {
-                    button: category.name,
+                    button: category?.name,
                   })}
                 >
-                  {category.name}
+                  {category?.name}
                 </Link>
               ))
             )}

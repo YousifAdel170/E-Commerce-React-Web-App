@@ -10,12 +10,12 @@ import notify from "../Utility/useNotifyHook";
 import { deleteProduct } from "../../redux/actions/productsAction";
 
 // Import notification types constants and custom notification hook
-import { EMPTY } from "../../constants/general";
 import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
 import { useTranslation } from "react-i18next";
+// import { resetState } from "../../redux/actions/categoryAction";
 
 // Custom hook for managing admin product card logic (modals, actions, discount calculation)
-const AdminProductCardHook = (item, onDelete) => {
+const AdminProductCardHook = (item) => {
   // Redux dispatch function to dispatch actions + React router navigate function for redirection on edit
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,9 +25,10 @@ const AdminProductCardHook = (item, onDelete) => {
   // Modal visibility state for Delete and Edit modals
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [isDeletePress, setIsDeletePress] = useState(false);
+  const [isEditPress, setIsEditPress] = useState(false);
 
   // Loading state during async delete operation
-  const [loading, setLoading] = useState(true);
 
   // Handlers to open/close Delete modal
   const handleCloseDelete = () => setShowDelete(false);
@@ -38,52 +39,68 @@ const AdminProductCardHook = (item, onDelete) => {
   const handleShowEdit = () => setShowEdit(true);
 
   // Handler to delete product by dispatching redux action
-  const handleDelete = async () => {
-    setLoading(true); // Start loading state
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    setIsDeletePress(true); // Indicate delete operation in progress
     await dispatch(deleteProduct(item?._id)); // Dispatch delete product action with product ID
-    setLoading(false); // Stop loading state
-
     setShowDelete(false); // Close the delete confirmation modal
-
-    if (onDelete) onDelete(item?._id); // Call onDelete callback if provided (for parent updates)
   };
 
   // Selector to get result of delete operation from Redux state
-  const result = useSelector((state) => state.allProduct.deletedProduct);
+  const { deletedProduct, loading, error } = useSelector(
+    (state) => state.allProduct
+  );
 
   // Effect runs on loading/result change to show notification messages
   useEffect(() => {
-    if (!loading) {
-      if (result === EMPTY.TEXT)
-        notify(
-          t("notification_messages:general.deleteSuccess"),
-          NOTIFICATION_TYPES.SUCCESS
-        );
-      else
-        notify(
-          t("notification_messages:general.deleteFail"),
-          NOTIFICATION_TYPES.ERROR
-        );
+    if (!isDeletePress) return;
+
+    if (loading?.delete) return;
+
+    setIsDeletePress(false);
+
+    if (error?.delete) {
+      notify(
+        t("notification_messages:general.deleteFail"),
+        NOTIFICATION_TYPES.ERROR
+      );
+
+      // dispatch(resetState());
+      return;
     }
-  }, [loading, result, t]);
+
+    if (!deletedProduct) {
+      notify(
+        t("notification_messages:general.deleteSuccess"),
+        NOTIFICATION_TYPES.SUCCESS
+      );
+    }
+    // dispatch(resetState());
+  }, [loading, deletedProduct, error, dispatch, t, isDeletePress]);
 
   // Handler to redirect to Edit product page and close Edit modal
   const handleEdit = async () => {
+    setIsEditPress(true); // Indicate edit operation in progress
     navigate(`/admin/edit-product/${item?._id}`);
+    setIsEditPress(false); // Reset edit press state
     handleCloseEdit(false);
   };
 
   // Array of action button data for rendering Edit and Delete buttons
   const actions = [
     {
-      label: t("utilities:modal.delete"),
-      onClick: handleShowDelete,
-      ariaLabel: `${t("utilities:modal.deleteAriaLabel")}: ${item?.title}`,
-    },
-    {
       label: t("utilities:modal.edit"),
       onClick: handleShowEdit,
       ariaLabel: `${t("utilities:modal.editAriaLabel")}: ${item?.title}`,
+      icon: "fas fa-edit fs-5 mb-2 mt-0",
+      name: `${t("utilities:modal.editAriaLabel")}: ${item?.title}`,
+    },
+    {
+      label: t("utilities:modal.delete"),
+      onClick: handleShowDelete,
+      ariaLabel: `${t("utilities:modal.deleteAriaLabel")}: ${item?.title}`,
+      icon: "fas fa-trash text-danger fs-5 mb-2 mt-0",
+      name: `${t("utilities:modal.deleteAriaLabel")}: ${item?.title}`,
     },
   ];
 
@@ -108,6 +125,8 @@ const AdminProductCardHook = (item, onDelete) => {
     actions,
     discountAmount,
     discountPercent,
+    isDeletePress,
+    isEditPress,
   ];
 };
 

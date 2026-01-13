@@ -1,31 +1,45 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import internetDetect from "../Utility/useInternetConnectionHook";
-import { getAllCategory } from "../../redux/actions/categoryAction";
+import { getAllCategory, resetState } from "../../redux/actions/categoryAction";
 import { getAllBrand } from "../../redux/actions/brandAction";
 import { getAllSubCategory } from "../../redux/actions/subCategoryAction";
 import {
-  getAllProducts,
+  // getAllProducts,
   getSpecificProduct,
   updateProduct,
 } from "../../redux/actions/productsAction";
 import notify from "../Utility/useNotifyHook";
 import { useNavigate } from "react-router-dom";
-import { ERROR, SUCCESS } from "../../constants/notificationTypes";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+import { useTranslation } from "react-i18next";
+import { EMPTY, STATUS } from "../../constants/general";
+import { ROUTES } from "../../constants/routes";
+import { DELAYS } from "../../constants/delays";
+import { BACKEND_VARIABLES } from "../../constants/backendConstants";
 
-const AdminEditProductHook = (id, onEdit) => {
+const AdminEditProductHook = (id) => {
   // Use Dispatch to tell that u will use actions from redux
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Translation for notifications
+  const { t } = useTranslation("notification_messages");
+
+  // State to detect if the update button is pressed
+  const [isPress, setIsPress] = useState(false);
+
   // Fetch categories only once when the component mounts
   useEffect(() => {
     internetDetect();
+
     const dispatchData = async () => {
       await dispatch(getSpecificProduct(id));
       await dispatch(getAllCategory());
       await dispatch(getAllBrand());
     };
+
+    //
     dispatchData();
   }, [dispatch, id]);
 
@@ -45,18 +59,17 @@ const AdminEditProductHook = (id, onEdit) => {
   const onSelect = (selectedList) => setSelectedSubID(selectedList);
 
   // Store the selected Sub categories list after beging removed
-  const onRemove = (selectedList) => setSelectedSubID(selectedList);
+  const onRemove = (selectedList) => setSelectedSubID(selectedList || []);
 
   // State To Show/Hide Color Picker
   const [showColor, setShowColor] = useState(false);
 
   // State [Array] to store the Selected Colors
-  const [colors, setColors] = useState([]);
+  const [colors, setColors] = useState(EMPTY.ARRAY);
 
   // State [Array] to store the Options of the Sub categories
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(EMPTY.ARRAY);
 
-  const [loading, setLoading] = useState(true);
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [priceBefore, setPriceBefore] = useState("");
@@ -64,10 +77,10 @@ const AdminEditProductHook = (id, onEdit) => {
   const [qty, setQTY] = useState("");
   const [categoryID, setCategoryID] = useState("0");
   const [brandID, setBrandID] = useState("0");
-  const [selectedSubID, setSelectedSubID] = useState([]);
+  const [selectedSubID, setSelectedSubID] = useState(EMPTY.ARRAY);
 
   // State To Save Array Of Selected Images
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(EMPTY.ARRAY);
 
   useEffect(() => {
     if (product?.data) {
@@ -83,41 +96,12 @@ const AdminEditProductHook = (id, onEdit) => {
     }
   }, [product]);
 
-  //to change name state
-  const onChangeProdName = (e) => {
-    e.persist();
-    setProductName(e.target.value);
-  };
-
-  //to change name state
-  const onChangeDesName = (event) => {
-    event.persist();
-    setProductDescription(event.target.value);
-  };
-
-  //to change name state
-  const onChangePriceBefor = (event) => {
-    event.persist();
-    setPriceBefore(event.target.value);
-  };
-
-  //to change name state
-  const onChangePriceAfter = (event) => {
-    event.persist();
-    setPriceAfter(event.target.value);
-  };
-
-  //to change name state
-  const onChangeQty = (event) => {
-    event.persist();
-    setQTY(event.target.value);
-  };
-
-  // to change name state
-  const onChangeColor = (event) => {
-    event.persist();
-    setShowColor(!showColor);
-  };
+  const onChangeProdName = (e) => setProductName(e.target.value);
+  const onChangeDesName = (e) => setProductDescription(e.target.value);
+  const onChangePriceBefor = (e) => setPriceBefore(e.target.value);
+  const onChangePriceAfter = (e) => setPriceAfter(e.target.value);
+  const onChangeQty = (e) => setQTY(e.target.value);
+  const onChangeColor = () => setShowColor(!showColor);
 
   // Function to handle the color picker
   const handleChangeComplete = (color) => {
@@ -148,16 +132,26 @@ const AdminEditProductHook = (id, onEdit) => {
     if (subCategory) setOptions(subCategory?.data);
   }, [subCategory]);
 
+  // ✅ IMPORTANT FIX: match product subcategories AFTER options load
+  useEffect(() => {
+    if (options?.length && product?.data?.subcategory?.length) {
+      const matchedSubCategories = options.filter((option) =>
+        product.data.subcategory.some(
+          (sub) => sub === option?._id || sub?._id === option?._id
+        )
+      );
+
+      setSelectedSubID(matchedSubCategories);
+    }
+  }, [options, product]);
+
   // Store The selected brandID
   const onSelectBrand = (e) => setBrandID(e.target.value);
 
   // Function to Convert 64 base Image into File
   function dataURLtoFile(dataurl, filename) {
     // Check if the dataurl is a valid string before using .split()
-    if (typeof dataurl !== "string") {
-      console.error("Invalid dataurl:", dataurl);
-      return null;
-    }
+    if (typeof dataurl !== "string") return null;
 
     var arr = dataurl.split(","),
       mime = arr[0].match(/:(.*?);/)[1],
@@ -182,119 +176,132 @@ const AdminEditProductHook = (id, onEdit) => {
 
   // Save Any Item to store the new product
   const handleSubmit = async (e) => {
-    // Prevent The Default Action of submit
     e.preventDefault();
+
+    const hasValidImages = Array.isArray(images)
+      ? images.length > 0
+      : typeof images === "object" && images !== null
+      ? Object.keys(images).length > 0
+      : false;
 
     if (
       categoryID === 0 ||
-      productName === "" ||
-      productDescription === "" ||
-      images?.length <= 0 ||
-      priceBefore <= 0
+      productName.trim() === "" ||
+      productDescription.trim() === "" ||
+      priceBefore <= 0 ||
+      !hasValidImages
     ) {
-      notify("من فضلك اكمل البيانات", "warn");
+      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
       return;
     }
 
-    // convert base 64 image to file
-    let imgCover;
+    setIsPress(true);
 
-    if (images[0].length <= 1000)
-      convertURLtoFile(images[0]).then((val) => (imgCover = val));
-    else imgCover = dataURLtoFile(images[0], Math.random() + ".png");
+    try {
+      // convert base 64 image to file
+      let imgCover;
 
-    let itemImages = [];
+      if (images[0].length <= 1000)
+        convertURLtoFile(images[0]).then((val) => (imgCover = val));
+      else imgCover = dataURLtoFile(images[0], Math.random() + ".png");
 
-    // Create an array to store the new images after being converted [same size as the 64 base imaage array]
-    Array.from(Array(Object.keys(images).length).keys()).map((_, index) => {
-      if (images[index]?.length <= 1000)
-        convertURLtoFile(images[index]).then((val) => itemImages.push(val));
-      else
-        itemImages.push(dataURLtoFile(images[index], Math.random() + ".png"));
-    });
+      let itemImages = [];
 
-    const formData = new FormData();
-    formData.append("title", productName);
-    formData.append("description", productDescription);
-    formData.append("quantity", qty);
-    formData.append("price", priceBefore);
-    formData.append("category", categoryID);
-    formData.append("brand", brandID);
+      // Create an array to store the new images after being converted [same size as the 64 base imaage array]
+      Array.from(Array(Object.keys(images).length).keys()).map((_, index) => {
+        if (images[index]?.length <= 1000)
+          convertURLtoFile(images[index]).then((val) => itemImages.push(val));
+        else
+          itemImages.push(dataURLtoFile(images[index], Math.random() + ".png"));
+      });
 
-    setTimeout(() => {
-      formData.append("imageCover", imgCover);
-      itemImages.map((item) => formData.append("images", item));
-    }, 1000);
+      // Build FormData
+      const formData = new FormData();
+      formData.append(BACKEND_VARIABLES.PRDOUCT.TITLE, productName);
+      formData.append(
+        BACKEND_VARIABLES.PRDOUCT.DESCRIPTION,
+        productDescription
+      );
+      formData.append(BACKEND_VARIABLES.PRDOUCT.QUANTITY, qty);
+      formData.append(
+        BACKEND_VARIABLES.PRDOUCT.PRICE_BEFORE_DISCOUNT,
+        priceBefore
+      );
+      formData.append(
+        BACKEND_VARIABLES.PRDOUCT.PRICE_AFTER_DISCOUNT,
+        priceAfter
+      );
+      formData.append(BACKEND_VARIABLES.PRDOUCT.CATEGORY, categoryID);
+      formData.append(BACKEND_VARIABLES.PRDOUCT.BRAND, brandID);
 
-    colors.map((color) => formData.append("availableColors", color));
-    selectedSubID.map((item) => formData.append("subcategory", item?._id));
+      setTimeout(() => {
+        formData.append(BACKEND_VARIABLES.PRDOUCT.IMAGE_COVER, imgCover);
 
-    setTimeout(async () => {
-      // Start The Updating Operation
-      setLoading(true);
-      await dispatch(updateProduct(id, formData));
-      setLoading(false);
-      // End The Updating Operation
-    }, 1000);
+        itemImages.forEach((img) =>
+          formData.append(BACKEND_VARIABLES.PRDOUCT.IMAGES, img)
+        );
+      }, 1000);
+
+      colors.forEach((color) =>
+        formData.append(BACKEND_VARIABLES.PRDOUCT.AVAILABLE_COLORS, color)
+      );
+
+      selectedSubID.forEach((sub) =>
+        formData.append(BACKEND_VARIABLES.PRDOUCT.SUBCATEGORY, sub?._id)
+      );
+
+      // ✅ Dispatch after everything is appended
+
+      setTimeout(() => {
+        const getUpdateProduct = async () => {
+          await dispatch(updateProduct(id, formData));
+        };
+
+        getUpdateProduct();
+      }, 1000);
+    } catch (err) {
+      console.error("Error in handleSubmit:", err);
+      notify(t("general.updateFail"), NOTIFICATION_TYPES.ERROR);
+    }
   };
 
-  const updatedProduct = useSelector(
-    (state) => state.allProduct.updatedProduct
+  const { updatedProduct, loading, error } = useSelector(
+    (state) => state.allProduct
   );
 
   // Reset The Values of the Product
   useEffect(() => {
-    const getProducts = async () => await dispatch(getAllProducts());
-    if (loading === false) {
-      setColors([]);
-      setImages([]);
-      setOptions([]);
-      setProductName("");
-      setProductDescription("");
-      setPriceBefore("");
-      setPriceAfter("");
-      setQTY("");
-      setBrandID(0);
-      setCategoryID(0);
-      setSelectedSubID([]);
+    // ⛔ do nothing until submit button is pressed
+    if (!isPress) return;
 
-      if (updatedProduct) {
-        //   Check if the response status is OK
+    // ⛔ wait until update request finishes
+    if (loading?.update) return;
 
-        if (updatedProduct?.status === 201 || updatedProduct?.status === 200) {
-          notify("تمت عملية التعديل بنجاح", SUCCESS);
-          getProducts();
-        } else notify("هناك مشكلة في عملية التعديل", ERROR);
+    // reset press flag
+    setIsPress(false);
 
-        setTimeout(() => navigate("/admin/all-products"), 500);
-      }
+    // ❌ error case
+    if (error?.update) {
+      notify(t("general.updateFail"), NOTIFICATION_TYPES.ERROR);
+      dispatch(resetState());
+      return;
     }
-  }, [loading, updatedProduct, navigate, dispatch]);
 
-  useEffect(() => {
-    if (onEdit) {
-      onEdit({
-        title: productName,
-        description: productDescription,
-        quantity: qty,
-        price: priceBefore,
-        category: categoryID,
-        brand: brandID,
-        availableColors: colors,
-        images: images,
-      });
+    // ✅ success case
+    if (
+      updatedProduct?.status === STATUS.SUCCESS_OK ||
+      updatedProduct?.status === STATUS.SUCCESS_CREATED
+    ) {
+      notify(t("general.updateSuccess"), NOTIFICATION_TYPES.SUCCESS);
+
+      setTimeout(
+        () => navigate(ROUTES.ADMIN.PRODUCTS.ALL),
+        DELAYS.NAVIGATION_DELAY
+      );
     }
-  }, [
-    brandID,
-    categoryID,
-    colors,
-    images,
-    onEdit,
-    priceBefore,
-    productDescription,
-    productName,
-    qty,
-  ]);
+
+    dispatch(resetState());
+  }, [isPress, loading, updatedProduct, error, navigate, t, dispatch]);
 
   return [
     categoryID,
@@ -325,7 +332,9 @@ const AdminEditProductHook = (id, onEdit) => {
     qty,
     productDescription,
     productName,
-    onEdit,
+
+    isPress,
+    selectedSubID,
   ];
 };
 

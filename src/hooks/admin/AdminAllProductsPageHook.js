@@ -7,13 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 // ================================
 // Import Actions
 // ================================
-import { getAllProductsInSelectedPage } from "../../redux/actions/productsAction";
+import {
+  getAllProducts,
+  getAllProductsInSelectedPage,
+} from "../../redux/actions/productsAction";
 
 // ================================
 // Import Constants
 // ================================
 import { PAGE_PRODUCTS_LIMIT } from "../../constants/pageLimits";
-import { EMPTY } from "../../constants/general";
 
 // ================================
 // Admin All Products Page Hook
@@ -22,39 +24,45 @@ const AdminAllProductsPageHook = () => {
   // Use Dispatch to call redux actions
   const dispatch = useDispatch();
 
-  // Local State to hold the current list of items
-  const [items, setItems] = useState(EMPTY.ARRAY);
-
   // Get products data from redux store
-  const products = useSelector((state) => state.allProduct.viewProducts);
+  const { viewProducts, loading } = useSelector((state) => state.allProduct);
 
-  // Set the redux products into local state when products change
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 4. Fetch products data when the component mounts
   useEffect(() => {
-    if (products) setItems(products.data);
-    else setItems(EMPTY.ARRAY);
-  }, [products]);
+    // Fetch the Data from the Api Only If Not Already Loaded
+    const getData = async () =>
+      await dispatch(getAllProducts(PAGE_PRODUCTS_LIMIT));
 
-  // Memoized page count from pagination result
+    // Call the function to fetch products data
+    getData();
+  }, [dispatch]);
+
+  // 4. Memoize the products data to avoid unnecessary re-renders
   const pageCount = useMemo(() => {
-    products?.paginationResult?.numberOfPages || 0;
-  }, [products]);
+    return viewProducts?.paginationResult?.numberOfPages || 0;
+  }, [viewProducts]);
 
-  // Function to get data for a selected page
-  const onPress = async (page) =>
-    await dispatch(getAllProductsInSelectedPage(PAGE_PRODUCTS_LIMIT, page));
+  // 5. Effect to set the loading state based on the loading state from redux
+  useEffect(() => {
+    if (!loading?.fetchAll) setIsLoading(false);
+    else setIsLoading(true);
+  }, [loading, viewProducts]);
 
-  // Function to delete an item from the list
-  const onDelete = (id) =>
-    setItems((prev) => prev.filter((item) => item?._id !== id));
-
-  // Function to update an item in the list
-  const onEdit = (updatedItem) =>
-    setItems((prev) =>
-      prev.map((item) => (item?._id === updatedItem?._id ? updatedItem : item))
+  // 6. Function to fetch products data in the selected page
+  const getSelectedPageNumber = async (selectedPage) =>
+    await dispatch(
+      getAllProductsInSelectedPage(PAGE_PRODUCTS_LIMIT, selectedPage)
     );
 
+  // 7. Memoize the products data to avoid unnecessary re-renders
+  const producstsData = useMemo(() => {
+    return viewProducts?.data || [];
+  }, [viewProducts]);
+
   // Return values and handlers
-  return [items, pageCount, onPress, onDelete, onEdit];
+  return [producstsData, isLoading, pageCount, getSelectedPageNumber];
 };
 
 export default AdminAllProductsPageHook;

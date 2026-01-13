@@ -5,28 +5,33 @@ import PaginationComponent from "../Utility/PaginationComponent";
 import { useTranslation } from "react-i18next";
 import ItemsNotFound from "../Utility/ItemsNotFound";
 import { ToastContainer } from "react-toastify";
+import SpinnerComponent from "../Utility/SpinnerComponent";
 
 const AdminAllCategories = () => {
-  const [categories, , pageCount, getSelectedPageNumber] =
+  const [categories, isLoading, pageCount, getSelectedPageNumber] =
     AllCategoryPageHook();
 
-  const { t } = useTranslation("categories");
+  const { t } = useTranslation(["categories", "home"]);
 
   return (
     <div>
-      <Row>
-        {/* Available Coupons */}
+      <Row aria-busy={isLoading}>
         <div className="title-text">{t("availableCategories")}</div>
-        {categories ? (
-          categories.map((item, index) => {
-            return (
-              <AdminCategoryCard key={index} category={item} index={index} />
-            );
-          })
+        {!isLoading ? (
+          categories && categories?.length > 0 ? (
+            categories.map((item, index) => {
+              return (
+                <AdminCategoryCard key={index} category={item} index={index} />
+              );
+            })
+          ) : (
+            <ItemsNotFound msg={t("categories::noCategories")} />
+          )
         ) : (
-          <ItemsNotFound msg={t("noCategories")} />
+          <SpinnerComponent msg={t("home::homeLoadingCategoriesAriaLabel")} />
         )}
       </Row>
+
       {/* Handle The Pagination */}
       {pageCount > 1 ? (
         <PaginationComponent

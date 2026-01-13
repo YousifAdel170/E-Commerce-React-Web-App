@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import { INPUT_TYPES } from "../../constants/inputs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import SpinnerComponent from "../Utility/SpinnerComponent";
 
 const AdminEditProduct = () => {
   const { id } = useParams();
@@ -47,6 +48,8 @@ const AdminEditProduct = () => {
     qty,
     productDescription,
     productName,
+    isPress,
+    selectedSubID,
   ] = AdminEditProductHook(id);
 
   const { t } = useTranslation("product");
@@ -75,6 +78,7 @@ const AdminEditProduct = () => {
               <label
                 htmlFor="product-name"
                 className="form-label card-item-text"
+                aria-label={t("editProduct.nameTitle")}
               >
                 {t("editProduct.nameTitle")}
               </label>
@@ -201,7 +205,7 @@ const AdminEditProduct = () => {
                 value={categoryID}
               >
                 <option value="0">{t("editProduct.selectCategory")}</option>
-                {category.data
+                {category && category.data
                   ? category.data.map((item) => {
                       return (
                         <option key={item?._id} value={item?._id}>
@@ -228,6 +232,7 @@ const AdminEditProduct = () => {
                 options={options}
                 onSelect={onSelect}
                 onRemove={onRemove}
+                selectedValues={selectedSubID}
                 displayValue="name"
               />
             </div>
@@ -247,7 +252,7 @@ const AdminEditProduct = () => {
                 value={brandID}
               >
                 <option value="0">{t("editProduct.selectBrand")}</option>
-                {brand.data
+                {brand && brand.data
                   ? brand.data.map((item) => {
                       return (
                         <option key={item?._id} value={item?._id}>
@@ -266,7 +271,7 @@ const AdminEditProduct = () => {
               </label>
 
               <div className="d-flex">
-                {colors.length > 0
+                {colors && colors.length > 0
                   ? colors.map((color, index) => (
                       <div
                         onClick={() => removeColor(color)}
@@ -294,7 +299,17 @@ const AdminEditProduct = () => {
 
             {/* Submit */}
             <div className="text-center">
-              <button className="btn btn-primary" onClick={handleSubmit}>
+              <button
+                type={INPUT_TYPES.SUBMIT}
+                className="btn btn-primary"
+                aria-label={t("editProduct.saveButton")}
+                disabled={isPress}
+              >
+                {isPress ? (
+                  <SpinnerComponent className={"mx-2"} size={"sm"} />
+                ) : (
+                  ""
+                )}
                 {t("editProduct.saveButton")}
               </button>
             </div>

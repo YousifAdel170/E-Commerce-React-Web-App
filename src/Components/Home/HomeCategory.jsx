@@ -45,7 +45,7 @@ const HomeCategory = () => {
         aria-busy={isLoading}
       >
         {!isLoading ? (
-          categories && categories.length > 0 ? (
+          categories && categories?.length > 0 ? (
             // Map over the categories to display each category card
             categories.map((item, index) => (
               <CartegoryCard

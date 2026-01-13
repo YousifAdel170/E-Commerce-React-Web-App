@@ -10,64 +10,78 @@ import {
 
 // Import The Used Config
 import { PAGE_PRODUCTS_LIMIT } from "../../constants/pageLimits";
+import { EMPTY, SORT_TYPES } from "../../constants/general";
+import { STORAGE_KEYS } from "../../constants/storage";
 
 // Hook Responsible for fetching and managing the products data after searching
 const ViewSearchProductHook = () => {
   // Define the variables to store the data from the local storage
-  let priceFromString = "",
-    priceToString = "",
-    word = "",
-    queryCategory = "",
-    queryBrand = "",
-    priceTo = "",
-    priceFrom = "",
-    sortType = "",
+  let priceFromString = EMPTY.TEXT,
+    priceToString = EMPTY.TEXT,
+    word = EMPTY.TEXT,
+    queryCategory = EMPTY.TEXT,
+    queryBrand = EMPTY.TEXT,
+    priceTo = EMPTY.TEXT,
+    priceFrom = EMPTY.TEXT,
+    sortType = EMPTY.TEXT,
     sort;
 
   // Function to get the searched word and other filters from local storage
   const getStorge = () => {
     // Get The searched word if there from the localstorage
-    if (localStorage.getItem("searchedWord") != null)
-      word = localStorage.getItem("searchedWord");
+    if (localStorage.getItem(STORAGE_KEYS.LOCAL.PRODUCTS.SEARCHED_WORD) != null)
+      word = localStorage.getItem(STORAGE_KEYS.LOCAL.PRODUCTS.SEARCHED_WORD);
 
     // Get The category checked if there from the localstorage
-    if (localStorage.getItem("categoryChecked") != null)
-      queryCategory = localStorage.getItem("categoryChecked");
+    if (
+      localStorage.getItem(STORAGE_KEYS.LOCAL.PRODUCTS.CATEGORY_CHECKED) != null
+    )
+      queryCategory = localStorage.getItem(
+        STORAGE_KEYS.LOCAL.PRODUCTS.CATEGORY_CHECKED
+      );
 
     // Get The brand checked if there from the localstorage
-    if (localStorage.getItem("brandChecked") != null)
-      queryBrand = localStorage.getItem("brandChecked");
+    if (localStorage.getItem(STORAGE_KEYS.LOCAL.PRODUCTS.BRAND_CHECKED) != null)
+      queryBrand = localStorage.getItem(
+        STORAGE_KEYS.LOCAL.PRODUCTS.BRAND_CHECKED
+      );
 
     // Get The [Price To] if there from the localstorage
-    if (localStorage.getItem("priceTo") != null)
-      priceTo = localStorage.getItem("priceTo");
+    if (localStorage.getItem(STORAGE_KEYS.LOCAL.PRODUCTS.PRICE_TO) != null)
+      priceTo = localStorage.getItem(STORAGE_KEYS.LOCAL.PRODUCTS.PRICE_TO);
 
     // Get The [Price From] if there from the localstorage
-    if (localStorage.getItem("priceFrom") != null)
-      priceFrom = localStorage.getItem("priceFrom");
+    if (localStorage.getItem(STORAGE_KEYS.LOCAL.PRODUCTS.PRICE_FROM) != null)
+      priceFrom = localStorage.getItem(STORAGE_KEYS.LOCAL.PRODUCTS.PRICE_FROM);
 
     // Set The Price From String [Query of the price From]
-    if (priceFrom === "" || priceFrom <= 0) priceFromString = "";
+    if (priceFrom === EMPTY.TEXT || priceFrom <= 0)
+      priceFromString = EMPTY.TEXT;
     else priceFromString = `&price[gt]=${priceFrom}`;
 
     // Set The Price To String [Query of the price To]
-    if (priceTo == "" || priceTo <= 0) priceToString = "";
+    if (priceTo == EMPTY.TEXT || priceTo <= 0) priceToString = EMPTY.TEXT;
     else priceToString = `&price[lte]=${priceTo}`;
+  };
+
+  const getSortValue = (sortType) => {
+    if (!sortType) return EMPTY.TEXT;
+
+    const match = Object.values(SORT_TYPES).find(
+      (item) => item.METHOD === sortType
+    );
+
+    return match ? match.VALUE : EMPTY.TEXT;
   };
 
   // Function to get the sort type from local storage and set the sort variable
   const sortData = () => {
-    // Get The sort type if there from the localstorage
-    if (localStorage.getItem("sortType") !== null)
-      sortType = localStorage.getItem("sortType");
-    else sortType = "";
+    const storedSortType = localStorage.getItem(
+      STORAGE_KEYS.LOCAL.PRODUCTS.SORT_TYPE
+    );
 
-    // Check the sort type and set the sort variable to the value of the sort type
-    if (sortType === "السعر من الاقل للاعلي") sort = "+price";
-    else if (sortType === "السعر من الاعلي للاقل") sort = "-price";
-    else if (sortType === "") sort = "";
-    else if (sortType === "الاكثر مبيعا") sort = "-sold";
-    else if (sortType === "الاعلي تقييما") sort = "-quantity";
+    sortType = storedSortType ?? EMPTY.TEXT;
+    sort = getSortValue(sortType);
   };
 
   // Use Dispatch to tell that u will use actions from redux
@@ -93,21 +107,17 @@ const ViewSearchProductHook = () => {
 
   //   To Get The Data
   const items = useMemo(() => {
-    if (products) return products.data;
-    else return [];
+    return products?.data || EMPTY.ARRAY;
   }, [products]);
 
   //   To Get The Page number for pagination
   const pageCount = useMemo(() => {
-    if (products && products.paginationResult)
-      return products.paginationResult.numberOfPages;
-    else return 0;
+    return products?.paginationResult?.numberOfPages || 0;
   }, [products]);
 
   //   To Get The number of results [products] after the search
   const results = useMemo(() => {
-    if (products) return products.results;
-    else return 0;
+    return products?.results || 0;
   }, [products]);
 
   // When the User Click On Pagination

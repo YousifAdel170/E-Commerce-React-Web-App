@@ -28,4 +28,18 @@ export const BACKEND_VARIABLES = {
       IMAGE: "image",
     },
   },
+
+  PRDOUCT: {
+    TITLE: "title",
+    DESCRIPTION: "description",
+    QUANTITY: "quantity",
+    PRICE_BEFORE_DISCOUNT: "price",
+    PRICE_AFTER_DISCOUNT: "priceAfterDiscount",
+    IMAGE_COVER: "imageCover",
+    CATEGORY: "category",
+    BRAND: "brand",
+    AVAILABLE_COLORS: "availableColors",
+    SUBCATEGORY: "subcategory",
+    IMAGES: "images",
+  },
 };

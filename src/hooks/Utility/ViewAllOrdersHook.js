@@ -1,5 +1,5 @@
 // Import Hooks from react, react-redux
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Import Custom Actions
@@ -10,43 +10,53 @@ import { NUMBER_OF_ORDERS_PER_PAGE } from "../../constants/pageLimits";
 const ViewAllOrdersHook = () => {
   const dispatch = useDispatch();
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    const getOrders = async () => {
+    const getOrders = async () =>
       await dispatch(getAllOrders(NUMBER_OF_ORDERS_PER_PAGE));
-      // await dispatch(getAllOrders());
-    };
 
     getOrders();
   }, [dispatch]);
 
-  const result = useSelector((state) => state.ordersReducer.viewAllOrders);
+  const { viewAllOrders, loading } = useSelector(
+    (state) => state.ordersReducer
+  );
 
   const allOrders = useMemo(() => {
-    if (result) return result.data;
-    else return [];
-  }, [result]);
+    return viewAllOrders?.data || [];
+  }, [viewAllOrders]);
 
   const numberOfOrders = useMemo(() => {
-    if (result) return result.results;
-    else return 0;
-  }, [result]);
+    return viewAllOrders?.results || 0;
+  }, [viewAllOrders]);
 
   const pageCount = useMemo(() => {
-    if (result?.paginationResult) return result.paginationResult.numberOfPages;
-    else return 0;
-  }, [result]);
+    return viewAllOrders?.paginationResult?.numberOfPages || 0;
+  }, [viewAllOrders]);
 
-  const onPress = async (page) =>
+  useEffect(() => {
+    if (!loading?.fetchAll) setIsLoading(false);
+    else setIsLoading(true);
+  }, [loading, viewAllOrders]);
+
+  const getSelectedPageNumber = async (page) =>
     await dispatch(getAllOrders(NUMBER_OF_ORDERS_PER_PAGE, page));
 
   const user = JSON.parse(localStorage.getItem("user"));
 
   const userName = useMemo(() => {
-    if (user !== null) return user.name;
-    else "";
+    return user?.name || "";
   }, [user]);
 
-  return [allOrders, numberOfOrders, pageCount, onPress, userName];
+  return [
+    allOrders,
+    numberOfOrders,
+    pageCount,
+    getSelectedPageNumber,
+    userName,
+    isLoading,
+  ];
 };
 
 export default ViewAllOrdersHook;

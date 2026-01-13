@@ -14,38 +14,49 @@ import ViewAllOrdersHook from "../../hooks/Utility/ViewAllOrdersHook";
 // Import CSS for Admin Component
 import "./Admin.css";
 import ItemsNotFound from "../Utility/ItemsNotFound";
+import SpinnerComponent from "../Utility/SpinnerComponent";
 
 // Component responsible for rendering all orders in the admin panel
 const AdminAllOrders = () => {
   // Custom hook to manage state and logic for the component
-  const [allOrders, , pageCount, onPress, userName] = ViewAllOrdersHook();
+  const [allOrders, , pageCount, getSelectedPageNumber, userName, isLoading] =
+    ViewAllOrdersHook();
 
-  const { t } = useTranslation("admin"); // Translation function for admin namespace
+  const { t } = useTranslation(["admin", "home"]); // Translation function for admin namespace
 
   return (
     <div>
       {/* Title of the section */}
-      <div className="title-text">{t("all-orders.title")}</div>
 
-      <Row>
+      <Row aria-busy={isLoading}>
+        <div className="title-text">{t("all-orders.title")}</div>
+
         {/* Map through the allOrders and render AdminOrderItem for each order */}
-        {allOrders ? (
-          allOrders.map((order, index) => (
-            <AdminOrderItem
-              key={order?._id}
-              order={order}
-              userName={userName}
-              index={index}
-            />
-          ))
+        {!isLoading ? (
+          allOrders && allOrders?.length > 0 ? (
+            allOrders.map((order, index) => {
+              return (
+                <AdminOrderItem
+                  key={order?._id}
+                  order={order}
+                  userName={userName}
+                  index={index}
+                />
+              );
+            })
+          ) : (
+            <ItemsNotFound msg={t("all-orders.notFound")} />
+          )
         ) : (
-          // If no orders are found, display a message
-          <ItemsNotFound msg={t("all-orders.notFound")} />
+          <SpinnerComponent msg={t("all-orders.notFound")} />
         )}
 
         {pageCount > 1 ? (
           // Pagination component to navigate through pages
-          <PaginationComponent pageCount={pageCount} onPress={onPress} />
+          <PaginationComponent
+            pageCount={pageCount}
+            onPress={getSelectedPageNumber}
+          />
         ) : null}
       </Row>
     </div>

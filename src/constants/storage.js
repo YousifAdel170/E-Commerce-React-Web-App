@@ -18,6 +18,16 @@ export const STORAGE_KEYS = {
       ITEMS: "cart_items",
       LAST_UPDATED: "cart_last_updated",
     },
+
+    PRODUCTS: {
+      SEARCHED_WORD: "searchedWord",
+      CATEGORY_CHECKED: "categoryChecked",
+      BRAND_CHECKED: "brandChecked",
+      PRICE_TO: "priceTo",
+      PRICE_FROM: "priceFrom",
+      SORT_TYPE: "sortType",
+    },
+
     SETTINGS: {
       ONBOARDING_COMPLETED: "onboarding_done",
       LAST_VISITED_PAGE: "last_visited_page",

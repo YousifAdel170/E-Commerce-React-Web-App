@@ -16,7 +16,8 @@ import { useInsertDataWithImage } from "../../hooks/axios/useInsertData";
 // Get All Categories (First Page)
 export const getAllCategory = (limit) => async (dispatch) => {
   try {
-    const result = await useGetData(`/api/v1/categories?limit=${limit}`);
+    const query = limit ? `?limit=${limit}` : "";
+    const result = await useGetData(`/api/v1/categories${query}`);
     dispatch({
       type: GET_ALL_CATEGORY,
       payload: result,
@@ -34,9 +35,14 @@ export const getAllCategory = (limit) => async (dispatch) => {
 export const getAllCategoryInSelectedPage =
   (limit, page) => async (dispatch) => {
     try {
-      const result = await useGetData(
-        `/api/v1/categories?limit=${limit}&page=${page}`
-      );
+      let query = "?";
+
+      if (limit !== undefined && limit !== null) query += `limit=${limit}&`;
+      if (page !== undefined && page !== null) query += `page=${page}&`;
+
+      query = query === "?" ? "" : query.slice(0, -1);
+
+      const result = await useGetData(`/api/v1/categories${query}`);
       dispatch({
         type: GET_ALL_CATEGORY,
         payload: result,

@@ -11,6 +11,7 @@ import internetDetect from "../Utility/useInternetConnectionHook";
 
 // Import Used Configurations
 import { PAGE_PRODUCTS_LIMIT } from "../../constants/pageLimits";
+import { EMPTY } from "../../constants/general";
 
 // Custom hook to get all products by a specific category
 const ViewProductsByCategoryHook = (categoryID) => {
@@ -21,11 +22,10 @@ const ViewProductsByCategoryHook = (categoryID) => {
     internetDetect();
 
     // Fetch products for the given category
-    const getData = async () => {
+    const getData = async () =>
       await dispatch(
-        getAllProductsByCategory(PAGE_PRODUCTS_LIMIT, "", categoryID)
+        getAllProductsByCategory(PAGE_PRODUCTS_LIMIT, EMPTY.TEXT, categoryID)
       );
-    };
 
     getData();
   }, [dispatch, categoryID]);
@@ -56,22 +56,17 @@ const ViewProductsByCategoryHook = (categoryID) => {
 
   // Memoize items to avoid unnecessary re-renders
   const items = useMemo(() => {
-    if (allProductsByCategory && allProductsByCategory.data)
-      return allProductsByCategory.data;
-    else return [];
+    return allProductsByCategory?.data || EMPTY.ARRAY;
   }, [allProductsByCategory]);
 
   // Memoize page count for pagination
   const pageCount = useMemo(() => {
-    if (allProductsByCategory && allProductsByCategory.paginationResult)
-      return allProductsByCategory.paginationResult.numberOfPages;
-    else return 0;
+    return allProductsByCategory?.paginationResult?.numberOfPages || 0;
   }, [allProductsByCategory]);
 
   // Memoize category name for display
   const categoryName = useMemo(() => {
-    if (category && category.data) return category.data.name;
-    else return "";
+    return category?.data?.name || EMPTY.TEXT;
   }, [category]);
 
   // Return values used in the view component

@@ -33,7 +33,8 @@ export const addCoupon = (body) => async (dispatch) => {
 // Action To Display All The Coupons
 export const getAllCoupons = (limit) => async (dispatch) => {
   try {
-    const response = await useGetDataToken(`/api/v1/coupons?limit=${limit}`);
+    const query = limit ? `?limit=${limit}` : "";
+    const response = await useGetDataToken(`/api/v1/coupons${query}`);
     dispatch({
       type: GET_ALL_COUPONS,
       payload: response,
@@ -50,9 +51,14 @@ export const getAllCoupons = (limit) => async (dispatch) => {
 export const getAllCouponsInSelectedPage =
   (limit, page) => async (dispatch) => {
     try {
-      const result = await useGetDataToken(
-        `/api/v1/coupons?limit=${limit}&page=${page}`
-      );
+      let query = "?";
+
+      if (limit) query += `limit=${limit}&`;
+      if (page) query += `page=${page}&`;
+
+      query = query === "?" ? "" : query.slice(0, -1);
+
+      const result = await useGetDataToken(`/api/v1/coupons${query}`);
       dispatch({
         type: GET_ALL_COUPONS,
         payload: result,

@@ -17,8 +17,15 @@ import { useUpdateData } from "../../hooks/axios/useUpdateData";
 export const getAllSubCategory =
   (categoryID, limit, page) => async (dispatch) => {
     try {
+      let query = "?";
+
+      if (limit) query += `limit=${limit}&`;
+      if (page) query += `page=${page}&`;
+
+      query = query === "?" ? "" : query.slice(0, -1);
+
       const response = await useGetData(
-        `/api/v1/categories/${categoryID}/subcategories?limit=${limit}&page=${page}`
+        `/api/v1/categories/${categoryID}/subcategories${query}`
       );
 
       dispatch({

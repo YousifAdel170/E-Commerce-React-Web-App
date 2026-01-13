@@ -54,39 +54,7 @@ import AdminOrderDetails from "./Components/Admin/AdminOrderDetails";
 import AdminAddBrand from "./Components/Admin/AdminAddBrand";
 
 import "./i18n/i18n"; // important! load i18n config
-import {
-  ADMIN_ADD_BRAND_PATH,
-  ADMIN_ADD_CATEGORY_PATH,
-  ADMIN_ADD_COUPON_PATH,
-  ADMIN_ADD_PRODUCT_PATH,
-  ADMIN_ADD_SUBCATEGORY_PATH,
-  ADMIN_ALL_BRANDS_PATH,
-  ADMIN_ALL_CATEGORIES_PATH,
-  ADMIN_ALL_COUPONS_PATH,
-  ADMIN_ALL_ORDERS_PATH,
-  ADMIN_ALL_PRODUCTS_PATH,
-  ADMIN_ALL_SUBCATEGORIES_PATH,
-  ADMIN_EDIT_BRAND_PATH,
-  ADMIN_EDIT_CATEGORY_PATH,
-  ADMIN_EDIT_COUPON_PATH,
-  ADMIN_EDIT_PRODUCT_PATH,
-  ADMIN_EDIT_SUBCATEGORY_PATH,
-  ADMIN_ORDER_DETAILS_PATH,
-  GENERAL_ALL_BRANDS_PATH,
-  GENERAL_ALL_CATEGORIES_PATH,
-  GENERAL_CART_PATH,
-  GENERAL_PRODUCT_DETAILS_PATH,
-  GENERAL_SHOP_PRODUCTS_PATH,
-  GENERAL_VIEW_PRODUCTS_BY_BRAND_PATH,
-  GENERAL_VIEW_PRODUCTS_BY_CATEGORY_PATH,
-  USER_ADD_ADDRESS_PATH,
-  USER_ALL_ADDRESSES_PATH,
-  USER_ALL_ORDERS_PATH,
-  USER_EDIT_ADDRESS_PATH,
-  USER_FAVORITE_PRODUCTS_PATH,
-  USER_ORDER_PAY_METHOD_PATH,
-  USER_PROFILE_PATH,
-} from "./constants/paths";
+
 import { ROUTES } from "./constants/routes";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GOOGLE_CLIENT_ID } from "./constants/settings";
@@ -106,28 +74,31 @@ function App() {
             <Route path={ROUTES.AUTH.LOGIN} element={<LoginPage />} />
             <Route path={ROUTES.AUTH.REGISTER} element={<RegisterPage />} />
             <Route
-              path={GENERAL_ALL_CATEGORIES_PATH}
+              path={ROUTES.GENERAL.ALL_CATEGORIES}
               element={<AllCategoryPage />}
             />
-            <Route path={GENERAL_ALL_BRANDS_PATH} element={<AllBrandPage />} />
             <Route
-              path={GENERAL_SHOP_PRODUCTS_PATH}
+              path={ROUTES.GENERAL.ALL_BRANDS}
+              element={<AllBrandPage />}
+            />
+            <Route
+              path={ROUTES.GENERAL.SHOP_PRODUCTS}
               element={<ShopProductsPage />}
             />
             <Route
-              path={GENERAL_VIEW_PRODUCTS_BY_CATEGORY_PATH}
+              path={ROUTES.GENERAL.VIEW_BY_CATEGORY}
               element={<ViewProductsByCategoryPage />}
             />
             <Route
-              path={GENERAL_VIEW_PRODUCTS_BY_BRAND_PATH}
+              path={ROUTES.GENERAL.VIEW_BY_BRAND}
               element={<ViewProductsByBrandPage />}
             />
 
             <Route
-              path={GENERAL_PRODUCT_DETAILS_PATH}
+              path={ROUTES.GENERAL.PRODUCT_DETAILS}
               element={<ProductDetailsPage />}
             />
-            <Route path={GENERAL_CART_PATH} element={<CartPage />} />
+            <Route path={ROUTES.GENERAL.CART} element={<CartPage />} />
             <Route
               path={ROUTES.AUTH.FORGOT_PASSWORD}
               element={<ForgotPasswordPage />}
@@ -145,76 +116,76 @@ function App() {
             <Route element={<ProtectedRoute auth={isAdmin} />}>
               <Route element={<AdminPage />}>
                 <Route
-                  path={ADMIN_ALL_PRODUCTS_PATH}
+                  path={ROUTES.ADMIN.PRODUCTS.ALL}
                   element={<AdminAllProducts />}
                 />
                 <Route
-                  path={ADMIN_ALL_ORDERS_PATH}
+                  path={ROUTES.ADMIN.ORDERS.ALL}
                   element={<AdminAllOrders />}
                 />
                 <Route
-                  path={ADMIN_ORDER_DETAILS_PATH}
+                  path={ROUTES.ADMIN.ORDERS.DETAILS}
                   element={<AdminOrderDetails />}
                 />
 
                 <Route
-                  path={ADMIN_ADD_BRAND_PATH}
+                  path={ROUTES.ADMIN.BRANDS.ADD}
                   element={<AdminAddBrand />}
                 />
                 <Route
-                  path={ADMIN_ALL_CATEGORIES_PATH}
+                  path={ROUTES.ADMIN.CATEGORIES.ALL}
                   element={<AdminAllCategories />}
                 />
                 <Route
-                  path={ADMIN_ALL_BRANDS_PATH}
+                  path={ROUTES.ADMIN.BRANDS.ALL}
                   element={<AdminAllBrands />}
                 />
 
                 <Route
-                  path={ADMIN_ALL_SUBCATEGORIES_PATH}
+                  path={ROUTES.ADMIN.CATEGORIES.SUBCATEGORIES.ALL}
                   element={<AdminAllSubcategories />}
                 />
 
                 <Route
-                  path={ADMIN_EDIT_SUBCATEGORY_PATH}
+                  path={ROUTES.ADMIN.CATEGORIES.SUBCATEGORIES.EDIT}
                   element={<AdminEditSubCategory />}
                 />
 
                 <Route
-                  path={ADMIN_ADD_CATEGORY_PATH}
+                  path={ROUTES.ADMIN.ADD_CATEGORY}
                   element={<AdminAddCategory />}
                 />
                 <Route
-                  path={ADMIN_EDIT_CATEGORY_PATH}
+                  path={ROUTES.ADMIN.EDIT_CATEGORY_PATH}
                   element={<AdminEditCategory />}
                 />
                 <Route
-                  path={ADMIN_EDIT_BRAND_PATH}
+                  path={ROUTES.ADMIN.EDIT_BRAND_PATH}
                   element={<AdminEditBrand />}
                 />
                 <Route
-                  path={ADMIN_ADD_SUBCATEGORY_PATH}
+                  path={ROUTES.ADMIN.ADD_SUBCATEGORY}
                   element={<AdminAddSubCategory />}
                 />
                 <Route
-                  path={ADMIN_ADD_PRODUCT_PATH}
+                  path={ROUTES.ADMIN.PRODUCTS.ADD}
                   element={<AdminAddProduct />}
                 />
                 <Route
-                  path={ADMIN_EDIT_PRODUCT_PATH}
+                  path={ROUTES.ADMIN.PRODUCTS.EDIT}
                   element={<AdminEditProduct />}
                 />
 
                 <Route
-                  path={ADMIN_ALL_COUPONS_PATH}
+                  path={ROUTES.ADMIN.COUPONS.ALL}
                   element={<AdminAllCoupons />}
                 />
                 <Route
-                  path={ADMIN_ADD_COUPON_PATH}
+                  path={ROUTES.ADMIN.COUPONS.ADD}
                   element={<AdminAddCoupon />}
                 />
                 <Route
-                  path={ADMIN_EDIT_COUPON_PATH}
+                  path={ROUTES.ADMIN.COUPONS.EDIT}
                   element={<AdminEditCoupon />}
                 />
               </Route>
@@ -224,31 +195,28 @@ function App() {
             <Route element={<ProtectedRoute auth={isUser} />}>
               <Route element={<UserPage />}>
                 <Route
-                  path={USER_ALL_ORDERS_PATH}
+                  path={ROUTES.USER.ALL_ORDERS}
                   element={<UserAllOrders />}
                 />
                 <Route
-                  path={USER_FAVORITE_PRODUCTS_PATH}
+                  path={ROUTES.USER.FAVORITE_PRODUCTS}
                   element={<UserFavoriteProducts />}
                 />
                 <Route
-                  path={USER_ALL_ADDRESSES_PATH}
+                  path={ROUTES.USER.ADDRESSES.ALL}
                   element={<UserAllAddresses />}
                 />
                 <Route
-                  path={USER_ADD_ADDRESS_PATH}
+                  path={ROUTES.USER.ADDRESSES.ADD}
                   element={<UserAddAddress />}
                 />
                 <Route
-                  path={USER_EDIT_ADDRESS_PATH}
+                  path={ROUTES.USER.ADDRESSES.EDIT}
                   element={<UserEditAddress />}
                 />
-                <Route path={USER_PROFILE_PATH} element={<UserProfile />} />
+                <Route path={ROUTES.USER.PROFILE} element={<UserProfile />} />
               </Route>
-              <Route
-                path={USER_ORDER_PAY_METHOD_PATH}
-                element={<CartMethodPage />}
-              />
+              <Route path={ROUTES.USER.PAYMENT} element={<CartMethodPage />} />
             </Route>
 
             {/* Test For Isolated Protected Rout */}

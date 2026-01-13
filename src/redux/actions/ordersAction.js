@@ -6,14 +6,19 @@ import {
   UPDATE_ORDER_PAY_STATUS,
   UPDATE_ORDER_DELIVER_STATUS,
   GET_ERROR,
+  RESET_STATE,
 } from "../type";
 
 // Get All Orders To The User / Admin [Authenticate by the Token]
 export const getAllOrders = (limit, page) => async (dispatch) => {
   try {
-    const result = await useGetDataToken(
-      `/api/v1/orders?limit=${limit}&page=${page}`
-    );
+    const params = new URLSearchParams();
+
+    if (limit !== undefined && limit !== null) params.append("limit", limit);
+    if (page !== undefined && page !== null) params.append("page", page);
+
+    const result = await useGetDataToken(`/api/v1/orders?${params.toString()}`);
+
     dispatch({
       type: GET_ALL_ORDERS,
       payload: result,
@@ -21,7 +26,8 @@ export const getAllOrders = (limit, page) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e.response,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "fetchAll",
     });
   }
 };
@@ -37,7 +43,8 @@ export const getSpecificOrder = (id) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e.response,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "fetchSpecific",
     });
   }
 };
@@ -53,7 +60,8 @@ export const changeOrderPayAction = (id) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e.response,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "update",
     });
   }
 };
@@ -69,7 +77,15 @@ export const changeOrderDeliverAction = (id) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: "Error " + e.response,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "update",
     });
   }
+};
+
+// Action To Reset State After Specific Action
+export const resetState = () => (dispatch) => {
+  dispatch({
+    type: RESET_STATE,
+  });
 };

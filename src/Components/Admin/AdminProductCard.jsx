@@ -14,12 +14,11 @@ import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
 
 // Import modal message data for delete and edit operations
 import { useTranslation } from "react-i18next";
-import { INPUT_TYPES } from "../../constants/inputs";
 
 import "../Products/ProductCard.css";
 
 // Component responsible for rendering individual product cards in admin panel
-const AdminProductCard = ({ item, onDelete, index }) => {
+const AdminProductCard = ({ item, index }) => {
   const { t } = useTranslation(["utilities", "admin"]);
 
   // Destructure modal visibility and handlers from custom hook
@@ -33,7 +32,9 @@ const AdminProductCard = ({ item, onDelete, index }) => {
     actions,
     discountAmount,
     discountPercent,
-  ] = AdminProductCardHook(item, onDelete);
+    isDeletePress,
+    isEditPress,
+  ] = AdminProductCardHook(item);
 
   const [sectionRef, isVisible] = useInviewAnimation();
 
@@ -48,6 +49,7 @@ const AdminProductCard = ({ item, onDelete, index }) => {
         modalBody={t("utilities:modal.deleteMessage")}
         modalFooter={t("utilities:modal.delete")}
         className={`btn-danger`}
+        isPress={isDeletePress}
         ariaLabel={`${t("utilities:modal.deleteAriaLabel")}: ${item?.title}`}
       />
 
@@ -60,6 +62,7 @@ const AdminProductCard = ({ item, onDelete, index }) => {
         modalBody={t("utilities:modal.editMessage")}
         modalFooter={t("utilities:modal.edit")}
         className={`btn-primary`}
+        isPress={isEditPress}
         ariaLabel={`${t("utilities:modal.editAriaLabel")}: ${item?.title}`}
       />
 
@@ -78,16 +81,15 @@ const AdminProductCard = ({ item, onDelete, index }) => {
         {/* Action buttons for Edit/Delete */}
         <Col className="d-flex justify-content-between px-3 pt-3">
           {actions.map((action, index) => (
-            <button
+            <i
               key={index}
-              type={INPUT_TYPES.BUTTON}
+              className={action?.icon}
+              title={action?.name}
               onClick={action.onClick}
+              tabIndex={0}
               aria-label={action.ariaLabel}
-              title={action.ariaLabel}
-              className="mb-2"
-            >
-              {action?.label}
-            </button>
+              style={{ cursor: "pointer" }}
+            />
           ))}
         </Col>
 
