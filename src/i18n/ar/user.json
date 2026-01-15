@@ -1,0 +1,35 @@
+{
+  "userProfile": {
+    "title": "الصفحه الشخصية",
+    "editButton": "تعديل",
+    "logoutButton": "تسجيل الخروج",
+    "settings": "الإعدادات",
+    "welcomeMessage": "مرحباً، {{username}}!",
+
+    "username": "اسم المستخدم",
+    "phoneNumber": "رقم الهاتف",
+    "emailAddress": "البريد الإلكتروني",
+    "changePassword": "تغيير كلمة المرور",
+
+    "currentPasswordLabel": "كلمة المرور الحالية",
+    "newPasswordLabel": "كلمة المرور الجديدة",
+    "confirmNewPasswordLabel": "تأكيد كلمة المرور الجديدة",
+
+    "currentPasswordPlaceholder": "أدخل كلمة المرور الحالية",
+    "newPasswordPlaceholder": "أدخل كلمة المرور الجديدة",
+    "confirmNewPasswordPlaceholder": "تأكيد كلمة المرور الجديدة",
+    "saveChangesButton": "حفظ التغييرات",
+    "modal": {
+      "title": "تعديل معلومات الملف الشخصي",
+      "closeButton": "إغلاق",
+      "saveButton": "حفظ التغييرات",
+      "nameLabel": "الاسم الكامل",
+      "emailLabel": "البريد الإلكتروني",
+      "phoneLabel": "رقم الهاتف",
+
+      "userNamePlaceholder": "أدخل اسم المستخدم الخاص بك",
+      "emailPlaceholder": "أدخل عنوان بريدك الإلكتروني",
+      "phonePlaceholder": "أدخل رقم هاتفك"
+    }
+  }
+}

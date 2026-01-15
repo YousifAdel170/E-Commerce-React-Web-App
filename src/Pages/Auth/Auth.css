@@ -256,6 +256,10 @@
   color: var(--main-color) !important;
 }
 
+.react-tel-input .user-input {
+  padding-left: 50px !important;
+}
+
 /* ===============================
    Password validation rules 
    =============================== */

@@ -1,0 +1,36 @@
+{
+  "userProfile": {
+    "title": "User Profile",
+    "editButton": "Edit",
+    "logoutButton": "Log Out",
+    "settings": "Settings",
+    "welcomeMessage": "Welcome, {{username}}!",
+
+    "username": "Username",
+    "phoneNumber": "Phone Number",
+    "emailAddress": "Email Address",
+    "changePassword": "Change Password",
+
+    "currentPasswordLabel": "Current Password",
+    "newPasswordLabel": "New Password",
+    "confirmNewPasswordLabel": "Confirm New Password",
+
+    "currentPasswordPlaceholder": "Enter current password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmNewPasswordPlaceholder": "Confirm new password",
+    "saveChangesButton": "Save Changes",
+
+    "modal": {
+      "title": "Edit Profile Information",
+      "closeButton": "Close",
+      "saveButton": "Save Changes",
+      "nameLabel": "Username",
+      "emailLabel": "Email Address",
+      "phoneLabel": "Phone Number",
+
+      "userNamePlaceholder": "Enter your Username",
+      "emailPlaceholder": "Enter your email address",
+      "phonePlaceholder": "Enter your phone number"
+    }
+  }
+}

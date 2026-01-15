@@ -65,14 +65,24 @@ const AdminAddSubCategoryHook = () => {
     // a. Prevent The Default Action of submit
     e.preventDefault();
 
-    // The Operation has been Started [Start Loading]
-    setIsPress(true);
     // Validate the name and the selection of the main category of the subcategory
-    if (name === EMPTY.TEXT || id === EMPTY.ZERO) {
-      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
-      setIsPress(false);
-      return;
-    }
+    if (name.trim() === EMPTY.TEXT)
+      return notify(
+        t("category.subcategory.nameRequired"),
+        NOTIFICATION_TYPES.WARNING
+      );
+
+    if (name?.length < 3 || name?.length > 100)
+      return notify(
+        t("category.subcategory.nameLength"),
+        NOTIFICATION_TYPES.WARNING
+      );
+
+    if (id === EMPTY.ZERO)
+      return notify(
+        t("category.subcategory.mainCategoryRequired"),
+        NOTIFICATION_TYPES.WARNING
+      );
 
     // The Operation has been Started [Start Loading]
     setIsPress(true);
@@ -96,7 +106,10 @@ const AdminAddSubCategoryHook = () => {
         !createError &&
         createdSubCategory?.status === STATUS.SUCCESS_CREATED
       ) {
-        notify(t("general.addSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        notify(
+          t("category.subcategory.addSuccess"),
+          NOTIFICATION_TYPES.SUCCESS
+        );
 
         setTimeout(
           () =>
@@ -110,7 +123,7 @@ const AdminAddSubCategoryHook = () => {
         createError?.response?.data?.message.includes(STATUS_MESSAGES.DUPLICATE)
       )
         notify(t("error.duplicateSubCategory"), NOTIFICATION_TYPES.ERROR);
-      else notify(t("general.addFail"), NOTIFICATION_TYPES.ERROR);
+      else notify(t("category.subcategory.addFail"), NOTIFICATION_TYPES.ERROR);
 
       dispatch(resetState());
     }

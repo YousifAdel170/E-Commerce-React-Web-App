@@ -50,6 +50,15 @@ const AdminAddCategoryHook = () => {
     // a. Prevent The Default Action of submit
     e.preventDefault();
 
+    if (name.trim() === EMPTY.TEXT)
+      return notify(t("category.nameRequired"), NOTIFICATION_TYPES.WARNING);
+
+    if (name?.length < 3 || name?.length > 100)
+      return notify(t("category.nameLength"), NOTIFICATION_TYPES.WARNING);
+
+    if (selectedFile == null)
+      return notify(t("category.imageRequired"), NOTIFICATION_TYPES.WARNING);
+
     // b. Validate the inputs [image + text]
     if (name !== EMPTY.TEXT && selectedFile != null) {
       // i. Create formData to store the name and the selected file
@@ -66,12 +75,11 @@ const AdminAddCategoryHook = () => {
         await dispatch(createNewCategory(formData));
       } catch (error) {
         console.error("Error creating category:", error);
-        notify(t("general.addFail"), NOTIFICATION_TYPES.ERROR);
+        notify(t("category.addFail"), NOTIFICATION_TYPES.ERROR);
         setIsPress(false);
       }
       //   The User Entered Empty Data
-    } else
-      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
+    }
   };
 
   useEffect(() => {
@@ -82,12 +90,12 @@ const AdminAddCategoryHook = () => {
         setImage(uploadImage);
         setName(EMPTY.TEXT);
         setSelectedFile(null);
-        notify(t("general.addSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        notify(t("category.addSuccess"), NOTIFICATION_TYPES.SUCCESS);
         setTimeout(
           () => navigate(ROUTES.ADMIN.CATEGORIES.ALL),
           DELAYS.NAVIGATION_DELAY
         );
-      } else notify(t("general.addFail"), NOTIFICATION_TYPES.ERROR);
+      } else notify(t("category.addFail"), NOTIFICATION_TYPES.ERROR);
     }
   }, [loadingCreate, createError, t, isPress, navigate]);
 

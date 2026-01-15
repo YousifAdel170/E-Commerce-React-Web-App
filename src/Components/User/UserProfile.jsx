@@ -1,17 +1,20 @@
-/* Importing necessary components from react-bootstrap */
-import { Button, Col, Modal, Row } from "react-bootstrap";
-
-/* Importing ToastContainer for displaying toast notifications */
+// Import Components and Libraries
+import { Container, Row, Col, Button, Modal, Form } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
+import { motion } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
-/* Importing custom hook for managing user profile data */
+// Import Custom Components
+import InputField from "../../Components/Utility/InputField";
+
+// Import Custom Hook
 import UserProfileHook from "../../hooks/user/UserProfileHook";
-
-/* Importing delete icon for UI */
-import deleteIcon from "../../assets/Imgs/delete.png";
+import { useTranslation } from "react-i18next";
+import { INPUT_NAMES, INPUT_TYPES } from "../../constants/inputs";
+import SpinnerComponent from "../Utility/SpinnerComponent";
 
 const UserProfile = () => {
-  /* Destructuring values and handlers from custom hook */
   const [
     user,
     show,
@@ -31,159 +34,245 @@ const UserProfile = () => {
     onChangeCurrentPassword,
     onChangePassword,
     onChangePasswordConfirm,
+    isUserEditPress,
+    isChangePasswordPress,
   ] = UserProfileHook();
 
+  const { t } = useTranslation("user");
+
   return (
-    <div>
-      {/* Modal for editing user data */}
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header>
-          <Modal.Title>
-            <div className="font">تعديل البيانات الشخصية</div>
-          </Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          {/* Username input field */}
-          <input
-            value={name}
-            onChange={onChangeName}
-            type="text"
-            className="input-form font d-block mt-3 px-3"
-            placeholder="اسم المستخدم"
-          />
-          {/* Email input field */}
-          <input
-            value={email}
-            onChange={onChangeEmail}
-            type="email"
-            className="input-form font d-block mt-3 px-3"
-            placeholder="الايميل"
-          />
-          {/* Phone input field */}
-          <input
-            value={phone}
-            onChange={onChangePhone}
-            type="phone"
-            className="input-form font d-block mt-3 px-3"
-            placeholder="الهاتف"
-          />
-        </Modal.Body>
-
-        <Modal.Footer>
-          {/* Cancel button */}
-          <Button className="font" variant="success" onClick={handleClose}>
-            تراجع
-          </Button>
-          {/* Save changes button */}
-          <Button className="font" variant="dark" onClick={handleSubmit}>
-            حفظ التعديل
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* Title of the User Profile */}
-      <div className="title-text">الصفحه الشخصية</div>
-
-      {/* User Info Card */}
-      <div className="user-address-card px-2">
-        {/* User Name with Edit Icon */}
-        <Row className="d-flex justify-content-between pt-2">
-          <Col xs="6" className="d-flex align-items-center">
-            <div className="ms-2 px-2">الاسم:</div>
-            <div className="item-delete-edit">{user?.name}</div>
-          </Col>
-
-          <Col xs="6" className="d-flex justify-content-end">
-            {/* Edit user profile */}
-            <div
-              onClick={handleShow}
-              className="d-flex align-items-center mx-2"
-            >
-              <img
-                alt="edit"
-                className="ms-1"
-                src={deleteIcon}
-                height="17px"
-                width="15px"
-              />
-              <p className="item-delete-edit align-items-center d-flex">
-                {" "}
-                تعديل
-              </p>
-            </div>
-          </Col>
-        </Row>
-
-        {/* User Phone */}
-        <Row className="px-2">
-          <Col xs="12" className="d-flex align-items-center">
-            <div className="ms-2">رقم الهاتف:</div>
-            <div className="item-delete-edit">{user?.phone}</div>
-          </Col>
-        </Row>
-
-        {/* User Email */}
-        <Row className="px-2">
-          <Col xs="12" className="d-flex align-items-center">
-            <div className="ms-2">الايميل:</div>
-            <div className="item-delete-edit">{user?.email}</div>
-          </Col>
-        </Row>
-
-        {/* Change Password Section */}
-        <Row className="mt-4">
-          <Col xs="10" sm="8" md="6">
-            <div className="title-text">تغير كملة المرور</div>
-
-            {/* Current Password input field */}
-            <input
-              type="password"
-              value={currentPassword}
-              onChange={onChangeCurrentPassword}
-              className="input-form d-block mt-2 px-3"
-              placeholder="ادخل كلمة المرور القديمة"
-            />
-            {/* New Password input field */}
-            <input
-              type="password"
-              value={password}
-              onChange={onChangePassword}
-              className="input-form d-block mt-3 px-3"
-              placeholder="ادخل كلمة المرور الجديده"
-            />
-            {/* Confirm New Password input field */}
-            <input
-              type="password"
-              value={passwordConfirm}
-              onChange={onChangePasswordConfirm}
-              className="input-form d-block mt-3 px-3"
-              placeholder="تاكيد كلمة المرور الجديدة"
-            />
-          </Col>
-        </Row>
-
-        {/* Save Password Button */}
-        <Row>
-          <Col
-            xs="10"
-            sm="8"
-            md="6"
-            className="d-flex justify-content-end mb-3"
+    <Container fluid className="auth-container" style={{ flex: 1 }}>
+      <Row className="w-100 justify-content-center">
+        <Col xs={11} sm={10} md={8} lg={6}>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="auth-form-wrapper"
           >
-            <button
-              onClick={changePasswordSubmit}
-              className="btn-save d-inline mt-2"
-            >
-              حفظ كلمة السر
-            </button>
-          </Col>
-        </Row>
-      </div>
+            {/* Title */}
+            <h2>{t("userProfile.title")}</h2>
 
-      {/* Toast Notifications */}
+            {/* User Info Card */}
+            <div className="auth-form-wrapper">
+              {/* Name Row */}
+              <Row className="align-items-center mb-2">
+                <Col xs="6">
+                  <strong>{t("userProfile.username")}:</strong>
+                  <span
+                    className="card-item-text-answer mx-2"
+                    style={{ fontSize: "15px" }}
+                  >
+                    {user?.name}
+                  </span>
+                </Col>
+                <Col xs="6" className="justify-content-end d-flex">
+                  <Button size="sm" onClick={handleShow}>
+                    <FontAwesomeIcon
+                      title={t("userProfile.editButton")}
+                      icon={faEdit}
+                    />
+                  </Button>
+                </Col>
+              </Row>
+
+              {/* Phone Row */}
+              <Row className="align-items-center mb-2">
+                <Col>
+                  <strong>{t("userProfile.phoneNumber")}:</strong>
+                  <span
+                    className="card-item-text-answer mx-2"
+                    style={{ fontSize: "15px" }}
+                  >
+                    {user?.phone}
+                  </span>
+                </Col>
+              </Row>
+
+              {/* Email Row */}
+              <Row className="align-items-center mb-2">
+                <Col>
+                  <strong>{t("userProfile.emailAddress")}:</strong>
+                  <span
+                    className="card-item-text-answer mx-2"
+                    style={{ fontSize: "15px" }}
+                  >
+                    {user?.email}
+                  </span>
+                </Col>
+              </Row>
+            </div>
+
+            <hr />
+
+            {/* Change Password Section */}
+            <div className="auth-form-wrapper">
+              <h4 className="mb-3 text-center">
+                {t("userProfile.changePassword")}
+              </h4>
+
+              {/* Current Password */}
+              <Form.Group className="mb-3">
+                <Form.Label
+                  htmlFor="formCurrentPassword"
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  {t("userProfile.currentPasswordLabel")}
+                </Form.Label>
+                <InputField
+                  value={currentPassword}
+                  onChangeInput={onChangeCurrentPassword}
+                  onChangeInputName={INPUT_NAMES.CURRENT_PASSWORD}
+                  type={INPUT_TYPES.PASSWORD}
+                  placeholder={t("userProfile.currentPasswordPlaceholder")}
+                  name={INPUT_NAMES.CURRENT_PASSWORD}
+                  id="formCurrentPassword"
+                  required
+                />
+              </Form.Group>
+
+              {/* New Password */}
+              <Form.Group className="mb-3">
+                <Form.Label
+                  htmlFor="formNewPassword"
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  {t("userProfile.newPasswordLabel")}
+                </Form.Label>
+                <InputField
+                  value={password}
+                  onChangeInput={onChangePassword}
+                  onChangeInputName={INPUT_NAMES.NEW_PASSWORD}
+                  type={INPUT_TYPES.PASSWORD}
+                  placeholder={t("userProfile.newPasswordPlaceholder")}
+                  name={INPUT_NAMES.NEW_PASSWORD}
+                  id="formNewPassword"
+                  required
+                />
+              </Form.Group>
+
+              {/* Confirm New Password */}
+              <Form.Group className="mb-3">
+                <Form.Label
+                  htmlFor="formConfirmNewPassword"
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  {t("userProfile.confirmNewPasswordLabel")}
+                </Form.Label>
+                <InputField
+                  value={passwordConfirm}
+                  onChangeInput={onChangePasswordConfirm}
+                  onChangeInputName={INPUT_NAMES.CONFIRM_NEW_PASSWORD}
+                  type={INPUT_TYPES.PASSWORD}
+                  placeholder={t("userProfile.confirmNewPasswordPlaceholder")}
+                  name={INPUT_NAMES.CONFIRM_NEW_PASSWORD}
+                  id="formConfirmNewPassword"
+                  required
+                />
+              </Form.Group>
+
+              <div className="text-center mt-3">
+                <Button
+                  onClick={changePasswordSubmit}
+                  disabled={isChangePasswordPress}
+                >
+                  {" "}
+                  {isChangePasswordPress ? (
+                    <SpinnerComponent className={"mx-2"} size={"sm"} />
+                  ) : (
+                    ""
+                  )}
+                  {t("userProfile.saveChangesButton")}
+                </Button>
+              </div>
+            </div>
+
+            {/* Edit Profile Modal */}
+            <Modal show={show} onHide={handleClose} centered>
+              <Modal.Header>
+                <Modal.Title>{t("userProfile.modal.title")}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {/* Username */}
+                <Form.Group className="mb-3">
+                  <Form.Label
+                    htmlFor="formUsername"
+                    className="d-flex justify-content-between align-items-center"
+                  >
+                    {t("userProfile.modal.nameLabel")}
+                  </Form.Label>
+                  <InputField
+                    value={name}
+                    onChangeInput={onChangeName}
+                    onChangeInputName={INPUT_NAMES.NAME}
+                    type={INPUT_TYPES.TEXT}
+                    placeholder={t("userProfile.modal.userNamePlaceholder")}
+                    name={INPUT_NAMES.NAME}
+                    id="formUsername"
+                    required
+                  />
+                </Form.Group>
+
+                {/* Email */}
+                <Form.Group className="mb-3">
+                  <Form.Label
+                    htmlFor="formEmail"
+                    className="d-flex justify-content-between align-items-center"
+                  >
+                    {t("userProfile.modal.emailLabel")}
+                  </Form.Label>
+                  <InputField
+                    value={email}
+                    onChangeInput={onChangeEmail}
+                    onChangeInputName={INPUT_NAMES.EMAIL}
+                    type={INPUT_TYPES.EMAIL}
+                    placeholder={t("userProfile.modal.emailPlaceholder")}
+                    name={INPUT_NAMES.EMAIL}
+                    id="formEmail"
+                    required
+                  />
+                </Form.Group>
+
+                {/* Phone Number */}
+                <Form.Group className="mb-3">
+                  <Form.Label
+                    htmlFor="formPhone"
+                    className="d-flex justify-content-between align-items-center"
+                  >
+                    {t("userProfile.modal.phoneLabel")}
+                  </Form.Label>
+                  <InputField
+                    value={phone}
+                    onChangeInput={onChangePhone}
+                    onChangeInputName={INPUT_NAMES.PHONE}
+                    type={INPUT_TYPES.PHONE}
+                    placeholder={t("userProfile.modal.phonePlaceholder")}
+                    name={INPUT_NAMES.PHONE}
+                    id="formPhone"
+                    required
+                  />
+                </Form.Group>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                  {t("userProfile.modal.closeButton")}
+                </Button>
+                <Button onClick={handleSubmit} disabled={isUserEditPress}>
+                  {" "}
+                  {isUserEditPress ? (
+                    <SpinnerComponent className={"mx-2"} size={"sm"} />
+                  ) : (
+                    ""
+                  )}
+                  {t("userProfile.modal.saveButton")}
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </motion.div>
+        </Col>
+      </Row>
       <ToastContainer />
-    </div>
+    </Container>
   );
 };
 

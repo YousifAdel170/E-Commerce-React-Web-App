@@ -26,21 +26,36 @@
 
     "nameSubCategoryRequired": "Subcategory name is required.",
     "mainCategoryRequired": "Main category must be selected.",
+    "pleaseCompleteData": "Please complete all required fields.",
 
-    "pleaseCompleteData": "Please complete all required fields."
+    "userProfile": {
+      "currentPasswordRequired": "Current password is required.",
+      "newPasswordRequired": "New password is required.",
+      "confirmNewPasswordRequired": "Please confirm your new password.",
+      "newPasswordWeak": "New password must be at least 8 characters with a capital letter, a number, and a special character.",
+      "newPasswordMismatch": "New passwords do not match.",
+      "sameAsCurrent": "New password cannot be the same as the current password.",
+      "usernameRequired": "Username is required.",
+      "emailRequired": "Email is required.",
+      "phoneRequired": "Phone number is required.",
+      "nochangesDetected": "No changes detected to update."
+    }
   },
   "success": {
     "register": "Your account has been created successfully!",
     "login": "You’ve logged in successfully!",
     "emailCodeSentSuccess": "A verification code was sent to your email.",
-    "resetPassword": "Password changed successfully"
+    "resetPassword": "Password changed successfully",
+    "userChangePassword": "Password changed successfully!"
   },
   "error": {
     "multiple": "Please review the form. Multiple errors found.",
     "loginFailed": "An error occurred during login. Please try again.",
     "accountNotFoundError": "We couldn't find an account with that email.",
     "resetPassword": "Please request a new code",
-    "duplicateSubCategory": "This name is already taken. Try a different one."
+    "duplicateSubCategory": "This name is already taken. Try a different one.",
+    "userChangePassword": "An error occurred while changing the password. Please try again.",
+    "emailAlreadyUsed": "This email is already used."
   },
   "general": {
     "addSuccess": "Item added successfully!",
@@ -92,10 +107,7 @@
     "updateFailed": "An error occurred while updating the status. Please try again."
   },
   "coupon": {
-    "codeRequired": "Coupon code is required.",
-    "discountRequired": "Discount value is required.",
     "discountInvalid": "Discount must be a number between 1 and 100.",
-    "expiryRequired": "Expiry date is required.",
     "expiryInvalid": "Expiry date must be in the future.",
     "addSuccess": "Coupon added successfully!",
     "addFail": "Could not add coupon. Please try again.",
@@ -106,6 +118,69 @@
     "applySuccess": "Coupon applied successfully!",
     "applyFail": "Could not apply coupon. Please check the code and try again.",
     "alreadyUsed": "This coupon has already been used.",
-    "expired": "This coupon has expired."
+    "expired": "This coupon has expired.",
+
+    "nameRequired": "Coupon name is required.",
+    "expiryRequired": "Coupon expiry date is required.",
+    "discountRequired": "Coupon discount value is required."
+  },
+
+  "brand": {
+    "addSuccess": "Brand added successfully!",
+    "addFail": "Could not add brand. Please try again.",
+    "deleteSuccess": "Brand deleted successfully!",
+    "deleteFail": "Could not delete brand. Please try again.",
+    "updateSuccess": "Brand updated successfully!",
+    "updateFail": "Could not update brand. Please try again.",
+    "brandNameRequired": "Brand name is required.",
+    "brandLogoRequired": "Brand logo is required.",
+    "brandNameLength": "Brand name must be between 3 and 100 characters."
+  },
+
+  "product": {
+    "addSuccess": "Product added successfully!",
+    "addFail": "Could not add product. Please try again.",
+    "deleteSuccess": "Product deleted successfully!",
+    "deleteFail": "Could not delete product. Please try again.",
+    "updateSuccess": "Product updated successfully!",
+    "updateFail": "Could not update product. Please try again.",
+
+    "nameRequired": "Product name is required.",
+    "nameLength": "Product name must be between 3 and 100 characters.",
+    "descriptionRequired": "Product description is required.",
+    "descriptionLength": "Product description must not exceed 2000 characters.",
+    "quantityRequired": "Product quantity is required.",
+    "priceRequired": "Product price is required.",
+    "priceAfterDiscountInvalid": "Price after discount must be less than the original price.",
+    "priceLength": "Product price must be less than 32 characters.",
+    "imageCoverRequired": "Product cover image is required.",
+    "categoryRequired": "Product category is required.",
+    "brandRequired": "Product brand is required."
+  },
+
+  "category": {
+    "addSuccess": "Category added successfully!",
+    "addFail": "Could not add category. Please try again.",
+    "deleteSuccess": "Category deleted successfully!",
+    "deleteFail": "Could not delete category. Please try again.",
+    "updateSuccess": "Category updated successfully!",
+    "updateFail": "Could not update category. Please try again.",
+
+    "nameRequired": "Category name is required.",
+    "nameLength": "Category name must be between 3 and 100 characters.",
+    "imageRequired": "Category image is required.",
+
+    "subcategory": {
+      "addSuccess": "Subcategory added successfully!",
+      "addFail": "Could not add subcategory. Please try again.",
+      "deleteSuccess": "Subcategory deleted successfully!",
+      "deleteFail": "Could not delete subcategory. Please try again.",
+      "updateSuccess": "Subcategory updated successfully!",
+      "updateFail": "Could not update subcategory. Please try again.",
+
+      "nameRequired": "Subcategory name is required.",
+      "nameLength": "Subcategory name must be between 3 and 100 characters.",
+      "mainCategoryRequired": "Main category must be selected."
+    }
   }
 }

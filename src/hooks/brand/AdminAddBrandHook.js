@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import notify from "../Utility/useNotifyHook";
-import { createNewBrand } from "../../redux/actions/brandAction";
+import { createNewBrand, resetState } from "../../redux/actions/brandAction";
 
 import uploadImage from "../../assets/Imgs/avatar.png";
 import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
@@ -43,22 +43,28 @@ const AdminAddBrandHook = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (name !== EMPTY.TEXT && selectedFile != null) {
-      const formData = new FormData();
-      formData.append(BACKEND_VARIABLES.BRAND.ADD.NAME, name);
-      formData.append(BACKEND_VARIABLES.BRAND.ADD.IMAGE, selectedFile);
+    if (name.trim() === EMPTY.TEXT)
+      return notify(t("brand.brandNameRequired"), NOTIFICATION_TYPES.WARNING);
 
-      setIsPress(true);
+    if (name?.length < 3 || name?.length > 100)
+      return notify(t("brand.brandNameLength"), NOTIFICATION_TYPES.WARNING);
 
-      try {
-        await dispatch(createNewBrand(formData));
-      } catch (error) {
-        console.error("Error creating brand:", error);
-        notify(t("general.addFail"), NOTIFICATION_TYPES.ERROR);
-        setIsPress(false);
-      }
-    } else
-      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
+    if (selectedFile == null)
+      return notify(t("brand.brandLogoRequired"), NOTIFICATION_TYPES.WARNING);
+
+    const formData = new FormData();
+    formData.append(BACKEND_VARIABLES.BRAND.ADD.NAME, name);
+    formData.append(BACKEND_VARIABLES.BRAND.ADD.IMAGE, selectedFile);
+
+    setIsPress(true);
+
+    try {
+      await dispatch(createNewBrand(formData));
+    } catch (error) {
+      console.error("Error creating brand:", error);
+      notify(t("brand.addFail"), NOTIFICATION_TYPES.ERROR);
+      setIsPress(false);
+    }
   };
 
   // Watch for result
@@ -71,14 +77,16 @@ const AdminAddBrandHook = () => {
         setName(EMPTY.TEXT);
         setSelectedFile(null);
 
-        notify(t("general.addSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        notify(t("brand.addSuccess"), NOTIFICATION_TYPES.SUCCESS);
         setTimeout(
           () => navigate(ROUTES.ADMIN.BRANDS.ALL),
           DELAYS.NAVIGATION_DELAY
         );
-      } else notify(t("general.addFail"), NOTIFICATION_TYPES.ERROR);
+      } else notify(t("brand.addFail"), NOTIFICATION_TYPES.ERROR);
+
+      dispatch(resetState());
     }
-  }, [loadingCreate, createError, t, isPress, navigate]);
+  }, [loadingCreate, createError, t, isPress, navigate, dispatch]);
 
   return [image, name, isPress, handleSubmit, onImageChange, onChangeName];
 };

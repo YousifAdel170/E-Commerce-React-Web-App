@@ -2,13 +2,13 @@
 export const PAGE_PRODUCTS_LIMIT = 12;
 
 // Number of Items To be displayed in each page for the categories
-export const PAGE_CATEGORIES_LIMIT = 10;
+export const PAGE_CATEGORIES_LIMIT = 2;
 
 // Number of Items To be displayed in each page for the brands
-export const PAGE_BRANDS_LIMIT = 10;
+export const PAGE_BRANDS_LIMIT = 2;
 
 // Number of Items To be displayed in each page for the favorite products
-export const PAGE_FAVORITE_PRODUCTS_LIMIT = 10;
+export const PAGE_FAVORITE_PRODUCTS_LIMIT = 5;
 
 // Number of Items To be displayed of Categories in the HomePage
 export const PAGE_CATEGORIES_HOME_LIMIT = 5;
@@ -30,3 +30,9 @@ export const PAGE_NUMBER_PRODUCT_DETAILS_RATES = 1;
 
 // Number of Orders To be displayed in the View All Orders Page
 export const NUMBER_OF_ORDERS_PER_PAGE = 2;
+
+// Number of coupons To be displayed in the Admin View All Coupons Page
+export const NUMBER_OF_COUPONS_PER_PAGE = 5;
+
+// Number of SubCategories To be displayed in each page for the sub categories
+export const PAGE_SUBCATEGORIES_LIMIT = 5;

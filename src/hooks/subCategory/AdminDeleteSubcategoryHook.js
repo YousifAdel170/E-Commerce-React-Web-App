@@ -40,8 +40,12 @@ const AdminDeleteSubcategoryHook = (subcategory) => {
       setIsPress(false);
 
       if (deletedSubcategory === EMPTY.TEXT)
-        notify(t("general.deleteSuccess"), NOTIFICATION_TYPES.SUCCESS);
-      else notify(t("general.deleteFail"), NOTIFICATION_TYPES.ERROR);
+        notify(
+          t("category.subcategory.deleteSuccess"),
+          NOTIFICATION_TYPES.SUCCESS
+        );
+      else
+        notify(t("category.subcategory.deleteFail"), NOTIFICATION_TYPES.ERROR);
 
       setShow(false); // Close modal
 

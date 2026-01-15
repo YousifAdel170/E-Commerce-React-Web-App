@@ -70,13 +70,14 @@ const AdminEditCategoryHook = (id) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      categoryName === EMPTY.TEXT ||
-      (selectedFile === null && categoryImage === uploadImage)
-    ) {
-      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
-      return;
-    }
+    if (categoryName.trim() === EMPTY.TEXT)
+      return notify(t("category.nameRequired"), NOTIFICATION_TYPES.WARNING);
+
+    if (categoryName?.length < 3 || categoryName?.length > 100)
+      return notify(t("category.nameLength"), NOTIFICATION_TYPES.WARNING);
+
+    if (!selectedFile && categoryImage === EMPTY.TEXT)
+      return notify(t("category.imageRequired"), NOTIFICATION_TYPES.WARNING);
 
     setIsLoading(true);
     setIsPress(true); // Stop loading state
@@ -97,12 +98,12 @@ const AdminEditCategoryHook = (id) => {
       setIsPress(false); // Stop loading state
 
       if (updatedCategory?.status === STATUS.SUCCESS_OK) {
-        notify(t("general.updateSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        notify(t("category.updateSuccess"), NOTIFICATION_TYPES.SUCCESS);
         setTimeout(
           () => navigate(ROUTES.ADMIN.CATEGORIES.ALL),
           DELAYS.NAVIGATION_DELAY
         );
-      } else notify(t("general.updateFail"), NOTIFICATION_TYPES.ERROR);
+      } else notify(t("category.updateFail"), NOTIFICATION_TYPES.ERROR);
     }
   }, [loading, updatedCategory, navigate, isLoading, t]);
 

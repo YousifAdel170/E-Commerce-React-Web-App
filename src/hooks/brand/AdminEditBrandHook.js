@@ -66,18 +66,15 @@ const AdminEditBrandHook = (id) => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      brandName === EMPTY.TEXT ||
-      (selectedFile === null && brandImage === uploadImage)
-    ) {
-      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
-      return;
-    }
 
-    // // Create FormData to send to the backend
-    // const formData = new FormData();
-    // formData.append(BACKEND_VARIABLES.BRAND.ADD.NAME, brandName); // The name of the brand
-    // formData.append(BACKEND_VARIABLES.BRAND.ADD.IMAGE, selectedFile);
+    if (brandName === EMPTY.TEXT)
+      return notify(t("brand.brandNameRequired"), NOTIFICATION_TYPES.WARNING);
+
+    if (brandName?.length < 3 || brandName?.length > 100)
+      return notify(t("brand.brandNameLength"), NOTIFICATION_TYPES.WARNING);
+
+    if (selectedFile === null && brandImage === uploadImage)
+      return notify(t("brand.brandLogoRequired"), NOTIFICATION_TYPES.WARNING);
 
     setIsPress(true); // Start loading state
     setIsLoading(true);
@@ -96,12 +93,12 @@ const AdminEditBrandHook = (id) => {
     if (!isLoading && !loading?.update) {
       setIsPress(false); // Stop loading state
       if (updatedBrand?.status === STATUS.SUCCESS_OK) {
-        notify(t("general.updateSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        notify(t("brand.updateSuccess"), NOTIFICATION_TYPES.SUCCESS);
         setTimeout(
           () => navigate(ROUTES.ADMIN.BRANDS.ALL),
           DELAYS.NAVIGATION_DELAY
         );
-      } else notify(t("general.updateFail"), NOTIFICATION_TYPES.ERROR);
+      } else notify(t("brand.updateFail"), NOTIFICATION_TYPES.ERROR);
     }
   }, [loading, updatedBrand, navigate, t, isLoading]);
 

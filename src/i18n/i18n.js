@@ -4,43 +4,31 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 // Import namespaces English
 import enAuth from "./en-US/auth/auth.json";
-
 import enUtilities from "./en-US/utilities.json";
-
 import enHomeContent from "./en-US/utilities/homeContent.json";
 import enShopProducts from "./en-US/products/shopProducts.json";
-
 import enNotificationMessages from "./en-US/utilities/notifcation_messages.json";
-
 import enAdmin from "./en-US/admin.json";
-
 import enProduct from "./en-US/product.json";
-
 import enRate from "./en-US/rate.json";
-
 import enCoupon from "./en-US/coupons.json";
 import enBrands from "./en-US/brands.json";
 import enCategories from "./en-US/categories.json";
+import enUser from "./en-US/user.json";
 
 // Import namespaces Arabic
 import arAuth from "./ar/auth/auth.json";
-
 import arUtilities from "./ar/utilities.json";
-
 import arHomeContent from "./ar/utilities/homeContent.json";
 import arShopProducts from "./ar/products/shopProducts.json";
-
 import arNotificationMessages from "./ar/utilities/notifcation_messages.json";
-
 import arAdmin from "./ar/admin.json";
-
 import arProduct from "./ar/product.json";
-
 import arRate from "./ar/rate.json";
-
 import arCoupon from "./ar/coupons.json";
 import arBrands from "./ar/brands.json";
 import arCategories from "./ar/categories.json";
+import arUser from "./ar/user.json";
 
 import { DEFAULT_DIRECTION, DEFAULT_LANGUAGE } from "../constants/settings";
 
@@ -61,6 +49,7 @@ i18n
         coupons: enCoupon,
         brands: enBrands,
         categories: enCategories,
+        user: enUser,
       },
       ar: {
         utilities: arUtilities,
@@ -74,6 +63,7 @@ i18n
         coupons: arCoupon,
         brands: arBrands,
         categories: arCategories,
+        user: arUser,
       },
     },
     fallbackLng: DEFAULT_LANGUAGE,
@@ -90,6 +80,7 @@ i18n
       "coupons",
       "brands",
       "categories",
+      "user",
     ], // include all namespaces
     defaultNS: "auth", // default namespace used if not passed to useTranslation
     interpolation: {

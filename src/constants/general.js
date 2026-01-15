@@ -35,6 +35,7 @@ export const STATUS_MESSAGES = {
   FAILED: "fail",
   DUPLICATE: "Duplicate",
   SUCCESS: "success",
+  BACKEND_EMAIL_ALREADY_USED: "E-mail already in use",
 };
 
 // ================================

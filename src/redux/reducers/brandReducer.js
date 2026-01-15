@@ -64,6 +64,7 @@ const brandReducer = (state = initialState, action) => {
         brand: {
           ...state.brand,
           data: state.brand.data.filter((b) => b._id !== action.payload.id),
+          paginationResult: state.brand.paginationResult,
         },
         deletedBrand: action.payload.response,
         loading: { ...state.loading, delete: false },

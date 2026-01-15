@@ -138,6 +138,7 @@ const AdminAddProduct = () => {
                 className="form-control"
                 placeholder={t("addProducts.priceBeforePlaceholder")}
                 aria-label={t("addProducts.priceBeforePlaceholder")}
+                min={0}
               />
             </div>
 
@@ -159,6 +160,7 @@ const AdminAddProduct = () => {
                 id="brand-product-after"
                 onChange={onChangePriceAfter}
                 value={priceAfter}
+                min={0}
               />
             </div>
 

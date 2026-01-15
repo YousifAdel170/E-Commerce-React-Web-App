@@ -61,7 +61,7 @@ const AdminProductCardHook = (item) => {
 
     if (error?.delete) {
       notify(
-        t("notification_messages:general.deleteFail"),
+        t("notification_messages:product.deleteFail"),
         NOTIFICATION_TYPES.ERROR
       );
 
@@ -71,7 +71,7 @@ const AdminProductCardHook = (item) => {
 
     if (!deletedProduct) {
       notify(
-        t("notification_messages:general.deleteSuccess"),
+        t("notification_messages:product.deleteSuccess"),
         NOTIFICATION_TYPES.SUCCESS
       );
     }

@@ -93,7 +93,6 @@ const productsReducer = (state = initialState, action) => {
       };
 
     case DELETE_PRODUCT:
-      console.log("DELETE_PRODUCT action.payload:", action.payload);
       return {
         ...state,
         deletedProduct: action.payload.response,

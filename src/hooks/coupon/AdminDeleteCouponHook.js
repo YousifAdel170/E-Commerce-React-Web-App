@@ -37,8 +37,8 @@ const AdminDeleteCouponHook = (coupon) => {
     if (!loading?.delete && isPress) {
       setIsPress(false);
       if (deletedCoupon === EMPTY.TEXT)
-        notify(t("general.deleteSuccess"), NOTIFICATION_TYPES.SUCCESS);
-      else notify(t("general.deleteFail"), NOTIFICATION_TYPES.ERROR);
+        notify(t("coupon.deleteSuccess"), NOTIFICATION_TYPES.SUCCESS);
+      else notify(t("coupon.deleteFail"), NOTIFICATION_TYPES.ERROR);
       setShow(false); // Close modal
 
       dispatch(resetState());

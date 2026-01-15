@@ -66,6 +66,7 @@ const categoryReducer = (state = initialState, action) => {
         category: {
           ...state.category,
           data: state.category.data.filter((b) => b._id !== action.payload.id),
+          paginationResult: state.category.paginationResult,
         },
         deletedCategory: action.payload.response,
 

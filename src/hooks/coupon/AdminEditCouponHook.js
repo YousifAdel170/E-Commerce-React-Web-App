@@ -64,14 +64,12 @@ const AdminEditCouponHook = (id) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      couponName === EMPTY.TEXT ||
-      couponDate === EMPTY.TEXT ||
-      couponValue === EMPTY.TEXT
-    ) {
-      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
-      return;
-    }
+    if (couponName === EMPTY.TEXT)
+      return notify(t("coupon.nameRequired"), NOTIFICATION_TYPES.WARNING);
+    if (couponDate === EMPTY.TEXT)
+      return notify(t("coupon.expiryRequired"), NOTIFICATION_TYPES.WARNING);
+    if (couponValue === EMPTY.TEXT)
+      return notify(t("coupon.discountRequired"), NOTIFICATION_TYPES.WARNING);
 
     setIsPress(true); // Set loading state to true
     await dispatch(

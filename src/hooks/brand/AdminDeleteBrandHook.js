@@ -36,9 +36,9 @@ const AdminDeleteBrandHook = (brand) => {
       setIsPress(false);
 
       if (deletedBrand === EMPTY.TEXT) {
-        notify(t("general.deleteSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        notify(t("brand.deleteSuccess"), NOTIFICATION_TYPES.SUCCESS);
         setShow(false); // Close modal
-      } else notify(t("general.deleteFail"), NOTIFICATION_TYPES.ERROR);
+      } else notify(t("brand.deleteFail"), NOTIFICATION_TYPES.ERROR);
     }
   }, [loading, deletedBrand, t, isPress]);
 

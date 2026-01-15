@@ -55,10 +55,16 @@ const AdminEditSubCategoryHook = (id) => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (subcategoryName === EMPTY.TEXT) {
-      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
-      return;
-    }
+    if (subcategoryName.trim() === EMPTY.TEXT)
+      return notify(
+        t("category.subcategory.nameRequired"),
+        NOTIFICATION_TYPES.WARNING
+      );
+    if (subcategoryName?.length < 3 || subcategoryName?.length > 100)
+      return notify(
+        t("category.subcategory.nameLength"),
+        NOTIFICATION_TYPES.WARNING
+      );
 
     setIsPress(true);
 

@@ -178,22 +178,44 @@ const AdminEditProductHook = (id) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (productName.trim() === EMPTY.TEXT)
+      return notify(t("product.nameRequired"), NOTIFICATION_TYPES.WARNING);
+
+    if (productName.length < 3 || productName.length > 100)
+      return notify(t("product.nameLength"), NOTIFICATION_TYPES.WARNING);
+
+    if (productDescription.trim() === EMPTY.TEXT)
+      return notify(
+        t("product.descriptionRequired"),
+        NOTIFICATION_TYPES.WARNING
+      );
+
+    if (productDescription.length > 2000)
+      return notify(t("product.descriptionLength"), NOTIFICATION_TYPES.WARNING);
+
+    if (qty <= 0)
+      return notify(t("product.quantityRequired"), NOTIFICATION_TYPES.WARNING);
+
+    if (priceBefore <= 0)
+      return notify(t("product.priceRequired"), NOTIFICATION_TYPES.WARNING);
+
+    if (priceBefore < priceAfter)
+      return notify(
+        t("product.priceAfterDiscountInvalid"),
+        NOTIFICATION_TYPES.WARNING
+      );
+
+    if (priceBefore.length > 32 || priceAfter.length > 32)
+      return notify(t("product.priceLength"), NOTIFICATION_TYPES.WARNING);
+
+    if (categoryID === 0)
+      return notify(t("product.categoryRequired"), NOTIFICATION_TYPES.WARNING);
+
     const hasValidImages = Array.isArray(images)
       ? images.length > 0
       : typeof images === "object" && images !== null
       ? Object.keys(images).length > 0
       : false;
-
-    if (
-      categoryID === 0 ||
-      productName.trim() === "" ||
-      productDescription.trim() === "" ||
-      priceBefore <= 0 ||
-      !hasValidImages
-    ) {
-      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
-      return;
-    }
 
     setIsPress(true);
 
@@ -215,6 +237,12 @@ const AdminEditProductHook = (id) => {
           itemImages.push(dataURLtoFile(images[index], Math.random() + ".png"));
       });
 
+      if (imgCover == undefined || itemImages?.length === 0 || !hasValidImages)
+        return notify(
+          t("product.imageCoverRequired"),
+          NOTIFICATION_TYPES.ERROR
+        );
+
       // Build FormData
       const formData = new FormData();
       formData.append(BACKEND_VARIABLES.PRDOUCT.TITLE, productName);
@@ -227,10 +255,14 @@ const AdminEditProductHook = (id) => {
         BACKEND_VARIABLES.PRDOUCT.PRICE_BEFORE_DISCOUNT,
         priceBefore
       );
-      formData.append(
-        BACKEND_VARIABLES.PRDOUCT.PRICE_AFTER_DISCOUNT,
-        priceAfter
-      );
+
+      if (priceAfter) {
+        formData.append(
+          BACKEND_VARIABLES.PRDOUCT.PRICE_AFTER_DISCOUNT,
+          priceAfter
+        );
+      }
+
       formData.append(BACKEND_VARIABLES.PRDOUCT.CATEGORY, categoryID);
       formData.append(BACKEND_VARIABLES.PRDOUCT.BRAND, brandID);
 
@@ -261,7 +293,7 @@ const AdminEditProductHook = (id) => {
       }, 1000);
     } catch (err) {
       console.error("Error in handleSubmit:", err);
-      notify(t("general.updateFail"), NOTIFICATION_TYPES.ERROR);
+      notify(t("product.updateFail"), NOTIFICATION_TYPES.ERROR);
     }
   };
 
@@ -282,7 +314,7 @@ const AdminEditProductHook = (id) => {
 
     // ❌ error case
     if (error?.update) {
-      notify(t("general.updateFail"), NOTIFICATION_TYPES.ERROR);
+      notify(t("product.updateFail"), NOTIFICATION_TYPES.ERROR);
       dispatch(resetState());
       return;
     }
@@ -292,7 +324,7 @@ const AdminEditProductHook = (id) => {
       updatedProduct?.status === STATUS.SUCCESS_OK ||
       updatedProduct?.status === STATUS.SUCCESS_CREATED
     ) {
-      notify(t("general.updateSuccess"), NOTIFICATION_TYPES.SUCCESS);
+      notify(t("product.updateSuccess"), NOTIFICATION_TYPES.SUCCESS);
 
       setTimeout(
         () => navigate(ROUTES.ADMIN.PRODUCTS.ALL),

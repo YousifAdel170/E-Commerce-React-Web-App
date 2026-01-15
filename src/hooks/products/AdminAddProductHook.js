@@ -157,16 +157,38 @@ const AdminAddProductHook = () => {
     // Prevent The Default Action of submit
     e.preventDefault();
 
-    if (
-      categoryID === EMPTY.ZERO ||
-      productName === EMPTY.TEXT ||
-      productDescription === EMPTY.TEXT ||
-      images?.length <= EMPTY.ZERO ||
-      priceBefore <= EMPTY.ZERO
-    ) {
-      notify(t("validation.pleaseCompleteData"), NOTIFICATION_TYPES.WARNING);
-      return;
-    }
+    if (productName.trim() === EMPTY.TEXT)
+      return notify(t("product.nameRequired"), NOTIFICATION_TYPES.WARNING);
+
+    if (productName.length < 3 || productName.length > 100)
+      return notify(t("product.nameLength"), NOTIFICATION_TYPES.WARNING);
+
+    if (productDescription.trim() === EMPTY.TEXT)
+      return notify(
+        t("product.descriptionRequired"),
+        NOTIFICATION_TYPES.WARNING
+      );
+
+    if (productDescription.length > 2000)
+      return notify(t("product.descriptionLength"), NOTIFICATION_TYPES.WARNING);
+
+    if (qty <= 0)
+      return notify(t("product.quantityRequired"), NOTIFICATION_TYPES.WARNING);
+
+    if (priceBefore < priceAfter && priceBefore != 0)
+      return notify(
+        t("product.priceAfterDiscountInvalid"),
+        NOTIFICATION_TYPES.WARNING
+      );
+
+    if (priceBefore.length > 32 || priceAfter.length > 32)
+      return notify(t("product.priceLength"), NOTIFICATION_TYPES.WARNING);
+
+    if (categoryID === "0")
+      return notify(t("product.categoryRequired"), NOTIFICATION_TYPES.WARNING);
+
+    if (brandID === "0")
+      return notify(t("product.brandRequired"), NOTIFICATION_TYPES.WARNING);
 
     // convert base 64 image to file
     const imgCover = dataURLtoFile(images[0], Math.random() + ".png");
@@ -178,6 +200,9 @@ const AdminAddProductHook = () => {
       return dataURLtoFile(images[index], Math.random() + ".png");
     });
 
+    if (imgCover == undefined || itemImages.length === 0)
+      return notify(t("product.imageCoverRequired"), NOTIFICATION_TYPES.ERROR);
+
     const formData = new FormData();
     formData.append(BACKEND_VARIABLES.PRDOUCT.TITLE, productName);
     formData.append(BACKEND_VARIABLES.PRDOUCT.DESCRIPTION, productDescription);
@@ -186,7 +211,14 @@ const AdminAddProductHook = () => {
       BACKEND_VARIABLES.PRDOUCT.PRICE_BEFORE_DISCOUNT,
       priceBefore
     );
-    formData.append(BACKEND_VARIABLES.PRDOUCT.PRICE_AFTER_DISCOUNT, priceAfter);
+
+    if (priceAfter) {
+      formData.append(
+        BACKEND_VARIABLES.PRDOUCT.PRICE_AFTER_DISCOUNT,
+        priceAfter
+      );
+    }
+
     formData.append(BACKEND_VARIABLES.PRDOUCT.IMAGE_COVER, imgCover);
     formData.append(BACKEND_VARIABLES.PRDOUCT.CATEGORY, categoryID);
     formData.append(BACKEND_VARIABLES.PRDOUCT.BRAND, brandID);
@@ -209,7 +241,7 @@ const AdminAddProductHook = () => {
       await dispatch(createNewProduct(formData));
     } catch (error) {
       console.error("Error creating product:", error);
-      notify(t("general.addFail"), NOTIFICATION_TYPES.ERROR);
+      notify(t("product.addFail"), NOTIFICATION_TYPES.ERROR);
       setIsPress(false);
     }
 
@@ -221,8 +253,6 @@ const AdminAddProductHook = () => {
 
   // Reset The Values of the Product
   useEffect(() => {
-    console.log("loadingCreate:", loadingCreate, "isPress:", isPress);
-    console.log("createdProduct:", createdProduct, "createError:", createError);
     if (!loadingCreate && isPress) {
       setIsPress(false);
 
@@ -239,7 +269,7 @@ const AdminAddProductHook = () => {
         setSelectedSubID(EMPTY.ARRAY);
         setCategoryID(EMPTY.ZERO);
 
-        notify(t("general.addSuccess"), NOTIFICATION_TYPES.SUCCESS);
+        notify(t("product.addSuccess"), NOTIFICATION_TYPES.SUCCESS);
         setTimeout(
           () => navigate(ROUTES.ADMIN.PRODUCTS.ALL),
           DELAYS.NAVIGATION_DELAY

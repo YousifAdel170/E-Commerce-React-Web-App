@@ -73,6 +73,7 @@ const couponReducer = (state = initialState, action) => {
           data: state.viewAllCoupons.data.filter(
             (b) => b._id !== action.payload.id
           ),
+          paginationResult: state.viewAllCoupons.paginationResult,
         },
         deletedCoupon: action.payload.response,
         loading: { ...state.loading, delete: false },

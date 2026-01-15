@@ -129,10 +129,6 @@ function App() {
                 />
 
                 <Route
-                  path={ROUTES.ADMIN.BRANDS.ADD}
-                  element={<AdminAddBrand />}
-                />
-                <Route
                   path={ROUTES.ADMIN.CATEGORIES.ALL}
                   element={<AdminAllCategories />}
                 />
@@ -140,7 +136,10 @@ function App() {
                   path={ROUTES.ADMIN.BRANDS.ALL}
                   element={<AdminAllBrands />}
                 />
-
+                <Route
+                  path={ROUTES.ADMIN.COUPONS.ALL}
+                  element={<AdminAllCoupons />}
+                />
                 <Route
                   path={ROUTES.ADMIN.CATEGORIES.SUBCATEGORIES.ALL}
                   element={<AdminAllSubcategories />}
@@ -152,41 +151,43 @@ function App() {
                 />
 
                 <Route
-                  path={ROUTES.ADMIN.ADD_CATEGORY}
+                  path={ROUTES.ADMIN.CATEGORIES.ADD}
                   element={<AdminAddCategory />}
                 />
                 <Route
-                  path={ROUTES.ADMIN.EDIT_CATEGORY_PATH}
+                  path={ROUTES.ADMIN.CATEGORIES.EDIT}
                   element={<AdminEditCategory />}
                 />
                 <Route
-                  path={ROUTES.ADMIN.EDIT_BRAND_PATH}
+                  path={ROUTES.ADMIN.BRANDS.EDIT}
                   element={<AdminEditBrand />}
                 />
                 <Route
-                  path={ROUTES.ADMIN.ADD_SUBCATEGORY}
-                  element={<AdminAddSubCategory />}
+                  path={ROUTES.ADMIN.COUPONS.EDIT}
+                  element={<AdminEditCoupon />}
                 />
-                <Route
-                  path={ROUTES.ADMIN.PRODUCTS.ADD}
-                  element={<AdminAddProduct />}
-                />
+
                 <Route
                   path={ROUTES.ADMIN.PRODUCTS.EDIT}
                   element={<AdminEditProduct />}
                 />
 
                 <Route
-                  path={ROUTES.ADMIN.COUPONS.ALL}
-                  element={<AdminAllCoupons />}
+                  path={ROUTES.ADMIN.BRANDS.ADD}
+                  element={<AdminAddBrand />}
                 />
+
                 <Route
                   path={ROUTES.ADMIN.COUPONS.ADD}
                   element={<AdminAddCoupon />}
                 />
                 <Route
-                  path={ROUTES.ADMIN.COUPONS.EDIT}
-                  element={<AdminEditCoupon />}
+                  path={ROUTES.ADMIN.CATEGORIES.SUBCATEGORIES.ADD}
+                  element={<AdminAddSubCategory />}
+                />
+                <Route
+                  path={ROUTES.ADMIN.PRODUCTS.ADD}
+                  element={<AdminAddProduct />}
                 />
               </Route>
             </Route>
@@ -194,12 +195,9 @@ function App() {
             {/* User Routes */}
             <Route element={<ProtectedRoute auth={isUser} />}>
               <Route element={<UserPage />}>
+                <Route path={ROUTES.USER.ORDERS} element={<UserAllOrders />} />
                 <Route
-                  path={ROUTES.USER.ALL_ORDERS}
-                  element={<UserAllOrders />}
-                />
-                <Route
-                  path={ROUTES.USER.FAVORITE_PRODUCTS}
+                  path={ROUTES.USER.FAVORITES}
                   element={<UserFavoriteProducts />}
                 />
                 <Route

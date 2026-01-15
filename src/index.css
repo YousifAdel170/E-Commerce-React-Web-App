@@ -782,6 +782,7 @@ input {
   font-size: 14px;
   color: var(--focus-color);
   margin-left: 10px;
+  margin-right: 10px;
 }
 
 .dark-theme .link-btn {
