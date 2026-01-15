@@ -32,5 +32,52 @@
       "emailPlaceholder": "Enter your email address",
       "phonePlaceholder": "Enter your phone number"
     }
+  },
+
+  "userAllAdresses": {
+    "title": "Manage Your Addresses",
+    "addNewAddress": "Add New Address",
+    "noAddresses": "No addresses found",
+    "deleteAddress": "Delete Address",
+    "editAddress": "Edit Address",
+    "defaultAddress": "Default Address",
+
+    "userAddAddress": {
+      "title": "Add New Address",
+
+      "aliasLabel": "Address Label",
+      "aliasPlaceholder": "e.g. Home, Work",
+
+      "detailsLabel": "Address Details",
+      "detailsPlaceholder": "Full address details",
+
+      "phoneLabel": "Phone Number",
+      "phonePlaceholder": "Phone number",
+
+      "submit": "Add Address"
+    },
+
+    "userAddressCard": {
+      "ariaLabel": "User Address",
+      "alias": "Address Alias",
+      "details": "Address in Details",
+      "phone": "Address Phone",
+      "edit": "Edit",
+      "delete": "Delete",
+      "modalTitle": "Confirm Delete",
+      "modalBody": "Are you sure you want to delete this address?",
+      "modalFooter": "Delete"
+    },
+
+    "userEditAddress": {
+      "title": "Edit Address",
+      "aliasLabel": "Address Alias",
+      "aliasPlaceholder": "e.g., Home, Work",
+      "detailsLabel": "Address in Details",
+      "detailsPlaceholder": "Full address details",
+      "phoneLabel": "Phone Number",
+      "phonePlaceholder": "Enter your phone number",
+      "submit": "Save Changes"
+    }
   }
 }

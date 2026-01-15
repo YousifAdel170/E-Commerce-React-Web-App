@@ -40,8 +40,14 @@
       "usernameRequired": "اسم المستخدم مطلوب.",
       "emailRequired": "البريد الإلكتروني مطلوب.",
       "phoneRequired": "رقم الهاتف مطلوب.",
-
       "nochangesDetected": "لم يتم اكتشاف أي تغييرات لتحديث."
+    },
+
+    "userAddress": {
+      "aliasRequired": "تسمية العنوان مطلوبة.",
+      "detailsRequired": "تفاصيل العنوان مطلوبة.",
+      "phoneRequired": "رقم الهاتف مطلوب.",
+      "noChanges": "لم يتم تعديل أي بيانات. الرجاء تعديل العنوان قبل الحفظ."
     }
   },
 
@@ -51,7 +57,11 @@
     "emailCodeSentSuccess": "تم إرسال كود التحقق إلى بريدك الإلكتروني.",
     "resetPassword": "تم تغيير كلمة السر بنجاح",
 
-    "userChangePassword": "تم تغيير كلمة المرور بنجاح!"
+    "userChangePassword": "تم تغيير كلمة المرور بنجاح!",
+
+    "userAddressAdd": "Address added successfully.",
+    "userAddressUpdate": "Address updated successfully.",
+    "userAddressDelete": "Address deleted successfully."
   },
   "error": {
     "multiple": "يرجى مراجعة البيانات المدخلة. هناك أكثر من خطأ.",
@@ -59,9 +69,12 @@
     "accountNotFoundError": "لا يوجد حساب مرتبط بهذا البريد الإلكتروني.",
     "resetPassword": "من فضلك اطلب كود جديد",
     "duplicateSubCategory": "هذا الاسم مستخدم بالفعل. يرجى اختيار اسم آخر.",
-
     "userChangePassword": "حدث خطأ أثناء تغيير كلمة المرور. حاول مرة أخرى.",
-    "emailAlreadyUsed": "هذا البريد الإلكتروني مستخدم بالفعل."
+    "emailAlreadyUsed": "هذا البريد الإلكتروني مستخدم بالفعل.",
+
+    "userAddressAdd": "فشل في إضافة العنوان. يرجى المحاولة مرة أخرى.",
+    "userAddressUpdate": "فشل في تعديل العنوان. يرجى المحاولة مرة أخرى.",
+    "userAddressDelete": "فشل في حذف العنوان. يرجى المحاولة مرة أخرى."
   },
 
   "general": {

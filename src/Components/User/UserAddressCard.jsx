@@ -1,127 +1,97 @@
 /* eslint-disable react/prop-types */
-
-// Import UI components from React Bootstrap
-import { Button, Col, Modal, Row } from "react-bootstrap";
-
-// Import Link for navigation
 import { Link } from "react-router-dom";
-
-// Import custom hook for delete address logic
+import { Row, Col } from "react-bootstrap";
 import UserDeleteAddressHook from "../../hooks/user/UserDeleteAddressHook";
+import useInviewAnimation from "../../hooks/Utility/useInviewAnimation";
+import ModalComponent from "../Utility/ModalComponent";
+import { useTranslation } from "react-i18next";
 
-// Import delete icon image
-import deleteIcon from "../../assets/Imgs/delete.png";
+const UserAddressCard = ({ address, index }) => {
+  const [show, handleClose, handleShow, handleDelete, isPress] =
+    UserDeleteAddressHook(address);
 
-// Component to display a single address card
-const UserAddressCard = ({ address, onDelete }) => {
-  // Use custom hook to manage delete modal and logic
-  const [show, handleClose, handleShow, handleDelete] = UserDeleteAddressHook(
-    address._id,
-    onDelete
-  );
+  const [sectionRef, isVisible] = useInviewAnimation();
+  const { t } = useTranslation("user");
 
   return (
-    <div className="user-address-card my-3 px-2">
-      {/* Modal to confirm delete operation */}
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header>
-          <Modal.Title>
-            <div className="font">تاكيد الحذف</div>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="font">هل انتا متاكد من عملية الحذف العنوان</div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button className="font" variant="success" onClick={handleClose}>
-            تراجع
-          </Button>
-          <Button className="font" variant="dark" onClick={handleDelete}>
-            حذف
-          </Button>
-        </Modal.Footer>
-      </Modal>
+    <div
+      className={`card-container card-animate card-description-container box-shadow-lift flex-column my-3 justify-content-around ${
+        isVisible ? "fade-in" : ""
+      }`}
+      ref={sectionRef}
+      style={{ animationDelay: `${index * 0.1}s` }}
+      role="region"
+      aria-label={`${t("userAllAdresses.userAddressCard.ariaLabel")}: ${
+        address?.alias
+      }`}
+    >
+      {/* Delete Confirmation Modal */}
+      <ModalComponent
+        show={show}
+        handleClose={handleClose}
+        handleOperation={handleDelete}
+        modalTitle={t("userAllAdresses.userAddressCard.modalTitle")}
+        modalBody={t("userAllAdresses.userAddressCard.modalBody")}
+        modalFooter={t("userAllAdresses.userAddressCard.modalFooter")}
+        className="btn-danger"
+        ariaLabel={t("userAllAdresses.userAddressCard.modalAriaLabel")}
+        isPress={isPress}
+      />
 
       {/* Top Row: Alias and Actions */}
-      <Row className="d-flex justify-content-between">
-        {/* Address Alias */}
+      <Row className="d-flex justify-content-between px-2 w-100">
         <Col xs="6">
-          <div className="p-2">{address.alias}</div>
+          <span className="card-item-text">
+            {t("userAllAdresses.userAddressCard.alias")}:
+          </span>
+          <span className="card-item-text-answer">{address?.alias}</span>
         </Col>
 
-        {/* Delete and Edit Buttons */}
         <Col xs="6" className="d-flex justify-content-end">
-          <div className="d-flex p-2">
-            <div className="d-flex mx-2">
-              {/* Delete Icon */}
-              <img
-                alt=""
-                className="ms-3 mt-2"
-                src={deleteIcon}
-                onClick={handleShow}
-                style={{ cursor: "pointer" }}
-                title="حذف"
-                height="17px"
-                width="15px"
+          <div className="d-flex gap-2 align-items-center mt-0 mb-0">
+            <Link to={`/user/addresses/edit-address/${address?._id}`}>
+              <i
+                className="fas fa-edit mt-0 mb-0"
+                title={t("userAllAdresses.userAddressCard.edit")}
+                role="button"
+                tabIndex={0}
+                aria-label={t("userAllAdresses.userAddressCard.edit")}
               />
+            </Link>
 
-              {/* Edit Link */}
-              <Link
-                to={`/user/addresses/edit-address/${address._id}`}
-                style={{ textDecoration: "none" }}
-              >
-                <p className="item-delete-edit"> تعديل</p>
-              </Link>
-            </div>
+            <i
+              className="fas fa-trash text-danger mt-0 mb-0"
+              onClick={handleShow}
+              title={t("userAllAdresses.userAddressCard.delete")}
+              role="button"
+              tabIndex={0}
+              aria-label={t("userAllAdresses.userAddressCard.delete")}
+            />
           </div>
         </Col>
       </Row>
 
       {/* Address Details */}
-      <Row>
+      <Row className="mt-2 px-2">
         <Col xs="12">
-          <div
-            style={{
-              color: "#555550",
-              fontFamily: "Almarai",
-              fontSize: "14px",
-            }}
-          >
-            {address.details}
-          </div>
+          <span className="card-item-text">
+            {t("userAllAdresses.userAddressCard.details")}:
+          </span>
+          <span className="card-item-text-answer">{address?.details}</span>
         </Col>
       </Row>
 
       {/* Phone Section */}
-      <Row className="mt-3">
+      <Row className="mt-2 px-2">
         <Col xs="12" className="d-flex">
-          {/* Phone Label */}
-          <div
-            style={{
-              color: "#555550",
-              fontFamily: "Almarai",
-              fontSize: "16px",
-            }}
-          >
-            رقم الهاتف:
-          </div>
-
-          {/* Phone Number */}
-          <div
-            style={{
-              color: "#979797",
-              fontFamily: "Almarai",
-              fontSize: "16px",
-            }}
-            className="mx-2"
-          >
-            {address.phone}
-          </div>
+          <span className="card-item-text">
+            {t("userAllAdresses.userAddressCard.phone")}:
+          </span>
+          <span className="card-item-text-answer mx-2">{address?.phone}</span>
         </Col>
       </Row>
     </div>
   );
 };
 
-// Export the UserAddressCard component
 export default UserAddressCard;

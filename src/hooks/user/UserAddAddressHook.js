@@ -8,9 +8,11 @@ import notify from "../Utility/useNotifyHook";
 
 // Import Custom Actions (Action to add a user address)
 import { addUserAddress } from "../../redux/actions/userAddressAction";
-
-// Import Used Configuaration
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes"; // Constants for notification types
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+import { EMPTY, STATUS } from "../../constants/general";
+import { useTranslation } from "react-i18next";
+import { ROUTES } from "../../constants/routes";
+import { DELAYS } from "../../constants/delays";
 
 // Hook responsible for adding a user address
 const UserAddAddressHook = () => {
@@ -18,10 +20,19 @@ const UserAddAddressHook = () => {
   const navigate = useNavigate(); // Hook for navigation
 
   // State variables for address details
-  const [alias, setAlias] = useState(""); // Alias for the address
-  const [details, setDetails] = useState(""); // Detailed address information
-  const [phone, setPhone] = useState(""); // Phone number
-  const [loading, setLoading] = useState(true); // State for loading status
+  const [alias, setAlias] = useState(EMPTY.TEXT); // Alias for the address
+  const [details, setDetails] = useState(EMPTY.TEXT); // Detailed address information
+  const [phone, setPhone] = useState(EMPTY.TEXT); // Phone number
+  const [isPress, setIsPress] = useState(false);
+  const { t } = useTranslation("notification_messages");
+
+  // Selectors
+  const loadingCreate = useSelector(
+    (state) => state.userAddressReducer.loading.create
+  );
+  const createError = useSelector(
+    (state) => state.userAddressReducer.error.create
+  );
 
   // Handler for alias input change
   const onChangeAlias = (e) => {
@@ -43,23 +54,45 @@ const UserAddAddressHook = () => {
 
   // Handle form submission
   const handleSubmit = async () => {
-    // Validate input fields
-    if (alias === "" || details === "" || phone === "") {
-      notify("من فضلك اكمل البيانات", WARNING); // Notify user to complete all fields
+    setIsPress(true);
+
+    if (alias === EMPTY.TEXT) {
+      notify(
+        t("validation.userAddress.aliasRequired"),
+        NOTIFICATION_TYPES.WARNING
+      ); // Notify user to complete all fields
+      setIsPress(false);
       return;
     }
 
-    setLoading(true); // Set loading state to true
+    // Validate input fields
+    if (details === EMPTY.TEXT) {
+      notify(
+        t("validation.userAddress.detailsRequired"),
+        NOTIFICATION_TYPES.WARNING
+      ); // Notify user to complete all fields
+      setIsPress(false);
+      return;
+    }
+    // Validate input fields
+    if (phone === EMPTY.TEXT) {
+      notify(
+        t("validation.userAddress.phoneRequired"),
+        NOTIFICATION_TYPES.WARNING
+      ); // Notify user to complete all fields
+      setIsPress(false);
+      return;
+    }
+
     await dispatch(
       addUserAddress({
         alias,
         details,
         phone,
-        city: "", // Empty city field
-        postalCode: "", // Empty postal code field
+        city: EMPTY.TEXT,
+        postalCode: EMPTY.TEXT,
       })
     );
-    setLoading(false); // Set loading state to false
   };
 
   // Selector to get the result of the add address action
@@ -69,13 +102,23 @@ const UserAddAddressHook = () => {
 
   // Notify user of the result of the add action
   useEffect(() => {
-    if (!loading) {
-      if (result && result.status === 200) {
-        notify("تمت اضافة العنوان بنجاح", SUCCESS); // Notify success
-        setTimeout(() => navigate("/user/addresses"), 1000); // Redirect to addresses page after 1 second
-      } else notify("هناك مشكله فى عملية الاضافة ", ERROR); // Notify error
+    if (!loadingCreate && isPress) {
+      setIsPress(false);
+      if (
+        (!createError && result?.status === STATUS.SUCCESS_OK) ||
+        result?.status === STATUS.SUCCESS_CREATED
+      ) {
+        setAlias(EMPTY.TEXT);
+        setDetails(EMPTY.TEXT);
+        setPhone(EMPTY.TEXT);
+        notify(t("success.userAddressAdd"), NOTIFICATION_TYPES.SUCCESS); // Notify success
+        setTimeout(
+          () => navigate(ROUTES.USER.ADDRESSES.ALL),
+          DELAYS.NAVIGATION_DELAY
+        ); // Redirect to addresses page after 1 second
+      } else notify(t("error.userAddressAdd"), NOTIFICATION_TYPES.ERROR); // Notify error
     }
-  }, [loading, result, navigate]);
+  }, [loadingCreate, result, navigate, createError, isPress, t]);
 
   // Return state variables and handlers
   return [
@@ -86,6 +129,7 @@ const UserAddAddressHook = () => {
     onChangeDetails,
     onChangePhone,
     handleSubmit,
+    isPress,
   ];
 };
 

@@ -1,18 +1,18 @@
 /* Importing necessary hooks from react and react-redux */
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 // Import Custom Hooks
 import notify from "../Utility/useNotifyHook";
 
 // Import Custom Actions (Action to delete a user address)
 import { deleteUserAddress } from "../../redux/actions/userAddressAction"; // Action to delete user address
-
-// Import Used Configurations
-import { SUCCESS } from "../../constants/notificationTypes";
+import { useTranslation } from "react-i18next";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+import { STATUS_MESSAGES } from "../../constants/general";
 
 // Hook for deleting a user address
-const UserDeleteAddressHook = (id, onDeleteSuccess) => {
+const UserDeleteAddressHook = (address) => {
   // Hook to dispatch actions
   const dispatch = useDispatch();
 
@@ -20,24 +20,39 @@ const UserDeleteAddressHook = (id, onDeleteSuccess) => {
   const [show, setShow] = useState(false); // State variable for managing modal visibility
   const handleClose = () => setShow(false); // Handler to close the modal
   const handleShow = () => setShow(true); // Handler to show the modal
+  const [isPress, setIsPress] = useState(false);
+
+  const { deletedUserAddress, loading } = useSelector(
+    (state) => state.userAddressReducer
+  );
+  const { t } = useTranslation("notification_messages");
 
   // Handler to delete the address
-  const handleDelete = async () => {
-    // Dispatch delete action with the address id
-    await dispatch(deleteUserAddress(id));
+  const handleDelete = async (e) => {
+    e.preventDefault();
 
-    // Close the modal after deletion
-    setShow(false);
+    if (!address?._id) return;
 
-    // Notify that the addrress has been successfully deleted
-    notify("تم حذف العنوان بنجاح", SUCCESS);
+    setIsPress(true);
 
-    // Notify parent to remove the item
-    if (onDeleteSuccess) onDeleteSuccess(id);
+    // Dispatch dadingelete action with the address id
+    await dispatch(deleteUserAddress(address?._id));
   };
 
+  useEffect(() => {
+    if (!loading?.delete && isPress) {
+      setIsPress(false);
+
+      if (deletedUserAddress?.status === STATUS_MESSAGES.SUCCESS)
+        notify(t("success.userAddressDelete"), NOTIFICATION_TYPES.SUCCESS);
+      else notify(t("error.userAddressDelete"), NOTIFICATION_TYPES.ERROR);
+
+      setShow(false);
+    }
+  }, [deletedUserAddress, t, loading, isPress]);
+
   // Return state variables and handlers
-  return [show, handleClose, handleShow, handleDelete]; // Return modal visibility state and handlers for opening, closing, and deleting
+  return [show, handleClose, handleShow, handleDelete, isPress]; // Return modal visibility state and handlers for opening, closing, and deleting
 };
 
 export default UserDeleteAddressHook; // Export the hook

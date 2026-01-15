@@ -793,10 +793,11 @@ input {
   color: var(--main-text-color);
 }
 
+.form-label,
 .form-label + div span {
   color: var(--main-text-color) !important;
 }
-
+.light-theme .form-label,
 .light-theme .form-label + div span {
   color: var(--main-color) !important;
 }

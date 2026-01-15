@@ -31,5 +31,52 @@
       "emailPlaceholder": "أدخل عنوان بريدك الإلكتروني",
       "phonePlaceholder": "أدخل رقم هاتفك"
     }
+  },
+
+  "userAllAdresses": {
+    "title": "إدارة عناوينك",
+    "addNewAddress": "إضافة عنوان جديد",
+    "noAddresses": "لا توجد عناوين مسجلة",
+    "deleteAddress": "حذف العنوان",
+    "editAddress": "تعديل العنوان",
+    "defaultAddress": "العنوان الافتراضي",
+
+    "userAddAddress": {
+      "title": "إضافة عنوان جديد",
+
+      "aliasLabel": "تسمية العنوان",
+      "aliasPlaceholder": "مثل: المنزل - العمل",
+
+      "detailsLabel": "تفاصيل العنوان",
+      "detailsPlaceholder": "العنوان بالتفصيل",
+
+      "phoneLabel": "رقم الهاتف",
+      "phonePlaceholder": "رقم الهاتف",
+
+      "submit": "إضافة عنوان"
+    },
+
+    "userAddressCard": {
+      "ariaLabel": "عنوان المستخدم",
+      "alias": "تسمية العنوان",
+      "details": "العنوان بالتفصيل",
+      "phone": "رقم الهاتف",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "modalTitle": "تأكيد الحذف",
+      "modalBody": "هل أنت متأكد من حذف هذا العنوان؟",
+      "modalFooter": "حذف"
+    },
+
+    "userEditAddress": {
+      "title": "تعديل العنوان",
+      "aliasLabel": "تسمية العنوان",
+      "aliasPlaceholder": "مثلاً: المنزل، العمل",
+      "detailsLabel": "العنوان بالتفصيل",
+      "detailsPlaceholder": "التفاصيل الكاملة للعنوان",
+      "phoneLabel": "رقم الهاتف",
+      "phonePlaceholder": "أدخل رقم هاتفك",
+      "submit": "حفظ التعديلات"
+    }
   }
 }

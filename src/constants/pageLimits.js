@@ -36,3 +36,7 @@ export const NUMBER_OF_COUPONS_PER_PAGE = 5;
 
 // Number of SubCategories To be displayed in each page for the sub categories
 export const PAGE_SUBCATEGORIES_LIMIT = 5;
+
+//
+// Number of addresses To be displayed in each page for the addresses
+export const PAGE_ADDRESSES_LIMIT = 2;

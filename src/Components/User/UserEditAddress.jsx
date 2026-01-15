@@ -1,21 +1,18 @@
-// Import layout components from React Bootstrap
-import { Col, Row } from "react-bootstrap";
-
-// Import toast container to display notifications
+import { Col, Form, Row, Button } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
-// Import router hook to get URL parameters
+import InputField from "../Utility/InputField";
+import UserEditAddressHook from "../../hooks/user/UserEditAddressHook";
+import { INPUT_NAMES, INPUT_TYPES } from "../../constants/inputs";
+import SpinnerComponent from "../Utility/SpinnerComponent";
+
 import { useParams } from "react-router-dom";
 
-// Import custom hook to handle address editing
-import UserEditAddressHook from "../../hooks/user/UserEditAddressHook";
-
-// Component for editing an existing user address
 const UserEditAddress = () => {
-  // Get the address ID from the URL
   const { id } = useParams();
 
-  // Get state and handlers from custom hook
   const [
     alias,
     details,
@@ -24,59 +21,102 @@ const UserEditAddress = () => {
     onChangeDetails,
     onChangePhone,
     handleEdit,
+    isPress,
   ] = UserEditAddressHook(id);
 
+  const { t } = useTranslation("user");
+
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="w-100"
+    >
       {/* Title */}
-      <Row className="justify-content-start ">
-        <div className="title-text pb-2">تعديل العنوان </div>
-
-        <Col sm="8">
-          {/* Input for editing the address alias */}
-          <input
-            value={alias}
-            onChange={onChangeAlias}
-            type="text"
-            className="input-form d-block mt-3 px-3"
-            placeholder="تسمية العنوان مثلا(المنزل - العمل)"
-          />
-
-          {/* Textarea for editing the detailed address */}
-          <textarea
-            value={details}
-            onChange={onChangeDetails}
-            className="input-form-area p-2 mt-3"
-            rows="4"
-            cols="50"
-            placeholder="العنوان بالتفصيل"
-          />
-
-          {/* Input for editing the phone number */}
-          <input
-            value={phone}
-            onChange={onChangePhone}
-            type="text"
-            className="input-form d-block mt-3 px-3"
-            placeholder="رقم الهاتف"
-          />
+      <Row className="mb-4">
+        <Col>
+          <h3 className="title-text">
+            {t("userAllAdresses.userEditAddress.title")}
+          </h3>
         </Col>
       </Row>
 
-      {/* Button to submit the edited address */}
-      <Row>
-        <Col sm="8" className="d-flex justify-content-end ">
-          <button onClick={handleEdit} className="btn-save d-inline mt-2 ">
-            حفظ تعديل العنوان
-          </button>
+      {/* Form (FULL WIDTH) */}
+      <Row className="auth-form-wrapper">
+        <Col xs={12}>
+          {/* Alias */}
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="formAlias">
+              {t("userAllAdresses.userEditAddress.aliasLabel")}
+            </Form.Label>
+            <InputField
+              value={alias}
+              onChangeInput={onChangeAlias}
+              onChangeInputName={INPUT_NAMES.ADDRESSES.ALIAS}
+              type={INPUT_TYPES.TEXT}
+              placeholder={t(
+                "userAllAdresses.userEditAddress.aliasPlaceholder"
+              )}
+              name={INPUT_NAMES.ADDRESSES.ALIAS}
+              id="formAlias"
+              className="w-100"
+              required
+            />
+          </Form.Group>
+
+          {/* Details */}
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="formDetails">
+              {t("userAllAdresses.userEditAddress.detailsLabel")}
+            </Form.Label>
+            <InputField
+              value={details}
+              onChangeInput={onChangeDetails}
+              onChangeInputName={INPUT_NAMES.ADDRESSES.DETAILS}
+              type={INPUT_TYPES.TEXTAREA}
+              placeholder={t(
+                "userAllAdresses.userEditAddress.detailsPlaceholder"
+              )}
+              name={INPUT_NAMES.ADDRESSES.DETAILS}
+              id="formDetails"
+              rows={4}
+              required
+            />
+          </Form.Group>
+
+          {/* Phone */}
+          <Form.Group className="mb-4">
+            <Form.Label htmlFor="formPhone">
+              {t("userAllAdresses.userEditAddress.phoneLabel")}
+            </Form.Label>
+            <InputField
+              value={phone}
+              onChangeInput={onChangePhone}
+              onChangeInputName={INPUT_NAMES.ADDRESSES.PHONE}
+              type={INPUT_TYPES.PHONE}
+              placeholder={t(
+                "userAllAdresses.userEditAddress.phonePlaceholder"
+              )}
+              name={INPUT_NAMES.ADDRESSES.PHONE}
+              id="formPhone"
+              required
+            />
+          </Form.Group>
+
+          {/* Submit */}
+          <div className="d-flex justify-content-end">
+            <Button onClick={handleEdit} disabled={isPress}>
+              {isPress && <SpinnerComponent size="sm" className="mx-2" />}
+              {t("userAllAdresses.userEditAddress.submit")}
+            </Button>
+          </div>
         </Col>
       </Row>
 
-      {/* Toast notifications container */}
       <ToastContainer />
-    </div>
+    </motion.div>
   );
 };
 
-// Export the component
 export default UserEditAddress;

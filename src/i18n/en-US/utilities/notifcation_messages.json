@@ -39,6 +39,13 @@
       "emailRequired": "Email is required.",
       "phoneRequired": "Phone number is required.",
       "nochangesDetected": "No changes detected to update."
+    },
+
+    "userAddress": {
+      "aliasRequired": "Address Alias is required.",
+      "detailsRequired": "Address in Details is required.",
+      "phoneRequired": "Phone number is required.",
+      "noChanges": "No changes detected. Please modify the address before saving."
     }
   },
   "success": {
@@ -46,7 +53,12 @@
     "login": "You’ve logged in successfully!",
     "emailCodeSentSuccess": "A verification code was sent to your email.",
     "resetPassword": "Password changed successfully",
-    "userChangePassword": "Password changed successfully!"
+
+    "userChangePassword": "Password changed successfully!",
+
+    "userAddressAdd": "Address added successfully.",
+    "userAddressUpdate": "Address updated successfully.",
+    "userAddressDelete": "Address deleted successfully."
   },
   "error": {
     "multiple": "Please review the form. Multiple errors found.",
@@ -55,7 +67,11 @@
     "resetPassword": "Please request a new code",
     "duplicateSubCategory": "This name is already taken. Try a different one.",
     "userChangePassword": "An error occurred while changing the password. Please try again.",
-    "emailAlreadyUsed": "This email is already used."
+    "emailAlreadyUsed": "This email is already used.",
+
+    "userAddressAdd": "Failed to add address. Please try again.",
+    "userAddressUpdate": "Failed to update address. Please try again.",
+    "userAddressDelete": "Failed to delete address. Please try again."
   },
   "general": {
     "addSuccess": "Item added successfully!",

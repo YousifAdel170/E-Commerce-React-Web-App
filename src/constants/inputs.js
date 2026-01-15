@@ -9,6 +9,9 @@ const INPUT_SEARCH = "searched value";
 const INPUT_CURRENT_PASSWORD = "currentPassword";
 const INPUT_NEW_PASSWORD = "newPassword";
 const INPUT_CONFIRM_NEW_PASSWORD = "confirmNewPassword";
+const INPUT_ADDRESS_ALIAS = "address_alias";
+const INPUT_ADDRESS_DETAILS = "address_details";
+const INPUT_ADDRESS_PHONE = "address_phone";
 
 export const INPUT_NAMES = {
   NAME: INPUT_NAME,
@@ -21,6 +24,11 @@ export const INPUT_NAMES = {
   CURRENT_PASSWORD: INPUT_CURRENT_PASSWORD,
   NEW_PASSWORD: INPUT_NEW_PASSWORD,
   CONFIRM_NEW_PASSWORD: INPUT_CONFIRM_NEW_PASSWORD,
+  ADDRESSES: {
+    ALIAS: INPUT_ADDRESS_ALIAS,
+    DETAILS: INPUT_ADDRESS_DETAILS,
+    PHONE: INPUT_ADDRESS_PHONE,
+  },
 };
 
 // Types of Inputs
