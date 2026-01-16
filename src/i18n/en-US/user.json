@@ -79,5 +79,12 @@
       "phonePlaceholder": "Enter your phone number",
       "submit": "Save Changes"
     }
+  },
+
+  "userAllOrders": {
+    "title": "My Orders",
+    "count": "Orders count: {{count}}",
+    "notFound": "No orders found",
+    "loading": "Loading orders..."
   }
 }

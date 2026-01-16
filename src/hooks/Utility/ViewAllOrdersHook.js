@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 // Import Custom Actions
 import { getAllOrders } from "../../redux/actions/ordersAction";
 import { NUMBER_OF_ORDERS_PER_PAGE } from "../../constants/pageLimits";
+import { EMPTY } from "../../constants/general";
+import { STORAGE_KEYS } from "../../constants/storage";
 
 // Hook Responsible to display all the orders and manage the pagination
 const ViewAllOrdersHook = () => {
@@ -24,7 +26,7 @@ const ViewAllOrdersHook = () => {
   );
 
   const allOrders = useMemo(() => {
-    return viewAllOrders?.data || [];
+    return viewAllOrders?.data || EMPTY.ARRAY;
   }, [viewAllOrders]);
 
   const numberOfOrders = useMemo(() => {
@@ -43,10 +45,10 @@ const ViewAllOrdersHook = () => {
   const getSelectedPageNumber = async (page) =>
     await dispatch(getAllOrders(NUMBER_OF_ORDERS_PER_PAGE, page));
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem(STORAGE_KEYS.LOCAL.AUTH.USER));
 
   const userName = useMemo(() => {
-    return user?.name || "";
+    return user?.name || EMPTY.TEXT;
   }, [user]);
 
   return [

@@ -4,11 +4,12 @@
 import { Col, Row, Badge, OverlayTrigger, Tooltip } from "react-bootstrap";
 import {
   FaCheckCircle,
-  FaTimesCircle,
+  // FaTimesCircle,
   FaMoneyBillWave,
   FaCreditCard,
   FaCalendarAlt,
   FaMoneyBill,
+  FaHourglassHalf,
 } from "react-icons/fa";
 
 // Import Custom Components
@@ -113,9 +114,10 @@ const UserOrderItem = ({ order }) => {
               t("order-details.status.delivery.delivered"),
               t("order-details.status.delivery.pending"),
               "success",
-              "danger",
+              "warning",
               <FaCheckCircle />,
-              <FaTimesCircle />
+              <FaHourglassHalf />
+              // <FaTimesCircle />
             )}
 
             {renderStatusBadge(
@@ -123,9 +125,9 @@ const UserOrderItem = ({ order }) => {
               t("order-details.status.payment.paid"),
               t("order-details.status.payment.unpaid"),
               "success",
-              "danger",
+              "warning",
               <FaCheckCircle />,
-              <FaTimesCircle />
+              <FaHourglassHalf />
             )}
 
             <OverlayTrigger

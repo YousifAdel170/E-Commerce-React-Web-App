@@ -78,5 +78,12 @@
       "phonePlaceholder": "أدخل رقم هاتفك",
       "submit": "حفظ التعديلات"
     }
+  },
+
+  "userAllOrders": {
+    "title": "طلباتي",
+    "count": "عدد الطلبات: {{count}}",
+    "notFound": "لا يوجد طلبات حالياً",
+    "loading": "جاري تحميل الطلبات..."
   }
 }
