@@ -203,7 +203,7 @@ const ProductDescription = ({ itemProduct, itemCategory, itemBrand }) => {
       <Row>
         <Col xs={12} md="auto" className="mb-2 mb-md-0">
           <div className="product-price">
-            {itemProduct?.priceAfterDiscount ? (
+            {discountPercent > 0 ? (
               <>
                 <span>{t("productDetails.productDescription.price")}:</span>
                 <del>{formatCurrency(itemProduct.price)}</del>

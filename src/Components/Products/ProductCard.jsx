@@ -128,7 +128,7 @@ const ProductCard = ({ item, index }) => {
                 <StarRating rating={item?.ratingsAverage || 0} />
 
                 <div className="price-container">
-                  {item?.priceAfterDiscount ? (
+                  {discountAmount > 0 ? (
                     <>
                       <span className="price-discounted">
                         {t("discountedPrice", {
