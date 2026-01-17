@@ -2,14 +2,14 @@
 import notify from "./useNotifyHook";
 
 // Import Used Configuartions
-import { WARNING } from "../../constants/notificationTypes";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
 
 // Custom hook to detect internet connection status
-const internetDetect = () => {
+const internetDetect = (msg) => {
   // Check if the user is offline
   if (!navigator.onLine) {
     // If offline, display a warning notification
-    notify("هناك مشكله فى الاتصال بالانترنت", WARNING);
+    notify(msg, NOTIFICATION_TYPES.ERROR);
     return; // Exit the function since there's no internet connection
   }
 };

@@ -7,16 +7,19 @@ import BrandFeatured from "../../Components/Brand/BrandFeatured";
 
 // Import Custom Hooks
 import ViewHomeProductsHook from "../../hooks/products/ViewHomeProductsHook";
-import FetchWishList from "../../hooks/products/wishList/FetchWishList";
+// import FetchWishList from "../../hooks/products/wishList/FetchWishList";
 
 // Import hook for the translation
 import { useTranslation } from "react-i18next";
+import UserFavoriteProductsHook from "../../hooks/products/wishList/UserFavoriteProductsHook";
+import { ToastContainer } from "react-toastify";
 
 // Page Responsible for displaying the Home Page of the Application
 const HomePage = () => {
   // Custom Hook to fetch the products data and the favorite products
   const [items, isLoading] = ViewHomeProductsHook();
-  FetchWishList();
+  // Custom Hook to get the favorite products
+  UserFavoriteProductsHook();
 
   const { t } = useTranslation("home");
 
@@ -55,6 +58,8 @@ const HomePage = () => {
         title={t("homeMostCommonBrandsTitle")}
         btnTitle={t("homeMoreButton")}
       />
+
+      <ToastContainer />
     </div>
   );
 };

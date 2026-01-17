@@ -100,7 +100,6 @@ const SideFilter = () => {
         </section>
 
         {/* Price Filter */}
-        {/* Price Filter */}
         <section aria-labelledby="price-filter">
           <div className="filter-section mt-3">
             <div className="filter-title" id="price-filter">

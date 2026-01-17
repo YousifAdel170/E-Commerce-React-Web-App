@@ -31,7 +31,7 @@ const AdminAddProductHook = () => {
 
   // Fetch categories only once when the component mounts
   useEffect(() => {
-    internetDetect();
+    internetDetect(t("error.internetConnectionProblem"));
 
     const getData = async () => {
       await dispatch(getAllCategory());
@@ -39,7 +39,7 @@ const AdminAddProductHook = () => {
     };
 
     getData();
-  }, [dispatch]);
+  }, [dispatch, t]);
 
   // get the categories from the reducer to display it into the selection to be selected
   const category = useSelector((state) => state.allCategory.category);

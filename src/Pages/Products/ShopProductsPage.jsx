@@ -10,22 +10,21 @@ import PaginationComponent from "../../Components/Utility/PaginationComponent";
 
 // Import Custom Hooks
 import ViewSearchProductHook from "../../hooks/products/ViewSearchProductHook";
-import FetchWishList from "../../hooks/products/wishList/FetchWishList";
 
 // Import Translation + Theme
 import { useTranslation } from "react-i18next";
+import UserFavoriteProductsHook from "../../hooks/products/wishList/UserFavoriteProductsHook";
+import { ToastContainer } from "react-toastify";
 // import { useSelector } from "react-redux";
 
 const ShopProductsPage = () => {
   const { t } = useTranslation("shopProducts");
-  // const isDark = useSelector((state) => state.ui.isDark);
-
-  // Initialize wishlist
-  FetchWishList();
 
   // Get product data
   const [items, pageCount, onPress, getProduct, results] =
     ViewSearchProductHook();
+
+  UserFavoriteProductsHook();
 
   return (
     <main style={{ flex: "1" }} aria-label={t("shopMainRegionLabel")}>
@@ -64,9 +63,9 @@ const ShopProductsPage = () => {
 
           {/* Product Cards */}
           <Col
-            sm="10"
-            xs="10"
-            md="11"
+            sm="9"
+            xs="9"
+            md="10"
             role="region"
             aria-label={t("shopProductGrid")}
           >
@@ -83,6 +82,8 @@ const ShopProductsPage = () => {
           />
         )}
       </Container>
+            <ToastContainer />
+
     </main>
   );
 };

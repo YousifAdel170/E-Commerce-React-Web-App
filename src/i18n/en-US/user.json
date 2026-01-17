@@ -86,5 +86,11 @@
     "count": "Orders count: {{count}}",
     "notFound": "No orders found",
     "loading": "Loading orders..."
+  },
+
+  "userWishLists": {
+    "title": "Favorite Products",
+    "noFavoriteProducts": "No favorite products yet",
+    "loading": "Loading products..."
   }
 }

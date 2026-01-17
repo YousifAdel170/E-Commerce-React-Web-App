@@ -12,14 +12,16 @@ import { getSpecificBrand } from "../../redux/actions/brandAction";
 // Import constants
 import { PAGE_PRODUCTS_LIMIT } from "../../constants/pageLimits";
 import { EMPTY } from "../../constants/general";
+import { useTranslation } from "react-i18next";
 
 // Custom hook to fetch products by a specific brand
 const ViewProductsByBrandHook = (brandID) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation("notification_messages");
 
   useEffect(() => {
     // Check the internet connection
-    internetDetect();
+    internetDetect(t("error.internetConnectionProblem"));
 
     // Fetch products for the selected brand
     const getData = async () =>
@@ -28,7 +30,7 @@ const ViewProductsByBrandHook = (brandID) => {
       );
 
     getData();
-  }, [dispatch, brandID]);
+  }, [dispatch, brandID, t]);
 
   // Handle pagination click
   const onPress = async (page) => {

@@ -10,11 +10,13 @@ import { getSpecificProduct } from "../../redux/actions/productsAction"; // Acti
 
 // Import Constants
 import { EMPTY } from "../../constants/general";
+import { useTranslation } from "react-i18next";
 
 // Custom Hook to view a specific product by its productID
 const ViewSpecificProductHook = (productID) => {
   // Initialize dispatch to interact with Redux actions
   const dispatch = useDispatch();
+  const { t } = useTranslation("notification_messages");
 
   // Local state to store the fetched product data
   const [specificProduct, setSpecificProduct] = useState(EMPTY.ARRAY);
@@ -22,7 +24,7 @@ const ViewSpecificProductHook = (productID) => {
   // Fetch product data only once when the component mounts using its ID
   useEffect(() => {
     // 1. Check for internet connection before fetching product data
-    internetDetect();
+    internetDetect(t("error.internetConnectionProblem"));
 
     // 2. Dispatch the action to fetch the specific product based on productID
     const getData = async () => {
@@ -31,7 +33,7 @@ const ViewSpecificProductHook = (productID) => {
 
     // 3. Trigger the fetch operation
     getData();
-  }, [dispatch, productID]); // Dependency array ensures the hook runs when `productID` or `dispatch` changes
+  }, [dispatch, productID, t]); // Dependency array ensures the hook runs when `productID` or `dispatch` changes
 
   // Select the product details and loading state from the Redux store
   const { viewSpecificProduct, loading } = useSelector(

@@ -9,6 +9,7 @@ import { Outlet } from "react-router-dom";
 
 // Import USER_ROLES constant to determine user role
 import { USER_ROLES } from "../../constants/general";
+import { ToastContainer } from "react-toastify";
 
 // Page responsible for rendering the User Page layout
 const UserPage = () => {
@@ -27,6 +28,9 @@ const UserPage = () => {
           <Outlet />
         </Col>
       </Row>
+
+            <ToastContainer />
+      
     </Container>
   );
 };

@@ -24,13 +24,13 @@ const AllCategoryPageHook = () => {
   useEffect(() => {
     // Fetch the Data from the Api Only If Not Already Loaded
     const getData = async () => {
-      if (!category?.data?.length)
+      if (loading?.fetchAll)
         await dispatch(getAllCategory(PAGE_CATEGORIES_LIMIT));
     };
 
     // Call the function to fetch categories data
     getData();
-  }, [dispatch, category]);
+  }, [dispatch, loading]);
 
   // 4. Memoize the brands data to avoid unnecessary re-renders
   const pageCount = useMemo(() => {

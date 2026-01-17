@@ -1,53 +1,64 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { viewAllWishList } from "../../../redux/actions/wishListAction";
+
+
+
 import { FAVORITE_PRODUCTS_BASE_URL } from "../../../config";
+import { PAGE_FAVORITE_PRODUCTS_LIMIT } from "../../../constants/pageLimits";
+import { EMPTY, USER_ROLES } from "../../../constants/general";
+import { getAllWishList } from "../../../redux/actions/wishListAction";
 
 const UserFavoriteProductsHook = () => {
-  // Dispatch to call the action
   const dispatch = useDispatch();
 
-  // States of loading and items
-  const [loading, setLoading] = useState(true);
-  const [items, setItems] = useState([]);
+  const { viewAllWishList, loading } = useSelector(
+    (state) => state.wishListReducer
+  );
+  const user = useSelector((state) => state.authReducer.user);
 
-  // get all favorite products
+  /* -------------------- Fetch once -------------------- */
+
   useEffect(() => {
-    const getFavoriteProducts = async () => {
-      // Start Loading of getting favorite products
-      setLoading(true);
-      await dispatch(viewAllWishList());
-      setLoading(false);
-      // End Loading of getting favorite products
-    };
+    if (!user || user.role === USER_ROLES.ADMIN) return;
 
-    // Get all favorite products
-    getFavoriteProducts();
-  }, [dispatch]);
+    const getData = async () => await dispatch(getAllWishList(PAGE_FAVORITE_PRODUCTS_LIMIT));
 
-  // Select the response of viewAllWishList from the store
-  const result = useSelector((state) => state.wishListReducer.viewAllWishList);
+    getData();
+  }, [dispatch, user]);
 
-  // UseEffect to set favorite products
-  useEffect(() => {
-    if (!loading) {
-      // Check if there are favorite products
-      if (result?.data) {
-        // Update The URL of the images
-        const updatedItems = result.data.map((product) => ({
-          ...product,
-          imageCover: FAVORITE_PRODUCTS_BASE_URL + product.imageCover,
-          images: product.images.map(
-            (image) => FAVORITE_PRODUCTS_BASE_URL + image
-          ),
-        }));
+  /* -------------------- Derived state -------------------- */
 
-        setItems(updatedItems);
-      }
-    }
-  }, [loading, result]);
+  const isLoading = loading.fetchAll;
 
-  return [items];
+  const items = useMemo(() => {
+    if (!viewAllWishList?.data) return EMPTY.ARRAY;
+
+    return viewAllWishList.data.map((product) => ({
+      ...product,
+      imageCover: FAVORITE_PRODUCTS_BASE_URL + product.imageCover,
+      images: (product.images || []).map(
+        (img) => FAVORITE_PRODUCTS_BASE_URL + img
+      ),
+    }));
+  }, [viewAllWishList]);
+
+  const pageCount = useMemo(() => {
+    return viewAllWishList?.paginationResult?.numberOfPages || 0;
+  }, [viewAllWishList]);
+
+  const favoriteProductsIDs = useMemo(() => {
+    return viewAllWishList?.data?.map((item) => item._id) || EMPTY.ARRAY;
+  }, [viewAllWishList]);
+
+
+  /* -------------------- Return -------------------- */
+
+  return [
+    items,
+    isLoading,
+    pageCount,
+    favoriteProductsIDs,
+  ];
 };
 
 export default UserFavoriteProductsHook;

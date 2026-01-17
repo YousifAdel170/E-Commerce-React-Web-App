@@ -2,7 +2,6 @@
 
 // Import Components from React bootstrap
 import { Container, Row } from "react-bootstrap";
-import { ToastContainer } from "react-toastify";
 
 // Import Custom Components
 import SubTitle from "../Utility/SubTitle";
@@ -13,9 +12,6 @@ import SpinnerComponent from "../Utility/SpinnerComponent";
 // Import Hooks
 import { useTranslation } from "react-i18next";
 
-// Import Custom Hook to get the favorite products
-import ViewAllWishListHook from "../../hooks/products/wishList/ViewAllWishListHook";
-
 // Component responsible for displaying the product cards in a container
 const ProductCardContainer = ({
   title,
@@ -24,9 +20,6 @@ const ProductCardContainer = ({
   products,
   isLoading,
 }) => {
-  // Custom Hook to get the favorite products
-  const [favoriteProducts] = ViewAllWishListHook();
-
   const { t } = useTranslation("home");
 
   // Generate unique ID for the region/section label
@@ -47,9 +40,8 @@ const ProductCardContainer = ({
             products.map((item, index) => (
               // Check if the product is in the favorite products list
               <ProductCard
-                key={item?._id}
+                key={index}
                 item={item}
-                favoriteProducts={favoriteProducts}
                 index={index}
               />
             ))
@@ -68,7 +60,6 @@ const ProductCardContainer = ({
           <SpinnerComponent msg={t("homeLoadingProductsAriaLabel")} />
         )}
       </Row>
-      <ToastContainer />
     </Container>
   );
 };

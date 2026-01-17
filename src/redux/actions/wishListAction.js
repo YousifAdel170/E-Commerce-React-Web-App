@@ -1,69 +1,80 @@
 import useDeleteData from "../../hooks/axios/useDeleteData";
 import { useGetDataToken } from "../../hooks/axios/useGetData";
 import { useInsertData } from "../../hooks/axios/useInsertData";
+
 import {
   ADD_TO_WISHLIST,
   DELETE_FROM_WISHLIST,
   VIEW_ALL_WISHLIST,
   GET_ERROR,
+  RESET_STATE_WISHLIST,
 } from "../type";
 
-// Action Responsible To Add Product To WishList
-export const addToWishList = (body) => async (dispatch) => {
+// Add to Wishlist
+export const createToWishList = (body) => async (dispatch) => {
   try {
-    // Response of Insert Data To WishList
+    dispatch({ type: RESET_STATE_WISHLIST });
+
     const response = await useInsertData("/api/v1/wishlist", body);
 
-    // Dispatch Response To Reducer
     dispatch({
       type: ADD_TO_WISHLIST,
       payload: response,
-      loading: true,
     });
+
+    return response;
   } catch (e) {
-    // Dispatch Error To Reducer
     dispatch({
-      type: ADD_TO_WISHLIST,
-      payload: e.response,
+      type: GET_ERROR,
+      payload: e.response?.data?.message || e.message,
+      meta: "create",
     });
+    throw e;
   }
 };
 
-// Action Responsible To Remove Product From WishList
-export const removeFromWishList = (prodID) => async (dispatch) => {
+// Remove from Wishlist
+export const deleteFromWishList = (id) => async (dispatch) => {
   try {
-    // Response of Delete Data From WishList
-    const response = await useDeleteData(`/api/v1/wishlist/${prodID}`);
+    dispatch({ type: RESET_STATE_WISHLIST });
 
-    // Dispatch Response To Reducer
+    const response = await useDeleteData(`/api/v1/wishlist/${id}`);
+
     dispatch({
       type: DELETE_FROM_WISHLIST,
-      payload: response,
-      loading: true,
-    });
-  } catch (e) {
-    // Dispatch Error To Reducer
-    dispatch({
-      type: DELETE_FROM_WISHLIST,
-      payload: e.response,
-    });
-  }
-};
-
-// Action Responsible To view all Products Of the WishList
-export const viewAllWishList = () => async (dispatch) => {
-  try {
-    const response = await useGetDataToken(`/api/v1/wishlist`);
-
-    dispatch({
-      type: VIEW_ALL_WISHLIST,
-      payload: response,
-      loading: true,
+      payload: { response, id },
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
-      payload: e.response,
+      payload: e.response?.data?.message || e.message,
+      meta: "delete",
     });
   }
 };
+
+// Get all Wishlist
+export const getAllWishList = (limit) => async (dispatch) => {
+  try {
+    dispatch({ type: RESET_STATE_WISHLIST });
+
+    const query = limit ? `?limit=${limit}` : "";
+    const response = await useGetDataToken(`/api/v1/wishlist${query}`);
+
+    dispatch({
+      type: VIEW_ALL_WISHLIST,
+      payload: response,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: e.response?.data?.message || e.message,
+      meta: "fetchAll",
+    });
+  }
+};
+
+// Reset State
+export const resetState = () => ({
+  type: RESET_STATE_WISHLIST,
+});

@@ -71,7 +71,9 @@
 
     "userAddressAdd": "Failed to add address. Please try again.",
     "userAddressUpdate": "Failed to update address. Please try again.",
-    "userAddressDelete": "Failed to delete address. Please try again."
+    "userAddressDelete": "Failed to delete address. Please try again.",
+
+    "internetConnectionProblem": "There is a problem with the internet connection"
   },
   "general": {
     "addSuccess": "Item added successfully!",

@@ -15,18 +15,18 @@ import { useTranslation } from "react-i18next";
 
 import "./ProductCard.css";
 
-const ProductCard = ({ item, favoriteProducts, index }) => {
+const ProductCard = ({ item, index }) => {
   const { t } = useTranslation("home");
 
   const [
-    favIcon,
+    isFav,
     discountAmount,
     discountPercent,
     animateFav,
     onFavClick,
     handleAnimationEnd,
-    isFavLoading,
-  ] = ProductCardHook(item, favoriteProducts);
+    isPress,
+  ] = ProductCardHook(item);
 
   const [sectionRef, isVisible] = useInviewAnimation();
 
@@ -89,15 +89,15 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
                 <span
                   role="button"
                   tabIndex={0}
-                  aria-pressed={favIcon}
+                  aria-pressed={isFav}
                   onClick={(e) => {
                     e.preventDefault();
-                    if (!isFavLoading) {
+                    if (!isPress) {
                       onFavClick();
                     }
                   }}
                   onKeyDown={(e) => {
-                    if ((e.key === "Enter" || e.key === " ") && !isFavLoading) {
+                    if ((e.key === "Enter" || e.key === " ") && !isPress) {
                       e.preventDefault();
                       onFavClick();
                     }
@@ -105,20 +105,20 @@ const ProductCard = ({ item, favoriteProducts, index }) => {
                   className={`fav-icon ${animateFav ? "animate" : ""}`}
                   onAnimationEnd={handleAnimationEnd}
                   style={{
-                    cursor: isFavLoading ? "not-allowed" : "pointer",
-                    pointerEvents: isFavLoading ? "none" : "auto",
-                    opacity: isFavLoading ? 0.5 : 1,
+                    cursor: isPress ? "not-allowed" : "pointer",
+                    pointerEvents: isPress ? "none" : "auto",
+                    opacity: isPress ? 0.5 : 1,
                     marginLeft: 8,
                   }}
                   title={
-                    favIcon
+                    isFav
                       ? t("removeFromFavorites", { title: item?.title })
                       : t("addToFavorites", { title: item?.title })
                   }
                 >
                   <FontAwesomeIcon
-                    icon={favIcon ? solidHeart : regularHeart}
-                    className={`favorite-icon ${favIcon ? "favorited" : ""}`}
+                    icon={isFav ? solidHeart : regularHeart}
+                    className={`favorite-icon ${isFav ? "favorited" : ""}`}
                     size="lg"
                   />
                 </span>

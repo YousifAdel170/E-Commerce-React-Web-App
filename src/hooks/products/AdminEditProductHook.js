@@ -31,7 +31,7 @@ const AdminEditProductHook = (id) => {
 
   // Fetch categories only once when the component mounts
   useEffect(() => {
-    internetDetect();
+    internetDetect(t("error.internetConnectionProblem"));
 
     const dispatchData = async () => {
       await dispatch(getSpecificProduct(id));
@@ -41,7 +41,7 @@ const AdminEditProductHook = (id) => {
 
     //
     dispatchData();
-  }, [dispatch, id]);
+  }, [dispatch, id, t]);
 
   // get the specific Product to be updated by its ID
   const product = useSelector((state) => state.allProduct.viewSpecificProduct);

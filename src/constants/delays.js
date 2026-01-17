@@ -25,4 +25,7 @@ export const DELAYS = {
   // ========== OTHER ==========
   NAVIGATION_DELAY: 1000, // Delay before redirect/navigation
   SCROLL_TO_SECTION: 600, // Smooth scroll duration
+
+  // ========== FAVORITE ==========
+  FAVORITE_ANIMATION: 300, // Animation duration when user adds/removes favorite
 };

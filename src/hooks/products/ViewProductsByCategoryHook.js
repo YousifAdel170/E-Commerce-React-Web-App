@@ -12,14 +12,16 @@ import internetDetect from "../Utility/useInternetConnectionHook";
 // Import Used Configurations
 import { PAGE_PRODUCTS_LIMIT } from "../../constants/pageLimits";
 import { EMPTY } from "../../constants/general";
+import { useTranslation } from "react-i18next";
 
 // Custom hook to get all products by a specific category
 const ViewProductsByCategoryHook = (categoryID) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation("notification_messages");
 
   useEffect(() => {
     // Check the internet connection status
-    internetDetect();
+    internetDetect(t("error.internetConnectionProblem"));
 
     // Fetch products for the given category
     const getData = async () =>
@@ -28,7 +30,7 @@ const ViewProductsByCategoryHook = (categoryID) => {
       );
 
     getData();
-  }, [dispatch, categoryID]);
+  }, [dispatch, categoryID, t]);
 
   // Handle pagination button click
   const onPress = async (page) => {

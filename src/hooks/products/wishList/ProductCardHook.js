@@ -1,155 +1,140 @@
-// Import hooks from react, react-redux
-import { useEffect, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-// Import Custom Hooks
+// Utils
 import notify from "../../Utility/useNotifyHook";
 import { calculateDiscounts } from "../../Utility/useDiscountHook";
 
-// Import Custom Actions
+// Actions
 import {
-  addToWishList,
-  removeFromWishList,
+  createToWishList,
+  deleteFromWishList,
+  resetState,
 } from "../../../redux/actions/wishListAction";
 
-// Import Used Constants
-import { NUMBERS, STATUS, USER_ROLES } from "../../../constants/general";
+// Constants
+import {
+  EMPTY,
+  STATUS,
+  STATUS_MESSAGES,
+  USER_ROLES,
+} from "../../../constants/general";
 import { NOTIFICATION_TYPES } from "../../../constants/notificationTypes";
+
+// i18n
 import { useTranslation } from "react-i18next";
 
-// Hook responsible for handling the product card
-const ProductCardHook = (item, favoriteProducts) => {
-  // Dispatch
+const ProductCardHook = (item) => {
   const dispatch = useDispatch();
-
   const { t } = useTranslation("notification_messages");
 
-  // Check if the product is in the favorite list
-  let favorite = favoriteProducts.some((fav) => fav === item?._id);
+  const {
+    addToWishList,
+    removeFromWishList,
+    viewAllWishList,
+    loading,
+  } = useSelector((state) => state.wishListReducer);
 
-  // States
-  const [favIcon, setFavIcon] = useState(NUMBERS.ZERO);
-  const [isFav, setIsFav] = useState(favorite);
-  const [loadingAdd, setLoadingAdd] = useState(true);
-  const [loadingRemove, setLoadingRemove] = useState(true);
-  const [animateFav, setAnimateFav] = useState(false);
-
-  const [loading, setLoading] = useState(false);
-
-  // UseEffect to check if the product is in the favorite list
-  useEffect(() => {
-    setIsFav(favoriteProducts.some((fav) => fav === item?._id));
-  }, [favoriteProducts, item]);
-
-  // Function to handle favorite button: After clicking the button, check if the product is in the favorite list then remove it, otherwise add it
-  const handleFav = () => {
-    if (isFav) removeFromWishListData();
-    else addToWishListData();
-  };
-
-  // UseEffect to change favorite button image
-  useEffect(() => {
-    if (isFav) setFavIcon(NUMBERS.ONE);
-    else setFavIcon(NUMBERS.ZERO);
-  }, [isFav]);
-
-  // select the response of addToWishList from the store
-  const resultAdd = useSelector((state) => state.wishListReducer.addToWishList);
-
-  // select the response of removeFromWishList from the store
-  const resultRemove = useSelector(
-    (state) => state.wishListReducer.removeFromWishList
-  );
-
-  // Get the current user
   const user = useSelector((state) => state.authReducer.user);
 
-  // Function to handle add to wishList: Change the favorite button image to on, then add the product to the favorite list
-  const addToWishListData = async () => {
-    // Check if the current user is admin then prevent him from adding to the cart
-    if (user?.role === USER_ROLES.ADMIN) {
+  /* -------------------- Wishlist (SOURCE OF TRUTH) -------------------- */
+
+  const favoriteProductsIDs = useMemo(() => {
+    return viewAllWishList?.data?.map((p) => p._id) || EMPTY.ARRAY;
+  }, [viewAllWishList]);
+
+  // ✅ BOOLEAN – derived state (NO useState)
+  const isFav = useMemo(() => {
+    return favoriteProductsIDs.includes(item?._id);
+  }, [favoriteProductsIDs, item?._id]);
+
+  /* -------------------- UI State -------------------- */
+
+  const [animateFav, setAnimateFav] = useState(false);
+  const [isPress, setIsPress] = useState(false);
+
+  // Track last action to avoid mixed effects
+  const currentAction = useRef(null); // "add" | "remove"
+
+  const isAdmin = user?.role === USER_ROLES.ADMIN;
+
+  /* -------------------- Action Handler -------------------- */
+
+  const onFavClick = async () => {
+    if (isPress) return;
+
+    if (isAdmin) {
       notify(t("wishlist.adminRestricted"), NOTIFICATION_TYPES.ERROR);
       return;
     }
 
-    setIsFav(true);
-    setFavIcon(1);
+    setIsPress(true);
+    setAnimateFav(true);
 
-    // Start Loading
-    setLoadingAdd(true);
-    setLoading(true);
-    await dispatch(addToWishList({ productId: item?._id }));
-    setLoadingAdd(false);
-    setLoading(false);
-    // End Loading
+    if (isFav) {
+      currentAction.current = "remove";
+      await dispatch(deleteFromWishList(item?._id));
+    } else {
+      currentAction.current = "add";
+      await dispatch(createToWishList({ productId: item?._id }));
+    }
   };
 
-  // Function to handle remove from wishList: Change the favorite button image to off, then remove the product from the favorite list
-  const removeFromWishListData = async () => {
-    // Check if the current user is admin then prevent him from adding to the cart
-    if (user?.role === USER_ROLES.ADMIN) {
-      notify(t("wishlist.adminRestricted"), NOTIFICATION_TYPES.ERROR);
-      return;
-    }
+  /* -------------------- ADD Result -------------------- */
 
-    setIsFav(false);
-    setFavIcon(0);
-
-    // Start Loading of Remove favorite product
-    setLoadingRemove(true);
-    setLoading(true);
-    await dispatch(removeFromWishList(item?._id));
-    setLoadingRemove(false);
-    setLoading(false);
-    // End Loading of Remove favorite product
-  };
-
-  // UseEffect to handle the response of addToWishList
   useEffect(() => {
-    if (!loadingAdd) {
-      try {
-        if (resultAdd?.status === STATUS.SUCCESS_OK)
-          notify(t("wishlist.added"), NOTIFICATION_TYPES.SUCCESS);
-        else if (resultAdd?.status === STATUS.UNAUTHORIZED)
-          notify(t("wishlist.loginRequired"), NOTIFICATION_TYPES.ERROR);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }, [loadingAdd, resultAdd, t]);
+    if (currentAction.current !== "add") return;
+    if (loading?.create) return;
 
-  // UseEffect to handle the response of removeFromWishList
+    if (addToWishList?.status === STATUS.SUCCESS_OK) 
+      notify(t("wishlist.added"), NOTIFICATION_TYPES.SUCCESS);
+     else if (addToWishList?.status === STATUS.UNAUTHORIZED) 
+      notify(t("wishlist.loginRequired"), NOTIFICATION_TYPES.ERROR);
+    else notify(t("wishlist.error"), NOTIFICATION_TYPES.ERROR);
+
+    setIsPress(false);
+    currentAction.current = null;
+    dispatch(resetState());
+  }, [loading?.create, addToWishList, dispatch, t]);
+
+  /* -------------------- REMOVE Result -------------------- */
+
   useEffect(() => {
-    if (!loadingRemove) {
-      try {
-        if (resultRemove?.status === NOTIFICATION_TYPES.SUCCESS)
-          notify(t("wishlist.removed"), NOTIFICATION_TYPES.SUCCESS);
-        else if (resultRemove?.status === STATUS.UNAUTHORIZED)
-          notify(t("wishlist.loginRequired"), NOTIFICATION_TYPES.ERROR);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }, [loadingRemove, resultRemove, t]);
+    if (currentAction.current !== "remove") return;
+    if (loading?.delete) return;
 
-  // Calculate discount amount and percentage for display badge
+    if (removeFromWishList?.response?.status === STATUS_MESSAGES.SUCCESS) 
+      notify(t("wishlist.removed"), NOTIFICATION_TYPES.SUCCESS);
+     else if (
+      removeFromWishList?.response?.status === STATUS.UNAUTHORIZED
+    ) 
+      notify(t("wishlist.loginRequired"), NOTIFICATION_TYPES.ERROR);
+     else notify(t("wishlist.error"), NOTIFICATION_TYPES.ERROR);
+
+
+    setIsPress(false);
+    currentAction.current = null;
+    dispatch(resetState());
+  }, [loading?.delete, removeFromWishList, dispatch, t]);
+
+  /* -------------------- Discount -------------------- */
+
   const { discountAmount, discountPercent } = calculateDiscounts(item);
-  const onFavClick = () => {
-    handleFav(); // existing toggle logic
-    setAnimateFav(true); // trigger animation
-  };
 
-  // remove animation class after animation ends
+  /* -------------------- Animation -------------------- */
+
   const handleAnimationEnd = () => setAnimateFav(false);
 
+  /* -------------------- Return -------------------- */
+
   return [
-    favIcon,
+    isFav,                 
     discountAmount,
     discountPercent,
     animateFav,
     onFavClick,
     handleAnimationEnd,
-    loading,
+    isPress,
   ];
 };
 

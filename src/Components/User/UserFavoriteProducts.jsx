@@ -7,28 +7,58 @@ import ProductCardContainer from "../Products/ProductCardContainer";
 // Import custom hook to get user's favorite products
 import UserFavoriteProductsHook from "../../hooks/products/wishList/UserFavoriteProductsHook";
 
+// Import i18n
+import { useTranslation } from "react-i18next";
+
+// Import utility components
+import ItemsNotFound from "../Utility/ItemsNotFound";
+import SpinnerComponent from "../Utility/SpinnerComponent";
+import PaginationComponent from "../Utility/PaginationComponent";
+import { ToastContainer } from "react-toastify";
+import { EMPTY } from "../../constants/general";
+
 // Component to display the user's favorite products
 const UserFavoriteProducts = () => {
-  // Get favorite items using the custom hook
-  const [items] = UserFavoriteProductsHook();
+  // Destructure from the hook
+  const [items, isLoading, pageCount, getSelectedPageNumber] =
+    UserFavoriteProductsHook();
+
+  // Translation
+  const { t } = useTranslation("user");
 
   return (
     <div>
-      {/* Section title */}
-      <div className="title-text pb-4">قائمة المفضلة</div>
+      <Row aria-busy={isLoading}>
+        {/* Section Title */}
+        <div className="title-text pb-4">{t("userWishLists.title")}</div>
 
-      <Row>
-        {/* If there are favorite items, show them in product cards */}
-        {items.length > 0 ? (
-          <ProductCardContainer products={items} title="" btnTitle="" />
+        {/* Display Products or Empty Message or Spinner */}
+        {!isLoading ? (
+          items?.length > 0 ? (
+            <ProductCardContainer
+              products={items}
+              title={EMPTY.TEXT}
+              btnTitle={EMPTY.TEXT}
+            />
+          ) : (
+            <ItemsNotFound msg={t("userWishLists.noFavoriteProducts")} />
+          )
         ) : (
-          // Otherwise, show a message indicating no favorites
-          <h6> لا يوجد منتجات مفضلة الان</h6>
+          <SpinnerComponent msg={t("userWishLists.loading")} />
         )}
       </Row>
+
+      {/* Pagination */}
+      {pageCount > 1 && (
+        <PaginationComponent
+          pageCount={pageCount}
+          onPress={getSelectedPageNumber}
+        />
+      )}
+
+      <ToastContainer />
     </div>
   );
 };
 
-// Export the component
 export default UserFavoriteProducts;
