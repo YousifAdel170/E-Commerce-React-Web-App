@@ -14,29 +14,33 @@ import "./RateModule.css";
 import ModalComponent from "../Utility/ModalComponent";
 import { StarRating } from "../Utility/StartRating";
 import { useTranslation } from "react-i18next";
+import useIsReviewOwner from "../../hooks/review/useIsReviewOwnerHook";
 
 // RateItem component for displaying individual review details
-export const RateItem = ({ review, updateReviews, removeReview }) => {
+export const RateItem = ({ review }) => {
   // Custom hook to manage the deletion of a review
   const [
-    isUser,
     handleShowDelete,
     handleDeleteClose,
     showDelete,
     handleDelete,
-  ] = DeleteRateHook(review, removeReview);
+    isPressDelete,
+  ] = DeleteRateHook(review);
+
+  const [isOwner] = useIsReviewOwner(review);
 
   // Custom hook to manage the update of a review
   const [
-    newRateText,
-    newRateValue,
-    onChangeNewRateText,
-    onChangeNewRateValue,
-    handleShowEdit,
-    handleCloseEdit,
-    showEdit,
-    handleUpdate,
-  ] = UpdateRateHook(review, updateReviews);
+    newRateText, // The current review text entered by the user
+    newRateValue, // The current rating value
+    onChangeNewRateText, // Function to handle review text changes
+    onChangeNewRateValue, // Function to handle rating value changes
+    handleShowEdit, // Function to show the edit modal
+    handleCloseEdit, // Function to close the edit modal
+    showEdit, // State variable controlling modal visibility
+    handleUpdate, // Function to handle the update submission
+    isPressEdit,
+  ] = UpdateRateHook(review);
 
   // Settings for the star rating component used for editing
   const setting = {
@@ -69,6 +73,7 @@ export const RateItem = ({ review, updateReviews, removeReview }) => {
         modalFooter={t("utilities:modal.delete")}
         className={`btn-danger`}
         ariaLabel={`${t("utilities:modal.deleteAriaLabel")}`}
+        isPress={isPressDelete}
       />
 
       {/* Edit Modal */}
@@ -81,6 +86,7 @@ export const RateItem = ({ review, updateReviews, removeReview }) => {
         modalFooter={t("utilities:modal.edit")}
         className={`btn-primary`}
         ariaLabel={`${t("utilities:modal.editAriaLabel")}`}
+        isPress={isPressEdit}
       >
         {/* Star rating component to update the review rating */}
         <ReactStars {...setting} />
@@ -124,10 +130,10 @@ export const RateItem = ({ review, updateReviews, removeReview }) => {
           <div className="rate-description mx-2">{review?.review || null}</div>
 
           {/* Only show edit and delete options if the logged-in user is the author */}
-          {isUser && (
+          {isOwner && (
             <div className="d-flex align-items-center gap-2">
               <i
-                className="fas fa-trash text-danger d-flex align-items-center"
+                className="fas fa-trash text-danger d-flex align-items-center my-0"
                 style={{ cursor: "pointer" }}
                 onClick={handleShowDelete}
                 title={t("delete_review")}
@@ -136,7 +142,7 @@ export const RateItem = ({ review, updateReviews, removeReview }) => {
                 aria-label={t("aria_delete_review")}
               />
               <i
-                className="fas fa-edit"
+                className="fas fa-edit my-0"
                 style={{ cursor: "pointer" }}
                 onClick={handleShowEdit}
                 title={t("edit_review")}

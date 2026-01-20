@@ -15,6 +15,7 @@ import ViewProductDetailsHook from "../../hooks/products/ViewProductDetailsHook"
 
 // Import constants
 import { PRODUCT_YOU_COULD_LIKE_TITLE } from "../../constants/titles";
+import { ToastContainer } from "react-toastify";
 // Page responsible for displaying the details of the product
 const ProductDetailsPage = () => {
   // Get the product ID from the URL
@@ -51,6 +52,8 @@ const ProductDetailsPage = () => {
           title={PRODUCT_YOU_COULD_LIKE_TITLE}
         />
       </Container>
+
+      <ToastContainer />
     </div>
   );
 };

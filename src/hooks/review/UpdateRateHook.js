@@ -5,27 +5,28 @@ import { useDispatch, useSelector } from "react-redux";
 // Import Custom Hooks
 import notify from "../Utility/useNotifyHook"; // Custom hook for notifications
 
-// Import Custom Actions
-import { updateRate } from "../../redux/actions/reviewAction"; // Action for updating the review
-
-// // Constants for notification types
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
-import {
-  GENERAL_MESSAGES,
-  REVIEW_MESSAGES,
-} from "../../constants/messagesConstants";
 import { EMPTY, STATUS, ZERO } from "../../constants/general";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+import { resetState, updateRate } from "../../redux/actions/reviewAction";
+import { useTranslation } from "react-i18next";
 
 // Custom hook to update the review rate
-const UpdateRateHook = (review, updateReviews) => {
+const UpdateRateHook = (review) => {
   // Use Dispatch to interact with Redux actions
   const dispatch = useDispatch();
 
   // State variables to handle review and UI state
   const [newRateText, setNewRateText] = useState(""); // Holds the new review text entered by the user
   const [newRateValue, setNewRateValue] = useState(0); // Holds the new rating value (e.g., 1-5 stars)
-  const [loading, setLoading] = useState(true); // Tracks the loading state during the update process
+  const [isPressEdit, setIsPressEdit] = useState(false); // Tracks the loading state during the update process
   const [showEdit, setShowEdit] = useState(false); // Controls the visibility of the edit modal
+
+  // Select the result of the update action from the Redux store
+  const { updatedReview, loading } = useSelector(
+    (state) => state.reviewReducer,
+  );
+
+  const { t } = useTranslation("notification_messages");
 
   // Function to close the edit modal
   const handleCloseEdit = () => setShowEdit(false);
@@ -42,57 +43,50 @@ const UpdateRateHook = (review, updateReviews) => {
   // Function to handle the update process when the user submits the new review
   const handleUpdate = async () => {
     // Validate that both rating and review text are provided
-    if (newRateValue === ZERO) {
-      notify(REVIEW_MESSAGES.ENTER_RATING, WARNING); // Notify user to enter a rating
-      return;
-    }
+    if (newRateValue === ZERO)
+      return notify(t("review.enterRating"), NOTIFICATION_TYPES.WARNING); // Notify user to enter a rating
 
-    if (newRateText === EMPTY.TEXT) {
-      notify(REVIEW_MESSAGES.ENTER_COMMENT, WARNING); // Notify user to enter a review comment
-      return;
-    }
+    if (newRateText === EMPTY.TEXT)
+      return notify(t("review.enterComment"), NOTIFICATION_TYPES.WARNING); // Notify user to enter a review comment
 
     // Set loading to true while the review is being updated
-    setLoading(true);
+    setIsPressEdit(true);
 
     // Dispatch the updateRate action to update the review in the backend
     await dispatch(
       updateRate(review?._id, {
         review: newRateText, // New review text entered by the user
         rating: newRateValue, // New rating value (e.g., number of stars)
-      })
+      }),
     );
-
-    // After the action is completed, set loading to false
-    setLoading(false);
-
-    // Close the edit modal once the update is complete
-    handleCloseEdit();
   };
-
-  // Select the result of the update action from the Redux store
-  const result = useSelector((state) => state.reviewReducer.updateReview);
 
   // Effect hook to handle the response from the update action
   useEffect(() => {
-    if (!loading) {
+    if (!loading?.update && isPressEdit) {
+      setIsPressEdit(false);
       // Check if the update was successful (status code 200)
-      if (result?.status === STATUS.SUCCESS_OK) {
-        notify(GENERAL_MESSAGES.UPDATE_SUCCESSFULLY, SUCCESS); // Notify the user about the success
-
-        // Update the review list with the new review data
-        updateReviews(review?._id, {
-          review: newRateText,
-          rating: newRateValue,
-        });
-      }
+      if (updatedReview?.status === STATUS.SUCCESS_OK)
+        notify(t("general.updateSuccess"), NOTIFICATION_TYPES.SUCCESS); // Notify the user about the success
       // Notify failure if the update was not successful
-      else notify(GENERAL_MESSAGES.UPDATE_FAILED, ERROR);
+      else notify(t("general.updateFail"), NOTIFICATION_TYPES.ERROR);
 
       // Reset loading to true for future actions
-      setLoading(true);
+      dispatch(resetState());
+
+      // Close the edit modal once the update is complete
+      handleCloseEdit();
     }
-  }, [loading, result, updateReviews, newRateText, newRateValue, review]);
+  }, [
+    loading,
+    updatedReview,
+    newRateText,
+    newRateValue,
+    review,
+    dispatch,
+    isPressEdit,
+    t,
+  ]);
 
   // Return the necessary state and functions to be used in the component
   return [
@@ -104,6 +98,7 @@ const UpdateRateHook = (review, updateReviews) => {
     handleCloseEdit, // Function to close the edit modal
     showEdit, // State variable controlling modal visibility
     handleUpdate, // Function to handle the update submission
+    isPressEdit,
   ];
 };
 

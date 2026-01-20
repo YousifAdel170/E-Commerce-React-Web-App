@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 // Import Components From React Bootstrap
 import { Col, Row } from "react-bootstrap";
 
@@ -14,9 +13,10 @@ import AddRateHook from "../../hooks/review/AddRateHook";
 // Import Custom Styling
 import "./RateModule.css";
 import { useTranslation } from "react-i18next";
+import SpinnerComponent from "../Utility/SpinnerComponent";
 
 // Container for displaying product ratings and reviews
-const RatePost = ({ addReview = () => {} }) => {
+const RatePost = () => {
   // Get The ID from the URL
   const { id } = useParams();
 
@@ -29,7 +29,8 @@ const RatePost = ({ addReview = () => {} }) => {
     onChangeRateValue,
     userName,
     handleSubmit,
-  ] = AddRateHook(id, addReview);
+    isPress,
+  ] = AddRateHook(id);
 
   // Settings for the Rate
   const settingRatingStarsInput = {
@@ -72,10 +73,16 @@ const RatePost = ({ addReview = () => {} }) => {
           />
           <div className="d-flex justify-content-end mt-2">
             <button
+              disabled={isPress}
               onClick={handleSubmit}
               className="btn btn-primary d-flex align-items-center"
               aria-label={t("aria_add_comment")}
             >
+              {isPress ? (
+                <SpinnerComponent className={"mx-2"} size={"sm"} />
+              ) : (
+                ""
+              )}
               {t("add_comment")}
             </button>
           </div>

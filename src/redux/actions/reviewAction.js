@@ -7,6 +7,8 @@ import {
   DELETE_REVIEW,
   UPDATE_REVIEW,
   GET_ALL_PRODUCTS_REVIEWS,
+  GET_ERROR,
+  RESET_STATE_REVIEW,
 } from "../type";
 
 // Create Review Action [Create Review]
@@ -14,19 +16,20 @@ export const createReview = (prodID, body) => async (dispatch) => {
   try {
     const response = await useInsertData(
       `/api/v1/products/${prodID}/reviews`,
-      body
+      body,
     );
-
     dispatch({
       type: CREATE_REVIEW,
       payload: response,
-      loading: true,
     });
+    return Promise.resolve(response);
   } catch (e) {
     dispatch({
-      type: CREATE_REVIEW,
-      payload: e.response,
+      type: GET_ERROR,
+      payload: e.response?.data?.errors || e.message || "Unknown error",
+      meta: "create",
     });
+    return Promise.reject(e);
   }
 };
 
@@ -34,18 +37,18 @@ export const createReview = (prodID, body) => async (dispatch) => {
 export const getAllProductRates = (prodID, page, limit) => async (dispatch) => {
   try {
     const response = await useGetDataToken(
-      `/api/v1/products/${prodID}/reviews?page=${page}&limit=${limit}`
+      `/api/v1/products/${prodID}/reviews?page=${page}&limit=${limit}`,
     );
 
     dispatch({
       type: GET_ALL_PRODUCTS_REVIEWS,
       payload: response,
-      loading: true,
     });
   } catch (e) {
     dispatch({
-      type: GET_ALL_PRODUCTS_REVIEWS,
-      payload: e.response,
+      type: GET_ERROR,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "fetchAll",
     });
   }
 };
@@ -57,13 +60,13 @@ export const deleteRate = (id) => async (dispatch) => {
 
     dispatch({
       type: DELETE_REVIEW,
-      payload: response,
-      loading: true,
+      payload: { response, id },
     });
   } catch (e) {
     dispatch({
-      type: DELETE_REVIEW,
-      payload: e.response,
+      type: GET_ERROR,
+      payload: e.response?.data?.message || e.message || "Unknown error",
+      meta: "delete",
     });
   }
 };
@@ -76,12 +79,19 @@ export const updateRate = (id, body) => async (dispatch) => {
     dispatch({
       type: UPDATE_REVIEW,
       payload: response,
-      loading: true,
     });
   } catch (e) {
     dispatch({
-      type: UPDATE_REVIEW,
-      payload: e.response,
+      type: GET_ERROR,
+      payload: e.response || e.message || "Unknown error",
+      meta: "update",
     });
   }
+};
+
+// Action To Reset State After Specific Action
+export const resetState = () => (dispatch) => {
+  dispatch({
+    type: RESET_STATE_REVIEW,
+  });
 };

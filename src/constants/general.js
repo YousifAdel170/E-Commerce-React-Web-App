@@ -36,6 +36,9 @@ export const STATUS_MESSAGES = {
   DUPLICATE: "Duplicate",
   SUCCESS: "success",
   BACKEND_EMAIL_ALREADY_USED: "E-mail already in use",
+  REVIEW_ALREADY_USED_BY_YOU: "You already added review on this product",
+  REVIEW_ADMIN_FORBIDDEN: "You are not allowed to perform this action",
+  REQUEST_403: "Request failed with status code 403",
 };
 
 // ================================

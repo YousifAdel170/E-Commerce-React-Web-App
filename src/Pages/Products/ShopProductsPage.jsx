@@ -82,8 +82,7 @@ const ShopProductsPage = () => {
           />
         )}
       </Container>
-            <ToastContainer />
-
+      <ToastContainer />
     </main>
   );
 };

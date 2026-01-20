@@ -1,3 +1,4 @@
+import { USER_ROLES } from "../../constants/general";
 import {
   CREATE_NEW_USER,
   GET_CURERNT_USER,
@@ -15,7 +16,7 @@ import {
 } from "../type";
 
 const initialState = {
-  user: JSON.parse(localStorage.getItem("user")) || null,
+  user: JSON.parse(localStorage.getItem(USER_ROLES.USER)) || null,
   createUser: [],
   loginUser: null,
   currentUser: [],
