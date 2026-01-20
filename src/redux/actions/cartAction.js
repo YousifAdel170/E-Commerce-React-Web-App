@@ -12,22 +12,6 @@ import {
   GET_ERROR,
 } from "../type";
 
-// Add new Item To The Cart
-export const addToCartAction = (body) => async (dispatch) => {
-  try {
-    const result = await useInsertData(`/api/v1/cart`, body);
-    dispatch({
-      type: ADD_TO_CART,
-      payload: result,
-    });
-  } catch (e) {
-    dispatch({
-      type: GET_ERROR,
-      payload: "Error " + e.response,
-    });
-  }
-};
-
 // Get All Items From The Cart
 export const getAllCartItems = () => async (dispatch) => {
   try {
@@ -40,6 +24,24 @@ export const getAllCartItems = () => async (dispatch) => {
     dispatch({
       type: GET_ERROR,
       payload: "Error " + e.response,
+      meta: "fetchAll",
+    });
+  }
+};
+
+// Add new Item To The Cart
+export const addToCartAction = (body) => async (dispatch) => {
+  try {
+    const result = await useInsertData(`/api/v1/cart`, body);
+    dispatch({
+      type: ADD_TO_CART,
+      payload: result,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ERROR,
+      payload: "Error " + e.response,
+      meta: "create",
     });
   }
 };
@@ -56,6 +58,7 @@ export const clearAllCart = () => async (dispatch) => {
     dispatch({
       type: GET_ERROR,
       payload: "Error " + e.response,
+      meta: "clearAll",
     });
   }
 };
@@ -66,12 +69,13 @@ export const deleteCartSpecificItem = (id) => async (dispatch) => {
     const result = await useDeleteData(`/api/v1/cart/${id}`);
     dispatch({
       type: DELETE_SPECIFIC_CART_ITEM,
-      payload: result,
+      payload: { result, id },
     });
   } catch (e) {
     dispatch({
       type: GET_ERROR,
       payload: "Error " + e.response,
+      meta: "delete",
     });
   }
 };
@@ -104,6 +108,7 @@ export const applyCoupon = (body) => async (dispatch) => {
     dispatch({
       type: APPLY_COUPON,
       payload: e.result,
+      meta: "applyCoupon",
     });
   }
 };

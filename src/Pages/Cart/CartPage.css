@@ -1,11 +1,37 @@
 /* Start of Styling Cart Page  */
-.cart-title {
-  color: #555550;
-  font-family: Almarai;
-  font-size: 21px;
-  font-weight: 800;
-  letter-spacing: 0;
-  line-height: 28px;
-  text-align: right;
+.cart-grid-wrapper {
+  display: flex;
+  align-items: stretch; /* equal height on desktop */
 }
+
+/* Desktop: lg and up (≥ 992px) */
+@media (min-width: 992px) {
+  .cart-grid-wrapper {
+    flex-direction: row;
+  }
+}
+
+/* Tablet & Mobile (< 992px) */
+@media (max-width: 991px) {
+  .cart-grid-wrapper {
+    flex-direction: column;
+  }
+
+  .cartItems,
+  .checkout-col {
+    width: 100% !important;
+  }
+
+  .cart-checkout {
+    width: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Checkout on top for better UX */
+
 /* End of Styling Cart Page  */

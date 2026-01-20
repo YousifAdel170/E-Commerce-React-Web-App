@@ -43,7 +43,6 @@ const reviewReducer = (state = initialState, action) => {
 
     // Create Review
     case CREATE_REVIEW:
-      console.log("created", action.payload);
       return {
         ...state,
         createdReview: action.payload,
@@ -61,7 +60,6 @@ const reviewReducer = (state = initialState, action) => {
 
     // Delete Review
     case DELETE_REVIEW:
-      console.log("deleted", action.payload);
       return {
         ...state,
         deletedReview: action.payload,

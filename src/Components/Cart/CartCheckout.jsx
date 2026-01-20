@@ -1,119 +1,141 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 
-// Import Components from react-bootstrap, react-toastify
-import { Button, Col, Modal, Row } from "react-bootstrap";
+import { Button, Col } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
-
-// Import Hooks from react
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
-// Import custom hooks
+// Hooks
 import DeleteCartHook from "../../hooks/cart/DeleteCartHook";
 import ApplyCouponHook from "../../hooks/cart/ApplyCouponHook";
 
-// CartCheckout component to handle the cart summary, coupon application, and checkout actions
+// Components
+import ModalComponent from "../Utility/ModalComponent";
+
+// CSS
+import "./CartItem.css";
+
 const CartCheckout = ({
   totalCartPrice,
   cartItems,
   couponNameRes,
   totalCartPriceAfterDisc,
 }) => {
-  // Destructure hook for cart item deletion modal state and handlers
+  const { t } = useTranslation(["cart", "utilities"]);
+
+  // Delete all cart items hook
   const [showAll, handleCloseAll, handleShowAll, handleDeleteCart] =
     DeleteCartHook();
 
-  // Destructure hook for coupon application and checkout actions
+  // Coupon & checkout hook
   const [couponName, onChangeCoupon, handleSubmitCoupon, handleCheckout] =
     ApplyCouponHook(cartItems);
 
-  // Effect to update the coupon name when the passed couponNameRes prop changes
+  // Update coupon name from props if provided
   useEffect(() => {
     if (couponNameRes) onChangeCoupon(couponNameRes);
   }, [couponNameRes]);
 
   return (
-    <Row className="my-1 d-flex justify-content-center cart-checkout py-3">
-      {/* Modal for confirming clearing all items from the cart */}
-      <Modal show={showAll} onHide={handleCloseAll}>
-        <Modal.Header>
-          <Modal.Title>
-            <div className="font">تاكيد الحذف</div>{" "}
-            {/* Confirmation message in Arabic */}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="font">هل انت متاكد من حذف الكل من العربة</div>{" "}
-          {/* Confirm delete message in Arabic */}
-        </Modal.Body>
-        <Modal.Footer>
-          {/* Button to cancel deletion */}
-          <Button className="font" variant="success" onClick={handleCloseAll}>
-            تراجع {/* Cancel in Arabic */}
-          </Button>
-          {/* Button to confirm deletion */}
-          <Button className="font" variant="dark" onClick={handleDeleteCart}>
-            حذف {/* Delete in Arabic */}
-          </Button>
-        </Modal.Footer>
-      </Modal>
+    <Col
+      xs="12"
+      className="cart-checkout user-order order-item-body mb-3 rounded shadow-sm card-animate"
+    >
+      {/* Delete All Modal */}
+      <ModalComponent
+        show={showAll}
+        handleClose={handleCloseAll}
+        handleOperation={handleDeleteCart}
+        modalTitle={t("utilities:modal.deleteAllTitle")}
+        modalBody={t("utilities:modal.deleteAllMessage")}
+        modalFooter={t("utilities:modal.delete")}
+        className="btn-danger"
+      />
 
-      {/* Cart Summary and Checkout Section */}
-      <Col xs="12" className="d-flex  flex-column ">
-        {/* Coupon Input and Apply Button */}
-        <div className="d-flex">
+      {/* Checkout Summary */}
+      <Col xs="12" className="d-flex flex-column gap-3">
+        {/* Coupon Section */}
+        <div className="card-animate  position-relative w-100">
           <input
+            type="text"
             value={couponName}
-            onChange={(e) => onChangeCoupon(e.target.value)} // Update coupon name on change
-            className="copon-input d-inline text-center "
-            placeholder="كود الخصم" // Placeholder text in Arabic
+            onChange={(e) => onChangeCoupon(e.target.value)}
+            className="coupon-input w-100 px-3"
+            placeholder={t("user:cart.couponPlaceholder")}
           />
-          <button onClick={handleSubmitCoupon} className="copon-btn d-inline ">
-            تطبيق {/* Apply in Arabic */}
-          </button>
+          <Button
+            onClick={handleSubmitCoupon}
+            className="coupon-apply-btn"
+            style={{
+              top: "0",
+              right: "0",
+            }}
+          >
+            {t("user:cart.applyCoupon")}
+          </Button>
         </div>
 
-        {/* Cart Price Section */}
-        <div className="product-price d-flex justify-content-center align-items-center  w-100 my-3  border">
-          {totalCartPriceAfterDisc ? (
-            <>
-              {/* Display price before and after discount if applicable */}
-              <div>
-                قبل الخصم : <del className="ms-3">{totalCartPrice}</del>{" "}
-                {/* Price before discount in Arabic */}
-              </div>
-              <div>
-                بعد الخصم: <>{totalCartPriceAfterDisc}</>{" "}
-                {/* Price after discount in Arabic */}
-              </div>
-            </>
-          ) : (
-            `${totalCartPrice} جنية` // If no discount, display the total price in Arabic
-          )}
-        </div>
+        {/* Price Section */}
+        <Col xs={12}>
+          <div
+            className="product-price cart overflow-hidden d-flex flex-column gap-2"
+            style={{
+              backgroundColor: "transparent",
+              border: "1px solid var(--focus-color)",
+            }}
+          >
+            {totalCartPriceAfterDisc &&
+            totalCartPriceAfterDisc < totalCartPrice ? (
+              <>
+                <span className="order-item-text">
+                  {t("user:cart.checkout.priceBeforeDiscount")}
+                </span>
+                <del>
+                  {totalCartPrice.toLocaleString()} {t("user:cart.currency")}
+                </del>
+                <span className="new-price fw-bold">
+                  {totalCartPriceAfterDisc.toLocaleString()}{" "}
+                  {t("user:cart.currency")}
+                </span>
+                <span className="discount-price text-danger fw-bold">
+                  {Math.round(
+                    ((totalCartPrice - totalCartPriceAfterDisc) /
+                      totalCartPrice) *
+                      100,
+                  )}
+                  %
+                </span>
+              </>
+            ) : (
+              <span className="card-item-text-answer fw-bold">
+                {totalCartPrice.toLocaleString()} {t("user:cart.currency")}
+              </span>
+            )}
+          </div>
+        </Col>
 
-        <div>
-          {/* Checkout Button */}
-          <button
-            className="product-cart-add w-100 px-2"
+        {/* Checkout & Clear Buttons */}
+        <div className="d-flex flex-column gap-2">
+          <Button
+            className="cart-action-btn"
             onClick={handleCheckout}
+            variant="primary"
           >
-            اتمام الشراء {/* Checkout in Arabic */}
-          </button>
-
-          {/* Clear Cart Button */}
-          <button
-            className="product-cart-add w-100 px-2 my-1"
+            {t("user:cart.checkout.checkoutBtn")}
+          </Button>
+          <Button
+            className="cart-action-btn"
             onClick={handleShowAll}
+            variant="outline-danger"
           >
-            مسح العربة {/* Clear Cart in Arabic */}
-          </button>
+            {t("user:cart.checkout.clearCartBtn")}
+          </Button>
         </div>
       </Col>
 
-      {/* Toast Notifications for user feedback */}
       <ToastContainer />
-    </Row>
+    </Col>
   );
 };
 

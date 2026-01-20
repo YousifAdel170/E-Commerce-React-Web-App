@@ -1,209 +1,212 @@
 /* eslint-disable react/prop-types */
 
-// Import components from react-bootstrap, react-toastify
-import { Button, Col, Modal, Row } from "react-bootstrap";
-import { ToastContainer } from "react-toastify"; // For showing toast notifications
+// React & Bootstrap
+import { Col, Row, OverlayTrigger, Tooltip, Button } from "react-bootstrap";
+import { FaEdit, FaTrash, FaMinus, FaPlus } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
-// Import Custom Hooks
-import DeleteCartHook from "../../hooks/cart/DeleteCartHook"; // Custom hook to handle item deletion
-import UpdateCartHook from "../../hooks/cart/UpdateCartHook"; // Custom hook to handle item quantity updates
+// Custom Hooks
+import DeleteCartHook from "../../hooks/cart/DeleteCartHook";
+import UpdateCartHook from "../../hooks/cart/UpdateCartHook";
 
-// Import Used Assets
-import deletion from "../../assets/Imgs/delete.png";
+// Config
+import { PRODUCTS_BASE_URL } from "../../config";
 
-// Import Used Configurations
-import { PRODUCTS_BASE_URL } from "../../config"; // Base URL for product images
+// Components
+import ModalComponent from "../Utility/ModalComponent";
+import ItemsNotFound from "../Utility/ItemsNotFound";
 
-// Custom styles for the CartItem component
+// Custom CSS
 import "./CartItem.css";
+import { useSelector } from "react-redux";
 
-// Component Responsible to enter details of the Item in the cart
 const CartItem = ({ item }) => {
-  // Destructure data from DeleteCartHook and UpdateCartHook for managing deletion and update modals
+  const { t } = useTranslation(["user", "utilities"]);
+
+  // Hooks for deletion and update
   const [
     ,
     ,
     ,
     ,
-    showSpecific,
-    handleCloseSpecific,
-    handleShowSpecific,
-    handelDeleteSpecificItem,
+    showDelete,
+    handleCloseDelete,
+    handleShowDelete,
+    handleDelete,
+    isDeletePress,
   ] = DeleteCartHook(item);
 
   const [
     itemCount,
     onChangeCount,
-    showSpecificUpdate,
-    handleCloseSpecificUpdate,
-    handleShowSpecificUpdate,
-    handleUpdateSpecificItem,
+    showUpdate,
+    handleCloseUpdate,
+    handleShowUpdate,
+    handleUpdate,
+    isUpdatePress,
   ] = UpdateCartHook(item);
 
+  const { isDark } = useSelector((state) => state.ui);
+
+  // Actions
+  const actions = [
+    {
+      label: t("utilities:modal.edit"),
+      onClick: handleShowUpdate,
+      ariaLabel: `${t("utilities:modal.editAriaLabel")}: ${item?.product?.title}`,
+      icon: <FaEdit className="fs-5" />,
+    },
+    {
+      label: t("utilities:modal.delete"),
+      onClick: handleShowDelete,
+      ariaLabel: `${t("utilities:modal.deleteAriaLabel")}: ${item?.product?.title}`,
+      icon: <FaTrash className="text-danger fs-5" />,
+    },
+  ];
+
+  if (!item?.product) return <ItemsNotFound msg={t("cart.emptyMessage")} />;
+
   return (
-    <Col xs="12" className="cart-item-body my-2 d-flex flex-column-mobile px-2">
-      {/* Modal for updating a specific item in the cart */}
-      <Modal show={showSpecificUpdate} onHide={handleCloseSpecificUpdate}>
-        <Modal.Header>
-          <Modal.Title>
-            <div className="font">تاكيد التعديل</div> {/* Confirmation title */}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="font">هل انت متاكد من تعديل هذا المنتج من العربة</div>{" "}
-          {/* Confirmation body */}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            className="font"
-            variant="success"
-            onClick={handleCloseSpecificUpdate}
-          >
-            تراجع {/* Undo action */}
-          </Button>
-          <Button
-            className="font"
-            variant="dark"
-            onClick={handleUpdateSpecificItem}
-          >
-            تعديل {/* Update action */}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* Modal for deleting a specific item from the cart */}
-      <Modal show={showSpecific} onHide={handleCloseSpecific}>
-        <Modal.Header>
-          <Modal.Title>
-            <div className="font">تاكيد الحذف</div> {/* Confirmation title */}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="font">هل انت متاكد من حذف هذا المنتج من العربة</div>{" "}
-          {/* Confirmation body */}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            className="font"
-            variant="success"
-            onClick={handleCloseSpecific}
-          >
-            تراجع {/* Undo action */}
-          </Button>
-          <Button
-            className="font"
-            variant="dark"
-            onClick={handelDeleteSpecificItem}
-          >
-            حذف {/* Delete action */}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* Cart Item Image */}
-      <img
-        width="250px"
-        height="250px"
-        src={item?.product ? PRODUCTS_BASE_URL + item.product.imageCover : ""} // Display product image
-        alt=""
-        className="mx-auto"
+    <Col
+      xs="12"
+      className="user-order order-item-body mb-3 rounded shadow-sm card-animate"
+    >
+      {/* Update Modal */}
+      <ModalComponent
+        show={showUpdate}
+        handleClose={handleCloseUpdate}
+        handleOperation={handleUpdate}
+        modalTitle={t("utilities:modal.editTitle")}
+        modalBody={t("utilities:modal.editMessage")}
+        modalFooter={t("utilities:modal.update")}
+        className={"btn-primary"}
+        isPress={isUpdatePress}
+        ariaLabel={`${t("utilities:modal.updateAriaLabel")}: ${item?.product?.title}`}
       />
 
-      {/* Cart Item Details Container */}
-      <div className="w-100">
-        <Row className="mt-2">
-          <Col className="py-1 d-flex col-mobile">
-            {/* Product Title */}
-            <div className="d-flex">
-              <div className="cat-title ms-2">اسم المنتج: </div>
-              <div className="cat-text d-flex align-items-center">
-                {item?.product?.title || ""} {/* Display product title */}
+      {/* Delete Modal */}
+      <ModalComponent
+        show={showDelete}
+        handleClose={handleCloseDelete}
+        handleOperation={handleDelete}
+        modalTitle={t("utilities:modal.deleteTitle")}
+        modalBody={t("utilities:modal.deleteMessage")}
+        modalFooter={t("utilities:modal.delete")}
+        className="btn-danger"
+        isPress={isDeletePress}
+        ariaLabel={`${t("utilities:modal.deleteAriaLabel")}: ${item?.product?.title}`}
+      />
+
+      {/* Product Info */}
+      <Row>
+        <Col
+          sm="12"
+          className="d-flex align-items-center justify-content-between flex-wrap"
+        >
+          <div className="d-flex align-items-center gap-3 flex-grow-1 flex-wrap">
+            {/* Product Image */}
+            <img
+              src={PRODUCTS_BASE_URL + item?.product?.imageCover}
+              alt={item?.product?.title}
+              className="order-item-image"
+            />
+
+            <div className="d-flex flex-column justify-content-center gap-1">
+              <div className="d-flex align-items-center">
+                <span className="order-item-text">{t("cart.item.title")}:</span>
+                <span className="order-item-text-answer mx-2">
+                  {item?.product?.title}
+                </span>
+              </div>
+
+              <div className="d-flex align-items-center">
+                <span className="order-item-text">
+                  {t("cart.item.category")}:
+                </span>
+                <span className="order-item-text-answer mx-2">
+                  {item?.product?.category?.name || ""}
+                </span>
+              </div>
+
+              <div className="d-flex align-items-center">
+                <span className="order-item-text">{t("cart.item.brand")}:</span>
+                <span className="order-item-text-answer mx-2">
+                  {item?.product?.brand?.name || ""}
+                </span>
               </div>
             </div>
-            {/* Product Rating */}
-            <div className="d-flex align-items-center cat-rate me-2">
-              ({item?.product?.ratingsAverage || 0}){" "}
-              {/* Display product rating */}
+          </div>
+
+          {/* Price & Actions */}
+          <div className="d-flex flex-column align-items-end gap-2">
+            {/* Price */}
+            <div className="d-flex order-item-text align-items-center">
+              <span className="fw-bold fs-6 my-0">
+                {item?.price || 0} {t("cart.currency")}
+              </span>
             </div>
-          </Col>
-        </Row>
 
-        <Row className="justify-content-between">
-          <Col sm="12" className="pb-1 d-flex col-mobile">
-            {/* Product Category */}
-
-            <div className="cat-title">اسم التصنيف:</div>
-            <div className="cat-text d-flex align-items-center me-2  ">
-              {item?.product?.category?.name} {/* Display product category */}
+            {/* Quantity Controls */}
+            <div className="d-flex align-items-center gap-2 mt-1">
+              <span className="order-item-text">
+                {t("cart.item.quantity")}:
+              </span>
+              <div className="d-flex align-items-center rounded overflow-hidden">
+                <Button
+                  size="sm"
+                  variant={isDark ? "Dark" : "light"}
+                  onClick={() =>
+                    onChangeCount({ target: { value: itemCount - 1 } })
+                  }
+                  disabled={itemCount <= 1}
+                  className="icon"
+                  title={t("cart.item.decrease")}
+                >
+                  <FaMinus className="icon" />
+                </Button>
+                <input
+                  type="number"
+                  value={itemCount}
+                  onChange={onChangeCount}
+                  min={1}
+                  className="text-center border-0"
+                  style={{ width: "100px", outline: "none" }}
+                />
+                <Button
+                  size="sm"
+                  variant={isDark ? "Dark" : "light"}
+                  onClick={() =>
+                    onChangeCount({ target: { value: itemCount + 1 } })
+                  }
+                  className="icon"
+                  title={t("cart.item.increase")}
+                >
+                  <FaPlus className="icon" />
+                </Button>
+              </div>
             </div>
-          </Col>
-        </Row>
 
-        {/* Cart Item Brand */}
-        <Row>
-          <Col sm="12" className="py-1 d-flex align-items-center col-mobile">
-            <div className="cat-title">الماركة:</div>
-            <div className="cat-text me-2">
-              {item?.product?.brand?.name || ""} {/* Display product brand */}
+            {/* Action Buttons */}
+            <div className="d-flex gap-2 mt-2">
+              {actions.map((action, idx) => (
+                <OverlayTrigger
+                  key={idx}
+                  placement="top"
+                  overlay={<Tooltip>{action.ariaLabel}</Tooltip>}
+                >
+                  <Button
+                    onClick={action.onClick}
+                    variant={isDark ? "Dark" : "light"}
+                    className="d-flex icon align-items-center gap-1 p-2 shadow-sm"
+                  >
+                    {action.icon}
+                  </Button>
+                </OverlayTrigger>
+              ))}
             </div>
-          </Col>
-        </Row>
-
-        {/* Cart Item Price */}
-        <Row>
-          <Col sm="12 py-1 d-flex col-mobile">
-            <div className="cat-title align-items-center d-flex">السعر: </div>
-            <div className="cat-text d-flex align-items-center me-2">
-              {item?.price || 0} جنية {/* Display product price */}
-            </div>
-          </Col>
-        </Row>
-
-        {/* Cart Item Color */}
-        <Row>
-          <Col sm="12" className="py-1 d-flex col-mobile">
-            <div className="cat-title d-flex align-items-center">اللون:</div>
-            {/* Display product color */}
-            <div
-              className="color me-2 border"
-              style={{ backgroundColor: item?.color || "" }}
-            ></div>
-          </Col>
-        </Row>
-
-        {/* Cart Item Quantity and Update Button */}
-        <Row className="py-2 d-flex justify-content-between">
-          <Col className="d-flex col-mobile flex-grow-2 flex-grow-1-mobile">
-            <div className="cat-title d-flex align-items-center">الكمية: </div>
-            <input
-              value={itemCount} // Display current item count
-              onChange={onChangeCount} // Handle item count change
-              className="mx-1 cat-text text-center"
-              type="number"
-              style={{ width: "40px", height: "40px", lineHeight: "40px" }}
-            />
-            {/* Apply Button */}
-            <Button onClick={handleShowSpecificUpdate} className="btn btn-dark">
-              تطبيق {/* Apply changes */}
-            </Button>
-          </Col>
-
-          <Col className="col-mobile flex-center-mobile align-items-center d-flex">
-            {/* Delete Item Button */}
-            <div
-              className="d-flex align-items-center"
-              style={{ cursor: "pointer" }}
-              onClick={handleShowSpecific} // Show the delete confirmation modal
-            >
-              <img src={deletion} width="20px" height="24px" />
-              <div className="cat-text d-flex align-items-center me-2">مسح</div>
-            </div>
-          </Col>
-        </Row>
-      </div>
-
-      {/* Toast Container for Notifications */}
-      <ToastContainer />
+          </div>
+        </Col>
+      </Row>
     </Col>
   );
 };

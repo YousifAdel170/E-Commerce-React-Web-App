@@ -24,7 +24,8 @@ input,
 textarea,
 .navbar,
 .btn {
-  transition: background-color var(--main-duration) ease,
+  transition:
+    background-color var(--main-duration) ease,
     color var(--main-duration) ease-in-out;
 }
 
@@ -498,7 +499,9 @@ button:disabled,
   background-position: right 12px center;
   background-size: 16px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-  transition: border 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .select:focus {
@@ -527,14 +530,20 @@ button:disabled,
 
 /* ===== Rating Stars Component ===== */
 .star-rating .star polygon {
-  transition: fill var(--main-duration) ease, stroke var(--main-duration) ease;
-  -webkit-transition: fill var(--main-duration) ease,
+  transition:
+    fill var(--main-duration) ease,
     stroke var(--main-duration) ease;
-  -moz-transition: fill var(--main-duration) ease,
+  -webkit-transition:
+    fill var(--main-duration) ease,
     stroke var(--main-duration) ease;
-  -ms-transition: fill var(--main-duration) ease,
+  -moz-transition:
+    fill var(--main-duration) ease,
     stroke var(--main-duration) ease;
-  -o-transition: fill var(--main-duration) ease,
+  -ms-transition:
+    fill var(--main-duration) ease,
+    stroke var(--main-duration) ease;
+  -o-transition:
+    fill var(--main-duration) ease,
     stroke var(--main-duration) ease;
 }
 
@@ -749,7 +758,8 @@ input {
   border: 2px dashed var(--main-color);
   padding: 8px 12px;
   border-radius: var(--border-radius-sm);
-  transition: border-color var(--main-duration) ease,
+  transition:
+    border-color var(--main-duration) ease,
     background-color var(--main-duration) ease;
 }
 

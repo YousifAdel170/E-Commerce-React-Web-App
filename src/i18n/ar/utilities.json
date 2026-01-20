@@ -84,6 +84,11 @@
     "update": "تحديث",
     "updateAriaLabel": "تحديث العنصر الحالي",
     "add": "إضافة",
-    "addAriaLabel": "إضافة عنصر جديد"
+    "addAriaLabel": "إضافة عنصر جديد",
+
+    "updateCartMessage": "هل تريد تحديث كمية هذا المنتج؟",
+
+    "deleteAllTitle": "حذف جميع المنتجات",
+    "deleteAllMessage": "هل أنت متأكد من حذف جميع المنتجات من العربة؟"
   }
 }

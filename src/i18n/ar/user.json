@@ -91,5 +91,33 @@
     "title": "قائمة المفضلة",
     "noFavoriteProducts": "لا يوجد منتجات مفضلة الآن",
     "loading": "جاري تحميل المنتجات..."
+  },
+
+  "cart": {
+    "title": "عربة التسوق",
+    "emptyMessage": "لا يوجد منتجات فى العربة",
+    "browseProducts": "اضغط هنا لعرض المنتجات",
+    "loading": "جاري تحميل محتويات العربة...",
+    "currency": "ج.م",
+    "item": {
+      "title": "اسم المنتج",
+      "category": "الفئة",
+      "brand": "العلامة التجارية",
+      "price": "السعر",
+      "quantity": "الكمية",
+      "increase": "زيادة الكمية",
+      "decrease": "إنقاص الكمية"
+    },
+
+    "couponPlaceholder": "أدخل كود الخصم",
+    "applyCoupon": "تطبيق",
+
+    "checkout": {
+      "checkoutBtn": "إتمام الشراء",
+      "clearCartBtn": "مسح العربة",
+      "priceBeforeDiscount": "قبل الخصم",
+      "priceAfterDiscount": "بعد الخصم",
+      "price": "السعر"
+    }
   }
 }

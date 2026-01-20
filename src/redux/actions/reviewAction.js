@@ -29,7 +29,7 @@ export const createReview = (prodID, body) => async (dispatch) => {
       payload: e.response?.data?.errors || e.message || "Unknown error",
       meta: "create",
     });
-    return Promise.reject(e);
+    // return Promise.reject(e);
   }
 };
 

@@ -84,6 +84,11 @@
     "update": "Update",
     "updateAriaLabel": "Update the current item",
     "add": "Add",
-    "addAriaLabel": "Add a new item"
+    "addAriaLabel": "Add a new item",
+
+    "updateCartMessage": "Do you want to update the quantity of this item?",
+
+    "deleteAllTitle": "Delete All Products",
+    "deleteAllMessage": "Are you sure you want to delete all products from the cart?"
   }
 }

@@ -92,5 +92,34 @@
     "title": "Favorite Products",
     "noFavoriteProducts": "No favorite products yet",
     "loading": "Loading products..."
+  },
+
+  "cart": {
+    "title": "Shopping Cart",
+    "emptyMessage": "No products in the cart",
+    "browseProducts": "Click here to view products",
+    "loading": "Loading your cart...",
+
+    "currency": "EGP",
+    "item": {
+      "title": "Product Name",
+      "category": "Category",
+      "brand": "Brand",
+      "price": "Price",
+      "quantity": "Quantity",
+      "increase": "Increase quantity",
+      "decrease": "Decrease quantity"
+    },
+
+    "couponPlaceholder": "Enter coupon",
+    "applyCoupon": "Apply",
+
+    "checkout": {
+      "checkoutBtn": "Proceed to Checkout",
+      "clearCartBtn": "Clear Cart",
+      "priceBeforeDiscount": "Before discount",
+      "priceAfterDiscount": "After discount",
+      "price": "Price"
+    }
   }
 }

@@ -97,6 +97,6 @@ export const TOGGLE_LANGUAGE = "TOGGLE_LANGUAGE";
 
 // Rest state after specific action
 export const RESET_STATE = "RESET_STATE";
-
 export const RESET_STATE_WISHLIST = "RESET_STATE_WISHLIST";
 export const RESET_STATE_REVIEW = "RESET_STATE_REVIEW";
+export const RESET_STATE_CART = "RESET_STATE_CART";

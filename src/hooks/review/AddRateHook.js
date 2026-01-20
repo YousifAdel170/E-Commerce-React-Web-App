@@ -97,8 +97,8 @@ const AddRateHook = (id) => {
     if (!loadingCreate && isPress) {
       setIsPress(false);
 
-      // setRateText(EMPTY.TEXT);
-      // setRateValue(ZERO);
+      setRateText(EMPTY.TEXT);
+      setRateValue(ZERO);
 
       // Handle error if the admin is trying to rate
       if (
