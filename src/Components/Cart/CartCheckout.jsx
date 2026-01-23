@@ -2,7 +2,6 @@
 /* eslint-disable react/prop-types */
 
 import { Button, Col } from "react-bootstrap";
-import { ToastContainer } from "react-toastify";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -15,6 +14,7 @@ import ModalComponent from "../Utility/ModalComponent";
 
 // CSS
 import "./CartItem.css";
+import SpinnerComponent from "../Utility/SpinnerComponent";
 
 const CartCheckout = ({
   totalCartPrice,
@@ -25,12 +25,27 @@ const CartCheckout = ({
   const { t } = useTranslation(["cart", "utilities"]);
 
   // Delete all cart items hook
-  const [showAll, handleCloseAll, handleShowAll, handleDeleteCart] =
-    DeleteCartHook();
+  const [
+    showAll,
+    handleCloseAll,
+    handleShowAll,
+    handleDeleteCart,
+    ,
+    ,
+    ,
+    ,
+    ,
+    isPressDeleteCart,
+  ] = DeleteCartHook();
 
   // Coupon & checkout hook
-  const [couponName, onChangeCoupon, handleSubmitCoupon, handleCheckout] =
-    ApplyCouponHook(cartItems);
+  const [
+    couponName,
+    onChangeCoupon,
+    handleSubmitCoupon,
+    handleCheckout,
+    isPressCoupon,
+  ] = ApplyCouponHook(cartItems);
 
   // Update coupon name from props if provided
   useEffect(() => {
@@ -51,12 +66,13 @@ const CartCheckout = ({
         modalBody={t("utilities:modal.deleteAllMessage")}
         modalFooter={t("utilities:modal.delete")}
         className="btn-danger"
+        isPress={isPressDeleteCart}
       />
 
       {/* Checkout Summary */}
       <Col xs="12" className="d-flex flex-column gap-3">
         {/* Coupon Section */}
-        <div className="card-animate  position-relative w-100">
+        <div className="card-animate position-relative w-100">
           <input
             type="text"
             value={couponName}
@@ -67,11 +83,13 @@ const CartCheckout = ({
           <Button
             onClick={handleSubmitCoupon}
             className="coupon-apply-btn"
-            style={{
-              top: "0",
-              right: "0",
-            }}
+            disabled={isPressCoupon}
           >
+            {isPressCoupon ? (
+              <SpinnerComponent className={"mx-2"} size={"sm"} />
+            ) : (
+              ""
+            )}
             {t("user:cart.applyCoupon")}
           </Button>
         </div>
@@ -88,9 +106,6 @@ const CartCheckout = ({
             {totalCartPriceAfterDisc &&
             totalCartPriceAfterDisc < totalCartPrice ? (
               <>
-                <span className="order-item-text">
-                  {t("user:cart.checkout.priceBeforeDiscount")}
-                </span>
                 <del>
                   {totalCartPrice.toLocaleString()} {t("user:cart.currency")}
                 </del>
@@ -133,8 +148,6 @@ const CartCheckout = ({
           </Button>
         </div>
       </Col>
-
-      <ToastContainer />
     </Col>
   );
 };

@@ -28,7 +28,7 @@ const CategoryHeader = () => {
   const location = useLocation();
 
   // Determine current theme (light or dark) to style spinner
-  const isDark = useSelector((state) => state.ui.isDark);
+  const { isDark } = useSelector((state) => state.ui);
   const spinnerVariant = isDark ? "light" : "dark";
 
   return (
@@ -52,7 +52,8 @@ const CategoryHeader = () => {
               />
             ) : (
               // Render first 5 categories with routing and ARIA support
-              categoriesData && categoriesData?.slice(0, 5).map((category) => (
+              categoriesData &&
+              categoriesData?.slice(0, 5).map((category) => (
                 <Link
                   key={category?._id}
                   to={`/products/category/${category?._id}`}

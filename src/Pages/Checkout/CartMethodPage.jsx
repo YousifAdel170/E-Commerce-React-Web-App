@@ -3,6 +3,7 @@ import { Container } from "react-bootstrap";
 
 // Import Custom Components
 import ChoosePayMethod from "../../Components/Checkout/ChoosePayMethod";
+import { ToastContainer } from "react-toastify";
 
 // Page responsible for displaying the payment method selection
 const CartMethodPage = () => {
@@ -11,6 +12,7 @@ const CartMethodPage = () => {
     <Container style={{ flex: "1" }}>
       {/* ChoosePayMethod component to handle the payment method selection */}
       <ChoosePayMethod />
+      <ToastContainer />
     </Container>
   );
 };

@@ -1,18 +1,20 @@
 // Import necessary React and Redux hooks
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 // Import actions to clear all items or delete a specific item from the cart
 import {
   clearAllCart,
   deleteCartSpecificItem,
-  getAllCartItems,
+  resetState,
 } from "../../redux/actions/cartAction";
 
 // Notification function and success constant
 import notify from "../Utility/useNotifyHook";
-import { SUCCESS, WARNING } from "../../constants/notificationTypes";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
 import ViewAllCartItemsHook from "./ViewAllCartItemsHook";
+import { useTranslation } from "react-i18next";
+import { STATUS_MESSAGES } from "../../constants/general";
 
 // Custom hook to handle deletion logic for cart items (all or specific)
 const DeleteCartHook = (item) => {
@@ -20,10 +22,18 @@ const DeleteCartHook = (item) => {
 
   const [, numberOfItems] = ViewAllCartItemsHook();
 
+  const { loading, deletedCartItem, clearCart, error } = useSelector(
+    (state) => state.cartReducer,
+  );
+
+  const { t } = useTranslation("notification_messages");
+
   // === Delete All Cart Logic ===
 
   // Modal visibility state for deleting all items
   const [showAll, setShowAll] = useState(false);
+  const [isPressDeleteItem, setIsPressDeleteItem] = useState(false);
+  const [isPressDeleteCart, setIsPressDeleteCart] = useState(false);
 
   // Close delete all modal
   const handleCloseAll = () => setShowAll(false);
@@ -32,18 +42,29 @@ const DeleteCartHook = (item) => {
   const handleShowAll = () => setShowAll(true);
 
   // Handle confirming deletion of all cart items
-  const handleDeleteCart = async () => {
+  const handleDeleteCart = async (e) => {
+    e.preventDefault();
+
     // Check if the cart is empty then return
-    if (numberOfItems === 0) {
-      notify("لا يوجد منتجات حاليا", WARNING);
-      return;
-    }
+    if (numberOfItems === 0)
+      return notify(t("cart.emptyCartWarning"), NOTIFICATION_TYPES.WARNING);
 
     // If the cart not empty then clear
+    setIsPressDeleteCart(true);
     await dispatch(clearAllCart());
-    notify("تم حذف الكل بنجاح", SUCCESS);
-    setShowAll(false);
   };
+
+  useEffect(() => {
+    if (!loading?.clearAll && isPressDeleteCart) {
+      setIsPressDeleteCart(false);
+      if (clearCart != null || !error?.clearAll)
+        notify(t("cart.allDeletedSuccess"), NOTIFICATION_TYPES.SUCCESS);
+      else notify(t("cart.allDeletedFail"), NOTIFICATION_TYPES.ERROR);
+
+      setShowAll(false);
+      dispatch(resetState);
+    }
+  }, [clearCart, loading, t, dispatch, error, isPressDeleteCart]);
 
   // === Delete Specific Item Logic ===
 
@@ -57,12 +78,26 @@ const DeleteCartHook = (item) => {
   const handleShowSpecific = () => setShowSpecific(true);
 
   // Handle confirming deletion of a specific item
-  const handelDeleteSpecificItem = async () => {
-    await dispatch(deleteCartSpecificItem(item._id));
-    setShowSpecific(false);
-    notify("تم حذف المنتج بنجاح", SUCCESS);
-    await dispatch(getAllCartItems());
+  const handelDeleteSpecificItem = async (e) => {
+    e.preventDefault();
+    if (!item?._id) return;
+
+    setIsPressDeleteItem(true);
+    await dispatch(deleteCartSpecificItem(item?._id));
   };
+
+  useEffect(() => {
+    if (!loading?.delete && isPressDeleteItem) {
+      console.log("deletedCartItem", deletedCartItem);
+      setIsPressDeleteItem(false);
+      if (!error?.delete || deletedCartItem?.status === STATUS_MESSAGES.SUCCESS)
+        notify(t("cart.itemDeletedSuccess"), NOTIFICATION_TYPES.SUCCESS);
+      else notify(t("cart.itemDeletedFail"), NOTIFICATION_TYPES.ERROR);
+
+      setShowSpecific(false);
+      dispatch(resetState);
+    }
+  }, [deletedCartItem, loading, t, dispatch, isPressDeleteItem, error]);
 
   // Return the handlers and modal states
   return [
@@ -75,6 +110,8 @@ const DeleteCartHook = (item) => {
     handleCloseSpecific,
     handleShowSpecific,
     handelDeleteSpecificItem,
+    isPressDeleteItem,
+    isPressDeleteCart,
   ];
 };
 

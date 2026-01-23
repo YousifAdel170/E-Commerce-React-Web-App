@@ -5,7 +5,7 @@ import {
   DELETE_CATEGORY,
   UPDATE_CATEGORY,
   GET_ERROR,
-  RESET_STATE,
+  RESET_CATEGORY,
 } from "../type";
 
 const initialState = {
@@ -81,7 +81,7 @@ const categoryReducer = (state = initialState, action) => {
         error: { ...state.error, update: null },
       };
 
-    case RESET_STATE:
+    case RESET_CATEGORY:
       return {
         ...state,
         loading: {

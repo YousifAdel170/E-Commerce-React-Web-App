@@ -10,9 +10,7 @@ const FetchCartDataHook = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getData = async () => {
-      await dispatch(getAllCartItems());
-    };
+    const getData = async () => await dispatch(getAllCartItems());
 
     // Fetch cart data on component mount
     getData();

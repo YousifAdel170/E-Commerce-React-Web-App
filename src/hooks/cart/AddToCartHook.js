@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 // Import custom notification utility
 import notify from "../Utility/useNotifyHook";
@@ -13,11 +14,8 @@ import {
 } from "../../redux/actions/cartAction";
 
 // Import Used Constants
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
-import {
-  CART_MESSAGES,
-  GENERAL_MESSAGES,
-} from "../../constants/messagesConstants";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+
 import { EMPTY, STATUS, USER_ROLES } from "../../constants/general";
 
 // Custom hook responsible for handling adding a product to the cart
@@ -27,6 +25,8 @@ const AddToCartHook = (itemProduct) => {
 
   // Initialize Redux dispatch function
   const dispatch = useDispatch();
+
+  const { t } = useTranslation("notification_messages");
 
   // Local state to manage selected color index and its hex value
   const [indexColorClicked, setIndexColorClicked] = useState(EMPTY.TEXT);
@@ -53,23 +53,18 @@ const AddToCartHook = (itemProduct) => {
   // Function responsible for adding the product to the cart
   const handleAddToCart = async () => {
     // Check if the current user is admin then prevent him from adding to the cart
-    if (user?.role === USER_ROLES.ADMIN) {
-      notify(CART_MESSAGES.ADMIN_CANNOT_ADD, ERROR);
-      return;
-    }
+    if (user?.role === USER_ROLES.ADMIN)
+      return notify(t("cart.adminRestricted"), NOTIFICATION_TYPES.ERROR);
 
     // Prevent adding item if quantity is 0
-    if (itemProduct?.quantity === 0) {
-      notify(CART_MESSAGES.PRODUCT_OUT_OF_STOCK, WARNING);
-      return;
-    }
+    if (itemProduct?.quantity === 0)
+      return notify(t("cart.outOfStock"), NOTIFICATION_TYPES.ERROR);
 
     // Ensure color selection is made when applicable before adding to cart
     if (itemAvailableColors?.length) {
-      if (colorClickedHex === EMPTY.TEXT) {
-        notify(CART_MESSAGES.COLOR_REQUIRED, WARNING);
-        return;
-      } else setColorClickedHex(EMPTY.TEXT);
+      if (colorClickedHex === EMPTY.TEXT)
+        return notify(t("cart.colorRequired"), NOTIFICATION_TYPES.WARNING);
+      else setColorClickedHex(EMPTY.TEXT);
     }
 
     // Dispatch add to cart action with selected product and color
@@ -79,7 +74,7 @@ const AddToCartHook = (itemProduct) => {
         addToCartAction({
           productId: id,
           color: colorClickedHex,
-        })
+        }),
       );
     } catch (error) {
       console.error(error);
@@ -97,11 +92,11 @@ const AddToCartHook = (itemProduct) => {
     if (!loading) {
       console.log(result);
       if (result?.status === STATUS.SUCCESS_OK) {
-        notify(GENERAL_MESSAGES.ADD_SUCCESSFULLY, SUCCESS);
+        notify(t("general.addSuccess"), NOTIFICATION_TYPES.SUCCESS);
         getData();
-      } else notify(CART_MESSAGES.LOGIN_REQUIRED, ERROR);
+      } else notify(t("cart.loginRequired"), NOTIFICATION_TYPES.ERROR);
     }
-  }, [loading, result, dispatch]);
+  }, [loading, result, dispatch, t]);
 
   // Return functions and values needed by the component
   return [colorClicked, indexColorClicked, handleAddToCart];

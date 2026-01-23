@@ -5,7 +5,7 @@ import {
   DELETE_CATEGORY,
   UPDATE_CATEGORY,
   GET_ERROR,
-  RESET_STATE,
+  RESET_CATEGORY,
 } from "../type";
 
 import { useGetData } from "../../hooks/axios/useGetData";
@@ -114,7 +114,7 @@ export const editCategory = (id, formatData) => async (dispatch) => {
   try {
     const response = await useUpdateDataWithImage(
       `/api/v1/categories/${id}`,
-      formatData
+      formatData,
     );
     dispatch({
       type: UPDATE_CATEGORY,
@@ -132,6 +132,6 @@ export const editCategory = (id, formatData) => async (dispatch) => {
 // Action To Reset State After Specific Action
 export const resetState = () => (dispatch) => {
   dispatch({
-    type: RESET_STATE,
+    type: RESET_CATEGORY,
   });
 };

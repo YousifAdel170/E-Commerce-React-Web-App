@@ -12,8 +12,8 @@ import {
 const initialState = {
   addToCart: [],
   allCartItems: [],
-  clearCart: [],
-  deletedCartItem: [],
+  clearCart: null,
+  deletedCartItem: null,
   updatedCartItem: [],
   applyCoupon: [],
   loading: {
@@ -57,28 +57,34 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         clearCart: action.payload,
-        allCartItems: {
-          status: "success",
-          numOfCartItems: 0,
-          data: {
-            _id: null,
-            products: [],
-            totalCartPrice: 0,
-            totalAfterDiscount: 0,
-            coupon: "",
-          },
-        },
+        allCartItems: null,
         loading: { ...state.loading, clearAll: false },
         error: { ...state.error, clearAll: null },
       };
 
-    case DELETE_SPECIFIC_CART_ITEM:
+    case DELETE_SPECIFIC_CART_ITEM: {
+      const deletedProductId = action.payload.id;
+
+      const updatedProducts =
+        state.allCartItems?.data?.products?.filter(
+          (item) => item._id !== deletedProductId,
+        ) || [];
+
       return {
         ...state,
-        deletedCartItem: action.payload,
+        allCartItems: {
+          ...state.allCartItems,
+          numOfCartItems: updatedProducts.length,
+          data: {
+            ...state.allCartItems.data,
+            products: updatedProducts,
+          },
+        },
+        deletedCartItem: action.payload.response,
         loading: { ...state.loading, delete: false },
         error: { ...state.error, delete: null },
       };
+    }
 
     case UPDATE_SPECIFIC_CART_ITEM:
       return {

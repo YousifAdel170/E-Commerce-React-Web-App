@@ -119,7 +119,27 @@
       "clearCartBtn": "Clear Cart",
       "priceBeforeDiscount": "Before discount",
       "priceAfterDiscount": "After discount",
-      "price": "Price"
+      "price": "Price",
+
+      "choosePayMethod": {
+        "title": "Choose Payment Method",
+        "subtitle": "Select how you want to pay for your order",
+
+        "methods": {
+          "cash": "Cash on Delivery",
+          "card": "Credit / Debit Card",
+          "paypal": "PayPal"
+        },
+
+        "actions": {
+          "confirm": "Confirm Order",
+          "payNow": "Pay Now",
+          "continue": "Continue",
+          "back": "Back"
+        },
+
+        "processing": "Processing payment..."
+      }
     }
   }
 }

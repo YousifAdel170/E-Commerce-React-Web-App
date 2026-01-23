@@ -29,11 +29,12 @@ const CartItem = ({ item }) => {
     ,
     ,
     ,
-    showDelete,
-    handleCloseDelete,
-    handleShowDelete,
-    handleDelete,
-    isDeletePress,
+    showSpecific,
+    handleCloseSpecific,
+    handleShowSpecific,
+    handelDeleteSpecificItem,
+    isPressDeleteItem,
+    ,
   ] = DeleteCartHook(item);
 
   const [
@@ -58,14 +59,13 @@ const CartItem = ({ item }) => {
     },
     {
       label: t("utilities:modal.delete"),
-      onClick: handleShowDelete,
+      onClick: handleShowSpecific,
       ariaLabel: `${t("utilities:modal.deleteAriaLabel")}: ${item?.product?.title}`,
       icon: <FaTrash className="text-danger fs-5" />,
     },
   ];
 
   if (!item?.product) return <ItemsNotFound msg={t("cart.emptyMessage")} />;
-
   return (
     <Col
       xs="12"
@@ -86,14 +86,14 @@ const CartItem = ({ item }) => {
 
       {/* Delete Modal */}
       <ModalComponent
-        show={showDelete}
-        handleClose={handleCloseDelete}
-        handleOperation={handleDelete}
+        show={showSpecific}
+        handleClose={handleCloseSpecific}
+        handleOperation={handelDeleteSpecificItem}
         modalTitle={t("utilities:modal.deleteTitle")}
         modalBody={t("utilities:modal.deleteMessage")}
         modalFooter={t("utilities:modal.delete")}
         className="btn-danger"
-        isPress={isDeletePress}
+        isPress={isPressDeleteItem}
         ariaLabel={`${t("utilities:modal.deleteAriaLabel")}: ${item?.product?.title}`}
       />
 

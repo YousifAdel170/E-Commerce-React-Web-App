@@ -14,7 +14,7 @@ const SpinnerComponent = ({ msg, size, className, as }) => {
 
   return (
     <Spinner
-      className={`${className ? className : "mx-auto "}`}
+      className={`${className ? className : "mx-auto"}`}
       animation="border"
       variant={mode === "dark" ? "light" : "dark"}
       aria-label={msg}

@@ -88,7 +88,15 @@
     "adminRestricted": "Admins cannot add items to the cart.",
     "outOfStock": "This item is currently out of stock.",
     "colorRequired": "Please choose a color before adding to cart.",
-    "loginRequired": "Please log in to add items to your cart."
+    "loginRequired": "Please log in to add items to your cart.",
+
+    "allDeletedSuccess": "All items have been successfully deleted",
+    "allDeletedFail": "Failed to delete all items",
+    "itemDeletedSuccess": "Item deleted successfully",
+    "itemDeletedFail": "Failed to delete item",
+
+    "emptyCartWarning": "Please add products to the cart first",
+    "stockLimit": "Only {{count}} items available in stock"
   },
   "wishlist": {
     "added": "Item added to your wishlist!",
@@ -200,5 +208,12 @@
       "nameLength": "Subcategory name must be between 3 and 100 characters.",
       "mainCategoryRequired": "Main category must be selected."
     }
+  },
+
+  "checkout": {
+    "success": "Order placed successfully",
+    "selectMethod": "Please select a payment method",
+    "paymentFailed": "Payment failed, please try again",
+    "invalidAddress": "Please select a valid delivery address"
   }
 }

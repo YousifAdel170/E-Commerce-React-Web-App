@@ -8,22 +8,31 @@ import { useDispatch, useSelector } from "react-redux";
 import notify from "../Utility/useNotifyHook";
 
 // Import constants for notification types
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
 
 // Import action to apply coupon
-import { applyCoupon } from "../../redux/actions/cartAction";
+import {
+  applyCouponAction,
+  getAllCartItems,
+  resetState,
+} from "../../redux/actions/cartAction";
 
 // Import navigation hook from React Router
 import { useNavigate } from "react-router-dom";
+import { EMPTY, STATUS } from "../../constants/general";
+import { useTranslation } from "react-i18next";
+import { ROUTES } from "../../constants/routes";
 
 // Custom hook responsible for managing coupon application and checkout flow
 const ApplyCouponHook = (cartItems) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation("notification_messages");
 
   // State to store coupon input and loading status
-  const [couponName, setCouponName] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [couponName, setCouponName] = useState(EMPTY.TEXT);
+  const [isPressCoupon, setIsPressCoupon] = useState(false);
+  const { applyCoupon, loading } = useSelector((state) => state.cartReducer);
 
   // Handler for coupon input change
   const onChangeCoupon = (e) => setCouponName(e);
@@ -31,41 +40,47 @@ const ApplyCouponHook = (cartItems) => {
   // Function responsible for applying the coupon
   const handleSubmitCoupon = async () => {
     // If no coupon entered, show warning
-    if (couponName === "") {
-      notify("من فضلك ادخل الكوبون", WARNING);
-      return;
-    }
+    if (couponName === EMPTY.TEXT)
+      return notify(t("coupon.nameRequired"), NOTIFICATION_TYPES.WARNING);
 
     // Dispatch action to apply the coupon
-    setLoading(true);
-    await dispatch(applyCoupon({ couponName }));
-    setLoading(false);
+    setIsPressCoupon(true);
+    await dispatch(applyCouponAction({ couponName }));
   };
-
-  // Get coupon application result from Redux store
-  const result = useSelector((state) => state.cartReducer.applyCoupon);
 
   // Handle result after coupon is applied
   useEffect(() => {
-    if (!loading) {
-      if (result && result.status === 200) {
-        notify("تم تطبيق الكوبون بنجاح", SUCCESS);
-        setTimeout(() => window.location.reload(false), 1000);
-      } else {
-        notify("هذا الكوبون غير صحيح او منتهى الصلاحيه", ERROR);
-        setTimeout(() => window.location.reload(false), 1000);
-      }
+    if (!loading?.coupon) {
+      setIsPressCoupon(false);
+
+      setCouponName(EMPTY.TEXT);
+
+      if (
+        applyCoupon?.status === STATUS.SUCCESS_CREATED ||
+        applyCoupon?.status === STATUS.SUCCESS_OK
+      )
+        notify(t("coupon.applySuccess"), NOTIFICATION_TYPES.SUCCESS);
+      else notify(t("coupon.applyFail"), NOTIFICATION_TYPES.ERROR);
+
+      dispatch(resetState());
+      dispatch(getAllCartItems());
     }
   }, [loading]);
 
   // Handle checkout button click based on cart items
   const handleCheckout = () => {
-    if (cartItems && cartItems.length) navigate("/order/pay-method");
-    else notify("من فضلك اضف منتجات للعربة اولا", WARNING);
+    if (cartItems?.length) navigate(ROUTES.USER.PAYMENT);
+    else notify(t("cart.emptyCartWarning"), NOTIFICATION_TYPES.WARNING);
   };
 
   // Return values and handlers used by the component
-  return [couponName, onChangeCoupon, handleSubmitCoupon, handleCheckout];
+  return [
+    couponName,
+    onChangeCoupon,
+    handleSubmitCoupon,
+    handleCheckout,
+    isPressCoupon,
+  ];
 };
 
 // Export the custom hook for use in other components

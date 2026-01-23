@@ -10,6 +10,7 @@ import {
   UPDATE_SPECIFIC_CART_ITEM,
   APPLY_COUPON,
   GET_ERROR,
+  RESET_STATE_CART,
 } from "../type";
 
 // Get All Items From The Cart
@@ -66,10 +67,10 @@ export const clearAllCart = () => async (dispatch) => {
 // Delete Specific Item From The Cart
 export const deleteCartSpecificItem = (id) => async (dispatch) => {
   try {
-    const result = await useDeleteData(`/api/v1/cart/${id}`);
+    const response = await useDeleteData(`/api/v1/cart/${id}`);
     dispatch({
       type: DELETE_SPECIFIC_CART_ITEM,
-      payload: { result, id },
+      payload: { response, id },
     });
   } catch (e) {
     dispatch({
@@ -97,18 +98,26 @@ export const updateCartSpecificItem = (id, body) => async (dispatch) => {
 };
 
 // Update Specific Item From The Cart
-export const applyCoupon = (body) => async (dispatch) => {
+export const applyCouponAction = (body) => async (dispatch) => {
   try {
-    const result = await useUpdateData(`/api/v1/cart/applyCoupon`, body);
+    const response = await useUpdateData(`/api/v1/cart/applyCoupon`, body);
     dispatch({
       type: APPLY_COUPON,
-      payload: result,
+      payload: response,
     });
   } catch (e) {
+    console.log("result from action", e.response);
     dispatch({
       type: APPLY_COUPON,
-      payload: e.result,
+      payload: e.response,
       meta: "applyCoupon",
     });
   }
+};
+
+// Action To Reset State After Specific Action
+export const resetState = () => (dispatch) => {
+  dispatch({
+    type: RESET_STATE_CART,
+  });
 };

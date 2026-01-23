@@ -117,7 +117,27 @@
       "clearCartBtn": "مسح العربة",
       "priceBeforeDiscount": "قبل الخصم",
       "priceAfterDiscount": "بعد الخصم",
-      "price": "السعر"
+      "price": "السعر",
+
+      "choosePayMethod": {
+        "title": "اختيار طريقة الدفع",
+        "subtitle": "اختر الطريقة التي تفضل الدفع بها لطلبك",
+
+        "methods": {
+          "cash": "الدفع عند الاستلام",
+          "card": "بطاقة ائتمان",
+          "paypal": "باي بال"
+        },
+
+        "actions": {
+          "confirm": "تأكيد الطلب",
+          "payNow": "ادفع الآن",
+          "continue": "متابعة",
+          "back": "رجوع"
+        },
+
+        "processing": "جاري تنفيذ عملية الدفع..."
+      }
     }
   }
 }

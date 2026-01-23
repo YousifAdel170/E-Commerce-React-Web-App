@@ -27,8 +27,8 @@ const AllCategoryPageHook = () => {
       await dispatch(getAllCategory(PAGE_CATEGORIES_LIMIT));
 
     // Call the function to fetch categories data
-    getData();
-  }, [dispatch]);
+    if (!category || loading?.fetchAll) getData();
+  }, [dispatch, category, loading]);
 
   // 4. Memoize the brands data to avoid unnecessary re-renders
   const pageCount = useMemo(() => {
@@ -37,9 +37,8 @@ const AllCategoryPageHook = () => {
 
   // 5. Effect to set the loading state based on the loading state from redux
   useEffect(() => {
-    if (!loading?.fetchAll) setIsLoading(false);
-    else setIsLoading(true);
-  }, [loading, category]);
+    setIsLoading(loading?.fetchAll);
+  }, [loading]);
 
   // 6. Function to fetch categories data in the selected page
   const getSelectedPageNumber = async (selectedPage) =>

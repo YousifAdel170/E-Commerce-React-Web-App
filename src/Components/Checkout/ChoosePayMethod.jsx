@@ -1,157 +1,152 @@
-// Import Components From react-bootstrap, react-toastify
-import { Col, Row } from "react-bootstrap";
-import { ToastContainer } from "react-toastify";
-
-// Import Hooks From react
+// React & Bootstrap
+import { Button, Col, Row } from "react-bootstrap";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-// Import Custom Hooks
+// Custom Hooks
 import UserAllAddressesHook from "../../hooks/user/UserAllAddressesHook";
 import OrderPayCashHook from "../../hooks/checkout/OrderPayCashHook";
 import OrderPayCardHook from "../../hooks/checkout/OrderPayCardHook";
 import ViewAllCartItemsHook from "../../hooks/cart/ViewAllCartItemsHook";
 import notify from "../../hooks/Utility/useNotifyHook";
 
-// Import constants
+// Constants
 import { WARNING } from "../../constants/notificationTypes";
 
-// ChoosePayMethod component to handle payment method selection
 const ChoosePayMethod = () => {
-  // Hook to get all user addresses
+  const { t } = useTranslation(["user", "notification_messages"]);
+
+  // Addresses
   const [addresses] = UserAllAddressesHook();
 
-  // Hook to get cart details like total price
-  const [, , , totalCartPrice, , totalCartPriceAfterDisc, ,] =
+  // Cart prices
+  const [, , , totalCartPrice, , totalCartPriceAfterDisc] =
     ViewAllCartItemsHook();
 
-  // Hook to manage cash order creation
+  // Payment hooks
   const [handleChooseAddress, handleCreateOrderCash, addressDetails] =
     OrderPayCashHook();
-
-  // Hook to manage card order creation
   const [handleCreateOrderCart] = OrderPayCardHook(addressDetails);
 
-  // Local state to handle selected payment method (card or cash)
-  const [type, setType] = useState("");
+  // Payment type state
+  const [paymentType, setPaymentType] = useState("");
 
-  // Function to change the payment method based on user selection
-  const changePayMethod = (e) => setType(e.target.value);
+  const changePayMethod = (e) => setPaymentType(e.target.value);
 
-  // Function to handle payment process
   const handlePay = () => {
-    if (type === "card") handleCreateOrderCart(); // Process card payment
-    else if (type === "cash") handleCreateOrderCash(); // Process cash payment
-    else notify("من فضلك اختر طريقة دفع", WARNING); // Notify if no payment method is selected
+    if (paymentType === "card") handleCreateOrderCart();
+    else if (paymentType === "cash") handleCreateOrderCash();
+    else notify(t("checkout.selectPaymentMethod"), WARNING);
   };
 
   return (
     <div>
-      {/* Payment Method Selection Title */}
-      <div className="admin-content-text pt-5">اختر طريقة الدفع</div>
+      {/* Title */}
+      <div className="title-text py-3">
+        {t("user:cart.checkout.choosePayMethod.title")}
+      </div>
 
-      {/* Address and Payment Method Selection */}
-      <div className="user-address-card my-3 px-3">
-        <Row className="d-flex justify-content-between">
-          {/* Payment with Visa (Card) */}
-          <Col xs="12" className="mt-4">
+      {/* Payment & Address Card */}
+      <div className="user-order order-item-body mb-3 rounded shadow-sm card-animate">
+        {/* Card Payment */}
+        <Row>
+          <Col xs="12">
             <input
-              name="group"
-              onChange={changePayMethod} // Set payment type to 'card' on selection
-              style={{ cursor: "pointer" }}
-              id="group1"
+              name="payment"
               type="radio"
               value="card"
-              className="mt-2"
+              id="pay-card"
+              onChange={changePayMethod}
+              style={{ cursor: "pointer" }}
             />
             <label
-              className="mx-2"
-              htmlFor="group1"
+              htmlFor="pay-card"
+              className="mx-2 order-item-text"
               style={{ cursor: "pointer" }}
             >
-              الدفع عن طريق البطاقه الائتمانية
+              {t("user:cart.checkout.choosePayMethod.methods.card")}
             </label>
           </Col>
         </Row>
 
-        {/* Pay When Order Recieve (Cash) */}
-        <Row className="">
-          <Col xs="12" className="d-flex mt-4">
+        {/* Cash Payment */}
+        <Row>
+          <Col xs="12" className="mt-4">
             <input
-              name="group"
-              onChange={changePayMethod} // Set payment type to 'cash' on selection
-              style={{ cursor: "pointer" }}
-              id="group2"
+              name="payment"
               type="radio"
               value="cash"
-              className="mt-2"
+              id="pay-cash"
+              onChange={changePayMethod}
+              style={{ cursor: "pointer" }}
             />
             <label
-              className="mx-2"
-              htmlFor="group2"
+              htmlFor="pay-cash"
+              className="mx-2 order-item-text"
               style={{ cursor: "pointer" }}
             >
-              الدفع عند الاستلام
+              {t("user:cart.checkout.choosePayMethod.methods.cash")}
             </label>
           </Col>
         </Row>
 
-        {/* Address Selection Dropdown */}
-        <Row className="">
-          <Col xs="12" className="d-flex my-4">
-            <select
-              name="address"
-              id="address"
-              className="select px-2"
-              onChange={handleChooseAddress} // Set selected address for delivery
-            >
-              <option value="0">اختر عنوان للشحن</option>
-              {addresses ? (
-                // Map over addresses if they exist
+        {/* Address Selection */}
+        <Row>
+          <Col xs="12" className="my-4">
+            <select className="select px-4" onChange={handleChooseAddress}>
+              <option value="0">
+                {t("user:cart.checkout.choosePayMethod.subtitle")}
+              </option>
+
+              {addresses?.length ? (
                 addresses.map((address) => (
                   <option key={address._id} value={address._id}>
                     {address.alias}
                   </option>
                 ))
               ) : (
-                <option key={0} value={0}>
-                  لا يوجد عنوانين مسجلة
-                </option>
+                <option value="0">{t("checkout.noAddresses")}</option>
               )}
             </select>
           </Col>
         </Row>
       </div>
 
-      {/* Display Total Price and Checkout Button */}
+      {/* Price & Checkout */}
       <Row>
-        <Col xs="12" className="d-flex justify-content-end">
-          <div className="product-price d-flex justify-content-center align-items-center  border">
-            {/* Show price before and after discount */}
+        <Col
+          xs="12"
+          className="d-flex justify-content-end align-items-center gap-2"
+        >
+          <div className="product-price  px-3 py-2">
             {totalCartPriceAfterDisc ? (
               <>
-                <div>
-                  قبل الخصم : <del className="ms-3">{totalCartPrice}</del>
-                </div>
-                <div>
-                  بعد الخصم: <>{totalCartPriceAfterDisc}</>
-                </div>
+                <span className="user-order-title">
+                  {t("user:cart.checkout.priceBeforeDiscount")}
+
+                  <del className="mx-2">{totalCartPrice}</del>
+                </span>
+                <span className="new-price">
+                  {t("user:cart.checkout.priceAfterDiscount")}:{" "}
+                  {totalCartPriceAfterDisc}
+                </span>
               </>
             ) : (
-              `${totalCartPrice} جنية`
+              <span className="fw-bold">
+                {totalCartPrice} {t("cart.currency")}
+              </span>
             )}
           </div>
-          {/* Trigger payment process when checkout button is clicked */}
-          <div
-            onClick={handlePay} // Call handlePay function on click
-            className="product-cart-add px-3 d-flex justify-content-center align-items-center me-2"
+
+          <Button
+            onClick={handlePay}
+            className="px-3 py-2 w-sm-100"
+            variant="primary"
           >
-            اتمام الشراء
-          </div>
+            {t("user:cart.checkout.choosePayMethod.actions.payNow")}
+          </Button>
         </Col>
       </Row>
-
-      {/* Toast Container for notifications */}
-      <ToastContainer />
     </div>
   );
 };
