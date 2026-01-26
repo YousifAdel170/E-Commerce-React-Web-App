@@ -1,20 +1,17 @@
 // React & Bootstrap
 import { Button, Col, Row } from "react-bootstrap";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // Custom Hooks
 import UserAllAddressesHook from "../../hooks/user/UserAllAddressesHook";
-import OrderPayCashHook from "../../hooks/checkout/OrderPayCashHook";
-import OrderPayCardHook from "../../hooks/checkout/OrderPayCardHook";
 import ViewAllCartItemsHook from "../../hooks/cart/ViewAllCartItemsHook";
-import notify from "../../hooks/Utility/useNotifyHook";
 
-// Constants
-import { WARNING } from "../../constants/notificationTypes";
+import "./Checkout.css";
+import ChoosePayMethodHook from "../../hooks/checkout/ChoosePayMethodHook";
+import SpinnerComponent from "../Utility/SpinnerComponent";
 
 const ChoosePayMethod = () => {
-  const { t } = useTranslation(["user", "notification_messages"]);
+  const { t } = useTranslation("user");
 
   // Addresses
   const [addresses] = UserAllAddressesHook();
@@ -23,27 +20,14 @@ const ChoosePayMethod = () => {
   const [, , , totalCartPrice, , totalCartPriceAfterDisc] =
     ViewAllCartItemsHook();
 
-  // Payment hooks
-  const [handleChooseAddress, handleCreateOrderCash, addressDetails] =
-    OrderPayCashHook();
-  const [handleCreateOrderCart] = OrderPayCardHook(addressDetails);
-
-  // Payment type state
-  const [paymentType, setPaymentType] = useState("");
-
-  const changePayMethod = (e) => setPaymentType(e.target.value);
-
-  const handlePay = () => {
-    if (paymentType === "card") handleCreateOrderCart();
-    else if (paymentType === "cash") handleCreateOrderCash();
-    else notify(t("checkout.selectPaymentMethod"), WARNING);
-  };
+  const [changePayMethod, handleChooseAddress, handlePay, isPress] =
+    ChoosePayMethodHook();
 
   return (
     <div>
       {/* Title */}
       <div className="title-text py-3">
-        {t("user:cart.checkout.choosePayMethod.title")}
+        {t("cart.checkout.choosePayMethod.title")}
       </div>
 
       {/* Payment & Address Card */}
@@ -51,61 +35,56 @@ const ChoosePayMethod = () => {
         {/* Card Payment */}
         <Row>
           <Col xs="12">
-            <input
-              name="payment"
-              type="radio"
-              value="card"
-              id="pay-card"
-              onChange={changePayMethod}
-              style={{ cursor: "pointer" }}
-            />
-            <label
-              htmlFor="pay-card"
-              className="mx-2 order-item-text"
-              style={{ cursor: "pointer" }}
-            >
-              {t("user:cart.checkout.choosePayMethod.methods.card")}
+            <label className="pay-method">
+              <input
+                name="payment"
+                type="radio"
+                value="card"
+                onChange={changePayMethod}
+                className="custom-radio"
+              />
+
+              <span className="order-item-text">
+                {t("cart.checkout.choosePayMethod.methods.card")}
+              </span>
             </label>
           </Col>
         </Row>
 
-        {/* Cash Payment */}
+        {/* Cash */}
         <Row>
           <Col xs="12" className="mt-4">
-            <input
-              name="payment"
-              type="radio"
-              value="cash"
-              id="pay-cash"
-              onChange={changePayMethod}
-              style={{ cursor: "pointer" }}
-            />
-            <label
-              htmlFor="pay-cash"
-              className="mx-2 order-item-text"
-              style={{ cursor: "pointer" }}
-            >
-              {t("user:cart.checkout.choosePayMethod.methods.cash")}
+            <label className="pay-method">
+              <input
+                name="payment"
+                type="radio"
+                value="cash"
+                onChange={changePayMethod}
+                className="custom-radio"
+              />
+
+              <span className="order-item-text">
+                {t("cart.checkout.choosePayMethod.methods.cash")}
+              </span>
             </label>
           </Col>
         </Row>
-
         {/* Address Selection */}
         <Row>
           <Col xs="12" className="my-4">
             <select className="select px-4" onChange={handleChooseAddress}>
               <option value="0">
-                {t("user:cart.checkout.choosePayMethod.subtitle")}
+                {t("cart.checkout.choosePayMethod.subtitle")}
               </option>
 
               {addresses?.length ? (
                 addresses.map((address) => (
-                  <option key={address._id} value={address._id}>
-                    {address.alias}
+                  <option key={address?._id} value={address?._id}>
+                    {address?.alias}
                   </option>
                 ))
               ) : (
-                <option value="0">{t("checkout.noAddresses")}</option>
+                <option value="0">{t("cart.checkout.noAddresses")}</option>
               )}
             </select>
           </Col>
@@ -122,17 +101,12 @@ const ChoosePayMethod = () => {
             {totalCartPriceAfterDisc ? (
               <>
                 <span className="user-order-title">
-                  {t("user:cart.checkout.priceBeforeDiscount")}
-
                   <del className="mx-2">{totalCartPrice}</del>
                 </span>
-                <span className="new-price">
-                  {t("user:cart.checkout.priceAfterDiscount")}:{" "}
-                  {totalCartPriceAfterDisc}
-                </span>
+                <span className="new-price">{totalCartPriceAfterDisc}</span>
               </>
             ) : (
-              <span className="fw-bold">
+              <span className="order-item-text-answer">
                 {totalCartPrice} {t("cart.currency")}
               </span>
             )}
@@ -140,10 +114,12 @@ const ChoosePayMethod = () => {
 
           <Button
             onClick={handlePay}
+            disabled={isPress}
             className="px-3 py-2 w-sm-100"
             variant="primary"
           >
-            {t("user:cart.checkout.choosePayMethod.actions.payNow")}
+            {isPress ? <SpinnerComponent className={"mx-2"} size={"sm"} /> : ""}
+            {t("cart.checkout.choosePayMethod.actions.payNow")}
           </Button>
         </Col>
       </Row>

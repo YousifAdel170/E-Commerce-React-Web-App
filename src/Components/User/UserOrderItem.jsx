@@ -47,7 +47,7 @@ const UserOrderItem = ({ order }) => {
     trueColor,
     falseColor,
     trueIcon,
-    falseIcon
+    falseIcon,
   ) => (
     <OverlayTrigger
       placement="top"
@@ -55,7 +55,7 @@ const UserOrderItem = ({ order }) => {
     >
       <Badge
         bg={status ? trueColor : falseColor}
-        className="d-flex align-items-center gap-1 px-3 py-2"
+        className="d-flex align-items-center gap-1 px-3 py-2 my-1"
         style={{ fontSize: "0.85rem" }}
       >
         {status ? trueIcon : falseIcon} {status ? trueLabel : falseLabel}
@@ -116,7 +116,7 @@ const UserOrderItem = ({ order }) => {
               "success",
               "warning",
               <FaCheckCircle />,
-              <FaHourglassHalf />
+              <FaHourglassHalf />,
               // <FaTimesCircle />
             )}
 
@@ -127,7 +127,7 @@ const UserOrderItem = ({ order }) => {
               "success",
               "warning",
               <FaCheckCircle />,
-              <FaHourglassHalf />
+              <FaHourglassHalf />,
             )}
 
             <OverlayTrigger
@@ -137,7 +137,7 @@ const UserOrderItem = ({ order }) => {
                   {order?.paymentMethodType === PAYMENT_METHODS.CASH
                     ? t("order-details.status.paymentMethod.cashAriaLabel")
                     : t(
-                        "order-details.status.paymentMethod.creditCardAriaLabel"
+                        "order-details.status.paymentMethod.creditCardAriaLabel",
                       )}
                 </Tooltip>
               }
@@ -159,7 +159,7 @@ const UserOrderItem = ({ order }) => {
             </OverlayTrigger>
           </Col>
 
-          <Col className="mt-2 payment-container order-item-text">
+          <Col className="mt-2 payment-container order-item-text d-flex">
             <FaMoneyBill size={22} />
             <OverlayTrigger
               placement="top"

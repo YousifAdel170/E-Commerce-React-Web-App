@@ -13,12 +13,17 @@ import { getSpecificUserAddress } from "../../redux/actions/userAddressAction";
 import { clearAllCart } from "../../redux/actions/cartAction";
 
 // Import Used Configurations
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+import { EMPTY, STATUS, STATUS_MESSAGES } from "../../constants/general";
+import { useTranslation } from "react-i18next";
+import { DELAYS } from "../../constants/delays";
+import { ROUTES } from "../../constants/routes";
 
 // Hook responsible for managing the order payment process with cash
 const OrderPayCashHook = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation("notification_messages");
 
   // Extracting the cart ID from the custom hook for cart data
   const [, , , , , , cartID] = ViewAllCartItemsHook();
@@ -30,10 +35,13 @@ const OrderPayCashHook = () => {
   // State for managing order creation loading state
   const [loadingCreate, setLoadingCreate] = useState(true);
 
+  const [isPressCash, setIsPressCash] = useState(false);
+
   // Function to handle address selection
   const handleChooseAddress = (e) => {
-    setAddressDetails([]); // Clear previously selected address
-    if (e.target.value !== "0") getCurrentUserAddressData(e.target.value); // Fetch new address details
+    setAddressDetails(EMPTY.ARRAY); // Clear previously selected address
+    if (e.target.value !== EMPTY.ZERO)
+      getCurrentUserAddressData(e.target.value); // Fetch new address details
   };
 
   // Function to fetch specific address details from the server
@@ -45,47 +53,44 @@ const OrderPayCashHook = () => {
 
   // Accessing the specific user address from the Redux store
   const resultAddressDetails = useSelector(
-    (state) => state.userAddressReducer.specificUserAddress
+    (state) => state.userAddressReducer.specificUserAddress,
   );
 
   // Effect to update address details once they're fetched
   useEffect(() => {
     if (!loadingAddressDetails) {
-      if (resultAddressDetails && resultAddressDetails.status === "success") {
+      if (resultAddressDetails?.status === STATUS_MESSAGES.SUCCESS) {
         setAddressDetails(resultAddressDetails.data); // Set fetched address details
-      } else setAddressDetails([]); // If no address data, reset to empty
+      } else setAddressDetails(EMPTY.ARRAY); // If no address data, reset to empty
     }
   }, [loadingAddressDetails, resultAddressDetails]);
 
   // Function to handle order creation with cash payment
   const handleCreateOrderCash = async () => {
-    if (cartID === "0") {
-      notify("من فضلك اضف منتجات الى العربه اولا", WARNING); // Notify if cart is empty
-      return;
-    }
+    if (cartID === EMPTY.ZERO)
+      return notify(t("checkout.emptyCart"), NOTIFICATION_TYPES.WARNING); // Notify if cart is empty
 
-    if (addressDetails.length <= 0) {
-      notify("من فضلك اختر عنوان اولا", WARNING); // Notify if address is not selected
-      return;
-    }
+    if (addressDetails?.length <= 0)
+      return notify(t("checkout.chooseAddress"), NOTIFICATION_TYPES.WARNING); // Notify if address is not selected
 
+    setIsPressCash(true);
     setLoadingCreate(true);
     await dispatch(
       createOrdrerCash(cartID, {
         shippingAddress: {
-          details: addressDetails.alias,
-          phone: addressDetails.phone,
-          city: "",
-          postalCode: "",
+          details: addressDetails?.alias,
+          phone: addressDetails?.phone,
+          city: EMPTY.TEXT,
+          postalCode: EMPTY.TEXT,
         },
-      })
+      }),
     );
     setLoadingCreate(false);
   };
 
   // Accessing the result of the order creation from Redux
   const resultOrderCash = useSelector(
-    (state) => state.checkoutReducer.createOrderCash
+    (state) => state.checkoutReducer.createOrderCash,
   );
 
   // Effect to clear the cart and navigate to the user's orders after successful order creation
@@ -95,16 +100,25 @@ const OrderPayCashHook = () => {
     };
 
     if (!loadingCreate) {
-      if (resultOrderCash && resultOrderCash.status === 201) {
-        notify("تم انشاء طلبك بنجاح", SUCCESS); // Notify on successful order
+      setIsPressCash(false);
+      if (
+        resultOrderCash?.status === STATUS.SUCCESS_CREATED ||
+        resultOrderCash?.status === STATUS.SUCCESS_OK
+      ) {
+        notify(t("checkout.orderSuccess"), NOTIFICATION_TYPES.SUCCESS); // Notify on successful order
         clearCartJSX(); // Clear the cart after order creation
-        setTimeout(() => navigate("/user/all-orders"), 1000); // Navigate to orders page after delay
-      } else notify("فشل فى اكمال الطلب من فضلك حاول مره اخرى", ERROR); // Notify on order failure
+        setTimeout(() => navigate(ROUTES.USER.ORDERS), DELAYS.NAVIGATION_DELAY); // Navigate to orders page after delay
+      } else notify(t("checkout.orderFailed"), NOTIFICATION_TYPES.ERROR); // Notify on order failure
     }
-  }, [loadingCreate, resultOrderCash, navigate, dispatch]);
+  }, [loadingCreate, resultOrderCash, navigate, dispatch, t]);
 
   // Returning the handlers for choosing address and creating the order
-  return [handleChooseAddress, handleCreateOrderCash, addressDetails];
+  return [
+    handleChooseAddress,
+    handleCreateOrderCash,
+    addressDetails,
+    isPressCash,
+  ];
 };
 
 export default OrderPayCashHook;

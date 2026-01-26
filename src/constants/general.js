@@ -61,7 +61,7 @@ export const NUMBERS = {
 // ================================
 export const PAYMENT_METHODS = {
   CASH: "cash",
-  CREDIT_CARD: "creditCard",
+  CARD: "card",
   PAYPAL: "paypal",
 };
 

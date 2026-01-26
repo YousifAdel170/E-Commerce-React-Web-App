@@ -1,0 +1,97 @@
+/* Start of styling Checkout CSS File */
+/* ===== Payment Row ===== */
+.pay-method {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ===== Radio ===== */
+.custom-radio {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--focus-color);
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.25s ease;
+}
+
+/* inner dot */
+.custom-radio::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  background-color: var(--focus-color);
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 0;
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+/* ripple */
+.custom-radio::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: color-mix(
+    in srgb,
+    var(--focus-color) 30%,
+    transparent
+  ) !important;
+  transform: scale(0);
+  opacity: 0;
+}
+
+/* checked */
+.custom-radio:checked {
+  border-color: var(--focus-color);
+}
+
+.custom-radio:checked::after {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.custom-radio:checked::before {
+  animation: radio-ripple 0.4s ease-out;
+}
+
+/* hover */
+.custom-radio:hover {
+  border-color: var(--focus-color);
+}
+
+/* focus (a11y) */
+.custom-radio:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-color) 25%, transparent) !important;
+}
+
+/* ===== Label ===== */
+.order-item-text {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ===== Animation ===== */
+@keyframes radio-ripple {
+  from {
+    transform: scale(0.6);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* End of styling Checkout CSS File */

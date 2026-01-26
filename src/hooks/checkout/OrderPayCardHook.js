@@ -11,67 +11,69 @@ import notify from "../Utility/useNotifyHook";
 import { createOrderCard } from "../../redux/actions/checkoutAction";
 
 // Import Used Configurations
-import { ERROR, SUCCESS, WARNING } from "../../constants/notificationTypes";
+import { NOTIFICATION_TYPES } from "../../constants/notificationTypes";
+import { EMPTY, STATUS_MESSAGES } from "../../constants/general";
+import { useTranslation } from "react-i18next";
+import { DELAYS } from "../../constants/delays";
 
 // Hook responsible for handling the order payment via card
 const OrderPayCardHook = (addressDetalis) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation("notification_messages");
 
   // State to manage the order creation loading state
   const [loadingCreate, setLoadingCreate] = useState(true);
+  const [isPressCard, setIsPressCard] = useState(false);
 
   // Extract cart ID from the ViewAllCartItemsHook custom hook
   const [, , , , , , cartID] = ViewAllCartItemsHook();
 
   // Function to create an order using card payment
   const handleCreateOrderCard = async () => {
-    if (cartID === "0") {
-      notify("من فضلك اضف منتجات الى العربه اولا", WARNING); // Notify if the cart is empty
-      return;
-    }
+    if (cartID === EMPTY.ZERO)
+      return notify(t("checkout.emptyCart"), NOTIFICATION_TYPES.WARNING); // Notify if cart is empty
 
-    if (addressDetalis.length <= 0) {
-      notify("من فضلك اختر عنوان اولا", WARNING); // Notify if no address is selected
-      return;
-    }
+    if (addressDetalis.length <= 0)
+      return notify(t("checkout.chooseAddress"), NOTIFICATION_TYPES.WARNING); // Notify if address is not selected
 
+    setIsPressCard(true);
     setLoadingCreate(true);
     await dispatch(
       createOrderCard(cartID, {
         shippingAddress: {
-          details: addressDetalis.alias,
-          phone: addressDetalis.phone,
-          city: "",
-          postalCode: "",
+          details: addressDetalis?.alias,
+          phone: addressDetalis?.phone,
+          city: EMPTY.TEXT,
+          postalCode: EMPTY.TEXT,
         },
-      })
+      }),
     );
     setLoadingCreate(false);
   };
 
   // Access the result of the order creation from Redux store
   const resultOrderCard = useSelector(
-    (state) => state.checkoutReducer.createOrderCard
+    (state) => state.checkoutReducer.createOrderCard,
   );
 
   // Effect to handle post-order creation actions, such as opening the payment URL or notifying failure
   useEffect(() => {
     if (!loadingCreate) {
-      if (resultOrderCard && resultOrderCard.status === "success") {
-        notify("تم انشاء طلبك بنجاح", SUCCESS); // Notify on successful order creation
+      setIsPressCard(false);
+      if (resultOrderCard?.status === STATUS_MESSAGES.SUCCESS) {
+        notify(t("checkout.goToCardPage"), NOTIFICATION_TYPES.SUCCESS); // Notify on successful order
         setTimeout(() => {
-          if (resultOrderCard.session && resultOrderCard.session.url)
-            window.open(resultOrderCard.session.url); // Open payment URL if session exists
-        }, 1000);
-      } else {
-        notify("فشل فى اكمال الطلب من فضلك حاول مره اخرى", ERROR); // Notify on failure
-      }
+          // Open payment URL if session exists
+          if (resultOrderCard?.session?.url)
+            window.open(resultOrderCard.session.url);
+        }, DELAYS.NAVIGATION_DELAY);
+      } else notify(t("checkout.orderFailed"), NOTIFICATION_TYPES.ERROR); // Notify on order failure
     }
-  }, [loadingCreate, resultOrderCard, navigate]);
+  }, [loadingCreate, resultOrderCard, navigate, t]);
 
   // Returning the handler function for creating the order
-  return [handleCreateOrderCard];
+  return [handleCreateOrderCard, isPressCard];
 };
 
 export default OrderPayCardHook;

@@ -60,20 +60,25 @@ const UserOrderCard = ({ item }) => {
         </div>
 
         {/* Product Color */}
-        <div className="d-flex w-100 justify-content-start align-items-center mb-1">
-          <div className="order-item-text d-flex align-items-center mb-0">
-            {t("order-details.items.item.colors")}:{" "}
+        {item?.color ? (
+          <div className="d-flex w-100 justify-content-start align-items-center mb-1">
+            <div className="order-item-text d-flex align-items-center mb-0">
+              {t("order-details.items.item.colors")}:{" "}
+            </div>
+            <div
+              className="color border mx-2"
+              style={{
+                backgroundColor: item ? item.color : "",
+                cursor: "auto",
+                width: "25px",
+                height: "25px",
+                borderRadius: "50%",
+              }}
+            ></div>
           </div>
-          <div
-            className="color border mx-2"
-            style={{
-              backgroundColor: item ? item.color : "",
-              cursor: "auto",
-              width: "25px",
-              height: "25px",
-            }}
-          ></div>
-        </div>
+        ) : (
+          ""
+        )}
       </Col>
     </Row>
   );

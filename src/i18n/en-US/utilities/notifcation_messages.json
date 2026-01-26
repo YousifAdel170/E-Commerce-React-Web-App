@@ -214,6 +214,13 @@
     "success": "Order placed successfully",
     "selectMethod": "Please select a payment method",
     "paymentFailed": "Payment failed, please try again",
-    "invalidAddress": "Please select a valid delivery address"
+    "invalidAddress": "Please select a valid delivery address",
+
+    "emptyCart": "Please add products to the cart first.",
+    "chooseAddress": "Please select a shipping address first.",
+    "goToCardPage": "Go to the card payment page to pay now",
+
+    "orderSuccess": "Your order has been created successfully.",
+    "orderFailed": "Failed to complete the order. Please try again."
   }
 }

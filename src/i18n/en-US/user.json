@@ -121,6 +121,8 @@
       "priceAfterDiscount": "After discount",
       "price": "Price",
 
+      "noAddresses": "You don't have any saved addresses yet",
+
       "choosePayMethod": {
         "title": "Choose Payment Method",
         "subtitle": "Select how you want to pay for your order",

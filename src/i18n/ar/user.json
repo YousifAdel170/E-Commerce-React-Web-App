@@ -118,6 +118,7 @@
       "priceBeforeDiscount": "قبل الخصم",
       "priceAfterDiscount": "بعد الخصم",
       "price": "السعر",
+      "noAddresses": "لا توجد عناوين محفوظة لديك حتى الآن",
 
       "choosePayMethod": {
         "title": "اختيار طريقة الدفع",
