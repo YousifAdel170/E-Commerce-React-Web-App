@@ -15,6 +15,7 @@ import ViewSearchProductHook from "../../hooks/products/ViewSearchProductHook";
 import { useTranslation } from "react-i18next";
 import UserFavoriteProductsHook from "../../hooks/products/wishList/UserFavoriteProductsHook";
 import { ToastContainer } from "react-toastify";
+import ItemsNotFound from "../../Components/Utility/ItemsNotFound";
 // import { useSelector } from "react-redux";
 
 const ShopProductsPage = () => {
@@ -69,7 +70,12 @@ const ShopProductsPage = () => {
             role="region"
             aria-label={t("shopProductGrid")}
           >
-            <ProductCardContainer products={items} />
+            {items && items?.length > 0 ? (
+              <ProductCardContainer products={items} />
+            ) : (
+              // If no products found, display ItemsNotFound component
+              <ItemsNotFound msg={t("noProducts")} />
+            )}
           </Col>
         </Row>
 

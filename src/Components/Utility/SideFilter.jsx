@@ -59,7 +59,7 @@ const SideFilter = () => {
                 </div>
               ))
             ) : (
-              <p className="filter-sub">{t("noCategories")}</p>
+              <p className="order-item-text-answer">{t("noCategories")}</p>
             )}
           </div>
         </section>
@@ -94,7 +94,7 @@ const SideFilter = () => {
                 </div>
               ))
             ) : (
-              <p className="filter-sub">{t("noBrands")}</p>
+              <p className="order-item-text-answer">{t("noBrands")}</p>
             )}
           </div>
         </section>
